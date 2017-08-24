@@ -1,0 +1,174 @@
+<?php
+if (isset($_GET['stop_lms'])) {
+    exec("sudo /var/www/sudoscript.sh stop_lms");
+}
+if (isset($_GET['start_lms'])) {
+    exec("sudo /var/www/sudoscript.sh start_lms");
+}
+?>
+
+<style>
+    .welcome-card-wide > .mdl-card__title {
+        color: #fff;
+        height: 300px;
+        background: url('images/cover.png') center / cover;
+    }
+
+</style>
+
+<div ng-init="getDevices()"
+     class="welcome-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--hide-phone">
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Welcome</h2>
+    </div>
+    <div class="mdl-card__menu">
+        <a target="_blank"
+           href="https://twitter.com/home?status=%23innotune%20The%20best%20source%20for%20Multiroom%20audio!"
+           class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">share</i>
+        </a>
+    </div>
+</div>
+
+
+<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--top mdl-cell--6-col">
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">InnoServer Status</h2>
+    </div>
+    <div class="mdl-card__menu">
+        <b ng-if="sysinfo.cpu<'90'" style="color: green; font-size: 18px">Gut</b>
+        <b ng-if="sysinfo.cpu>'90'" style="color: red; font-size: 18px">Ausgelastet</b>
+    </div>
+    <div ng-init="getSysInfo()" class="mdl-card__supporting-text">
+        <ul class="demo-list-icon mdl-list" style="padding: 0">
+            <li class="mdl-list__item">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                           xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                           version="1.1" baseProfile="full" width="32"
+                                                                           height="32" viewBox="0 0 32.00 32.00"
+                                                                           enable-background="new 0 0 32.00 32.00"
+                                                                           xml:space="preserve">
+	<path fill="#757575" fill-opacity="1" stroke-linejoin="round"
+          d="M 6,4L 18,4L 18,5L 21,5L 21,7L 18,7L 18,9L 21,9L 21,11L 18,11L 18,13L 21,13L 21,15L 18,15L 18,17L 21,17L 21,19L 18,19L 18,20L 6,20L 6,19L 3,19L 3,17L 6,17L 6,15L 3,15L 3,13L 6,13L 6,11L 3,11L 3,9L 6,9L 6,7L 3,7L 3,5L 6,5L 6,4 Z M 11,15L 11,18L 12,18L 12,15L 11,15 Z M 13,15L 13,18L 14,18L 14,15L 13,15 Z M 15,15L 15,18L 16,18L 16,15L 15,15 Z "></path>
+</svg></i>
+                        CPU Auslastung:&nbsp;<b>{{sysinfo.cpu}}%</b>
+                    </span>
+            </li>
+            <li class="mdl-list__item">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                           xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                           version="1.1" baseProfile="full" width="32"
+                                                                           height="32" viewBox="0 0 32.00 32.00"
+                                                                           enable-background="new 0 0 32.00 32.00"
+                                                                           xml:space="preserve">
+	<path fill="#757575" fill-opacity="1" stroke-width="0.2" stroke-linejoin="round"
+          d="M 16.9994,16.9981L 6.9994,16.9981L 6.9994,6.99807L 16.9994,6.99807M 20.9994,10.9981L 20.9994,8.99807L 18.9994,8.99807L 18.9994,6.99807C 18.9994,5.89406 18.1034,4.99807 16.9994,4.99807L 14.9994,4.99807L 14.9994,2.99807L 12.9994,2.99807L 12.9994,4.99807L 10.9994,4.99807L 10.9994,2.99807L 8.9994,2.99807L 8.9994,4.99807L 6.9994,4.99807C 5.8944,4.99807 4.9994,5.89406 4.9994,6.99807L 4.9994,8.99807L 2.9994,8.99807L 2.9994,10.9981L 4.9994,10.9981L 4.9994,12.9981L 2.9994,12.9981L 2.9994,14.9981L 4.9994,14.9981L 4.9994,16.9981C 4.9994,18.1031 5.8944,18.9981 6.9994,18.9981L 8.9994,18.9981L 8.9994,20.9981L 10.9994,20.9981L 10.9994,18.9981L 12.9994,18.9981L 12.9994,20.9981L 14.9994,20.9981L 14.9994,18.9981L 16.9994,18.9981C 18.1034,18.9981 18.9994,18.1031 18.9994,16.9981L 18.9994,14.9981L 20.9994,14.9981L 20.9994,12.9981L 18.9994,12.9981L 18.9994,10.9981M 12.9994,12.9981L 10.9994,12.9981L 10.9994,10.9981L 12.9994,10.9981M 14.9994,8.99807L 8.9994,8.99807L 8.9994,14.9981L 14.9994,14.9981L 14.9994,8.99807 Z "/>
+</svg></i>
+                        Ram Auslastung:&nbsp;<b>{{sysinfo.ram}}%</b>
+                    </span>
+            </li>
+            <li class="mdl-list__item">
+                    <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">storage</i>
+                        Speicher:&nbsp;<b>{{formatSizeUnits(sysinfo.diskspace)}} belegt von {{formatSizeUnits(sysinfo.disksize)}} / {{sysinfo.diskpercent}}%</b>
+                  </span>
+            </li>
+            <li class="mdl-list__item">
+                    <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">access_time</i>
+                        Uptime:&nbsp;<b>{{sysinfo.uptime}}</b>
+                  </span>
+            </li>
+        </ul>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <button ng-click="rebootDialog($event)"
+                class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+            Reboot
+        </button>
+    </div>
+</div>
+
+<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--top mdl-cell--6-col">
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">InnoServer</h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+        <span class="mdl-badge" data-badge="{{devices.length}}">Usb-Geräte erkannt </span>
+        <ul class="device-list mdl-list">
+            <li ng-repeat="device in devices | orderBy : 'id'" class="mdl-list__item mdl-list__item--two-line">
+                <span class="mdl-list__item-primary-content">
+                    <img ng-src="./images/{{device.betrieb}}.png" class="mdl-list__item-avatar"
+                         style="border-radius: 0px; background-color: transparent;">
+                    <span>USB-Gerät {{formatId(device.id)}}</span>
+                    <span ng-if="device.betrieb=='normalbetrieb'"
+                          class="mdl-list__item-sub-title">{{device.name}}</span>
+                    <span ng-if="device.betrieb=='geteilterbetrieb'" class="mdl-list__item-sub-title">{{device.nameL}} - {{device.nameR}}</span>
+                    <span ng-if="device.betrieb=='deaktiviert'" class="mdl-list__item-sub-title">Deaktiviert</span>
+                </span>
+                <span class="mdl-list__item-secondary-content">
+                    <span class="mdl-list__item-secondary-info">Mac-Adresse</span>
+                    <span ng-if="device.betrieb=='normalbetrieb'"
+                          class="mdl-list__item-secondary-action">{{device.mac}}</span>
+                    <span ng-if="device.betrieb=='geteilterbetrieb'" class="mdl-list__item-secondary-action">{{device.macL}} - {{device.macR}}</span>
+                    <span ng-if="device.betrieb=='deaktiviert'" class="mdl-list__item-secondary-action">-</span>
+                </span>
+            </li>
+        </ul>
+    </div>
+    <div class="mdl-card__menu">
+        <a ng-click="getDevices()" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">refresh</i>
+        </a>
+    </div>
+</div>
+<div ng-init="showLmsSwitch()" class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell  mdl-cell--6-col  mdl-cell--top">
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Steuerung Logitech Media Server</h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+        Systemlink Logitech Media Server:
+        <?php
+        $host = 'localhost';
+        if ($socket = @ fsockopen($host, 9000, $errno, $errstr, 30)) {
+            echo "<a href=\"http://";
+            if ($_SERVER['SERVER_ADDR'] == '::1')
+                echo "127.0.0.1:9000\" target=\"_blank\">";
+            else
+                echo $_SERVER['SERVER_ADDR'] . ':9000" target="_blank">';
+            ?>
+            <?php
+            if ($_SERVER['SERVER_ADDR'] == '::1')
+                echo "127.0.0.1:9000";
+            else
+                echo $_SERVER['SERVER_ADDR'] . ':9000';
+        } else {
+            echo '<b>offline.</b>';
+        }
+        ?>
+        </a>
+        <br>
+        <md-switch ng-change="changedLmsSwitch()" ng-model="lmsCB" ng-true-value="1" ng-false-value="0"
+                   aria-label="Switch 1">
+            LMS bei Systemstart
+        </md-switch>
+
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <button ng-click="stop_lms()" name="lms_stop"
+                class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+            Stop LMS
+        </button>
+        <button ng-click="start_lms()" name="lms_start"
+                class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+            Start LMS
+        </button>
+    </div>
+    <div class="mdl-card__menu">
+        <a onclick="location.reload()" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">refresh</i>
+        </a>
+    </div>
+</div>
