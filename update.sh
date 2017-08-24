@@ -15,7 +15,7 @@ cp -R /opt/innotune/update/cache/InnoTune/settings/* -n /opt/innotune/settings
 sudo chmod -R 777 /opt/innotune/settings
 
 # WebInterface Ordner
-cp -R /opt/innotune/update/cache/InnoTune/webif/* -n /var/www
+cp -R /opt/innotune/update/cache/InnoTune/webif/* /var/www
 sudo chmod -R 777 /var/www
 
 
