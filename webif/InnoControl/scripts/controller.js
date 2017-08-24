@@ -701,8 +701,20 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
 
     $scope.update = function () {
-        $http.get('api/helper.php?update');
-        location.reload();
+        var confirm = $mdDialog.confirm()
+            .title('Bist du sicher?')
+            .textContent('Update auf neue Version! Der Server wird neu gestartet, dies kann mehrere Minuten dauern!.')
+            .ariaLabel('Update!')
+            .targetEvent(event)
+            .ok('Ok')
+            .cancel('Abbrechen');
+        $mdDialog.show(confirm).then(function () {
+            document.getElementById("loadingsymbol").style.display = "block";
+            $http.get('api/helper.php?update').success(function () {
+                document.getElementById("loadingsymbol").style.display = "none";
+
+            });
+        });
     };
 
     //Interval für System Info

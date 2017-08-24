@@ -8,8 +8,6 @@
 
 ############Section: Update############
 
-
-
 # Settings Ordner
 cp -R /opt/innotune/update/cache/InnoTune/settings/* -n /opt/innotune/settings
 sudo chmod -R 777 /opt/innotune/settings
@@ -18,17 +16,22 @@ sudo chmod -R 777 /opt/innotune/settings
 cp -R /opt/innotune/update/cache/InnoTune/webif/* /var/www
 sudo chmod -R 777 /var/www
 
+# Change Document Root for InnoControl
+var="\"\\/var\\/www\\/InnoControl\""
+sed -i 's/^\(server.document-root\).*/\1 '=$var'/'  /etc/lighttpd/lighttpd.conf
+
+
 
 ############Section: Fixes############
 
 # PHP File Upload Fix 24.08.2017
 PHPVersion=$(php -v|grep --only-matching --perl-regexp "5\.\\d+\.\\d+");
 
-sed -i "s/^\(upload_max_filesize\).*/\1 $(eval echo =22M)/" /etc/php/${PHPVersion:0:3}/cli/php.ini
-sed -i "s/^\(upload_max_filesize\).*/\1 $(eval echo =22M)/" /etc/php/${PHPVersion:0:3}/cgi/php.ini
+sed -i "s/^\(upload_max_filesize\).*/\1 $(eval echo =20M)/" /etc/php/${PHPVersion:0:3}/cli/php.ini
+sed -i "s/^\(upload_max_filesize\).*/\1 $(eval echo =20M)/" /etc/php/${PHPVersion:0:3}/cgi/php.ini
 
-sed -i "s/^\(upload_max_filesize\).*/\1 $(eval echo =22M)/" /etc/php5/cli/php.ini
-sed -i "s/^\(upload_max_filesize\).*/\1 $(eval echo =22M)/" /etc/php5/cgi/php.ini
+sed -i "s/^\(upload_max_filesize\).*/\1 $(eval echo =20M)/" /etc/php5/cli/php.ini
+sed -i "s/^\(upload_max_filesize\).*/\1 $(eval echo =20M)/" /etc/php5/cgi/php.ini
 
 
 

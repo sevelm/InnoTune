@@ -81,9 +81,9 @@ long* ReadtxtInt (int position, char* pfad)
 			fgets(&out[i],1024,fp);
 		}
 
-		if (strstr(out, ";")) {
-			li = strtok(out, ";");
-			re = strtok(NULL, ";");
+		if (strstr(out, "/")) {
+			li = strtok(out, "/");
+			re = strtok(NULL, "/");
 			result[0]=atol(li);
 			result[1]=atol(re);
 		} else {
@@ -123,22 +123,23 @@ int main(int argc, char *argv[])
 	long VOL_MPD_RE[10];
 	char MPD_TITLE[1024];
 
-		printf("Wert von i: %s\n", TTS_TITLE);
+		printf("Wert von Title: %s\n", TTS_TITLE);
 
 
 
 	int nr;
+                nr = 0;
 
 	//  Einlesen der Lautstärke von Squeezbox&Airplay
 	read = ReadtxtInt (1, "/opt/innotune/settings/voiceoutput/voiceoutputvol.txt");
 	if (max(read) >= 0) {
-		SQ_AIR_VOLUME = max(read) + 1;
+		SQ_AIR_VOLUME = max(read)+1;
 	}
 	free(read);
 
 	for (nr = 0; nr < 10; nr++) {
 		//  Einlesen der Lautstärke von PlayerXX
-		read = ReadtxtInt ((2+nr), "/opt/innotune/settings/voiceoutput/voiceoutputvol.txt");
+		read = ReadtxtInt ((1+nr), "/opt/innotune/settings/voiceoutput/voiceoutputvol.txt");
 		if (max(read) >= 0) {
 			VOL_MPD[nr] = max(read);
 		}
@@ -151,47 +152,30 @@ int main(int argc, char *argv[])
 		free(read);
 	}
 
-		printf("Wert von i: %s\s", SQ_AIR_VOLUME);
-		printf("Wert von i: %s\s", VOL_MPD);
-		printf("Wert von i: %s\s", VOL_MPD_LI);
-		printf("Wert von i: %s\s", VOL_MPD_RE);
+		printf("Wert von SQAIR: %li\n", SQ_AIR_VOLUME);
+		printf("Wert von MPD: %li\n", VOL_MPD[2]);
+		printf("Wert von MPDLI: %li\n", VOL_MPD_LI[2]);
+		printf("Wert von MPDRE: %li\n", VOL_MPD_RE[2]);
 
-	return 0;
-}
-
-/* 
-
-	//  Einlesen des MPD Playlist Namens
-	FILE *fp;
-	int i;
-	if((fp = fopen ("/opt/innotune/settings/voiceoutput/voiceoutputvol.txt" , "r"))==NULL)  {    
-		printf("Datei konnte nicht geöffent werden \n");
-	} else {     
-		for(i=0;i<(START_NR-1);i++){
-			fgets(&MPD_TITLE[i],1024,fp);
-		}
-		for(i=0;i<1;i++){
-			fgets(&MPD_TITLE[i],1024,fp);
-		}  
-		chomp(MPD_TITLE);    
-		fclose(fp);
-	}
-
+	//  TTS Lautstärke setzen
+                nr = 0;
 	for (nr = 0; nr < 10; nr++) {		
 		//  MPD Lautstärkenregler - PlayerXX
-		result = SetAlsaVolume (VOL_MPD[nr], "mpd_", "hw:", nr+1);
+		result = SetAlsaVolume (VOL_MPD[nr], "mpd_", "hw:", nr);
 		//  MPD Lautstärkenregler - PlayerXX links
-		result = SetAlsaVolume (VOL_MPD_LI[nr], "mpdli_", "hw:", nr+1);
+		result = SetAlsaVolume (VOL_MPD_LI[nr], "mpdli_", "hw:", nr);
 		//  MPD Lautstärkenregler - PlayerXX rechts
-		result = SetAlsaVolume (VOL_MPD_RE[nr], "mpdre_", "hw:", nr+1);
+		result = SetAlsaVolume (VOL_MPD_RE[nr], "mpdre_", "hw:", nr);
 	}
 
-	int SOFT_VOL_DOWN = 100;
 
+                //  Master Lautstärkenregler für Airplay & Squeezebox & ... reduzieren
+	int SOFT_VOL_DOWN = 100;
+                nr = 0;
 	do {
 		SOFT_VOL_DOWN = SOFT_VOL_DOWN - 1;
-		for (nr = 1; nr <= 10; nr++) {
-			//  Master Lautstärkenregler für Airplay & Squeezebox & ... reduzieren - Player01
+		for (nr = 0; nr <= 10; nr++) {
+
 			if (VOL_MPD[nr] != 0) {		
 				result = SetAlsaVolume (SOFT_VOL_DOWN, "MuteIfMPD_", "hw:", nr);
 			}
@@ -205,6 +189,7 @@ int main(int argc, char *argv[])
 		usleep(10000);
 	} while (SOFT_VOL_DOWN > SQ_AIR_VOLUME);
 
+
 	// #################   MPD Anfang   #################
 	//
 	//
@@ -212,7 +197,9 @@ int main(int argc, char *argv[])
 	//
 
 	int COUNT = 0;
-	const char *TITLE = MPD_TITLE;    
+	const char *TITLE = MPD_TITLE;  
+                const char *PATHALL = "/media/";
+                const char *PATHTTS = "/media/Soundfiles/tts/";
 	struct mpd_status *status = NULL;
 	struct mpd_connection *conn = NULL;
 	conn = mpd_connection_new("localhost", 6600, 0);
@@ -220,8 +207,10 @@ int main(int argc, char *argv[])
 		printf("cant connect to mpd\n");
 		return 1;
 	}
-	mpd_run_clear(conn);
-	mpd_run_load(conn, TITLE);
+//	mpd_run_update(conn, PATHALL);
+//	mpd_run_clear(conn);
+                //mpd_run_add_id(conn, "/media/Soundfiles/tts/hallo.mp3");
+	mpd_send_load(conn, "/media/Soundfiles/tts/hallo.mp3");
 	mpd_send_play(conn);
 	int COUNTER01 = 1;    
 	while ( COUNTER01 == 1 )
@@ -283,9 +272,6 @@ int main(int argc, char *argv[])
 		}
 		usleep(10000);
 	} while (SQ_AIR_VOLUME < 100);
-
 	return 0;
 
 }
-
-*/

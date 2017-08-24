@@ -7,7 +7,7 @@
  */
 
 // Verfügbare Version einlesen
-$datei = "http://innotune.at/update_innotune/odroid/version.txt"; // Name der Datei
+$datei = "https://raw.githubusercontent.com/JHoerbst/InnoTune/master/version.txt"; // Name der Datei
 $version_server = file($datei); // Datei in ein Array einlesen
 
 //Aktuelle Version einlesen
@@ -56,7 +56,7 @@ $version_local = file($datei); // Datei in ein Array einlesen
     </div>";
     } else {
         echo "    <div class=\"mdl-card__actions mdl-card--border\" >
-        <button class=\"mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect\" >
+        <button ng-click='update()' class=\"mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect\" >
             UPDATE
         </button >
     </div>";
