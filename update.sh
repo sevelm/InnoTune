@@ -11,12 +11,12 @@
 
 
 # Settings Ordner
-#cp -R /opt/innotune/update/cache/InnoTune/settings/* -n /opt/innotune/settings
-#sudo chmod -R 777 /opt/innotune/settings
+cp -R /opt/innotune/update/cache/InnoTune/settings/* -n /opt/innotune/settings
+sudo chmod -R 777 /opt/innotune/settings
 
 # WebInterface Ordner
-#cp -R /opt/innotune/update/cache/InnoTune/webif/* -n /var/www
-#sudo chmod -R 777 /var/www
+cp -R /opt/innotune/update/cache/InnoTune/webif/* -n /var/www
+sudo chmod -R 777 /var/www
 
 
 ############Section: Fixes############
