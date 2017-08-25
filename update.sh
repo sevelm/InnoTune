@@ -34,6 +34,12 @@ sed -i "s/^\(upload_max_filesize\).*/\1 $(eval echo =20M)/" /etc/php5/cli/php.in
 sed -i "s/^\(upload_max_filesize\).*/\1 $(eval echo =20M)/" /etc/php5/cgi/php.ini
 
 
+mkdir /media/Soundfiles/uploads
+sudo chmod -R 777 /media/Soundfiles/uploads
+
+mkdir /media/Soundfiles/tts
+sudo chmod -R 777 /media/Soundfiles/tts
+
 
 # Shairport
 sudo git clone https://github.com/abrasive/shairport.git /opt/shairport
