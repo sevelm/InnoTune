@@ -121,7 +121,7 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
         <nav class="innocontrol-navigation mdl-navigation mdl-color--blue-grey-800">
             <a id="homeanchor" name="routeanchors" class="mdl-navigation__link" href="#home"><i
                         class="mdl-color-text--blue-grey-400 material-icons"
-                        role="presentation">home</i>Home</a>
+                        role="presentation">home</i>Home Test1234</a>
             <a id="devicesanchor" name="routeanchors" class="mdl-navigation__link" href="#devices"><i
                         class="mdl-color-text--blue-grey-400 material-icons"
                         role="presentation">usb</i>InnoAmp's</a>
