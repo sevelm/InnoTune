@@ -54,8 +54,3 @@ sudo apt-get -y install mpc
 sudo service dhcpcd stop
 sudo systemctl disable dhcpcd
 sudo update-rc.d -f dhcpcd remove
-
-
-reboot
-
-exit 0

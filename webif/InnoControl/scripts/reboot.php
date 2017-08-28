@@ -47,6 +47,22 @@
             var xhr = new XMLHttpRequest();
             xhr.open('GET', "/api/helper.php?reboot", true);
             xhr.send();
+        } else if (getParameterByName("update") == "true") {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', "/api/helper.php?reboot", true);
+            xhr.send();
+
+            setInterval(function () {
+                $.ajax({
+                    url: '/index.php',
+                    success: function (result) {
+                        location.replace("/index.php");
+                    },
+                    error: function () {
+                        console.log("down");
+                    }
+                })
+            }, 3000);
         } else {
             var newIp;
 
@@ -62,9 +78,9 @@
 
             setInterval(function () {
                 $.ajax({
-                    url: newIp+'/index.php',
+                    url: newIp + '/index.php',
                     success: function (result) {
-                        if(newIp == ""){
+                        if (newIp == "") {
                             location.replace("/index.php");
                         } else {
                             location.replace(newIp);
