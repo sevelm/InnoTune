@@ -20,6 +20,8 @@ sudo chmod -R 777 /var/www
 var="\"\\/var\\/www\\/InnoControl\""
 sed -i 's/^\(server.document-root\).*/\1 '=$var'/'  /etc/lighttpd/lighttpd.conf
 
+# Remove Lighttpd Authentication
+sed -e '/mod_auth/ s/^#*/#/' -i /etc/lighttpd/lighttpd.conf
 
 
 ############Section: Fixes############

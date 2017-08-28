@@ -42,6 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="css/material.min.css" type="text/css">
     <script defer src="js/material.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="theme-color" content="#40c4ff">
     <style>
         input:-webkit-autofill {
             -webkit-box-shadow: 0 0 0 1000px white inset !important;

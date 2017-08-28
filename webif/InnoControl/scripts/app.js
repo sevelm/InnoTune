@@ -18,3 +18,9 @@ app.directive('voiceoutput', function () {
         templateUrl: "./directives/voiceoutputDirective.php"
     };
 });
+app.directive('playlistvolume', function () {
+    return {
+        restrict: 'AE',
+        templateUrl: "./directives/playlistVolumeDirective.php"
+    };
+});

@@ -11,6 +11,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.rssvoice = {};
     $scope.rssvoice.vol_dev = [];
     $scope.playlists = [];
+    $scope.playlists.vol_dev = [];
     $scope.devices = [];
     $scope.devicestmp = [];
     $scope.uploadfile = undefined;
@@ -321,7 +322,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                 var arr = data.split(";");
                 if (data != 0) {
                     for (var i = 0; i < arr.length - 1; i++) {
-                        $scope.playlists.push({id: i, name: arr[i]});
+                        $scope.playlists.push({id: i, name: arr[i], vol_dev: []});
                     }
                 }
             });
@@ -332,18 +333,24 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                 var arr = data.split(";");
                 if (data != 0) {
                     $scope.playlists[id].vol_background = parseInt(arr[0]);
-                    $scope.playlists[id].vol_dev01 = parseInt(arr[1]);
-                    $scope.playlists[id].vol_dev02 = parseInt(arr[2]);
-                    $scope.playlists[id].vol_dev03 = parseInt(arr[3]);
-                    $scope.playlists[id].vol_dev04 = parseInt(arr[4]);
-                    $scope.playlists[id].vol_dev05 = parseInt(arr[5]);
-                    $scope.playlists[id].vol_dev06 = parseInt(arr[6]);
-                    $scope.playlists[id].vol_dev07 = parseInt(arr[7]);
-                    $scope.playlists[id].vol_dev08 = parseInt(arr[8]);
-                    $scope.playlists[id].vol_dev09 = parseInt(arr[9]);
-                    $scope.playlists[id].vol_dev10 = parseInt(arr[10]);
-
+                    $scope.playlists[id].vol_dev = [];
+                    for (var i = 1; i < 11; i++) {
+                        if (arr[i].includes("/")) {
+                            var tmparr = arr[i].split("/");
+                            $scope.playlists[id].vol_dev.push({
+                                id: i-1,
+                                volumeL: parseInt(tmparr[0]),
+                                volumeR: parseInt(tmparr[1])
+                            })
+                        } else {
+                            $scope.playlists[id].vol_dev.push({id: i-1, volume: parseInt(arr[i])})
+                        }
+                    }
                 }
+
+                $scope.devices.sort(function(a, b) {
+                    return a.id > b.id;
+                });
             });
     };
 
@@ -353,24 +360,28 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
 
     $scope.savePlaylist = function (id) {
+        var volStr = "";
+        for (var i = 0; i < 10; i++) {
+            if ($scope.devices[i] != null && $scope.devices[i].betrieb == "geteilterbetrieb") {
+                volStr += ("&VOL_DEV" + $scope.formatId(i + 1) + "=" + $scope.playlists[id].vol_dev[i].volumeL + "/" + $scope.playlists[id].vol_dev[i].volumeR);
+            } else if ($scope.devices[i] != null && $scope.devices[i].betrieb == "deaktiviert") {
+                volStr += ("&VOL_DEV" + $scope.formatId(i + 1) + "=0");
+            } else {
+                volStr += ("&VOL_DEV" + $scope.formatId(i + 1) + "=" + $scope.playlists[id].vol_dev[i].volume);
+            }
+
+        }
+
         $http.get('api/helper.php?saveplaylist' +
             '&ID=' + (id + 1) +
-            '&VOL_BACKGROUND=' + $scope.playlists[id].vol_background +
-            '&VOL_DEV01=' + $scope.playlists[id].vol_dev01 +
-            '&VOL_DEV02=' + $scope.playlists[id].vol_dev02 +
-            '&VOL_DEV03=' + $scope.playlists[id].vol_dev03 +
-            '&VOL_DEV04=' + $scope.playlists[id].vol_dev04 +
-            '&VOL_DEV05=' + $scope.playlists[id].vol_dev05 +
-            '&VOL_DEV06=' + $scope.playlists[id].vol_dev06 +
-            '&VOL_DEV07=' + $scope.playlists[id].vol_dev07 +
-            '&VOL_DEV08=' + $scope.playlists[id].vol_dev08 +
-            '&VOL_DEV09=' + $scope.playlists[id].vol_dev09 +
-            '&VOL_DEV10=' + $scope.playlists[id].vol_dev10);
+            '&VOL_BACKGROUND=' + $scope.playlists[id].vol_background + volStr)
+            .success(function (data) {
+                $scope.makeToast("Erfolgreich gespeichert!");
+                //location.reload();
+            });
     };
 
     $scope.savePlaylistName = function (id) {
-        console.log("ID:" + id);
-
         if ($scope.playlists[id].vol_background == undefined) {
             $http.get('api/helper.php?saveplaylist' +
                 '&ID=' + (id + 1) +
@@ -644,8 +655,6 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
 
     $scope.getVoiceoutputVol = function () {
-
-
         $http.get('api/helper.php?getvoiceoutputvol')
             .success(function (data) {
                 var arr = data.split(";");
@@ -657,7 +666,6 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                     for (var i = 0; i < $scope.devices.length; i++) {
                         if (arr[i + 1].includes("/")) {
                             var tmparr = arr[i + 1].split("/");
-                            console.log(tmparr);
                             $scope.rssvoice.vol_dev.push({
                                 id: i,
                                 volumeL: parseInt(tmparr[0]),
@@ -669,6 +677,9 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                     }
                 }
             });
+        $scope.devices.sort(function(a, b) {
+            return a.id > b.id;
+        });
     };
 
     $scope.saveVoiceoutputVol = function () {
@@ -682,8 +693,6 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                 volStr += ("&VOL_DEV" + $scope.formatId(i + 1) + "=0");
             }
         }
-        console.log('api/helper.php?setvoiceoutputvol' +
-            '&VOL_BACKGROUND=' + $scope.rssvoice.vol_background + volStr);
 
         $http.get('api/helper.php?setvoiceoutputvol' +
             '&VOL_BACKGROUND=' + $scope.rssvoice.vol_background + volStr)
@@ -701,22 +710,23 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
 
     $scope.update = function () {
-        var confirm = $mdDialog.confirm()
+        var update = $mdDialog.confirm()
             .title('Bist du sicher?')
             .textContent('Update auf neue Version! Der Server wird neu gestartet, dies kann mehrere Minuten dauern!.')
             .ariaLabel('Update!')
             .targetEvent(event)
             .ok('Ok')
             .cancel('Abbrechen');
-        $mdDialog.show(confirm).then(function () {
+        $mdDialog.show(update).then(function () {
             document.getElementById("loadingsymbol").style.display = "block";
-            $http.get('api/helper.php?update').success(function () {
-                document.getElementById("loadingsymbol").style.display = "none";
 
-            });
+            //$http.get('api/helper.php?update').success(function () {
+                //location.href = "/scripts/reboot.php?update=true"
+            //});
         });
     };
 
     //Interval für System Info
     $interval($scope.getSysInfo, 4000);
+    $scope.getDevices();
 });

@@ -29,7 +29,9 @@
                 <p class="mdl-cell mdl-cell--3-col">Wiedergabe von Line-In:</p>
                 <md-input-container class="mdl-cell--3-col md-no-underline">
                     <md-select ng-model="selectedLineIn" placeholder="Input auswahlen...">
-                        <md-option ng-value="opt.id" ng-repeat="opt in devices">Usb Gerät {{opt.id}}</md-option>
+                        <md-option ng-if="opt.id==1" ng-value="opt.id" ng-repeat="opt in devices">Onboard-Soundkarte</md-option>
+                        <md-option ng-if="opt.id!=1" ng-value="opt.id" ng-repeat="opt in devices">InnoAmp {{opt.id-1}}</md-option>
+
                     </md-select>
                 </md-input-container>
             </div>

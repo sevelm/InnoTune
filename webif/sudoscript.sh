@@ -33,6 +33,7 @@ case "$1" in
                sed -i 's/server.port =.*$/server.port = '$(cat /opt/innotune/settings/web_settings.txt | head -n2  | tail -n1)'/' /etc/lighttpd/lighttpd.conf
                /etc/init.d/lighttpd restart;;
      sendmail) /var/www/sendmail.sh "$2" "$3" > /var/www/return_values/sendmail.txt;;
+     ttsvolplay) /var/www/src/ttsvolplay "$2";;
     *) echo "ERROR: invalid parameter: $1 (for $0)"; exit 1 ;;
 esac
 

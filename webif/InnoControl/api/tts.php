@@ -43,11 +43,12 @@ if(empty($pids))
         file_put_contents($file, $mp3);
     }
 
-    //play c program
+    echo "/var/www/src/ttsvolplay " . str_replace("+","_",$words);
+
+    //Update MPD Library
     shell_exec("mpc update");
-    shell_exec("mpc clear");
-    shell_exec("mpc add " . $file);
-    shell_exec("mpc play");
+    //Execute ttsvolplay
+    shell_exec("sudo /var/www/sudoscript.sh ttsvolplay " . str_replace("+","_",$words));
 }
 else
 {

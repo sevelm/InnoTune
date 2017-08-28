@@ -5,6 +5,9 @@ if (isset($_GET['stop_lms'])) {
 if (isset($_GET['start_lms'])) {
     exec("sudo /var/www/sudoscript.sh start_lms");
 }
+if (strpos(shell_exec("uname -r"), "rockchip")) {
+    $tinkerboard = true;
+}
 ?>
 
 <style>
@@ -96,13 +99,20 @@ if (isset($_GET['start_lms'])) {
         <h2 class="mdl-card__title-text">InnoServer</h2>
     </div>
     <div class="mdl-card__supporting-text">
-        <span class="mdl-badge" data-badge="{{devices.length}}">Usb-Geräte erkannt </span>
+        <span class="mdl-badge" data-badge="{{devices.length}}">InnoAmp's erkannt </span>
         <ul class="device-list mdl-list">
             <li ng-repeat="device in devices | orderBy : 'id'" class="mdl-list__item mdl-list__item--two-line">
                 <span class="mdl-list__item-primary-content">
                     <img ng-src="./images/{{device.betrieb}}.png" class="mdl-list__item-avatar"
                          style="border-radius: 0px; background-color: transparent;">
-                    <span>USB-Gerät {{formatId(device.id)}}</span>
+
+                    <?php if($tinkerboard) {
+                        echo "<span ng-if=\"device.id!=1\">InnoAmp {{formatId(device.id-1)}}</span>
+                    <span ng-if=\"device.id==1\">HDMI-Audio</span>";
+                    } else {
+                        echo "<span>InnoAmp {{formatId(device.id)}}</span>";
+                    }?>
+
                     <span ng-if="device.betrieb=='normalbetrieb'"
                           class="mdl-list__item-sub-title">{{device.name}}</span>
                     <span ng-if="device.betrieb=='geteilterbetrieb'" class="mdl-list__item-sub-title">{{device.nameL}} - {{device.nameR}}</span>

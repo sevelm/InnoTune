@@ -25,19 +25,13 @@
             <label id="textlabel" for="text" style="font-size: larger">Text:</label>
             <input id="text" name="test" ng-model="texttts" type="text" aria-label="textlabel">
         </md-input-container>
-        <md-input-container class="md-block mdl-cell">
-            <label id="zonelabel" for="zone" style="font-size: larger">Zone ID:</label>
-            <input id="zone" name="test" ng-model="zonetts" type="number" aria-label="zonelabel">
-        </md-input-container>
-        <md-input-container class="md-block mdl-cell">
-            <label id="volumelabel" for="volume" style="font-size: larger">Laustärke:</label>
-            <input id="volume" name="test" ng-model="volumetts" type="number" aria-label="volumelabel">
-        </md-input-container>
-        <center>
-            <b><a id="copyElement" target="_blank"
-                  href="http://<?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text={{texttts}}&zone={{zonetts}}&volume={{volumetts}}"><?php echo $_SERVER['SERVER_ADDR'] ?>
-                    /api/tts.php?text={{texttts}}&zone={{zonetts}}&volume={{volumetts}}</a></b>
-        </center>
+            <center>
+                <b><a id="copyElement" target="_blank"
+                      href="http://<?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text={{texttts}}">
+                        <?php echo $_SERVER['SERVER_ADDR'] ?>
+                        /api/tts.php?text={{texttts}}
+                    </a></b>
+            </center>
         <button class="mdl-button mdl-js-button mdl-button--fab" onclick="copy()">
             <i class="material-icons">content_copy</i>
         </button>
