@@ -720,9 +720,9 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         $mdDialog.show(update).then(function () {
             document.getElementById("loadingsymbol").style.display = "block";
 
-            //$http.get('api/helper.php?update').success(function () {
-                //location.href = "/scripts/reboot.php?update=true"
-            //});
+            $http.get('api/helper.php?update').success(function () {
+                location.href = "/scripts/reboot.php?update=true"
+            });
         });
     };
 
