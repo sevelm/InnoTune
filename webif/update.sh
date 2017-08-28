@@ -2,12 +2,13 @@
 
 ##########################################################
 #			 Config
-# InnoTune Update über Github
+# InnoTune Update Ã¼ber Github
 ##########################################################
 
 
 rm -r /opt/innotune/update/*   ### Update-Ordner leeren
 apt-get install git
+mkdir /opt/innotune/update/cache
 cd /opt/innotune/update/cache
 git clone https://github.com/JHoerbst/InnoTune.git
 sudo chmod -R 0777 InnoTune

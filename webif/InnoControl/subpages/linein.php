@@ -4,7 +4,10 @@
  * User: Julian
  * Date: 11.08.2016
  * Time: 16:15
- */ ?>
+ */
+if (strpos(shell_exec("uname -r"), "rockchip")) {
+    $tinkerboard = true;
+}?>
 
 <div ng-init="selectDevice()" class="welcome-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--top">
     <div class="mdl-card__title">
@@ -29,9 +32,12 @@
                 <p class="mdl-cell mdl-cell--3-col">Wiedergabe von Line-In:</p>
                 <md-input-container class="mdl-cell--3-col md-no-underline">
                     <md-select ng-model="selectedLineIn" placeholder="Input auswahlen...">
-                        <md-option ng-if="opt.id==1" ng-value="opt.id" ng-repeat="opt in devices">Onboard-Soundkarte</md-option>
-                        <md-option ng-if="opt.id!=1" ng-value="opt.id" ng-repeat="opt in devices">InnoAmp {{opt.id-1}}</md-option>
-
+                        <?php
+                        if($tinkerboard){
+                            echo "<md-option ng-if=\"opt.id!=1\" ng-value=\"opt.id\" ng-repeat=\"opt in devices\">InnoAmp {{formatId(opt.id-1)}}</md-option>";
+                        } else{
+                            echo "<md-option ng-value=\"opt.id\" ng-repeat=\"opt in devices\">InnoAmp {{formatId(opt.id-1)}}</md-option>";
+                        }?>
                     </md-select>
                 </md-input-container>
             </div>
@@ -48,7 +54,7 @@
     <div ng-if="selectedDevice" class="mdl-card__actions mdl-card--border">
 
         <div ng-if="selectedDevice.lineinStatus">
-            Status: Play von Usb-Gerät {{selectedDevice.lineinStatus}}
+            Status: Play von InnoAmp {{selectedDevice.lineinStatus}}
         </div>
         <div ng-if="!selectedDevice.lineinStatus">
             Status: Stop
