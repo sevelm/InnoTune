@@ -34,7 +34,7 @@ else
    /etc/init.d/logitechmediaserver stop & update-rc.d logitechmediaserver remove
 fi
 
-for i in $(seq -f "%02g" 1 2)
+for i in $(seq -f "%02g" 1 10)
 do
 	PORT_BASE=$((5000+10*${i#0}))
 #	echo $i
