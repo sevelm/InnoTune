@@ -37,7 +37,7 @@
         </button>
         <b>Kopieren</b>
     </div>
-    <div class="mdl-card__menu" ng-if="rssvoice.key">
+    <div class="mdl-card__menu mdl-cell--hide-phone" ng-if="rssvoice.key">
         VoiceRss-Key: <b>{{rssvoice.key}}</b><br>
         <a href ng-click="saveRssVoiceKey('none')">Ändern?</a>
     </div>

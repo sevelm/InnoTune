@@ -339,64 +339,64 @@ elseif ($array_usb10_mode[0]==4) {
 // USB-Gerät gefunden/nicht gefunden
 $array_dev_ready;
 if     ($array_usb_dev[0]==0) {
-	$array_dev_ready[0] = "src='/images/ring_close_red.png'";
+	$array_dev_ready[0] = "src='images/ring_close_red.png'";
 }
 elseif ($array_usb_dev[0]==1) {
-	$array_dev_ready[0] = "src='/images/hack_green.png'";
+	$array_dev_ready[0] = "src='images/hack_green.png'";
 } 
 if     ($array_usb_dev[1]==0) {
-	$array_dev_ready[1] = "src='/images/ring_close_red.png'";
+	$array_dev_ready[1] = "src='images/ring_close_red.png'";
 }
 elseif ($array_usb_dev[1]==1) {
-	$array_dev_ready[1] = "src='/images/hack_green.png'";
+	$array_dev_ready[1] = "src='images/hack_green.png'";
 } 
 if     ($array_usb_dev[2]==0) {
-	$array_dev_ready[2] = "src='/images/ring_close_red.png'";
+	$array_dev_ready[2] = "src='images/ring_close_red.png'";
 }
 elseif ($array_usb_dev[2]==1) {
-	$array_dev_ready[2] = "src='/images/hack_green.png'";
+	$array_dev_ready[2] = "src='images/hack_green.png'";
 } 
 if     ($array_usb_dev[3]==0) {
-	$array_dev_ready[3] = "src='/images/ring_close_red.png'";
+	$array_dev_ready[3] = "src='images/ring_close_red.png'";
 }
 elseif ($array_usb_dev[3]==1) {
-	$array_dev_ready[3] = "src='/images/hack_green.png'";
+	$array_dev_ready[3] = "src='images/hack_green.png'";
 } 
 if     ($array_usb_dev[4]==0) {
-	$array_dev_ready[4] = "src='/images/ring_close_red.png'";
+	$array_dev_ready[4] = "src='images/ring_close_red.png'";
 }
 elseif ($array_usb_dev[4]==1) {
-	$array_dev_ready[4] = "src='/images/hack_green.png'";
+	$array_dev_ready[4] = "src='images/hack_green.png'";
 } 
 if     ($array_usb_dev[5]==0) {
-	$array_dev_ready[5] = "src='/images/ring_close_red.png'";
+	$array_dev_ready[5] = "src='images/ring_close_red.png'";
 }
 elseif ($array_usb_dev[5]==1) {
-	$array_dev_ready[5] = "src='/images/hack_green.png'";
+	$array_dev_ready[5] = "src='images/hack_green.png'";
 } 
 if     ($array_usb_dev[6]==0) {
-	$array_dev_ready[6] = "src='/images/ring_close_red.png'";
+	$array_dev_ready[6] = "src='images/ring_close_red.png'";
 }
 elseif ($array_usb_dev[6]==1) {
-	$array_dev_ready[6] = "src='/images/hack_green.png'";
+	$array_dev_ready[6] = "src='images/hack_green.png'";
 } 
 if     ($array_usb_dev[7]==0) {
-	$array_dev_ready[7] = "src='/images/ring_close_red.png'";
+	$array_dev_ready[7] = "src='images/ring_close_red.png'";
 }
 elseif ($array_usb_dev[7]==1) {
-	$array_dev_ready[7] = "src='/images/hack_green.png'";
+	$array_dev_ready[7] = "src='images/hack_green.png'";
 } 
 if     ($array_usb_dev[8]==0) {
-	$array_dev_ready[8] = "src='/images/ring_close_red.png'";
+	$array_dev_ready[8] = "src='images/ring_close_red.png'";
 }
 elseif ($array_usb_dev[8]==1) {
-	$array_dev_ready[8] = "src='/images/hack_green.png'";
+	$array_dev_ready[8] = "src='images/hack_green.png'";
 } 
 if     ($array_usb_dev[9]==0) {
-	$array_dev_ready[9] = "src='/images/ring_close_red.png'";
+	$array_dev_ready[9] = "src='images/ring_close_red.png'";
 }
 elseif ($array_usb_dev[9]==1) {
-	$array_dev_ready[9] = "src='/images/hack_green.png'";
+	$array_dev_ready[9] = "src='images/hack_green.png'";
 } 
 
 

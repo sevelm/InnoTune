@@ -99,6 +99,28 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         }
     };
 
+    // Section USB-Mount
+    $scope.onChangeUsbMount = function () {
+        $scope.usbmount = $scope.usbmount == 1 ? 0 : 1;
+
+        if ($scope.usbmount == 1) {
+            $http.get('subpages/settings.php?start_usbmount');
+        } else {
+            $http.get('subpages/settings.php?stop_usbmount');
+        }
+    };
+
+    $scope.showUSBSwitch = function () {
+        $http.get('api/helper.php?get_usbmount')
+            .success(function (data) {
+                if (data == 1) {
+                    $scope.usbmount = 1;
+                } else {
+                    $scope.usbmount = 0;
+                }
+            });
+    };
+
     $scope.setNetworkSettings = function () {
         //noinspection JSUnresolvedFunction,JSValidateTypes
         var confirm = $mdDialog.confirm()
@@ -117,6 +139,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                 '&dns1=' + $scope.network.dns1 +
                 '&dns2=' + $scope.network.dns2)
                 .success(function (data) {
+                    console.log("weiterleiten!");
                     location.href = "scripts/reboot.php?ip=" + $scope.network.ip + "&dhcp=" + $scope.network.dhcp;
                 });
 
@@ -561,6 +584,10 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                         $betrieb = "deaktiviert";
                                         $scope.devicestmp.push({id: tmp_id, betrieb: $betrieb, vol: {}});
                                     }
+
+                                    $scope.devicestmp.sort(function(a, b) {
+                                        return a.id > b.id;
+                                    });
 
                                     if ($scope.devicestmp !== $scope.devices) {
                                         $scope.devices = $scope.devicestmp;

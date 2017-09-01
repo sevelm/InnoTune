@@ -442,4 +442,8 @@ if (isset($_GET['update']))
     exec("sudo /var/www/sudoscript.sh update",$output,$return_var);
 }
 
+if (isset($_GET['get_usbmount'])) {
+    echo shell_exec("grep --only-matching --perl-regex \"(?<=ENABLED\=).*\" /etc/usbmount/usbmount.conf");
+}
+
 ?>

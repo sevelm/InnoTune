@@ -128,7 +128,7 @@ include "navigation.php";
       <td class="mainbg" valign="top"><div id="maintext"><h1>Einstellungen Allgemein</h1>
       <h3>Player Zentral (MPD)</h3>
         <p1>Wird auf allen angeschlossenen AMP´s ausgegeben. Anwendung bsp.: Haustürgong, Zentralmeldung, ...</p1>
-        <iframe src="/phpMPD/index.php" width="100%" height=350" style="width:100%;height:500;" frameborder="0" scrolling="yes"></iframe>
+        <iframe src="../phpmpd/index.php" width="100%" height=350" style="width:100%;height:500;" frameborder="0" scrolling="yes"></iframe>
            <h5>Upload Soundfiles</h5><input readonly name="DEV" type="text" value="$DEVICE" size=22 style="border:#FFFFFF; color:#FFFFFF";" />
              <table align="center"> 
                          <form enctype="multipart/form-data" method="POST">

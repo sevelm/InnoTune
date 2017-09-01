@@ -34,6 +34,7 @@ case "$1" in
                /etc/init.d/lighttpd restart;;
      sendmail) /var/www/sendmail.sh "$2" "$3" > /var/www/return_values/sendmail.txt;;
      ttsvolplay) /var/www/src/ttsvolplay "$2";;
+     usbmount) sudo sed -i 's/^\(ENABLED\).*/\1'="$2"'/'  /etc/usbmount/usbmount.conf;;
     *) echo "ERROR: invalid parameter: $1 (for $0)"; exit 1 ;;
 esac
 

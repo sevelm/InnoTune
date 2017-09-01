@@ -96,7 +96,7 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
                 <i class="material-icons">more_vert</i>
             </button>
             <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="verticalmenu">
-                <a target="_blank" style="text-decoration: none" href="http://www.innotune.at/kontakt/" >
+                <a target="_blank" style="text-decoration: none" href="http://www.innotune.at/kontakt/">
                     <li class="mdl-menu__item">Kontakt</li>
                 </a>
                 <a target="_blank" style="text-decoration: none" href="http://www.innotune.at/">

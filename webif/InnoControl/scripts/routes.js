@@ -20,7 +20,7 @@ app.config(function ($routeProvider) {
                 return: function () {
                     resetColor();
                     document.getElementById("devicesanchor").style.backgroundColor = "#263238";
-                    document.getElementById("location").innerHTML = "Angeschlossene Geräte";
+                    document.getElementById("location").innerHTML = "Gerätekonfiguration";
                 }
             }
         })

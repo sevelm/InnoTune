@@ -5,7 +5,9 @@
  * Date: 11.08.2016
  * Time: 16:15
  */
-
+if (strpos(shell_exec("uname -r"), "rockchip")) {
+    $tinkerboard = true;
+}
 ?>
 <style>
     .modal {
@@ -49,7 +51,14 @@
 
 <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell--top mdl-cell mdl-cell--8-col">
     <div class="mdl-card__title">
-        <h2 class="mdl-card__title-text">Usb-Gerät {{selectedDevice.id}}</h2>
+        <?php if($tinkerboard){
+            echo "<h2 ng-if=\"selectedDevice.id==1\" class=\"mdl-card__title-text\">HDMI-Audio</h2>".
+                "<h2 ng-if=\"selectedDevice.id!=1&&selectedDevice!=null\" class=\"mdl-card__title-text\">InnoAmp {{formatId(selectedDevice.id-1)}}</h2>".
+            "<h2 ng-if=\"selectedDevice==null\" class=\"mdl-card__title-text\">Soundkarte auswählen..</h2>";
+        }else{
+            echo "<h2 class=\"mdl-card__title-text\" ng-if=\"selectedDevice!=null\">InnoAmp {{formatId(selectedDevice.id)}}</h2>".
+            "<h2 ng-if=\"selectedDevice==null\" class=\"mdl-card__title-text\">Soundkarte auswählen..</h2>";
+        }?>
     </div>
     <div class="mdl-card__supporting-text">
         <div ng-if="selectedDevice">

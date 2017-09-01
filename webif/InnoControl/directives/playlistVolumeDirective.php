@@ -9,10 +9,10 @@ if (strpos(shell_exec("uname -r"), "rockchip")) {
                         class="md-block playlstvol mdl-cell--12-col">
         <?php
         if($tinkerboard){
-            echo "<label id=\"dev0{{vol.id}}\" ng-if=\"vol.id!=0\">InnoAmp {{formatId(vol.id)}}:</label>
+            echo "<label id=\"dev0{{vol.id}}\" ng-if=\"vol.id!=0\">InnoAmp {{formatId(vol.id)}} ({{devices[vol.id].name}}):</label>
         <label id=\"dev0{{vol.id}}\" ng-if=\"vol.id==0\">HDMI-Audio:</label>";
         } else{
-            echo "<label id=\"dev0{{vol.id}}\">InnoAmp {{formatId(vol.id+1)}}:</label>";
+            echo "<label id=\"dev0{{vol.id}}\">InnoAmp {{formatId(vol.id+1)}} ({{devices[vol.id].name}}):</label>";
         }
         ?>
 
@@ -32,10 +32,10 @@ if (strpos(shell_exec("uname -r"), "rockchip")) {
                         class="md-block playlstvol mdl-cell--12-col">
         <?php
         if($tinkerboard){
-            echo "<label id=\"dev0{{vol.id}}\" ng-if=\"vol.id!=0\">InnoAmp {{formatId(vol.id)}}:</label>
+            echo "<label id=\"dev0{{vol.id}}\" ng-if=\"vol.id!=0\">InnoAmp {{formatId(vol.id)}} ({{devices[vol.id].name}}):</label>
         <label id=\"dev0{{vol.id}}\" ng-if=\"vol.id==0\">HDMI-Audio:</label>";
         } else{
-            echo "<label id=\"dev0{{vol.id}}\">InnoAmp {{formatId(vol.id+1)}}:</label>";
+            echo "<label id=\"dev0{{vol.id}}\">InnoAmp {{formatId(vol.id+1)}} ({{devices[vol.id].name}}):</label>";
         }
         ?>
         <input disabled aria-label="dev01" type="number" step="5"
@@ -48,10 +48,10 @@ if (strpos(shell_exec("uname -r"), "rockchip")) {
                         class="md-block playlstvol mdl-cell--6-col">
         <?php
         if($tinkerboard){
-            echo "<label id=\"dev0{{vol.id}}\" ng-if=\"vol.id!=0\">InnoAmp {{formatId(vol.id)}} Links:</label>
+            echo "<label id=\"dev0{{vol.id}}\" ng-if=\"vol.id!=0\">InnoAmp {{formatId(vol.id)}} ({{devices[vol.id].nameL}}):</label>
         <label id=\"dev0{{vol.id}}\" ng-if=\"vol.id==0\">HDMI-Audio Links:</label>";
         } else{
-            echo "<label id=\"dev0{{vol.id}}\">InnoAmp {{formatId(vol.id+1)}} Links:</label>";
+            echo "<label id=\"dev0{{vol.id}}\">InnoAmp {{formatId(vol.id+1)}} ({{devices[vol.id].nameL}}):</label>";
         }
         ?>
         <input aria-label="dev01" type="number" step="5"
@@ -62,10 +62,10 @@ if (strpos(shell_exec("uname -r"), "rockchip")) {
                         class="md-block playlstvol mdl-cell--6-col">
         <?php
         if($tinkerboard){
-            echo "<label id=\"dev0{{vol.id}}\" ng-if=\"vol.id!=0\">InnoAmp {{formatId(vol.id)}} Rechts:</label>
+            echo "<label id=\"dev0{{vol.id}}\" ng-if=\"vol.id!=0\">InnoAmp {{formatId(vol.id)}} ({{devices[vol.id].nameR}}):</label>
         <label id=\"dev0{{vol.id}}\" ng-if=\"vol.id==0\">HDMI-Audio Rechts:</label>";
         } else{
-            echo "<label id=\"dev0{{vol.id}}\">InnoAmp {{formatId(vol.id+1)}} Rechts:</label>";
+            echo "<label id=\"dev0{{vol.id}}\">InnoAmp {{formatId(vol.id+1)}} ({{devices[vol.id].nameR}}):</label>";
         }
         ?>
         <input aria-label="dev01" type="number" step="5"

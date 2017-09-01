@@ -42,7 +42,7 @@ fi
 
 
 #sudo service networking restart
-reboot
+#reboot
 #/etc/init.d/networking restart
 
 
