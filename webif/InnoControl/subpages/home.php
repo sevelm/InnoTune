@@ -10,6 +10,7 @@ if (strpos(shell_exec("uname -r"), "rockchip")) {
 }
 ?>
 
+<!--suppress CssUnknownTarget -->
 <style>
     .welcome-card-wide > .mdl-card__title {
         color: #fff;
@@ -169,7 +170,7 @@ if (strpos(shell_exec("uname -r"), "rockchip")) {
             <li ng-repeat="device in devices | orderBy : 'id'" class="mdl-list__item mdl-list__item--two-line">
                 <span class="mdl-list__item-primary-content">
                     <img ng-src="./images/{{device.betrieb}}.png" class="mdl-list__item-avatar"
-                         style="border-radius: 0px; background-color: transparent;">
+                         style="border-radius: 0; background-color: transparent;">
 
                     <?php if ($tinkerboard) {
                         echo "<span ng-if=\"device.id!=1\">InnoAmp {{formatId(device.id-1)}}</span>

@@ -7,7 +7,7 @@
 ##########################################################
 
 DHCP=$(grep dhcp /etc/network/interfaces | tr -s ' ' | cut -d ' ' -f4)
-if [ -z "$DHCP"];
+if [ -z "$DHCP" ];
 	then  $DHCP=false
 fi
 IP=$(ip route show | grep 'src' | grep 'eth0' | awk '{print $9}' | tail -n1)

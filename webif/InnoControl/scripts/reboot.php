@@ -41,7 +41,11 @@
 <script>
     function reboot() {
         if (getParameterByName("dhcp") == "dhcp") {
-            document.getElementById("text").innerHTML = "Der Server wurde auf DHCP umgestellt, siehe bei deinem Router nach welche neue IP-Adresse zugewiesen worden ist!"
+            document.getElementById("text").innerHTML = "Der Server wurde auf DHCP umgestellt, benutze den InnoTuneScanner um dein InnoTune System im Netzwerk zu finden! \n\n";
+            var node = document.createElement("a");
+            node.setAttribute('href',"http://www.innotune.at/web_2016/wp-content/uploads/www.innotune.at-innotunescanner.zip");
+            node.innerHTML = "InnoTuneScanner";
+            document.getElementById("text").appendChild(node);
             document.getElementById("spinner").style.visibility = "hidden";
 
             var xhr = new XMLHttpRequest();

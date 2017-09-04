@@ -12,7 +12,7 @@ if (strpos(shell_exec("uname -r"), "rockchip")) {
 
 <md-list flex="" ng-init="getDevices()">
     <md-list-item ng-repeat="device in devices | orderBy : 'id'" class="md-2-line" ng-click="selectDevice(device.id)">
-        <img ng-src="./images/{{device.betrieb}}.png" class="md-avatar" style="border-radius: 0px;">
+        <img ng-src="./images/{{device.betrieb}}.png" class="md-avatar" style="border-radius: 0;">
         <div class="md-list-item-text">
             <?php
             if($tinkerboard) {

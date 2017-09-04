@@ -138,7 +138,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                 '&gate=' + $scope.network.gate +
                 '&dns1=' + $scope.network.dns1 +
                 '&dns2=' + $scope.network.dns2)
-                .success(function (data) {
+                .success(function () {
                     console.log("weiterleiten!");
                     location.href = "scripts/reboot.php?ip=" + $scope.network.ip + "&dhcp=" + $scope.network.dhcp;
                 });
@@ -323,8 +323,8 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.setWebinterfaceSettings = function () {
         $http.get('api/helper.php?web_settings_set&password=' + $scope.settings.password + '&port=' + $scope.settings.port);
         $http.post('index.php')
-            .success(function (data) {
-                location.href = "/InnoControl/login.php";
+            .success(function () {
+                location.href = "/login.php";
             });
     };
 
@@ -398,7 +398,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         $http.get('api/helper.php?saveplaylist' +
             '&ID=' + (id + 1) +
             '&VOL_BACKGROUND=' + $scope.playlists[id].vol_background + volStr)
-            .success(function (data) {
+            .success(function () {
                 $scope.makeToast("Erfolgreich gespeichert!");
                 //location.reload();
             });

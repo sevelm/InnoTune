@@ -9,6 +9,7 @@ if (strpos(shell_exec("uname -r"), "rockchip")) {
     $tinkerboard = true;
 }
 ?>
+<!--suppress CssUnusedSymbol -->
 <style>
     .modal {
         position: fixed;
