@@ -24,6 +24,7 @@ killall squeezelite-armv6hf
 killall squeezeboxserver
 killall mpd
 killall aplay
+killall librespot
 
 ###Logitech Media Server
 LMS=$(cat /opt/innotune/settings/logitechmediaserver.txt | head -n1 | tail -n1)
@@ -51,8 +52,16 @@ do
 	AP=$(cat /opt/innotune/settings/settings_player/dev"$i".txt | head -n8  | tail -n1)
 	APli=$(cat /opt/innotune/settings/settings_player/dev"$i".txt | head -n9  | tail -n1)
 	APre=$(cat /opt/innotune/settings/settings_player/dev"$i".txt | head -n10 | tail -n1)
+    SP=$(cat /opt/innotune/settings/settings_player/dev"$i".txt | head -n11  | tail -n1)
+	SPli=$(cat /opt/innotune/settings/settings_player/dev"$i".txt | head -n12  | tail -n1)
+	SPre=$(cat /opt/innotune/settings/settings_player/dev"$i".txt | head -n13 | tail -n1)
+
+echo "SP $SP"
+echo "SPli $SPli"
+echo "SPre $SPre"
 
 	if [[ $PLAYER ]] || [[ $PLAYERli"$i" ]] || [[ $PLAYERre"$i" ]]; then               ###Aktivate Player on USB device "$i"
+########### Start Airplay
 		if [[ $AP ]]; then           ###Aktivate Player on USB device "$i" - AirPlay
               /usr/local/bin/shairport -w -p $(($PORT_BASE+1)) -a "$PLAYER" --on-start "echo 1 > /opt/innotune/settings/status_shairplay/status_shairplay"$i".txt" --on-stop "echo 0 > /opt/innotune/settings/status_shairplay/status_shairplay"$i".txt" -o alsa -- -d airplay"$i" > /dev/null 2>&1 & echo $!
 		fi
@@ -62,6 +71,7 @@ do
 		if [[ $APre ]]; then         ###Aktivate Player right on USB device "$i" - AirPlay
               /usr/local/bin/shairport -w -p $(($PORT_BASE+3)) -a "$PLAYERre" --on-start "echo 1 > /opt/innotune/settings/status_shairplay/status_shairplayre"$i".txt" --on-stop "echo 0 > /opt/innotune/settings/status_shairplay/status_shairplayre"$i".txt" -o alsa -- -d airplayre"$i" > /dev/null 2>&1 & echo $!
 		fi
+########### Start Squeezelite
 		if [[ $SQMAC ]]; then       ###Aktivate Player on USB device "$i" - Squeezbox
               /usr/bin/squeezelite-armv6hf -c flac,pcm,mp3,ogg,aac -b 2048:4096 -a 60:16::0 -r 44100,44100   -p 97 -o plug:squeeze"$i" -n "$PLAYER" -m "$SQMAC" -z  > /dev/null 2>&1 & echo $!
 	#alt:  /usr/bin/squeezelite-armv6hf -n $PLAYER -o squeeze"$i" -d all=debug -a 4096:1024:16:0 -r 44100 -m $SQMAC > /dev/null 2>&1 & echo $!
@@ -73,6 +83,16 @@ do
 		if [[ $SQreMAC ]]; then     ###Aktivate Player on USB device "$i" right - Squeezbox
               /usr/bin/squeezelite-armv6hf -c flac,pcm,mp3,ogg,aac -b 2048:4096 -a 60:16::0 -r 44100 -p 97 -o plug:squeezere"$i" -n "$PLAYERre" -m "$SQreMAC" -z > /dev/null 2>&1 & echo $!
 	#alt:	/usr/bin/squeezelite-armv6hf -n $PLAYERre -o squeezere"$i" -d all=debug -a 4096:1024:16:0 -r 44100 -m $SQreMAC > /dev/null 2>&1 & echo $!
+		fi
+########### Start Spotify Connect
+		if [[ $SP ]]; then           ###Aktivate Player on USB device "$i" - AirPlay
+            	sudo /root/librespot --name $PLAYER --cache /tmp --bitrate 320 --backend alsa --device airplay$i --onstart "./var/www/spotifyconnect.sh $i 1" --onstop "./var/www/spotifyconnect.sh $i 0" > /dev/null 2>&1 & echo $!
+                fi
+		if [[ $SPli ]]; then         ###Aktivate Player left on USB device "$i" - AirPlay
+            	sudo /root/librespot --name $PLAYERli --cache /tmp --bitrate 320 --backend alsa --device airplayli$i --onstart "./var/www/spotifyconnect.sh $i 1 li" --onstop "./var/www/spotifyconnect.sh $i 0 li" > /dev/null 2>&1 & echo $!
+		fi
+		if [[ $SPre ]]; then         ###Aktivate Player right on USB device "$i" - AirPlay
+            	sudo /root/librespot --name $PLAYERre --cache /tmp --bitrate 320 --backend alsa --device airplayre$i --onstart "./var/www/spotifyconnect.sh $i 1 re" --onstop "./var/www/spotifyconnect.sh $i 0 re" > /dev/null 2>&1 & echo $!
 		fi
 		echo 0 > /opt/innotune/settings/status_shairplay/status_shairplay"$i".txt           ### Airplay ablöschen
 		echo 0 > /opt/innotune/settings/status_shairplay/status_shairplayli"$i".txt         ### Airplay ablöschen
@@ -101,7 +121,7 @@ do
     #          aplay -B 1 -D plug:LineIn_"$i" > /dev/null 2>&1 & echo $!                     ### Softvol-Regler erstellen
      #         aplay -B 1 -D plug:LineInli_"$i" > /dev/null 2>&1 & echo $!                   ### Softvol-Regler erstellen
       #        aplay -B 1 -D plug:LineInre_"$i" > /dev/null 2>&1 & echo $!                   ### Softvol-Regler erstellen
-              killall aplay
+                 killall aplay
 	fi
 done
 

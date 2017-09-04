@@ -52,6 +52,10 @@ cd /opt/shairport
 sudo ./configure
 sudo make install
 
+# Spotify Connect
+cd root/
+wget https://github.com/herrernst/librespot/releases/download/v20170717-910974e/librespot-linux-armhf-raspberry_pi.zip
+unzip librespot-linux-armhf-raspberry_pi.zip -d .
 
 
 # Add Crontabs

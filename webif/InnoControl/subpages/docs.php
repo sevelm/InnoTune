@@ -34,12 +34,12 @@ $version_local = file($datei); // Datei in ein Array einlesen
     <div class="mdl-card__supporting-text">
         <div class="mdl-grid">
             <h5 class="mdl-cell mdl-cell--5-col">Loxone Musterprojekt Downloaden</h5>
-            <a style="border-radius: 0%;" href="./scripts/download.php?file=loxone"
+            <a style="border-radius: 0%;" href="/scripts/download.php?file=loxone"
                class="mdl-button mdl-button--primary mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-cell mdl-cell--2-col">Download</a>
         </div>
         <div class="mdl-grid">
             <h5 class="mdl-cell mdl-cell--5-col">Virtuelle Ausgänge</h5>
-            <a style="border-radius: 0%;" href="./scripts/download.php?file=virtuelle_ausgaenge"
+            <a style="border-radius: 0%;" href="/scripts/download.php?file=virtuelle_ausgaenge"
                class="mdl-button mdl-button--primary mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-cell mdl-cell--2-col">Download</a>
         </div>
     </div>
@@ -85,7 +85,7 @@ $version_local = file($datei); // Datei in ein Array einlesen
         <br>
     </div>
     <div class="mdl-card__actions mdl-card--border">
-        <a href="./scripts/download.php?file=settings"
+        <a href="/scripts/download.php?file=settings"
            class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
             Sichern
         </a>
