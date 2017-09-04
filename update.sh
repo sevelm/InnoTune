@@ -26,6 +26,9 @@ sed -e '/mod_auth/ s/^#*/#/' -i /etc/lighttpd/lighttpd.conf
 # USB-Mount:
 sudo apt-get -y install usbmount
 
+# Zip
+sudo apt-get -y install zip
+
 ############Section: Fixes############
 
 # PHP File Upload Fix 24.08.2017
