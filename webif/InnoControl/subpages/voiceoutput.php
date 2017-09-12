@@ -18,7 +18,7 @@
     </div>
     <div class="mdl-card__supporting-text" ng-if="rssvoice.key">
         <p>Bis zu 350 Aufrufe pro Tag mit einem Key möglich. Falls mehr benötigt werden rechts ändern drücken! </p><br>
-
+        <br>
         <h5>Beispiel Loxone Virtueller Ausgang:</h5>
         <br>
         <md-input-container class="md-block mdl-cell">

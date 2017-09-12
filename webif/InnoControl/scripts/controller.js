@@ -16,6 +16,11 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.devicestmp = [];
     $scope.uploadfile = undefined;
     $scope.sysinfo = {};
+    $scope.networkmount = {};
+    $scope.resetcb = {
+        usb:false,
+        network:false
+    };
 
 
     $scope.formatId = function (id) {
@@ -139,7 +144,6 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                 '&dns1=' + $scope.network.dns1 +
                 '&dns2=' + $scope.network.dns2)
                 .success(function () {
-                    console.log("weiterleiten!");
                     location.href = "scripts/reboot.php?ip=" + $scope.network.ip + "&dhcp=" + $scope.network.dhcp;
                 });
 
@@ -750,6 +754,67 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             $http.get('api/helper.php?update').success(function () {
                 location.href = "/scripts/reboot.php?update=true"
             });
+        });
+    };
+
+    $scope.saveNetworkMount = function () {
+        if($scope.options == undefined){
+            $scope.options = "";
+        }
+        $http.get('api/helper.php?savenetworkmount' +
+            '&path='+$scope.networkmount.path +
+            '&mountpoint='+$scope.networkmount.mountpoint +
+            '&type='+$scope.networkmount.type +
+            '&options='+$scope.networkmount.options)
+            .success(function () {
+                console.log('api/helper.php?savenetworkmount' +
+                    '&path='+$scope.networkmount.path +
+                    '&mountpoint='+$scope.networkmount.mountpoint +
+                    '&type='+$scope.networkmount.type +
+                    '&options='+$scope.networkmount.options);
+        });
+    };
+
+    $scope.getNetworkMount = function () {
+        $http.get('api/helper.php?getnetworkmount')
+            .success(function (data) {
+                $scope.networkmount.list = data;
+            });
+
+    };
+
+
+    $scope.reset = function () {
+        //noinspection JSUnresolvedFunction,JSValidateTypes
+        var confirm = $mdDialog.confirm()
+            .title('Bist du sicher?')
+            .textContent('Die Konfiguration wird zurückgesetzt.')
+            .ariaLabel('Der Server ist die Zeit nicht erreichbar!')
+            .targetEvent(event)
+            .ok('Ok')
+            .cancel('Abbrechen');
+        $mdDialog.show(confirm).then(function () {
+            var resetstr = "";
+
+
+            if($scope.resetcb.network == true){
+                resetstr += "&network";
+            }
+            if($scope.resetcb.usb == true){
+                resetstr += "&usb";
+            }
+            $http.get('api/helper.php?reset'+resetstr)
+                .success(function (data) {
+
+                    if(data.includes("network")){
+                        location.href = "scripts/reboot.php?dhcp=dhcp";
+                    }else {
+                        location.href = "scripts/reboot.php";
+                    }
+                });
+
+        }, function () {
+
         });
     };
 

@@ -137,6 +137,9 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
             <a id="voiceoutputanchor" name="routeanchors" class="mdl-navigation__link" href="#voiceoutput"><i
                         class="mdl-color-text--blue-grey-400 material-icons"
                         role="presentation">record_voice_over</i>Sprachausgabe</a>
+            <a id="storageanchor" name="routeanchors" class="mdl-navigation__link" href="#storage"><i
+                        class="mdl-color-text--blue-grey-400 material-icons"
+                        role="presentation">sd_storage</i>Speichergeräte</a>
             <a id="docsanchor" name="routeanchors" class="mdl-navigation__link" href="#docs"><i
                         class="mdl-color-text--blue-grey-400 material-icons"
                         role="presentation">system_update_alt</i>Dokumente</a>

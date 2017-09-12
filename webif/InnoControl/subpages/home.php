@@ -20,8 +20,7 @@ if (strpos(shell_exec("uname -r"), "rockchip")) {
 
 </style>
 
-<div ng-init="getDevices()"
-     class="welcome-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--hide-phone">
+<div class="welcome-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--hide-phone">
     <div class="mdl-card__title">
         <h2 class="mdl-card__title-text">Welcome</h2>
     </div>

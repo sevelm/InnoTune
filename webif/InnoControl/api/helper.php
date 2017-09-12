@@ -442,8 +442,32 @@ if (isset($_GET['update']))
     exec("sudo /var/www/sudoscript.sh update",$output,$return_var);
 }
 
+if (isset($_GET['reset']))
+{
+    if(isset($_GET["network"])){
+        echo shell_exec("sudo /var/www/sudoscript.sh reset net");
+    }
+    if(isset($_GET["usb"])){
+        echo shell_exec("sudo /var/www/sudoscript.sh reset usb");
+    }
+}
+
 if (isset($_GET['get_usbmount'])) {
     echo shell_exec("grep --only-matching --perl-regex \"(?<=ENABLED\=).*\" /etc/usbmount/usbmount.conf");
 }
 
+if(isset($_GET['savenetworkmount'])){
+    $PATH = ($_GET["path"]);
+    $MOUNTPOINT = ($_GET["mountpoint"]);
+    $TYPE = ($_GET["type"]);
+    $OPTIONS = ($_GET["options"]);
+
+    echo $mount = trim($PATH) . " " . trim($MOUNTPOINT) . " " . trim($TYPE) . " " . $OPTIONS . " 0 0";
+
+    shell_exec("sudo /var/www/sudoscript.sh networkmount \"$mount\" $MOUNTPOINT");
+}
+
+if(isset($_GET['getnetworkmount'])){
+    echo file_get_contents("/etc/fstab");
+}
 ?>

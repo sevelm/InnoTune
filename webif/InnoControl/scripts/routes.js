@@ -84,6 +84,16 @@ app.config(function ($routeProvider) {
                 }
             }
         })
+        .when("/storage", {
+            templateUrl: "subpages/storage.php",
+            resolve: {
+                return: function () {
+                    resetColor();
+                    document.getElementById("storageanchor").style.backgroundColor = "#263238";
+                    document.getElementById("location").innerHTML = "USB-Mount";
+                }
+            }
+        })
         .otherwise({
             templateUrl: "subpages/home.php",
             resolve: {

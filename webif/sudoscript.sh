@@ -35,6 +35,8 @@ case "$1" in
      sendmail) /var/www/sendmail.sh "$2" "$3" > /var/www/return_values/sendmail.txt;;
      ttsvolplay) /var/www/src/ttsvolplay "$2";;
      usbmount) sudo sed -i 's/^\(ENABLED\).*/\1'="$2"'/'  /etc/usbmount/usbmount.conf;;
+     reset) OUTPUT="$(/var/www/reset.sh "$2")"
+            echo "${OUTPUT}";;
     *) echo "ERROR: invalid parameter: $1 (for $0)"; exit 1 ;;
 esac
 

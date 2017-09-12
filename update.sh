@@ -8,6 +8,8 @@
 
 ############Section: Update############
 
+sudo apt-get update
+
 # Settings Ordner
 cp -R /opt/innotune/update/cache/InnoTune/settings/* -n /opt/innotune/settings
 sudo chmod -R 777 /opt/innotune/settings
@@ -28,6 +30,9 @@ sudo apt-get -y install usbmount
 
 # Zip
 sudo apt-get -y install zip
+
+# Cifs
+#sudo apt-get -y install cifs-utils
 
 ############Section: Fixes############
 
