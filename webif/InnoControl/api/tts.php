@@ -25,18 +25,18 @@ if (empty($pids)) {
     $words = rawurldecode($_GET['text']);
     echo "Text to Speech Input: <b>" . $words . "</b><br>";
 
-
+    //Umlaute konvertieren
     $umlaute = Array("/ä/","/ö/","/ü/","/Ä/","/Ö/","/Ü/","/ß/");
     $replace = Array("ae","oe","ue","Ae","Oe","Ue","ss");
     $words_neu = preg_replace($umlaute, $replace, $words);
 
-    $encodedwords = rawurlencode($words);
     // Parameter VoiceRSS
-    $inlay = "key=$key&hl=$lang&src=$words&f=$q"; // Variablen Key, Sprache, Text und Qualität definieren
+    $encodedwords = urlencode($words);
+    $inlay = "key=$key&hl=$lang&src=$encodedwords&f=$q"; // Variablen Key, Sprache, Text und Qualität definieren
     echo "Parameter VoiceRSS: <b>" . $inlay . "</b><br>";
 
     // Speicherort der MP3 Datei
-    $file = "/media/Soundfiles/tts/" . str_replace("+", "_", $words_neu) . ".mp3";
+    $file = "/media/Soundfiles/tts/" . str_replace(" ", "_", $words_neu) . ".mp3";
     $file = str_replace("ä", "ae", $file);
 
     // Prüfen ob die MP3 Datei bereits vorhanden ist
@@ -45,13 +45,13 @@ if (empty($pids)) {
         file_put_contents($file, $mp3);
     }
 
-    echo "Script Aufruf: /var/www/src/ttsvolplay " . str_replace("+", "_", $words_neu);
+    echo "Script Aufruf: /var/www/src/ttsvolplay " . str_replace(" ", "_", $words_neu);
     echo "<br>Speicherort: " . $file;
 
     //Update MPD Library
     shell_exec("mpc update");
     //Execute ttsvolplay
-    shell_exec("sudo /var/www/sudoscript.sh ttsvolplay " . str_replace("+", "_", $words_neu));
+    shell_exec("sudo /var/www/sudoscript.sh ttsvolplay " . str_replace(" ", "_", $words_neu));
 } else {
     echo "Fehler!";
 }

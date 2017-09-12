@@ -134,7 +134,7 @@ if (isset($_GET['stop_usbmount'])) {
                 <h5>Auf Werkseinstellungen zurücksetzen</h5>
             </center>
             <br>
-            <b>Bereiche zum zurücksetzen wählen:</b>
+            <b>Bereiche zum Zurücksetzen wählen:</b>
 
             <br>
             <div class="mdl-grid">
