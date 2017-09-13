@@ -174,8 +174,8 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
 <script src="js/angular-messages.min.js"></script>
 <script src="js/angular-material.min.js"></script>
 <!-- Eigene Scripts-->
-<script src="scripts/app.js"></script>
-<script src="scripts/controller.js"></script>
-<script src="scripts/routes.js"></script>
+<script src="scripts/app.js?version=1.0.1"></script>
+<script src="scripts/controller.js?version=1.0.1"></script>
+<script src="scripts/routes.js?version=1.0.1"></script>
 </body>
 </html>

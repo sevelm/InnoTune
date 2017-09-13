@@ -43,6 +43,11 @@ $version_local = file($datei); // Datei in ein Array einlesen
             <a style="border-radius: 0;" href="/scripts/download.php?file=virtuelle_ausgaenge"
                class="mdl-button mdl-button--primary mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-cell mdl-cell--2-col">Download</a>
         </div>
+        <div class="mdl-grid">
+            <h5 class="mdl-cell mdl-cell--5-col">InnoTune-Loxone Integrator</h5>
+            <a style="border-radius: 0;" href="http://www.innotune.at/download"
+               class="mdl-button mdl-button--primary mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-cell mdl-cell--2-col">Download</a>
+        </div>
     </div>
 </div>
 

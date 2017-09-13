@@ -9,11 +9,11 @@
 $file = $_GET['file'];
 
 if (strcmp($file, "loxone") == 0) {
-    $file = 'InnoTune.Loxone';
+    $file = '/var/www/InnoControl/download/InnoTune.Loxone';
     header('Content-Type: application/loxone');
 }
 if ($file=="virtuelle_ausgaenge") {
-    $file = 'Vorlage_Virtuelle_Ausgaenge.zip';
+    $file = '/var/www/InnoControl/download/innotune_vorlage_virtuelle_ausgaenge.zip';
     header('Content-Type: application/zip');
 }
 if($file=="settings"){
