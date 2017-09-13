@@ -1,5 +1,5 @@
 ﻿# InnoTune
-Update Repository for InnoTune.at
+Update Repository for InnoTune
 
 ![InnoTune Logo](/webif/InnoControl/images/cover.png)
 
