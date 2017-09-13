@@ -71,7 +71,7 @@ grep -q -F "*/15 * * * * /var/www/playercheck.sh" /var/spool/cron/crontabs/root 
 grep -q -F "3 3 * * * sudo shutdown -r now" /var/spool/cron/crontabs/root || echo "3 3 * * * sudo shutdown -r now" >> /var/spool/cron/crontabs/root
 
 # Overwrite current Version number with new
-cat version.txt > /var/www/version.txt
+sudo cat version.txt > /var/www/version.txt
 
 sudo /var/www/create_asound.sh
 sudo apt-get -y install mpc
