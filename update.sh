@@ -61,7 +61,7 @@ sudo ./configure
 sudo make install
 
 # Spotify Connect
-cd root/
+cd /root
 wget https://github.com/herrernst/librespot/releases/download/v20170717-910974e/librespot-linux-armhf-raspberry_pi.zip
 unzip librespot-linux-armhf-raspberry_pi.zip -d .
 
@@ -71,6 +71,7 @@ grep -q -F "*/15 * * * * /var/www/playercheck.sh" /var/spool/cron/crontabs/root 
 grep -q -F "3 3 * * * sudo shutdown -r now" /var/spool/cron/crontabs/root || echo "3 3 * * * sudo shutdown -r now" >> /var/spool/cron/crontabs/root
 
 # Overwrite current Version number with new
+cd /opt/innotune/update/cache
 sudo cat InnoTune/version.txt > /var/www/version.txt
 
 sudo /var/www/create_asound.sh
