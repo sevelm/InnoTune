@@ -31,6 +31,9 @@ sudo apt-get -y install usbmount
 # Zip
 sudo apt-get -y install zip
 
+#MPC (for tts update)
+sudo apt-get -y install mpc
+
 # Cifs
 #sudo apt-get -y install cifs-utils
 

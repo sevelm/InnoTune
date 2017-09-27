@@ -20,4 +20,13 @@ then
     OUTPUT="usb";
 fi
 
+if [ "$1" = "playlists" ]
+then
+    echo "Alarm\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0" > /opt/innotune/settings/mpdvolplay.txt
+    echo "Gong\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0" >> /opt/innotune/settings/mpdvolplay.txt
+    echo "Gong2\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0" >> /opt/innotune/settings/mpdvolplay.txt
+    echo "Vorwarnung\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0\n0" >> /opt/innotune/settings/mpdvolplay.txt
+
+fi
+
 echo "${OUTPUT}";
