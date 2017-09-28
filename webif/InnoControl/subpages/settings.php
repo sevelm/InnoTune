@@ -149,9 +149,15 @@ if (isset($_GET['stop_usbmount'])) {
                 </md-switch>
                 <div class="mdl-layout-spacer"></div>
             </div>
+            <div class="mdl-grid">
+                <label class="mdl-cell mdl-cell--5-col">Playlists</label>
+                <md-switch class="mdl-cell" ng-model="resetcb.playlists" aria-label="Switch 1">
+                </md-switch>
+                <div class="mdl-layout-spacer"></div>
+            </div>
         </div>
         <div class="mdl-card__actions mdl-card--border">
-            <button ng-click="reset()" ng-disabled="resetcb.network==false && resetcb.usb==false" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+            <button ng-click="reset()" ng-disabled="resetcb.network==false && resetcb.usb==false && resetcb.playlists==false" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
                 Zurücksetzen
             </button>
         </div>
