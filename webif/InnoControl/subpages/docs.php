@@ -57,12 +57,28 @@ $version_local = file($datei); // Datei in ein Array einlesen
     </div>
     <div class="mdl-card__supporting-text">
         <div class="mdl-grid">
-            <h5 class="mdl-cell mdl-cell--5-col">Aktuelle Version</h5>
-            <p><?php echo $version_local[0]; ?></p>
-        </div>
-        <div class="mdl-grid">
-            <h5 class="mdl-cell mdl-cell--5-col">Verfügbare Version</h5>
-            <p><?php echo $version_server[0]; ?></p>
+            <div class="mdl-cell mdl-cell--6-col">
+                <br>
+                <div class="mdl-grid">
+                    <h5 class="mdl-cell mdl-cell--7-col">Aktuelle Version</h5>
+                    <p><?php echo $version_local[0]; ?></p>
+                </div>
+                <div class="mdl-grid">
+                    <br>
+                </div>
+                <div class="mdl-grid">
+                    <h5 class="mdl-cell mdl-cell--7-col">Verfügbare Version</h5>
+                    <p><?php echo $version_server[0]; ?></p>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--6-col">
+                <h5 style="margin-top: 0">Changelog:</h5>
+                <ul>
+                <?php
+                    echo shell_exec("cd /opt/innotune/update/cache/InnoTune ; git log --date=short --pretty=format:'<li> <a href=\"http://github.com/JHoerbst/InnoTune/commit/%H\"> view commit &bull;</a> %x09%ad: %s</li> ' | head -n 5");
+                ?>
+                </ul>
+            </div>
         </div>
     </div>
     <?php
