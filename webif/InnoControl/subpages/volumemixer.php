@@ -143,6 +143,7 @@ if (strpos(shell_exec("uname -r"), "rockchip")) {
         <button ng-if="selectedDevice" ng-click="muteAmp(selectedDevice.id)"
                 class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
             <i class="material-icons">volume_off</i>
+            <md-tooltip md-direction="bottom">Mute</md-tooltip>
         </button>
     </div>
 </div>

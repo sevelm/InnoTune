@@ -29,6 +29,7 @@ if (strpos(shell_exec("uname -r"), "rockchip")) {
            href="https://twitter.com/home?status=%23innotune%20The%20best%20source%20for%20Multiroom%20audio!"
            class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
             <i class="material-icons">share</i>
+            <md-tooltip md-direction="bottom">Teilen</md-tooltip>
         </a>
     </div>
 </div>
@@ -150,6 +151,7 @@ if (strpos(shell_exec("uname -r"), "rockchip")) {
         <div class="mdl-card__menu">
             <a onclick="location.reload()" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
                 <i class="material-icons">refresh</i>
+                <md-tooltip md-direction="bottom">Refresh</md-tooltip>
             </a>
         </div>
     </div>
@@ -196,6 +198,7 @@ if (strpos(shell_exec("uname -r"), "rockchip")) {
     <div class="mdl-card__menu">
         <a ng-click="getDevices()" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
             <i class="material-icons">refresh</i>
+            <md-tooltip md-direction="bottom">Geräte neu laden</md-tooltip>
         </a>
     </div>
 </div>

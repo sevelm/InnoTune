@@ -19,7 +19,8 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.networkmount = {};
     $scope.resetcb = {
         usb:false,
-        network:false
+        network:false,
+        playlists:false
     };
 
 
@@ -354,6 +355,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                 }
             });
     };
+
     $scope.getPlaylist = function (id) {
         $http.get('api/helper.php?getplaylist&ID=' + id)
             .success(function (data) {
@@ -440,7 +442,11 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
 
 
     $scope.addPlaylist = function () {
-        $scope.playlists.push({id: ($scope.playlists[$scope.playlists.length - 1].id + 1), name: ""});
+        if($scope.playlists[$scope.playlists.length - 1] == undefined){
+            $scope.playlists.push({id: 0, name: ""});
+        } else {
+            $scope.playlists.push({id: ($scope.playlists[$scope.playlists.length - 1].id + 1), name: ""});
+        }
     };
 
     $scope.setAudioConfiguration = function () {
@@ -802,6 +808,9 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             }
             if($scope.resetcb.usb == true){
                 resetstr += "&usb";
+            }
+            if($scope.resetcb.playlists == true){
+                resetstr += "&playlists"
             }
             $http.get('api/helper.php?reset'+resetstr)
                 .success(function (data) {

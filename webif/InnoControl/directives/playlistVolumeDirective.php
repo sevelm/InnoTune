@@ -20,13 +20,6 @@ if (strpos(shell_exec("uname -r"), "rockchip")) {
                ng-model="vol.volume" min="0" max="100">
     </md-input-container>
 
-    <!-- Kein Gerät verfügbar
-    <md-input-container ng-if="devices[vol.id]==null" class="md-block playlstvol mdl-cell--12-col">
-        <label id="dev0{{vol.id}}">USB-Gerät {{vol.id+1}}:</label>
-        <input aria-label="dev01" type="number" step="5" name="dev01"
-               ng-model="vol.volume" min="0" max="100">
-    </md-input-container> -->
-
     <!-- Deaktiviert -->
     <md-input-container ng-if="devices[vol.id].betrieb=='deaktiviert'"
                         class="md-block playlstvol mdl-cell--12-col">

@@ -38,6 +38,7 @@
     <div class="mdl-card__menu">
         <button ng-click="addPlaylist()" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
             <i class="material-icons">add</i>
+            <md-tooltip md-direction="bottom">Neue Playlist hinzufügen</md-tooltip>
         </button>
     </div>
 </div>

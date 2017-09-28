@@ -65,8 +65,8 @@ sudo make install
 
 # Spotify Connect
 cd /root
-wget https://github.com/herrernst/librespot/releases/download/v20170717-910974e/librespot-linux-armhf-raspberry_pi.zip
-unzip librespot-linux-armhf-raspberry_pi.zip -d .
+wget -nc https://github.com/herrernst/librespot/releases/download/v20170717-910974e/librespot-linux-armhf-raspberry_pi.zip
+unzip -f librespot-linux-armhf-raspberry_pi.zip -d .
 
 
 # Add Crontabs
@@ -78,7 +78,6 @@ cd /opt/innotune/update/cache
 sudo cat InnoTune/version.txt > /var/www/version.txt
 
 sudo /var/www/create_asound.sh
-sudo apt-get -y install mpc
 sudo service dhcpcd stop
 sudo systemctl disable dhcpcd
 sudo update-rc.d -f dhcpcd remove
