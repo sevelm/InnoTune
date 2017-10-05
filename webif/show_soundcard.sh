@@ -6,18 +6,13 @@
 
 ##########################################################
 
-#CARD01=$(aplay -l | grep "card 1")
-#CARD02=$(aplay -l | grep "card 2")
-#CARD03=$(aplay -l | grep "card 3")
-#CARD04=$(aplay -l | grep "card 4")
-#CARD05=$(aplay -l | grep "card 5")
-#CARD06=$(aplay -l | grep "card 6")
-#CARD07=$(aplay -l | grep "card 7")
-#CARD08=$(aplay -l | grep "card 8")
-#CARD09=$(aplay -l | grep "card 9")
-#CARD10=$(aplay -l | grep "card 10")
-
-CARD01=$(cat /proc/asound/card1/stream0 | grep "Burr")
+if [ "$(cat /proc/asound/card1/stream0 | grep "Burr")" ]
+then
+       CARD01=aktiv
+elif [ "$(cat /proc/asound/card1/id | grep "rockchipminiarm")" ]
+then
+       CARD01=aktiv
+fi
 CARD02=$(cat /proc/asound/card2/stream0 | grep "Burr")
 CARD03=$(cat /proc/asound/card3/stream0 | grep "Burr")
 CARD04=$(cat /proc/asound/card4/stream0 | grep "Burr")
