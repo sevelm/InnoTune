@@ -6,16 +6,27 @@
 
 ##########################################################
 
-CARD01=$(aplay -l | grep "card 1")
-CARD02=$(aplay -l | grep "card 2")
-CARD03=$(aplay -l | grep "card 3")
-CARD04=$(aplay -l | grep "card 4")
-CARD05=$(aplay -l | grep "card 5")
-CARD06=$(aplay -l | grep "card 6")
-CARD07=$(aplay -l | grep "card 7")
-CARD08=$(aplay -l | grep "card 8")
-CARD09=$(aplay -l | grep "card 9")
-CARD10=$(aplay -l | grep "card 10")
+#CARD01=$(aplay -l | grep "card 1")
+#CARD02=$(aplay -l | grep "card 2")
+#CARD03=$(aplay -l | grep "card 3")
+#CARD04=$(aplay -l | grep "card 4")
+#CARD05=$(aplay -l | grep "card 5")
+#CARD06=$(aplay -l | grep "card 6")
+#CARD07=$(aplay -l | grep "card 7")
+#CARD08=$(aplay -l | grep "card 8")
+#CARD09=$(aplay -l | grep "card 9")
+#CARD10=$(aplay -l | grep "card 10")
+
+CARD01=$(cat /proc/asound/card1/stream0 | grep "Burr")
+CARD02=$(cat /proc/asound/card2/stream0 | grep "Burr")
+CARD03=$(cat /proc/asound/card3/stream0 | grep "Burr")
+CARD04=$(cat /proc/asound/card4/stream0 | grep "Burr")
+CARD05=$(cat /proc/asound/card5/stream0 | grep "Burr")
+CARD06=$(cat /proc/asound/card6/stream0 | grep "Burr")
+CARD07=$(cat /proc/asound/card7/stream0 | grep "Burr")
+CARD08=$(cat /proc/asound/card8/stream0 | grep "Burr")
+CARD09=$(cat /proc/asound/card9/stream0 | grep "Burr")
+CARD10=$(cat /proc/asound/card10/stream0 | grep "Burr")
 
 echo -e "${CARD01:+1}\n""${CARD02:+1}\n""${CARD03:+1}\n""${CARD04:+1}\n""${CARD05:+1}\n""${CARD06:+1}\n""${CARD07:+1}\n""${CARD08:+1}\n""${CARD09:+1}\n""${CARD10:+1}\n" > /opt/innotune/settings/usb_dev.txt
 
