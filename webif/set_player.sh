@@ -77,7 +77,7 @@ do
             echo 0 > /opt/innotune/settings/status_shairplay/status_shairplayre"$i".txt         ### Airplay ablöschen
             echo 0 > /opt/innotune/settings/status_line-in/line-in"$i".txt                      ### Line-In ablöschen
 
-            aplay -f cd -D dmixer"$i" /dev/zero > /dev/null 2>&1 & echo $!                     ### Grundstille erzeugen
+            #aplay -f cd -D dmixer"$i" /dev/zero > /dev/null 2>&1 & echo $!                     ### Grundstille erzeugen
             amixer -c "$i" set PCM 100%       > /dev/null 2>&1                                  ### Lautstärke Setzen
             /var/www/sudoscript.sh set_vol "$i" MuteIfMPD 100       > /dev/null 2>&1            ### MPD Lautstärke setzen
             /var/www/sudoscript.sh set_vol "$i" MuteIfAirplay 100   > /dev/null 2>&1            ### (Sh)Airplay Lautstärke setzen
