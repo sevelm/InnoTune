@@ -34,6 +34,9 @@ sudo apt-get -y install zip
 #MPC (for tts update)
 sudo apt-get -y install mpc
 
+#bc (for check_squeezelite_startup.sh)
+sudo apt-get -y install bc
+
 # Cifs
 #sudo apt-get -y install cifs-utils
 
