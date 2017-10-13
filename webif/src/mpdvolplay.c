@@ -221,10 +221,11 @@ int main(int argc, char *argv[])
 	}
 	mpd_run_clear(conn);
 	mpd_run_load(conn, TITLE);
-	mpd_send_play(conn);
+//	mpd_send_play(conn);
 	int COUNTER01 = 1;    
 	while ( COUNTER01 == 1 )
 	{
+	                mpd_run_play(conn);
 		sleep(1);   
 		struct mpd_status *status = NULL;
 		struct mpd_connection *conn = NULL;
@@ -234,9 +235,9 @@ int main(int argc, char *argv[])
 		if (playstate == MPD_STATE_PLAY){
 			COUNTER01 = 0;
 		}             
-		mpd_connection_free(conn);
+//		mpd_connection_free(conn);
 		COUNT = COUNT + 1;
-		if (COUNT > 3) {
+		if (COUNT > 8) {
 			goto mpd_kein_play;               
 		}  
 	}

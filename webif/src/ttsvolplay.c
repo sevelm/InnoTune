@@ -201,7 +201,7 @@ int main(int argc, char *argv[])
 	strcat( PATHTTS , argv[1] );
 	strcat( PATHTTS , ".mp3" );
 
-	printf("Pathtts: %s", PATHTTS);
+	printf("Pathtts: %s\n", PATHTTS);
 
 	struct mpd_status *status = NULL;
 	struct mpd_connection *conn = NULL;
@@ -212,14 +212,12 @@ int main(int argc, char *argv[])
 	}
 	mpd_run_clear(conn);
 
-    mpd_run_add(conn, PATHTTS);
-
-	
-	mpd_run_play(conn);
+                mpd_run_add(conn, PATHTTS);
 
 	int COUNTER01 = 1;    
 	while ( COUNTER01 == 1 )
 	{
+	                mpd_run_play(conn);
 		sleep(1);   
 		struct mpd_status *status = NULL;
 		struct mpd_connection *conn = NULL;
@@ -228,13 +226,14 @@ int main(int argc, char *argv[])
 		enum mpd_state playstate = mpd_status_get_state(status);
 		if (playstate == MPD_STATE_PLAY){
 			COUNTER01 = 0;
-		}             
-		mpd_connection_free(conn);
+		}   
 		COUNT = COUNT + 1;
-		if (COUNT > 3) {
-			goto mpd_kein_play;               
+		if (COUNT > 8 ) {
+			goto mpd_kein_play;  
 		}  
 	}
+
+
 	int COUNTER02 = 1;   
 	while ( COUNTER02 == 1 )
 	{

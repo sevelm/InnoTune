@@ -1,11 +1,11 @@
 
-/* gcc -o mpdvolplay mpdvolplay.c -lasound -lmpdclient 
-                               ./mpdvolplay 1
+/* gcc -o ttsvolplay ttsvolplay.c -lasound -lmpdclient 
+                               ./ttsvolplay 1
 #                                                             |
 #   Anfangszahl zum lesen der Setting-Daten >-----------------
 #
 # Funktion:
-# 1. Einlesen der Settings von /opt/innotune/settings/mpdvolplay.txt
+# 1. Einlesen der Settings von /opt/innotune/settings/voiceoutput/voiceoutputvol.txt
 # 2. MPD Lautst�rke setzen 
 # 3. Master Lautst�rkenregler f�r Airplay&Squeezebox&... setzen
 # 3. MPD Clear Playlist, Load Playlist, MPD Play 
@@ -114,35 +114,31 @@ long max (long *values) {
 
 int main(int argc, char *argv[])
 {
-
-	int START_NR = atol(argv[1]);
+    char* TTS_TITLE = argv[1];
 	long result;
 	long* read;
-	long SQ_AIR_VOLUME,SQ_AIR_VOLUME_LI,SQ_AIR_VOLUME_RE;
+	long SQ_AIR_VOLUME;
 	long VOL_MPD[10];
 	long VOL_MPD_LI[10];
 	long VOL_MPD_RE[10];
 	char MPD_TITLE[1024];
 
-	int nr = 0;
-	START_NR = ((START_NR*12)-11);
+	printf("Wert von Title: %s\n", TTS_TITLE);
 
-	//  Einlesen der Lautst�rke von Squeezbox&Airplay
-	read = ReadtxtInt (START_NR+1, "/opt/innotune/settings/mpdvolplay.txt");
+
+
+	int nr = 0;
+
+	//  Einlesen der Lautstärke von Squeezbox&Airplay
+	read = ReadtxtInt (1, "/opt/innotune/settings/voiceoutput/voiceoutputvol.txt");
 	if (max(read) >= 0) {
-		SQ_AIR_VOLUME = max(read) + 1;
-	}
-	if (read[0] >= 0) {
-		SQ_AIR_VOLUME_LI = read[0] + 1;
-	}
-	if (read[1] >= 0) {
-		SQ_AIR_VOLUME_RE = read[1] + 1;
+		SQ_AIR_VOLUME = max(read)+1;
 	}
 	free(read);
 
 	for (nr = 0; nr < 10; nr++) {
 		//  Einlesen der Lautst�rke von PlayerXX
-		read = ReadtxtInt ((START_NR+2+nr), "/opt/innotune/settings/mpdvolplay.txt");
+		read = ReadtxtInt ((1+nr), "/opt/innotune/settings/voiceoutput/voiceoutputvol.txt");
 		if (max(read) >= 0) {
 			VOL_MPD[nr] = max(read);
 		}
@@ -155,37 +151,22 @@ int main(int argc, char *argv[])
 		free(read);
 	}
 
-	
+		printf("Wert von SQAIR: %li\n", SQ_AIR_VOLUME);
+		printf("Wert von MPD: %li\n", VOL_MPD[2]);
+		printf("Wert von MPDLI: %li\n", VOL_MPD_LI[2]);
+		printf("Wert von MPDRE: %li\n", VOL_MPD_RE[2]);
 
-
-
-
-	//  Einlesen des MPD Playlist Namens
-	FILE *fp;
-	int i;
-	if((fp = fopen ("/opt/innotune/settings/mpdvolplay.txt" , "r"))==NULL)  {    
-		printf("Datei konnte nicht ge�ffent werden \n");
-	} else {     
-		for(i=0;i<(START_NR-1);i++){
-			fgets(&MPD_TITLE[i],1024,fp);
-		}
-		for(i=0;i<1;i++){
-			fgets(&MPD_TITLE[i],1024,fp);
-		}  
-		chomp(MPD_TITLE);    
-		fclose(fp);
-	}
-
-	// Laustärke setzen
+	//  TTS Lautstärke setzen
 
 	for (nr = 0; nr < 10; nr++) {		
-		//  MPD Lautst�rkenregler - PlayerXX
-		result = SetAlsaVolume (VOL_MPD[nr], "mpd_", "hw:", nr+1);
-		//  MPD Lautst�rkenregler - PlayerXX links
-		result = SetAlsaVolume (VOL_MPD_LI[nr], "mpdli_", "hw:", nr+1);
-		//  MPD Lautst�rkenregler - PlayerXX rechts
-		result = SetAlsaVolume (VOL_MPD_RE[nr], "mpdre_", "hw:", nr+1);
+		//  MPD Lautstärkenregler - PlayerXX
+		result = SetAlsaVolume (VOL_MPD[nr], "mpd_", "hw:", nr);
+		//  MPD Lautstärkenregler - PlayerXX links
+		result = SetAlsaVolume (VOL_MPD_LI[nr], "mpdli_", "hw:", nr);
+		//  MPD Lautstärkenregler - PlayerXX rechts
+		result = SetAlsaVolume (VOL_MPD_RE[nr], "mpdre_", "hw:", nr);
 	}
+
 
     //  Master Lautstärkenregler für Airplay & Squeezebox & ... reduzieren
 	int SOFT_VOL_DOWN = 100;
@@ -203,22 +184,25 @@ int main(int argc, char *argv[])
 			if (VOL_MPD_RE[nr] != 0) {		
 				result = SetAlsaVolume (SOFT_VOL_DOWN, "MuteIfMPDre_", "hw:", nr);
 			}
-		printf("Wert von SQAIR: %li\n", SQ_AIR_VOLUME);
-		printf("Wert von MPD: %li\n", VOL_MPD[1]);
-		printf("Wert von MPDLI: %li\n", VOL_MPD_LI[1]);
-		printf("Wert von MPDRE: %li\n", VOL_MPD_RE[1]);
 		}
 		usleep(10000);
 	} while (SOFT_VOL_DOWN > SQ_AIR_VOLUME);
 
-	// #################   MPD Anfang   #################
-	//
-	//
-	// 
-	//
 
+	// #################   MPD Anfang   #################
 	int COUNT = 0;
-	const char *TITLE = MPD_TITLE;    
+	char *PATH = "file:///media/Soundfiles/tts/";
+
+	//Pfad formatieren
+	char* PATHTTS = NULL;
+	int argvLen = strlen( argv[1] );
+	PATHTTS = malloc( strlen(PATH) + argvLen + 4 + 1 ); // Add 1 for null terminator.
+	strcpy( PATHTTS , PATH );
+	strcat( PATHTTS , argv[1] );
+	strcat( PATHTTS , ".mp3" );
+
+	printf("Pathtts: %s", PATHTTS);
+
 	struct mpd_status *status = NULL;
 	struct mpd_connection *conn = NULL;
 	conn = mpd_connection_new("localhost", 6600, 0);
@@ -227,8 +211,12 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 	mpd_run_clear(conn);
-	mpd_run_load(conn, TITLE);
-	mpd_send_play(conn);
+
+    mpd_run_add(conn, PATHTTS);
+
+	
+	mpd_run_play(conn);
+
 	int COUNTER01 = 1;    
 	while ( COUNTER01 == 1 )
 	{
@@ -289,7 +277,6 @@ int main(int argc, char *argv[])
 		}
 		usleep(10000);
 	} while (SQ_AIR_VOLUME < 100);
-
 	return 0;
 
 }
