@@ -76,6 +76,44 @@
         </div>
     </div>
 </div>
+
+<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">API Text to Speech:</h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+        <table>
+            <tr>
+                <td><b>Hintergrund-50%; Zone01-50%; alle anderen Zonen Mute:</b></td>
+                <td style="padding:0 50px 0 50px;"></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&vol_back=50&vol_amp01=50&vol_ampall=0</td>
+            </tr>
+            <tr>
+                <td><b>Lautstärke Zone01 50:</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&vol_amp01=50</td>
+            </tr>
+            <tr>
+                <td><b>Lautstärke Zone01 50 alle anderen Zonen Mute:</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&vol_amp01=50&vol_ampall=0</td>
+            </tr>
+            <tr>
+                <td><b>Lautstärke aller Zonen auf maximum:</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&vol_ampall=100</td>
+            </tr>
+            <tr>
+                <td><b>Ausgabe Uhrzeit:</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?time=1</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+
 <script>
     //function to copy to clipboard
     function copy() {

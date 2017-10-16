@@ -139,8 +139,23 @@ if ($lang == "") {
 $pids = shell_exec("ps aux | grep -i 'mpg321' | grep -v grep");
 
 if (empty($pids)) {
-    // Text anpassen
+
+	// Uhrzeit ausgeben
+    $TIME = ($_GET["time"]);
+
+	    // Text anpassen
     $words = rawurldecode($_GET['text']);
+    if ($TIME != "" ) {
+	    $Stunde = date("H"); 
+        $Minute = date("i"); 
+                   if ($Minute == "1" ) {
+                         $words = "Es ist". $Stunde. "Uhr und eine Minute.";
+                         }
+                   else {
+                         $words = "Es ist". $Stunde. "Uhr und". $Minute. "Minuten.";
+                        }
+    }
+
     echo "Text to Speech Input: <b>" . $words . "</b><br>";
 
     //Umlaute konvertieren
