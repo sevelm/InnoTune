@@ -43,6 +43,20 @@ if (isset($_GET['stop_usbmount'])) {
                 </div>
                 <span ng-show="networkForm.ip.$error.pattern" style="color:red">IP Adresse ist nicht möglich!</span>
 
+
+                <div class="mdl-grid">
+                    <p class="mdl-cell ">Gateway</p>
+                    <md-input-container class="md-block mdl-cell settingsN">
+                        <input class="settingsNF" name="gate" ng-pattern="ipPattern" ng-model="network.gate"
+                               aria-label="gate">
+                    </md-input-container>
+                </div>
+                <span ng-show="networkForm.gate.$error.pattern"
+                      style="color:red">IP Adresse ist nicht möglich!</span>
+
+
+
+
                 <div class="mdl-grid">
                     <p class="mdl-cell ">Subnetmask</p>
                     <md-input-container class="md-block mdl-cell settingsN">

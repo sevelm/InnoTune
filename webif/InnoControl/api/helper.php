@@ -59,7 +59,7 @@ if (isset($_GET['setnet'])) {
     $SUBNET = $_GET['subnet'];
     $GATE = $_GET['gate'];
     $DNS1 = $_GET['dns1'];
-    $DNS2 = $_GET['dns1'];
+    $DNS2 = $_GET['dns2'];
 
     $array = file("/opt/innotune/settings/network.txt"); // Datei in ein Array einlesen
     array_splice($array, 0, 1, "$DHCP" . "\n");
