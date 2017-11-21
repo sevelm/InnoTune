@@ -103,6 +103,14 @@ do
 	fi
 done
 
+########  workaround play mpd first start to open audio device
+cp -R /var/www/src/1punkt5stille.mp3 -n /media/Soundfiles/Toene/1punkt5stille.mp3 
 /etc/init.d/mpd restart > /dev/null 2>&1
+sleep 1
+mpc update
+mpc clear
+mpc add Soundfiles/Toene/1punkt5stille.mp3
+mpc play
+
 
 exit 0
