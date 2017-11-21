@@ -50,16 +50,13 @@ do
 
             ########### Start Squeezelite
             if [[ $SQMAC ]]; then       ###Aktivate Player on USB device "$i" - Squeezbox
-                  /usr/bin/squeezelite-armv6hf -c flac,pcm,mp3,ogg,aac -b 2048:4096 -a 60:16::0 -r 44100,44100   -p 97 -o plug:squeeze"$i" -n "$PLAYER" -m "$SQMAC" -z  > /dev/null 2>&1 & echo $!
-        #alt:  /usr/bin/squeezelite-armv6hf -n $PLAYER -o squeeze"$i" -d all=debug -a 4096:1024:16:0 -r 44100 -m $SQMAC > /dev/null 2>&1 & echo $!
+            /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeeze"$i" -n "$PLAYER" -m "$SQMAC" -z  > /dev/null 2>&1 & echo $!
             fi
             if [[ $SQliMAC ]]; then     ###Aktivate Player on USB device "$i" left - Squeezbox
-                  /usr/bin/squeezelite-armv6hf -c flac,pcm,mp3,ogg,aac -b 2048:4096 -a 60:16::0 -r 44100 -p 97 -o plug:squeezeli"$i" -n "$PLAYERli" -m "$SQliMAC" -z > /dev/null 2>&1 & echo $!
-        #alt:	/usr/bin/squeezelite-armv6hf -n $PLAYERli -o squeezeli"$i" -d all=debug -a 4096:1024:16:0 -r 44100 -m $SQliMAC > /dev/null 2>&1 & echo $!
+            /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeezeli"$i" -n "$PLAYERli" -m "$SQliMAC" -z  > /dev/null 2>&1 & echo $!
             fi
             if [[ $SQreMAC ]]; then     ###Aktivate Player on USB device "$i" right - Squeezbox
-                  /usr/bin/squeezelite-armv6hf -c flac,pcm,mp3,ogg,aac -b 2048:4096 -a 60:16::0 -r 44100 -p 97 -o plug:squeezere"$i" -n "$PLAYERre" -m "$SQreMAC" -z > /dev/null 2>&1 & echo $!
-        #alt:	/usr/bin/squeezelite-armv6hf -n $PLAYERre -o squeezere"$i" -d all=debug -a 4096:1024:16:0 -r 44100 -m $SQreMAC > /dev/null 2>&1 & echo $!
+            /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeezere"$i" -n "$PLAYERre" -m "$SQreMAC" -z  > /dev/null 2>&1 & echo $!
             fi
 
             ########### Start Spotify Connect
