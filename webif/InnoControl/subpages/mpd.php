@@ -92,6 +92,52 @@
     </div>
 </div>
 
+<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">API Zentral-Player:</h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+        <table>
+            <tr>
+                <td><b>Wiedergabe der Playlist mit ID01:</b></td>
+                <td style="padding:0 50px 0 50px;"></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/mpdvol.php?playlist_id=1&play=1</td>
+            </tr>
+            <tr>
+                <td><b>Wiedergabe der Playlist mit ID02:</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/mpdvol.php?playlist_id=2&play=1</td>
+            </tr>
+            <tr>
+                <td><b>Wiedergabe Repeate (Bsp. für Alarm):</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/mpdvol.php?repeate=1</td>
+            </tr>
+            <tr>
+                <td><b>Wiedergabe Stoppen:</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/mpdvol.php?stop=1</td>
+            </tr>
+            <tr>
+                <td><b>Hintergrundlaustärke auf 50%:</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/mpdvol.php?vol_sqair=50</td>
+            </tr>
+            <tr>
+                <td><b>Lautstärke der Playlist mit ID01 der Zone01 auf 50%:</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/mpdvol.php?playlist_id=1&vol_play01=50</td>
+            </tr>
+            <tr>
+                <td><b>Lautstärke der Playlist mit ID01 der Zone02 links auf 50% rechts auf mute (0%):</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/mpdvol.php?playlist_id=1&vol_play02=50/0</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
 <script type="application/javascript">
     document.getElementById('userfile').onchange = function () {
         document.getElementById('display-text').textContent = document.getElementById('userfile').value.split(/(\\|\/)/g).pop();

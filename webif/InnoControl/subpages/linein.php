@@ -71,7 +71,7 @@ if (strpos(shell_exec("uname -r"), "4.4.73-rockchip")) {
 
 <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">
     <div class="mdl-card__title">
-        <h2 class="mdl-card__title-text">Beispiel Loxone Virtueller Ausgangsverbinder:</h2>
+        <h2 class="mdl-card__title-text">API LineIn:</h2>
     </div>
     <div class="mdl-card__supporting-text">
         <table>

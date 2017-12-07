@@ -86,22 +86,27 @@
             <tr>
                 <td><b>Hintergrund-50%; Zone01-50%; alle anderen Zonen Mute:</b></td>
                 <td style="padding:0 50px 0 50px;"></td>
-                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&vol_back=50&vol_amp01=50&vol_ampall=0</td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&vol_back=50&vol_01=50&vol_all=0</td>
             </tr>
             <tr>
                 <td><b>Lautstärke Zone01 50:</b></td>
                 <td></td>
-                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&vol_amp01=50</td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&vol_01=50</td>
+            </tr>
+            <tr>
+                <td><b>Lautstärke Zone01 links 50% rechts Mute (0%):</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&vol_01=50/0</td>
             </tr>
             <tr>
                 <td><b>Lautstärke Zone01 50 alle anderen Zonen Mute:</b></td>
                 <td></td>
-                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&vol_amp01=50&vol_ampall=0</td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&vol_01=50&vol_all=0</td>
             </tr>
             <tr>
                 <td><b>Lautstärke aller Zonen auf maximum:</b></td>
                 <td></td>
-                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&vol_ampall=100</td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&vol_all=100</td>
             </tr>
             <tr>
                 <td><b>Ausgabe Uhrzeit:</b></td>
