@@ -5,7 +5,7 @@
  * Date: 11.08.2016
  * Time: 16:15
  */
-if (strpos(shell_exec("uname -r"), "rockchip")) {
+if (strpos(shell_exec("uname -r"), "4.4.73-rockchip")) {
     $tinkerboard = true;
 }?>
 

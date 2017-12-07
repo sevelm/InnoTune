@@ -5,7 +5,7 @@ if (isset($_GET['stop_lms'])) {
 if (isset($_GET['start_lms'])) {
     exec("sudo /var/www/sudoscript.sh start_lms");
 }
-if (strpos(shell_exec("uname -r"), "rockchip")) {
+if (strpos(shell_exec("uname -r"), "4.4.73-rockchip")) {
     $tinkerboard = true;
 }
 ?>
