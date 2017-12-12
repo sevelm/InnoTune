@@ -5,7 +5,7 @@
  * Date: 11.08.2016
  * Time: 16:15
  */
-if (strpos(shell_exec("uname -r"), "4.4.73-rockchip")) {
+if (strcmp(shell_exec("uname -r"), "4.4.73-rockchip")) {
     $tinkerboard = true;
 }
 ?>
@@ -161,6 +161,8 @@ if (strpos(shell_exec("uname -r"), "4.4.73-rockchip")) {
         <div ng-if="!selectedDevice" class="mdl-grid">
             <h2>Wählen sie ein Gerät aus!</h2>
         </div>
+
+
     </div>
     <div ng-if="selectedDevice" class="mdl-card__actions mdl-card--border">
         <button ng-click="saveDevice()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
