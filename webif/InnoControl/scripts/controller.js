@@ -468,6 +468,33 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             });
     };
 
+    $scope.setAudioConfigurationDeactivated = function () {
+        var id = $scope.formatId($scope.selectedDevice.id);
+        $scope.selectedDevice = null;
+
+        $http.get('api/helper.php?set_audio_configuration&dev=' + id + '&mode=' + 0)
+            .success(function () {
+                $scope.audioConfChanged = 1;
+                $scope.showToast();
+            });
+
+        $scope.getDevices();
+    };
+
+    $scope.setLinkConfiguration = function () {
+        var id = $scope.formatId($scope.selectedDevice.id);
+        var linkedid = 10+ parseInt($scope.formatId($scope.selectedDevice.linktoDevice));
+
+
+        $http.get('api/helper.php?set_audio_configuration&dev=' + id + '&mode=' + linkedid)
+         .success(function () {
+                $scope.audioConfChanged = 1;
+                $scope.showToast();
+            });
+
+        $scope.getDevices();
+    };
+
     $scope.checkAirplay = function (airplayString) {
         if (airplayString == 0 || airplayString == undefined) {
             return "";
@@ -590,7 +617,10 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                             spotifyR: $spotifyStringR,
                                             vol: {}
                                         });
-                                    } else {
+                                    } else if(parseInt(dev[0]) > 10 && parseInt(dev[0]) <= 20){
+                                        $betrieb = "gekoppelt";
+                                        $scope.devicestmp.push({id: tmp_id, betrieb: $betrieb, linktoDevice: parseInt(dev[0])-10, vol: {}});
+                                    }else {
                                         $betrieb = "deaktiviert";
                                         $scope.devicestmp.push({id: tmp_id, betrieb: $betrieb, vol: {}});
                                     }
@@ -607,6 +637,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                     })(i);
                 }
             });
+
         $http.get('api/helper.php?getchangedconf')
             .success(function (data) {
                 var arr = data.split(";");

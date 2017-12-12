@@ -38,7 +38,7 @@ if (strcmp(shell_exec("uname -r"), "4.4.73-rockchip")) {
             <div class="mdl-grid">
                 <p class="mdl-cell mdl-cell--3-col">Wiedergabe von Line-In:</p>
                 <md-input-container class="mdl-cell--3-col md-no-underline">
-                    <md-select ng-model="selectedLineIn" placeholder="Input auswahlen...">
+                    <md-select ng-model="selectedLineIn" placeholder="Input auswahlen..." ng-disabled="selectedDevice.betrieb == 'deaktiviert' || selectedDevice.betrieb == 'gekoppelt'">
                         <?php
                         if($tinkerboard){
                             echo "<md-option ng-if=\"opt.id!=1\" ng-value=\"opt.id\" ng-repeat=\"opt in devices\">InnoAmp {{formatId(opt.id-1)}}</md-option>";

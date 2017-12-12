@@ -36,7 +36,7 @@ if (strcmp(shell_exec("uname -r"), "4.4.73-rockchip")) {
         </div>
 
         <div ng-if="selectedDevice">
-            <div ng-if="selectedDevice.betrieb!='deaktiviert'">
+            <div ng-if="selectedDevice.betrieb!='deaktiviert' && selectedDevice.betrieb!=='gekoppelt'">
                 <div id="mpd_vol" class="mdl-grid">
                     <h6 class="mdl-cell mdl-cell--3-col">Player Zentral (MPD)</h6>
                     <md-slider-container class="mdl-cell mdl-cell--9-col">
@@ -87,8 +87,8 @@ if (strcmp(shell_exec("uname -r"), "4.4.73-rockchip")) {
                 </div>
             </div>
 
-            <!-- Slider deaktivieren wenn der betrieb auch deaktiviert ist -->
-            <div ng-if="selectedDevice.betrieb=='deaktiviert'">
+            <!-- Slider deaktivieren wenn der betrieb auch deaktiviert oder gekoppelt ist -->
+            <div ng-if="selectedDevice.betrieb=='deaktiviert' || selectedDevice.betrieb=='gekoppelt'">
                 <div id="mpd_vol" class="mdl-grid">
                     <h6 class="mdl-cell mdl-cell--3-col">Player Zentral (MPD)</h6>
                     <md-slider-container class="mdl-cell mdl-cell--9-col">

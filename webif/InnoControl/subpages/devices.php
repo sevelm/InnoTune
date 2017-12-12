@@ -52,17 +52,17 @@ if (strcmp(shell_exec("uname -r"), "4.4.73-rockchip")) {
 
 <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell--top mdl-cell mdl-cell--8-col">
     <div class="mdl-card__title">
-        <?php if($tinkerboard){
-            echo "<h2 ng-if=\"selectedDevice.id==1\" class=\"mdl-card__title-text\">HDMI-Audio</h2>".
-                "<h2 ng-if=\"selectedDevice.id!=1&&selectedDevice!=null\" class=\"mdl-card__title-text\">InnoAmp {{formatId(selectedDevice.id-1)}}</h2>".
-            "<h2 ng-if=\"selectedDevice==null\" class=\"mdl-card__title-text\">Soundkarte auswählen..</h2>";
-        }else{
-            echo "<h2 class=\"mdl-card__title-text\" ng-if=\"selectedDevice!=null\">InnoAmp {{formatId(selectedDevice.id)}}</h2>".
-            "<h2 ng-if=\"selectedDevice==null\" class=\"mdl-card__title-text\">Soundkarte auswählen..</h2>";
-        }?>
+        <?php if ($tinkerboard) {
+            echo "<h2 ng-if=\"selectedDevice.id==1\" class=\"mdl-card__title-text\">HDMI-Audio</h2>" .
+                "<h2 ng-if=\"selectedDevice.id!=1&&selectedDevice!=null\" class=\"mdl-card__title-text\">InnoAmp {{formatId(selectedDevice.id-1)}}</h2>" .
+                "<h2 ng-if=\"selectedDevice==null\" class=\"mdl-card__title-text\">Soundkarte auswählen..</h2>";
+        } else {
+            echo "<h2 class=\"mdl-card__title-text\" ng-if=\"selectedDevice!=null\">InnoAmp {{formatId(selectedDevice.id)}}</h2>" .
+                "<h2 ng-if=\"selectedDevice==null\" class=\"mdl-card__title-text\">Soundkarte auswählen..</h2>";
+        } ?>
     </div>
     <div class="mdl-card__supporting-text">
-        <div ng-if="selectedDevice">
+        <div ng-if="selectedDevice && !selectedDevice.linktoDevice">
             <div class="mdl-grid">
                 <h5 class="mdl-cell--3-col">Modus:&nbsp;</h5>
                 <md-select placeholder="{{selectedDevice.betrieb}}" ng-model="selectedDevice.betrieb"
@@ -162,13 +162,47 @@ if (strcmp(shell_exec("uname -r"), "4.4.73-rockchip")) {
             <h2>Wählen sie ein Gerät aus!</h2>
         </div>
 
+        <!-- koppeln -->
+        <div ng-if="selectedDevice.linktoDevice">
+            <div class="mdl-grid" ng-if="selectedDevice.linktoDevice==true">
 
+                <div class="mdl-grid">
+                    <h5>Geräte zum Koppeln auswählen:&nbsp;</h5>
+                    <md-select ng-model="selectedLink"
+                               ng-change="selectedDevice.linktoDevice=selectedLink; setLinkConfiguration(selectedLink)"
+                               placeholder="Gerät auswählen...">
+                        <?php
+                        if ($tinkerboard) {
+                            echo "<md-option ng-hide=\"opt.id==selectedDevice.id || opt.betrieb=='deaktiviert' || opt.betrieb=='gekoppelt'\" ng-if=\"opt.id!=1\" ng-value=\"opt.id\" ng-repeat=\"opt in devices\">InnoAmp {{formatId(opt.id-1)}} ({{opt.name}})</md-option>";
+                        } else {
+                            echo "<md-option ng-hide=\"opt.id==selectedDevice.id || opt.betrieb=='deaktiviert' || opt.betrieb=='gekoppelt'\" ng-value=\"opt.id\" ng-repeat=\"opt in devices\">InnoAmp {{formatId(opt.id-1)}} ({{opt.name}})</md-option>";
+                        } ?>
+                    </md-select>
+                </div>
+
+
+            </div>
+            <div class="mdl-grid" ng-if="selectedDevice.linktoDevice!=true">
+                <h5>Dieses Gerät ist mit <strong><a href="" ng-click="selectDevice(selectedDevice.linktoDevice)">{{devices[selectedDevice.linktoDevice-1].name}}</a></strong>
+                    gekoppelt.</h5>
+            </div>
+        </div>
     </div>
-    <div ng-if="selectedDevice" class="mdl-card__actions mdl-card--border">
+    <div ng-if="selectedDevice && !selectedDevice.linktoDevice" class="mdl-card__actions mdl-card--border">
         <button ng-click="saveDevice()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
             Speichern
         </button>
     </div>
+    <div ng-if="selectedDevice && selectedDevice.linktoDevice" class="mdl-card__actions mdl-card--border">
+        <md-button ng-click="setAudioConfigurationDeactivated()">Kopplung aufheben</md-button>
+    </div>
+
+
     <div class="mdl-card__menu">
+        <button disabled ng-if="selectedDevice" ng-click="selectedDevice.linktoDevice=true"
+                class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">link</i>
+            <md-tooltip md-direction="bottom">Mit anderem Gerät koppeln</md-tooltip>
+        </button>
     </div>
 </div>

@@ -25,6 +25,7 @@ if (strcmp(shell_exec("uname -r"), "4.4.73-rockchip")) {
 
             <p ng-if="device.betrieb=='normalbetrieb'">{{device.name}}</p>
             <p ng-if="device.betrieb=='geteilterbetrieb'">{{device.nameL}} - {{device.nameR}}</p>
+            <p ng-if="device.betrieb=='gekoppelt'">Gekoppelt mit <strong>{{devices[device.linktoDevice-1].name}}</strong></p>
             <p ng-if="device.betrieb=='deaktiviert'">Deaktiviert</p>
         </div>
     </md-list-item>
