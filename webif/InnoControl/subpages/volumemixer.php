@@ -5,9 +5,16 @@
  * Date: 11.08.2016
  * Time: 16:15
  */
-if (strcmp(shell_exec("uname -r"), "4.4.73-rockchip") === 0) {
+$actual_kernel = (shell_exec("uname -r"));
+$tb_kernel  = '4.4.73-rockchip';
+$pos1 = strcasecmp($actual_kernel, $tb_kernel);
+
+if ($pos1 == 1) {
     $tinkerboard = true;
-}?>
+}
+
+
+?>
 
 
 <div ng-init="selectDevice()" class="welcome-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--top">

@@ -5,9 +5,18 @@ if (isset($_GET['stop_lms'])) {
 if (isset($_GET['start_lms'])) {
     exec("sudo /var/www/sudoscript.sh start_lms");
 }
-if (strcmp(shell_exec("uname -r"), "4.4.73-rockchip") === 0) {
+
+$actual_kernel = (shell_exec("uname -r"));
+$tb_kernel  = '4.4.73-rockchip';
+$pos1 = strcasecmp($actual_kernel, $tb_kernel);
+
+echo $actual_kernel;
+
+
+if ($pos1 == 1) {
     $tinkerboard = true;
 }
+
 ?>
 
 <!--suppress CssUnknownTarget -->
