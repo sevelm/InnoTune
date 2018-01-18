@@ -71,6 +71,11 @@ cd /root
 wget -nc https://github.com/herrernst/librespot/releases/download/v20170717-910974e/librespot-linux-armhf-raspberry_pi.zip
 unzip -f librespot-linux-armhf-raspberry_pi.zip -d .
 
+#InnoPlay Mobile
+sudo git clone https://github.com/AElmecker/InnoPlayMobile.git /usr/share/squeezeboxserver/HTML/InnoPlayMobile
+sudo rm -r /usr/share/squeezeboxserver/HTML/m
+sudo cp -R /usr/share/squeezeboxserver/HTML/InnoPlayMobile/m /usr/share/squeezeboxserver/HTML/m
+sudo rm -r /usr/share/squeezeboxserver/HTML/InnoPlayMobile
 
 # Add Crontabs
 grep -q -F "*/15 * * * * /var/www/playercheck.sh" /var/spool/cron/crontabs/root || echo "*/15 * * * * /var/www/playercheck.sh" >> /var/spool/cron/crontabs/root
