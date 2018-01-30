@@ -12,13 +12,15 @@ LMS=$(cat /opt/innotune/settings/logitechmediaserver.txt | head -n1 | tail -n1)
 if [ $LMS == "1" ]; then
    /etc/init.d/logitechmediaserver restart
    IPLMS="-s $(ip route show | grep 'src' | grep 'eth0' | awk '{print $9}')"
+   START_PORT=10000
 else
    /etc/init.d/logitechmediaserver stop & update-rc.d logitechmediaserver remove
+   START_PORT=11000
 fi
 
 for i in $(seq -f "%02g" 1 10)
 do
-	PORT_BASE=$((5000+10*${i#0}))
+	PORT_BASE=$(($START_PORT+10*${i#0}))
 
 	MODE=$(cat /opt/innotune/settings/settings_player/dev"$i".txt | head -n1 | tail -n1)
 
