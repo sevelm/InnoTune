@@ -624,4 +624,12 @@ EOF;
 
 
 }*/
+
+
+/* PHP-Methods for iOS InnoPlay */
+if (isset($_GET['getversion'])) {
+    $datei = "/var/www/version.txt"; // Name der Datei
+    $version_local = file($datei); // Datei in ein Array einlesen
+    echo $version_local[0];
+}
 ?>
