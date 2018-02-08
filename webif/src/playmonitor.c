@@ -22,7 +22,10 @@
 #include <stdio.h>
 
 int LOOP01 = 1;
+int nr = 0;
 
+
+// Funktion zum Schreiben von Vol in Alsa
 long SetAlsaVolume (int volume, char* device, char* hw)
 {
     long result = -1;
@@ -49,424 +52,189 @@ long SetAlsaVolume (int volume, char* device, char* hw)
 }
 
 
+
+// Open the PCM audio output device and configure it.
+// Returns a handle to the PCM device; needed for other actions.
+snd_pcm_t *Audio_openDevice(char* Name_Device)
+{
+	snd_pcm_t *handle;
+	// Open the PCM output
+	int err = snd_pcm_open(&handle, Name_Device, SND_PCM_STREAM_PLAYBACK, 0);
+	if (err < 0) {
+		printf("Play-back open error: %s\n", snd_strerror(err));
+		exit(EXIT_FAILURE);
+	}
+	return handle;
+}
+
+
+
+// Funktion zum Lese einer Zahl aus bestimmter Zeile aus einer .txt Datei
+long ReadtxtInt (int position, char* pfad)
+{
+     long result = 0;
+     FILE *fp;
+     int i = 0;
+     char out[1024] = "null";
+     if((fp = fopen (pfad , "r"))==NULL)  {    
+     printf("Datei konnte nicht geöffent werden \n");
+     }
+     else {     
+          for(i=0;i<(position-1);i++){
+             fgets(&out[i],1024,fp);
+          }
+          for(i=0;i<1;i++){
+             fgets(&out[i],1024,fp);
+          }  
+      result = atol(out);
+     fclose(fp);
+     }
+   return result;
+}
+
+void die(char *s)
+{
+    perror(s);
+    exit(1);
+}
+
+
+/* 
+#########
+##                Strat Program
+#########
+*/
 int main(int argc, char *argv[])
 {
- while ( LOOP01 == 1 )  {
 
 long result;  
-  
-int status01 = 0;
-int status01li = 0;
-int status01re = 0;
-int status02 = 0;
-int status02li = 0;
-int status02re = 0;
-int status03 = 0;
-int status03li = 0;
-int status03re = 0;
-int status04 = 0;
-int status04li = 0;
-int status04re = 0;
-int status05 = 0;
-int status05li = 0;
-int status05re = 0;
-int status06 = 0;
-int status06li = 0;
-int status06re = 0;
-int status07 = 0;
-int status07li = 0;
-int status07re = 0;
-int status08 = 0;
-int status08li = 0;
-int status08re = 0;
-int status09 = 0;
-int status09li = 0;
-int status09re = 0;
-int status10 = 0;
-int status10li = 0;
-int status10re = 0;
+FILE *out;
+long out_dev[10];
+long play_status[10];
+long play_statusli[10];
+long play_statusre[10];
+
+
+
+
+// Alle Audio Devices öffnen
+nr = 1;
+	for (nr = 1; nr < 11; nr++) {
+                        char dev_setting[256];
+                        char alsa_dev[256];
+                        if (nr < 10) {             
+                        sprintf(dev_setting, "/opt/innotune/settings/settings_player/dev0%d.txt", nr);  
+                        sprintf(alsa_dev, "dmixer0%d", nr);             
+                        }
+                        else {
+                        sprintf(dev_setting, "/opt/innotune/settings/settings_player/dev%d.txt", nr);  
+                        sprintf(alsa_dev, "dmixer%d", nr);                          
+                        }
+
+                        out_dev[nr] = ReadtxtInt (1, dev_setting);
+
+
+                        if (out_dev[nr] == 1 || out_dev[nr] == 2 ) {
+                        snd_pcm_t *handle = Audio_openDevice(alsa_dev);
+//                        printf("Pfad: %s Wert: %ld \n",dev_setting, out_dev[nr]);
+                        }
+	}
+
+
+/* 
+#########
+##                Start Loop
+#########
+*/
+while ( LOOP01 == 1 )  {
+
+
 
  
-//Player01
-    FILE *player01;
-    player01 = fopen("/opt/innotune/settings/status_shairplay/status_shairplay01.txt", "r");
-    fscanf(player01, "%i", &status01);
-    fclose(player01);
-
-    FILE *player01li;
-    player01li = fopen("/opt/innotune/settings/status_shairplay/status_shairplayli01.txt", "r");
-    fscanf(player01li, "%i", &status01li);
-    fclose(player01li);
-
-    FILE *player01re;
-    player01re = fopen("/opt/innotune/settings/status_shairplay/status_shairplayre01.txt", "r");
-    fscanf(player01re, "%i", &status01re);
-    fclose(player01re);
-
-//Player02
-    FILE *player02;
-    player02 = fopen("/opt/innotune/settings/status_shairplay/status_shairplay02.txt", "r");
-    fscanf(player02, "%i", &status02);
-    fclose(player02);
-
-    FILE *player02li;
-    player02li = fopen("/opt/innotune/settings/status_shairplay/status_shairplayli02.txt", "r");
-    fscanf(player02li, "%i", &status02li);
-    fclose(player02li);
-
-    FILE *player02re;
-    player02re = fopen("/opt/innotune/settings/status_shairplay/status_shairplayre02.txt", "r");
-    fscanf(player02re, "%i", &status02re);
-    fclose(player02re);
-
-//Player03
-    FILE *player03;
-    player03 = fopen("/opt/innotune/settings/status_shairplay/status_shairplay03.txt", "r");
-    fscanf(player03, "%i", &status03);
-    fclose(player03);
-
-    FILE *player03li;
-    player03li = fopen("/opt/innotune/settings/status_shairplay/status_shairplayli03.txt", "r");
-    fscanf(player03li, "%i", &status03li);
-    fclose(player03li);
-
-    FILE *player03re;
-    player03re = fopen("/opt/innotune/settings/status_shairplay/status_shairplayre03.txt", "r");
-    fscanf(player03re, "%i", &status03re);
-    fclose(player03re);
-
-//Player04
-    FILE *player04;
-    player04 = fopen("/opt/innotune/settings/status_shairplay/status_shairplay04.txt", "r");
-    fscanf(player04, "%i", &status04);
-    fclose(player04);
-
-    FILE *player04li;
-    player04li = fopen("/opt/innotune/settings/status_shairplay/status_shairplayli04.txt", "r");
-    fscanf(player04li, "%i", &status04li);
-    fclose(player04li);
-
-    FILE *player04re;
-    player04re = fopen("/opt/innotune/settings/status_shairplay/status_shairplayre04.txt", "r");
-    fscanf(player04re, "%i", &status04re);
-    fclose(player04re);
-
-//Player05
-    FILE *player05;
-    player05 = fopen("/opt/innotune/settings/status_shairplay/status_shairplay05.txt", "r");
-    fscanf(player05, "%i", &status05);
-    fclose(player05);
-
-    FILE *player05li;
-    player05li = fopen("/opt/innotune/settings/status_shairplay/status_shairplayli05.txt", "r");
-    fscanf(player05li, "%i", &status05li);
-    fclose(player05li);
-
-    FILE *player05re;
-    player05re = fopen("/opt/innotune/settings/status_shairplay/status_shairplayre05.txt", "r");
-    fscanf(player05re, "%i", &status05re);
-    fclose(player05re);
-
-//Player06
-    FILE *player06;
-    player06 = fopen("/opt/innotune/settings/status_shairplay/status_shairplay06.txt", "r");
-    fscanf(player06, "%i", &status06);
-    fclose(player06);
-
-    FILE *player06li;
-    player06li = fopen("/opt/innotune/settings/status_shairplay/status_shairplayli06.txt", "r");
-    fscanf(player06li, "%i", &status06li);
-    fclose(player06li);
-
-    FILE *player06re;
-    player06re = fopen("/opt/innotune/settings/status_shairplay/status_shairplayre06.txt", "r");
-    fscanf(player06re, "%i", &status06re);
-    fclose(player06re);
-
-//Player07
-    FILE *player07;
-    player07 = fopen("/opt/innotune/settings/status_shairplay/status_shairplay07.txt", "r");
-    fscanf(player07, "%i", &status07);
-    fclose(player07);
-
-    FILE *player07li;
-    player07li = fopen("/opt/innotune/settings/status_shairplay/status_shairplayli07.txt", "r");
-    fscanf(player07li, "%i", &status07li);
-    fclose(player07li);
-
-    FILE *player07re;
-    player07re = fopen("/opt/innotune/settings/status_shairplay/status_shairplayre07.txt", "r");
-    fscanf(player07re, "%i", &status07re);
-    fclose(player07re);
-
-//Player08
-    FILE *player08;
-    player08 = fopen("/opt/innotune/settings/status_shairplay/status_shairplay08.txt", "r");
-    fscanf(player08, "%i", &status08);
-    fclose(player08);
-
-    FILE *player08li;
-    player08li = fopen("/opt/innotune/settings/status_shairplay/status_shairplayli08.txt", "r");
-    fscanf(player08li, "%i", &status08li);
-    fclose(player08li);
-
-    FILE *player08re;
-    player08re = fopen("/opt/innotune/settings/status_shairplay/status_shairplayre08.txt", "r");
-    fscanf(player08re, "%i", &status08re);
-    fclose(player08re);
-
-//Player09
-    FILE *player09;
-    player09 = fopen("/opt/innotune/settings/status_shairplay/status_shairplay09.txt", "r");
-    fscanf(player09, "%i", &status09);
-    fclose(player09);
-
-    FILE *player09li;
-    player09li = fopen("/opt/innotune/settings/status_shairplay/status_shairplayli09.txt", "r");
-    fscanf(player09li, "%i", &status09li);
-    fclose(player09li);
-
-    FILE *player09re;
-    player09re = fopen("/opt/innotune/settings/status_shairplay/status_shairplayre09.txt", "r");
-    fscanf(player09re, "%i", &status09re);
-    fclose(player09re);
-
-//Player10
-    FILE *player10;
-    player10 = fopen("/opt/innotune/settings/status_shairplay/status_shairplay10.txt", "r");
-    fscanf(player10, "%i", &status10);
-    fclose(player10);
-
-    FILE *player10li;
-    player10li = fopen("/opt/innotune/settings/status_shairplay/status_shairplayli10.txt", "r");
-    fscanf(player10li, "%i", &status10li);
-    fclose(player10li);
-
-    FILE *player10re;
-    player10re = fopen("/opt/innotune/settings/status_shairplay/status_shairplayre10.txt", "r");
-    fscanf(player10re, "%i", &status10re);
-    fclose(player10re);
 
 
-// Abfrage ob Airplay von Player 1 Aktiv andere Quellen MUTE/UNMUTE
-    if (status01 == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplay_01", "hw:1");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplay_01", "hw:1");
-    }
+// Initialisieren
+nr = 1;
+	for (nr = 1; nr < 11; nr++) {
+                             play_status[nr] = 0;
+                             play_statusli[nr] = 0;
+                             play_statusre[nr] = 0;
+	}
 
-    if (status01li == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplayli_01", "hw:1");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplayli_01", "hw:1");
-    }
 
-    if (status01re == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplayre_01", "hw:1");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplayre_01", "hw:1");
-    }
+// Status lesen 0=inaktiv; 1=aktiv
+nr = 1;
+	for (nr = 1; nr < 11; nr++) {
+                        char myfile[256];
+                        char myfileli[256];
+                        char myfilere[256];
+                        if (nr < 10) {             
+                        sprintf(myfile, "/opt/innotune/settings/status_shairplay/status_shairplay0%d.txt", nr);   
+                        sprintf(myfileli, "/opt/innotune/settings/status_shairplay/status_shairplayli0%d.txt", nr);  
+                        sprintf(myfilere, "/opt/innotune/settings/status_shairplay/status_shairplayre0%d.txt", nr);                           
+                        }
+                        else {
+                        sprintf(myfile, "/opt/innotune/settings/status_shairplay/status_shairplay%d.txt", nr);
+                        sprintf(myfileli, "/opt/innotune/settings/status_shairplay/status_shairplayli%d.txt", nr); 
+                        sprintf(myfilere, "/opt/innotune/settings/status_shairplay/status_shairplayre%d.txt", nr);                              
+                        }
+                        out = fopen(myfile, "r");
+                        fscanf(out, "%ld", &play_status[nr]);
+                        fclose(out);
+                        out = fopen(myfileli, "r");
+                        fscanf(out, "%ld", &play_statusli[nr]);
+                        fclose(out);
+                        out = fopen(myfilere, "r");
+                        fscanf(out, "%ld", &play_statusre[nr]);
+                        fclose(out);
+                }
 
-// Abfrage ob Airplay von Player 2 Aktiv andere Quellen MUTE/UNMUTE
-    if (status02 == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplay_02", "hw:2");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplay_02", "hw:2");
-    }
 
-    if (status02li == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplayli_02", "hw:2");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplayli_02", "hw:2");
-    }
 
-    if (status02re == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplayre_02", "hw:2");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplayre_02", "hw:2");
-    }
+// Abfrage ob Airplay von Player XX aktiv dann andere Quellen MUTE/UNMUTE
+nr = 1;
+	for (nr = 1; nr < 11; nr++) {
+                       char regler[256];
+                       char hw[256];
+                       char regler_li[256];
+                       char regler_re[256];
+                        if (nr < 10) {             
+                        sprintf(regler, "MuteIfAirplay_0%d", nr);   
+                        sprintf(hw, "hw:0%d", nr);   
+                        sprintf(regler_li, "MuteIfAirplayli_0%d", nr);   
+                        sprintf(regler_re, "MuteIfAirplayre_0%d", nr);                    
+                        }
+                        else {
+                        sprintf(regler, "MuteIfAirplay_%d", nr);   
+                        sprintf(hw, "hw:%d", nr);   
+                        sprintf(regler_li, "MuteIfAirplayli_%d", nr);   
+                        sprintf(regler_re, "MuteIfAirplayre_%d", nr);                         
+                        }
+                        if (play_status[nr] == 1) {
+                             result = SetAlsaVolume (1, regler, hw);
+                             }
+                        else {
+                             result = SetAlsaVolume (100, regler, hw);
+                         }
+                        if (play_statusli[nr] == 1) {
+                             result = SetAlsaVolume (1, regler_li, hw);
+                             }
+                        else {
+                             result = SetAlsaVolume (100, regler_li, hw);
+                         }
+                        if (play_statusre[nr] == 1) {
+                             result = SetAlsaVolume (1, regler_re, hw);
+                             }
+                        else {
+                             result = SetAlsaVolume (100, regler_re, hw);
+                         }
 
-// Abfrage ob Airplay von Player 3 Aktiv andere Quellen MUTE/UNMUTE
-    if (status03 == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplay_03", "hw:3");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplay_03", "hw:3");
-    }
+                   }
 
-    if (status03li == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplayli_03", "hw:3");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplayli_03", "hw:3");
-    }
 
-    if (status03re == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplayre_03", "hw:3");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplayre_03", "hw:3");
-    }
 
-// Abfrage ob Airplay von Player 4 Aktiv andere Quellen MUTE/UNMUTE
-    if (status04 == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplay_04", "hw:4");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplay_04", "hw:4");
-    }
 
-    if (status04li == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplayli_04", "hw:4");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplayli_04", "hw:4");
-    }
-
-    if (status04re == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplayre_04", "hw:4");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplayre_04", "hw:4");
-    }
-
-// Abfrage ob Airplay von Player 5 Aktiv andere Quellen MUTE/UNMUTE
-    if (status05 == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplay_05", "hw:5");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplay_05", "hw:5");
-    }
-
-    if (status05li == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplayli_05", "hw:5");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplayli_05", "hw:5");
-    }
-
-    if (status05re == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplayre_05", "hw:5");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplayre_05", "hw:5");
-    }
-
-// Abfrage ob Airplay von Player 6 Aktiv andere Quellen MUTE/UNMUTE
-    if (status06 == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplay_06", "hw:6");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplay_06", "hw:6");
-    }
-
-    if (status06li == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplayli_06", "hw:6");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplayli_06", "hw:6");
-    }
-
-    if (status06re == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplayre_06", "hw:6");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplayre_06", "hw:6");
-    }
-
-// Abfrage ob Airplay von Player 7 Aktiv andere Quellen MUTE/UNMUTE
-    if (status07 == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplay_07", "hw:7");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplay_07", "hw:7");
-    }
-
-    if (status07li == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplayli_07", "hw:7");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplayli_07", "hw:7");
-    }
-
-    if (status07re == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplayre_07", "hw:7");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplayre_07", "hw:7");
-    }
-
-// Abfrage ob Airplay von Player 8 Aktiv andere Quellen MUTE/UNMUTE
-    if (status08 == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplay_08", "hw:8");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplay_08", "hw:8");
-    }
-
-    if (status08li == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplayli_08", "hw:8");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplayli_08", "hw:8");
-    }
-
-    if (status08re == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplayre_08", "hw:8");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplayre_08", "hw:8");
-    }
-
-// Abfrage ob Airplay von Player 9 Aktiv andere Quellen MUTE/UNMUTE
-    if (status09 == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplay_09", "hw:9");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplay_09", "hw:9");
-    }
-
-    if (status09li == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplayli_09", "hw:9");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplayli_09", "hw:9");
-    }
-
-    if (status09re == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplayre_09", "hw:9");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplayre_09", "hw:9");
-    }
-
-// Abfrage ob Airplay von Player 10 Aktiv andere Quellen MUTE/UNMUTE
-    if (status10 == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplay_10", "hw:10");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplay_10", "hw:10");
-    }
-
-    if (status10li == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplayli_10", "hw:10");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplayli_10", "hw:10");
-    }
-
-    if (status10re == 1) {            
-        result = SetAlsaVolume (1, "MuteIfAirplayre_10", "hw:10");
-    }
-     else {
-        result = SetAlsaVolume (100, "MuteIfAirplayre_10", "hw:10");
-    }
+   
 
 
   sleep(1); 
