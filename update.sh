@@ -21,7 +21,6 @@ sudo chmod -R 777 /var/www
 # Update Lighttpd config
 sudo cp /etc/lighttpd/lighttpd.conf /etc/lighttpd/lighttpd.conf.old
 sudo cp /opt/innotune/update/cache/InnoTune/lighttpd.conf /etc/lighttpd/lighttpd.conf
-sudo /etc/init.d/lighttpd restart
 
 # Change Document Root for InnoControl
 var="\"\\/var\\/www\\/InnoControl\""
@@ -94,3 +93,5 @@ sudo /var/www/create_asound.sh
 sudo service dhcpcd stop
 sudo systemctl disable dhcpcd
 sudo update-rc.d -f dhcpcd remove
+
+sudo /etc/init.d/lighttpd restart
