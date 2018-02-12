@@ -62,7 +62,7 @@ snd_pcm_t *Audio_openDevice(char* Name_Device)
 	int err = snd_pcm_open(&handle, Name_Device, SND_PCM_STREAM_PLAYBACK, 0);
 	if (err < 0) {
 		printf("Play-back open error: %s\n", snd_strerror(err));
-		exit(EXIT_FAILURE);
+//		exit(EXIT_FAILURE);
 	}
 	return handle;
 }
@@ -133,10 +133,11 @@ nr = 1;
 
                         out_dev[nr] = ReadtxtInt (1, dev_setting);
 
-
+                        printf("OUTPUT:%ld \n",out_dev[nr]);
                         if (out_dev[nr] == 1 || out_dev[nr] == 2 ) {
+                        printf("ALSA:%s \n",alsa_dev);
                         snd_pcm_t *handle = Audio_openDevice(alsa_dev);
-//                        printf("Pfad: %s Wert: %ld \n",dev_setting, out_dev[nr]);
+                        printf("Pfad: %s Wert: %ld \n",dev_setting, out_dev[nr]);
                         }
 	}
 
