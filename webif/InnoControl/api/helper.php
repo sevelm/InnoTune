@@ -554,6 +554,7 @@ if (isset($_GET['getsysinfo'])) {
 
 if (isset($_GET['update'])) {
     exec("sudo /var/www/sudoscript.sh update", $output, $return_var);
+    header('Location: scripts/reboot.php');
 }
 
 if (isset($_GET['reset'])) {

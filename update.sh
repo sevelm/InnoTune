@@ -93,5 +93,3 @@ sudo /var/www/create_asound.sh
 sudo service dhcpcd stop
 sudo systemctl disable dhcpcd
 sudo update-rc.d -f dhcpcd remove
-
-sudo /etc/init.d/lighttpd restart
