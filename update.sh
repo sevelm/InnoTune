@@ -18,6 +18,11 @@ sudo chmod -R 777 /opt/innotune/settings
 cp -R /opt/innotune/update/cache/InnoTune/webif/* /var/www
 sudo chmod -R 777 /var/www
 
+# Update Lighttpd config
+sudo cp /etc/lighttpd/lighttpd.conf /etc/lighttpd/lighttpd.conf.old
+sudo cp /opt/innotune/update/cache/InnoTune/lighttpd.conf /etc/lighttpd/lighttpd.conf
+sudo /etc/init.d/lighttpd restart
+
 # Change Document Root for InnoControl
 var="\"\\/var\\/www\\/InnoControl\""
 sed -i 's/^\(server.document-root\).*/\1 '=$var'/'  /etc/lighttpd/lighttpd.conf
