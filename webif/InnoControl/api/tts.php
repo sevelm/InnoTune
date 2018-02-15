@@ -1,6 +1,14 @@
 ﻿<?php
-// Variablen definieren
+// Check ob der TTS-Request zur Schlange hinzugefügt werden soll
+if(isset($_GET["noqueue"])) {
+  $process = shell_exec("ps cax | grep ttsvolplay");
+  echo $process;
+  if($process != null) {
+    die("ttsvolplay running... new request not added to queue");
+  }
+}
 
+// Variablen definieren
 $VOL_BACK = trim  ($_GET["vol_back"]);
 $VOL_ALL = trim ($_GET["vol_all"]);
 $VOL_01 = trim ($_GET["vol_01"]);
@@ -146,11 +154,11 @@ if (empty($pids)) {
 	    // Text anpassen
     $words = rawurldecode($_GET['text']);
     if ($TIME != "" ) {
-	    $Stunde = date("H"); 
+	    $Stunde = date("H");
         $Minute = date("i");
                    if ($Minute == "00" ) {
                          $words = "Es ist". $Stunde. "Uhr.";
-                         }		
+                         }
                    if ($Minute == "01" ) {
                          $words = "Es ist". $Stunde. "Uhr und eine Minute.";
                          }
@@ -192,4 +200,3 @@ if (empty($pids)) {
     echo "Fehler!";
 }
 ?>
-

@@ -113,6 +113,11 @@
                 <td></td>
                 <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?time=1</td>
             </tr>
+            <tr>
+              <td><b>Nur Ausgeben wenn Kanal frei ist:</b></td>
+              <td></td>
+              <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&noqueue</td>
+            </tr>
         </table>
     </div>
 </div>
