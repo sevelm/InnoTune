@@ -143,6 +143,11 @@ if ($lang == "") {
     $lang = "de-de"; // Andere Einstellungen siehe VoiceRSS Doku (en-us / en-gb)
 }
 
+$speed = strval(($_GET["speed"]));
+if($speed == "" || strpos($speed, '-') === false) {
+  $speed = "0";
+}
+
 // Prüfen ob noch ein Prozess läuft
 $pids = shell_exec("ps aux | grep -i 'mpg321' | grep -v grep");
 
@@ -176,11 +181,11 @@ if (empty($pids)) {
 
     // Parameter VoiceRSS
     $encodedwords = urlencode($words);
-    $inlay = "key=$key&hl=$lang&src=$encodedwords&f=$q"; // Variablen Key, Sprache, Text und Qualität definieren
+    $inlay = "key=$key&hl=$lang&src=$encodedwords&f=$q&r=$speed"; // Variablen Key, Sprache, Text und Qualität definieren
     echo "Parameter VoiceRSS: <b>" . $inlay . "</b><br>";
 
     // Speicherort der MP3 Datei
-    $file = "/media/Soundfiles/tts/" . str_replace(" ", "_", $words_neu) . ".mp3";
+    $file = "/media/Soundfiles/tts/" . str_replace(" ", "_", $words_neu) . $speed . ".mp3";
     $file = str_replace("ä", "ae", $file);
 
     // Prüfen ob die MP3 Datei bereits vorhanden ist
@@ -189,13 +194,13 @@ if (empty($pids)) {
         file_put_contents($file, $mp3);
     }
 
-    echo "Script Aufruf: /var/www/src/ttsvolplay " . str_replace(" ", "_", $words_neu);
+    echo "Script Aufruf: /var/www/src/ttsvolplay " . str_replace(" ", "_", $words_neu) . $speed;
     echo "<br>Speicherort: " . $file;
 
     //Update MPD Library
     shell_exec("mpc update");
     //Execute ttsvolplay
-    shell_exec("sudo /var/www/sudoscript.sh ttsvolplay " . str_replace(" ", "_", $words_neu));
+    shell_exec("sudo /var/www/sudoscript.sh ttsvolplay " . str_replace(" ", "_", $words_neu) . $speed);
 } else {
     echo "Fehler!";
 }

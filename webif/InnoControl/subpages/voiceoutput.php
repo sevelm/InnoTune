@@ -118,6 +118,11 @@
               <td></td>
               <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&noqueue</td>
             </tr>
+            <tr>
+              <td><b>Geschwindigkeit der Sprachausgabe (-10 bis 0):</b></td>
+              <td></td>
+              <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&speed=-3</td>
+            </tr>
         </table>
     </div>
 </div>
