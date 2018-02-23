@@ -10,6 +10,15 @@
 
 sudo apt-get update
 
+# Killall 
+killall shairport
+killall squeezelite-armv6hf
+killall squeezeboxserver
+killall mpd
+killall aplay
+killall librespot
+killall playmonitor
+
 # Settings Ordner
 cp -R /opt/innotune/update/cache/InnoTune/settings/* -n /opt/innotune/settings
 sudo chmod -R 777 /opt/innotune/settings
