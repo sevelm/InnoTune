@@ -4,9 +4,10 @@
 # Config
 ##########################################################
 
- 
+
 case "$1" in
      store_settings) cd /opt/innotune/settings/
+                              /var/www/get_lms_players.sh
                               zip -r /var/www/upload_download/settings.zip ./;;
      restore_settings) unzip -o /var/www/upload_download/settings.zip -d /opt/innotune/settings
                                  sudo chmod -R 777 /opt/innotune/settings;;
@@ -17,11 +18,11 @@ case "$1" in
      setnet) /var/www/set_network.sh "$2";;
      create_asound) /var/www/create_asound.sh;;
      show_vol_equal) /var/www/show_vol_equal.sh "$2" "$3" ;;
-     showsoundcard) /var/www/show_soundcard.sh "$2";; 
-     set_vol) amixer -c "$2" set "$3"_"$2" "$4"%; amixer -c "$2" set "$3"li_"$2" "$4"%; amixer -c "$2" set "$3"re_"$2" "$4"%;;                
+     showsoundcard) /var/www/show_soundcard.sh "$2";;
+     set_vol) amixer -c "$2" set "$3"_"$2" "$4"%; amixer -c "$2" set "$3"li_"$2" "$4"%; amixer -c "$2" set "$3"re_"$2" "$4"%;;
      mpdvolplay) killall mpdvolplay
                  /var/www/src/mpdvolplay "$2";;
-     mpdstop) mpc stop 
+     mpdstop) mpc stop
               mpc repeat off;;
      mpdrepeat) mpc repeat on;;
      reboot) reboot;;
