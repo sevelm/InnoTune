@@ -16,7 +16,7 @@ $PNG = "\x89\x50\x4e\x47\x0d\x0a\x1a\x0a";
 $JPEG = "\xFF\xD8\xFF";
 
 //size of the album art in composed image
-$innerSize = 300;
+$innerSize = 400;
 
 //Get album art as string
 $ch = curl_init();
@@ -48,7 +48,7 @@ if (substr($output, 0, strlen($PNG)) === $PNG) {
     $im = imagecreatefromstring($output);
     $scaled = imagescale($im, $innerSize);
     imagedestroy($im);
-    imagecopy($background, $scaled, 150, 75, 0, 0, $innerSize, $innerSize);
+    imagecopy($background, $scaled, 100, 50, 0, 0, $innerSize, $innerSize);
     imagedestroy($scaled);
     $white = imagecolorallocate($background, 255, 255, 255);
 
@@ -57,7 +57,7 @@ if (substr($output, 0, strlen($PNG)) === $PNG) {
     if($songposx < 0) {
       $songposx = 0;
     }
-    imagettftext($background, 20, 0, ($songposx / 2), 450, $white, './font.ttf', $info[0]);
+    imagettftext($background, 20, 0, ($songposx / 2), 500, $white, './font.ttf', $info[0]);
 
     if($info[2] !== "") {
         $textboxartist = imagettfbbox(20, 0, './font.ttf', $info[2]);
@@ -65,7 +65,7 @@ if (substr($output, 0, strlen($PNG)) === $PNG) {
         if($artistposx < 0) {
           $artistposx = 0;
         }
-        imagettftext($background, 20, 0, ($artistposx / 2), 490, $white, './font.ttf', $info[2]);
+        imagettftext($background, 20, 0, ($artistposx / 2), 540, $white, './font.ttf', $info[2]);
     }
     if($info[1] !== "") {
         $textboxalbum = imagettfbbox(20, 0, './font.ttf', $info[1]);
@@ -73,7 +73,7 @@ if (substr($output, 0, strlen($PNG)) === $PNG) {
         if($albumposx < 0) {
           $albumposx = 0;
         }
-        imagettftext($background, 20, 0, ($albumposx / 2), 530, $white, './font.ttf', $info[1]);
+        imagettftext($background, 20, 0, ($albumposx / 2), 580, $white, './font.ttf', $info[1]);
     }
     imagejpeg($background, $converted, 100);
     imagedestroy($background);
@@ -84,7 +84,7 @@ if (substr($output, 0, strlen($PNG)) === $PNG) {
     $im = imagecreatefromstring($output);
     $scaled = imagescale($im, $innerSize);
     imagedestroy($im);
-    imagecopy($background, $scaled, 150, 75, 0, 0, $innerSize, $innerSize);
+    imagecopy($background, $scaled, 100, 50, 0, 0, $innerSize, $innerSize);
     imagedestroy($scaled);
     $white = imagecolorallocate($background, 255, 255, 255);
 
@@ -93,7 +93,7 @@ if (substr($output, 0, strlen($PNG)) === $PNG) {
     if($songposx < 0) {
       $songposx = 0;
     }
-    imagettftext($background, 20, 0, ($songposx / 2), 450, $white, './font.ttf', $info[0]);
+    imagettftext($background, 20, 0, ($songposx / 2), 500, $white, './font.ttf', $info[0]);
 
     if($info[2] !== "") {
         $textboxartist = imagettfbbox(20, 0, './font.ttf', $info[2]);
@@ -101,7 +101,7 @@ if (substr($output, 0, strlen($PNG)) === $PNG) {
         if($artistposx < 0) {
           $artistposx = 0;
         }
-        imagettftext($background, 20, 0, ($artistposx / 2), 490, $white, './font.ttf', $info[2]);
+        imagettftext($background, 20, 0, ($artistposx / 2), 540, $white, './font.ttf', $info[2]);
     }
     if($info[1] !== "") {
         $textboxalbum = imagettfbbox(20, 0, './font.ttf', $info[1]);
@@ -109,7 +109,7 @@ if (substr($output, 0, strlen($PNG)) === $PNG) {
         if($albumposx < 0) {
           $albumposx = 0;
         }
-        imagettftext($background, 20, 0, ($albumposx / 2), 530, $white, './font.ttf', $info[1]);
+        imagettftext($background, 20, 0, ($albumposx / 2), 580, $white, './font.ttf', $info[1]);
     }
     imagejpeg($background);
     imagedestroy($background);
