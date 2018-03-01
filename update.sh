@@ -10,7 +10,7 @@
 
 sudo apt-get update
 
-# Killall 
+# Killall
 killall shairport
 killall squeezelite-armv6hf
 killall squeezeboxserver
@@ -89,6 +89,14 @@ sudo git clone https://github.com/AElmecker/InnoPlayMobile.git /usr/share/squeez
 sudo rm -r /usr/share/squeezeboxserver/HTML/m
 sudo cp -R /usr/share/squeezeboxserver/HTML/InnoPlayMobile/m /usr/share/squeezeboxserver/HTML/m
 sudo rm -r /usr/share/squeezeboxserver/HTML/InnoPlayMobile
+
+#Imagestream 4 Loxone
+#used php extensions
+sudo apt-get install -y php5.6-gd
+sudo apt-get install -y php5.6-curl
+
+#php.ini file with enabled curl-extension
+sudo cp /opt/innotune/update/cache/InnoTune/php.ini /etc/php/5.6/cgi/php.ini
 
 # Add Crontabs
 grep -q -F "*/15 * * * * /var/www/playercheck.sh" /var/spool/cron/crontabs/root || echo "*/15 * * * * /var/www/playercheck.sh" >> /var/spool/cron/crontabs/root
