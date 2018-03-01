@@ -8,6 +8,60 @@ if(isset($_GET["noqueue"])) {
   }
 }
 
+/*if(isset($_GET["squeeze"])) {
+  $zone = $_GET["squeeze"];
+  $mac = $_GET["mac"];
+  $zonemastervol = explode(";", exec("sudo /var/www/sudoscript.sh show_vol_equal " . $zone . " all"));
+  $mpdold = $zonemastervol[0];
+  $squeezevol = intval(exec("echo $(printf \"$mac mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
+  $mpdnew = intval($zonemastervol[1]) * ($squeezevol / 100);
+  exec("sudo /var/www/sudoscript.sh set_vol $zone mpd $mpdnew");
+}*/
+
+for($i = 1; $i < 10; $i++) {
+    if($_GET["vol_0$i"] == "squeeze") {
+        $zonemastervol = explode(";", exec("sudo /var/www/sudoscript.sh show_vol_equal 0" . $i . " all"));
+        if(isset($_GET["mac_0$i"])) {
+          $currmac = $_GET["mac_0$i"];
+          $squeezevol = intval(exec("echo $(printf \"$currmac mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
+        } else {
+          $squeezevol = intval(exec("echo $(printf \"00:00:00:00:00:0$i mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
+        }
+        $_GET["vol_0$i"] = intval($zonemastervol[1]) * ($squeezevol / 100);
+    } else if(strpos($_GET["vol_0$i"], "squeeze/") !== false) {
+      $zonemastervol = explode(";", exec("sudo /var/www/sudoscript.sh show_vol_equal 0" . $i . " all"));
+      if(isset($_GET["mac_0$i"])) {
+        $currmac = $_GET["mac_0$i"];
+        $squeezevol = intval(exec("echo $(printf \"$currmac mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
+      } else {
+        $squeezevol = intval(exec("echo $(printf \"00:00:00:00:00:0$i mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
+      }
+      $vall = intval($zonemastervol[1]) * ($squeezevol / 100);
+      $valr = explode("/", $_GET["vol_0$i"])[1];
+      $_GET["vol_0$i"] = "$vall/$valr";
+    } else if(strpos($_GET["vol_0$i"], "/squeeze") !== false) {
+      $zonemastervol = explode(";", exec("sudo /var/www/sudoscript.sh show_vol_equal 0" . $i . " all"));
+      if(isset($_GET["mac_0$i"])) {
+        $currmac = $_GET["mac_0$i"];
+        $squeezevol = intval(exec("echo $(printf \"$currmac mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
+      } else {
+        $squeezevol = intval(exec("echo $(printf \"00:00:00:00:00:0$i mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
+      }
+      $valr = intval($zonemastervol[1]) * ($squeezevol / 100);
+      $vall = explode("/", $_GET["vol_0$i"])[0];
+      $_GET["vol_0$i"] = "$vall/$valr";
+    }
+}
+if($_GET["vol_10"] == "squeeze") {
+    $zonemastervol = explode(";", exec("sudo /var/www/sudoscript.sh show_vol_equal 10 all"));
+    if(isset($_GET["mac_10"])) {
+      $currmac = $_GET["mac_10"];
+      $squeezevol = intval(exec("echo $(printf \"$currmac mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
+    } else {
+      $squeezevol = intval(exec("echo $(printf \"00:00:00:00:00:10 mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
+    }
+    $_GET["vol_10"] = intval($zonemastervol[1]) * ($squeezevol / 100);
+}
 // Variablen definieren
 $VOL_BACK = trim  ($_GET["vol_back"]);
 $VOL_ALL = trim ($_GET["vol_all"]);
@@ -204,4 +258,8 @@ if (empty($pids)) {
 } else {
     echo "Fehler!";
 }
+
+/*if(isset($_GET["squeeze"])) {
+    exec("sudo /var/www/sudoscript.sh set_vol $zone mpd $mpdold");
+}*/
 ?>
