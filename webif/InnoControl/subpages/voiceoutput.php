@@ -124,19 +124,17 @@
               <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&speed=-3</td>
             </tr>
             <tr>
-              <td><b>Ausgabe an Squeezeboxlautstärke anpassen (Standard Mac-Adressen):</b></td>
-              <td></td>
-              <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&vol_01=squeeze</td>
-            </tr>
-            <tr>
-              <td><b>Ausgabe an Squeezeboxlautstärke anpassen (spezielle Mac-Adressen):</b></td>
+              <td><b>Ausgabe an Squeezeboxlautstärke anpassen:</b></td>
               <td></td>
               <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&vol_01=squeeze&mac_01=00:00:00:00:00:01</td>
             </tr>
             <tr>
                 <td><b>Lautstärke Zone01 links Squeeze rechts Mute (0%):</b></td>
                 <td></td>
-                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&vol_01=squeeze/0</td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&vol_01=squeeze/0&mac_01=00:00:00:00:00:01</td>
+            </tr>
+            <tr>
+                <td><b>Wenn bei geteilten Betrieb nur eine Lautstärke angegeben wird, erfolgt die Ausgabe auf beiden Lautsprechern!</b></td>
             </tr>
         </table>
     </div>
