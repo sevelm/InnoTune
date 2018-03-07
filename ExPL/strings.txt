@@ -1,0 +1,9 @@
+# String file for ExPL plugin
+
+PLUGIN_EXPL
+	EN	Extended xPL
+	DE	Extended xPL
+
+PLUGIN_EXPL_DESC
+	EN	Extends xPL plugin with playlist handling.
+	DE	Erweitert das xPL Plugin um zahlreiche Playlisten-funktionen.

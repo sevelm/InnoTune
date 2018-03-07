@@ -27,6 +27,11 @@ sudo chmod -R 777 /opt/innotune/settings
 cp -R /opt/innotune/update/cache/InnoTune/webif/* /var/www
 sudo chmod -R 777 /var/www
 
+# ExPL Ordner
+sudo cp -R /opt/innotune/update/cache/InnoTune/ExPL /var/lib/squeezeboxserver/cache/InstalledPlugins/Plugins/
+sudo chmod -R 755 /var/lib/squeezeboxserver/cache/InstalledPlugins/Plugins/
+sudo chown -R squeezeboxserver:nogroup /var/lib/squeezeboxserver/cache/InstalledPlugins/Plugins/
+
 # Update Lighttpd config
 sudo cp /etc/lighttpd/lighttpd.conf /etc/lighttpd/lighttpd.conf.old
 sudo cp /opt/innotune/update/cache/InnoTune/lighttpd.conf /etc/lighttpd/lighttpd.conf

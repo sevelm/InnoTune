@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<extension>
+    <name>PLUGIN_EXPL</name>
+    <module>Plugins::ExPL::Plugin</module>
+    <version>1.2</version>
+    <description>PLUGIN_EXPL_DESC</description>
+    <creator>Timo Krieger</creator>
+    <email>t.krieger@bab-tec.de</email>
+
+	<defaultState>enabled</defaultState>
+        
+    <homepageURL>http://www.bab-tec.de</homepageURL>
+<!--	<optionsURL>plugins/ExPL/settings/basic.html</optionsURL>-->
+	<type>2</type><!-- type=extension -->
+
+    <targetApplication>
+        <id>SqueezeCenter</id>
+        <minVersion>7.0a</minVersion>
+        <maxVersion>7.9+</maxVersion>
+    </targetApplication>
+
+</extension>
