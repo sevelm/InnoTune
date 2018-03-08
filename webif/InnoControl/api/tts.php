@@ -1,5 +1,5 @@
 ﻿<?php
-// Check ob der TTS-Request zur Schlange hinzugefügt werden soll
+// Check ob der TTS-Request zur Warteschlange hinzugefügt werden soll
 if(isset($_GET["noqueue"])) {
   $process = shell_exec("ps cax | grep ttsvolplay");
   echo $process;
