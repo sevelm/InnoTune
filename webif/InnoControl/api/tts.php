@@ -1,22 +1,10 @@
 ﻿<?php
-// Check ob der TTS-Request zur Warteschlange hinzugefügt werden soll
 if(isset($_GET["noqueue"])) {
-  $process = shell_exec("ps cax | grep ttsvolplay");
-  echo $process;
-  if($process != null) {
+  $process = shell_exec("ps cax | grep ttsvolplay | cut -d ' ' -f 1");
+  if(!empty($process)) {
     die("ttsvolplay running... new request not added to queue");
   }
 }
-
-/*if(isset($_GET["squeeze"])) {
-  $zone = $_GET["squeeze"];
-  $mac = $_GET["mac"];
-  $zonemastervol = explode(";", exec("sudo /var/www/sudoscript.sh show_vol_equal " . $zone . " all"));
-  $mpdold = $zonemastervol[0];
-  $squeezevol = intval(exec("echo $(printf \"$mac mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
-  $mpdnew = intval($zonemastervol[1]) * ($squeezevol / 100);
-  exec("sudo /var/www/sudoscript.sh set_vol $zone mpd $mpdnew");
-}*/
 
 for($i = 1; $i < 10; $i++) {
     if($_GET["vol_0$i"] == "squeeze") {
@@ -27,6 +15,9 @@ for($i = 1; $i < 10; $i++) {
         } else {
           $squeezevol = intval(exec("echo $(printf \"00:00:00:00:00:0$i mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
         }
+        if($squeezevol <= 90 && $squeezevol > 0) {
+          $squeezevol = $squeezevol+10;
+        }
         $_GET["vol_0$i"] = intval($zonemastervol[1]) * ($squeezevol / 100);
     } else if(strpos($_GET["vol_0$i"], "squeeze/") !== false) {
       $zonemastervol = explode(";", exec("sudo /var/www/sudoscript.sh show_vol_equal 0" . $i . " all"));
@@ -35,6 +26,9 @@ for($i = 1; $i < 10; $i++) {
         $squeezevol = intval(exec("echo $(printf \"$currmac mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
       } else {
         $squeezevol = intval(exec("echo $(printf \"00:00:00:00:00:0$i mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
+      }
+      if($squeezevol <= 90 && $squeezevol > 0) {
+        $squeezevol = $squeezevol+10;
       }
       $vall = intval($zonemastervol[1]) * ($squeezevol / 100);
       $valr = explode("/", $_GET["vol_0$i"])[1];
@@ -46,6 +40,9 @@ for($i = 1; $i < 10; $i++) {
         $squeezevol = intval(exec("echo $(printf \"$currmac mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
       } else {
         $squeezevol = intval(exec("echo $(printf \"00:00:00:00:00:0$i mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
+      }
+      if($squeezevol <= 90 && $squeezevol > 0) {
+        $squeezevol = $squeezevol+10;
       }
       $valr = intval($zonemastervol[1]) * ($squeezevol / 100);
       $vall = explode("/", $_GET["vol_0$i"])[0];
@@ -59,6 +56,9 @@ if($_GET["vol_10"] == "squeeze") {
       $squeezevol = intval(exec("echo $(printf \"$currmac mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
     } else {
       $squeezevol = intval(exec("echo $(printf \"00:00:00:00:00:10 mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
+    }
+    if($squeezevol <= 90 && $squeezevol > 0) {
+      $squeezevol = $squeezevol+10;
     }
     $_GET["vol_10"] = intval($zonemastervol[1]) * ($squeezevol / 100);
 }
@@ -254,12 +254,13 @@ if (empty($pids)) {
     //Update MPD Library
     shell_exec("mpc update");
     //Execute ttsvolplay
-    shell_exec("sudo /var/www/sudoscript.sh ttsvolplay " . str_replace(" ", "_", $words_neu) . $speed);
+    // Check ob der TTS-Request zur Warteschlange hinzugefügt werden soll
+    if(isset($_GET["noqueue"])) {
+      shell_exec("sudo /var/www/sudoscript.sh ttsvolplay " . str_replace(" ", "_", $words_neu) . $speed . " > /dev/null 2>/dev/null &");
+    } else {
+      shell_exec("sudo /var/www/sudoscript.sh ttsvolplay " . str_replace(" ", "_", $words_neu) . $speed);
+    }
 } else {
     echo "Fehler!";
 }
-
-/*if(isset($_GET["squeeze"])) {
-    exec("sudo /var/www/sudoscript.sh set_vol $zone mpd $mpdold");
-}*/
 ?>

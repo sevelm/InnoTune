@@ -11,7 +11,7 @@ album=$(printf "$1 album ?\nexit\n" | nc $server $port | cut -d ' ' -f 3)
 artist=$(printf "$1 artist ?\nexit\n" | nc $server $port | cut -d ' ' -f 3)
 #currtitle=$(printf "$1 current_title ?\nexit\n" | nc $server $port | cut -d ' ' -f 3)
 
-#encoded chars: :   & | ! ? , / Ä Ö Ü ä ö ü
+#encoded chars: :   & | ! ? , / Ä Ö Ü ä ö ü [ ] ... ß
 echo "$title;$connected;$artist;$mode" | sed -e 's/%3A/:/g' \
                                    -e 's/%20/ /g' \
                                    -e 's/%26/\&/g' \
@@ -25,4 +25,8 @@ echo "$title;$connected;$artist;$mode" | sed -e 's/%3A/:/g' \
                                    -e 's/%C3%9C/Ü/g' \
                                    -e 's/%C3%A4/ä/g' \
                                    -e 's/%C3%B6/ö/g' \
-                                   -e 's/%C3%BC/ü/g'
+                                   -e 's/%C3%BC/ü/g' \
+                                   -e 's/%5B/[/g' \
+                                   -e 's/%5D/]/g' \
+                                   -e 's/%E2%80%A6/.../g' \
+                                   -e 's/%C3%9F/ß/g'
