@@ -12,6 +12,7 @@ sudo apt-get update
 
 # Killall
 killall shairport
+killall shairport-sync
 killall squeezelite-armv6hf
 killall squeezeboxserver
 killall mpd
@@ -78,16 +79,28 @@ mkdir /media/Soundfiles/tts
 sudo chmod -R 777 /media/Soundfiles/tts
 
 
-# Shairport
-sudo git clone https://github.com/abrasive/shairport.git /opt/shairport
-cd /opt/shairport
-sudo ./configure
-sudo make install
+# Shairport (old)
+#sudo git clone https://github.com/abrasive/shairport.git /opt/shairport
+#cd /opt/shairport
+#sudo ./configure
+#sudo make install
+sudo rm /usr/local/bin/shairport
+sudo rm -R /opt/shairport
 
-# Spotify Connect
-cd /root
-wget -nc https://github.com/herrernst/librespot/releases/download/v20170717-910974e/librespot-linux-armhf-raspberry_pi.zip
-unzip -f librespot-linux-armhf-raspberry_pi.zip -d .
+# Shairport-sync
+sudo apt-get -y install shairport-sync
+sudo systemctl stop shairport-sync
+sudo systemctl disable shairport-sync
+
+# Spotify Connect (old)
+#cd /root
+#wget -nc https://github.com/herrernst/librespot/releases/download/v20170717-910974e/librespot-linux-armhf-raspberry_pi.zip
+#unzip -f librespot-linux-armhf-raspberry_pi.zip -d .
+
+#Spotify Connect
+sudo rm /root/librespot-linux-armhf-raspberry_pi.zip
+sudo apt-get -y install build-essential portaudio19-dev
+sudo cp /opt/innotune/update/cache/InnoTune/librespot /root/librespot
 
 #InnoPlay Mobile
 sudo git clone https://github.com/AElmecker/InnoPlayMobile.git /usr/share/squeezeboxserver/HTML/InnoPlayMobile

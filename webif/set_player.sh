@@ -1,6 +1,6 @@
 #!/bin/bash
 
-killall shairport
+killall shairport-sync
 killall squeezelite-armv6hf
 killall squeezeboxserver
 killall mpd
@@ -41,13 +41,13 @@ do
         if [[ $PLAYER ]] || [[ $PLAYERli"$i" ]] || [[ $PLAYERre"$i" ]]; then
             ########### Start Airplay
             if [[ $AP ]]; then           ###Aktivate Player on USB device "$i" - AirPlay
-                  /usr/local/bin/shairport -w -p $(($PORT_BASE+1)) -a "$PLAYER" --on-start "echo 1 > /opt/innotune/settings/status_shairplay/status_shairplay"$i".txt" --on-stop "echo 0 > /opt/innotune/settings/status_shairplay/status_shairplay"$i".txt" -o alsa -- -d airplay"$i" > /dev/null 2>&1 & echo $!
+                  shairport-sync -w -p $(($PORT_BASE+1)) -a "$PLAYER" --on-start "echo 1 > /opt/innotune/settings/status_shairplay/status_shairplay"$i".txt" --on-stop "echo 0 > /opt/innotune/settings/status_shairplay/status_shairplay"$i".txt" -o alsa -- -d airplay"$i" > /dev/null 2>&1 & echo $!
             fi
             if [[ $APli ]]; then         ###Aktivate Player left on USB device "$i" - AirPlay
-                  /usr/local/bin/shairport -w -p $(($PORT_BASE+2)) -a "$PLAYERli" --on-start "echo 1 > /opt/innotune/settings/status_shairplay/status_shairplayli"$i".txt" --on-stop "echo 0 > /opt/innotune/settings/status_shairplay/status_shairplayli"$i".txt" -o alsa -- -d airplayli"$i" > /dev/null 2>&1 & echo $!
+                  shairport-sync -w -p $(($PORT_BASE+2)) -a "$PLAYERli" --on-start "echo 1 > /opt/innotune/settings/status_shairplay/status_shairplayli"$i".txt" --on-stop "echo 0 > /opt/innotune/settings/status_shairplay/status_shairplayli"$i".txt" -o alsa -- -d airplayli"$i" > /dev/null 2>&1 & echo $!
             fi
             if [[ $APre ]]; then         ###Aktivate Player right on USB device "$i" - AirPlay
-                  /usr/local/bin/shairport -w -p $(($PORT_BASE+3)) -a "$PLAYERre" --on-start "echo 1 > /opt/innotune/settings/status_shairplay/status_shairplayre"$i".txt" --on-stop "echo 0 > /opt/innotune/settings/status_shairplay/status_shairplayre"$i".txt" -o alsa -- -d airplayre"$i" > /dev/null 2>&1 & echo $!
+                  shairport-sync -w -p $(($PORT_BASE+3)) -a "$PLAYERre" --on-start "echo 1 > /opt/innotune/settings/status_shairplay/status_shairplayre"$i".txt" --on-stop "echo 0 > /opt/innotune/settings/status_shairplay/status_shairplayre"$i".txt" -o alsa -- -d airplayre"$i" > /dev/null 2>&1 & echo $!
             fi
 
             ########### Start Squeezelite
@@ -63,13 +63,13 @@ do
 
             ########### Start Spotify Connect
             if [[ $SP ]]; then           ###Aktivate Player on USB device "$i" - Spotify
-                    sudo /root/librespot --name $PLAYER --cache /tmp --bitrate 320 --backend alsa --device airplay$i --onstart "./var/www/spotifyconnect.sh $i 1" --onstop "./var/www/spotifyconnect.sh $i 0" > /dev/null 2>&1 & echo $!
+                    sudo /root/librespot --name $PLAYER --cache /tmp --bitrate 320 --device airplay$i --onevent "./var/www/spotifyconnect.sh $i 1" > /dev/null 2>&1 & echo $!
                     fi
             if [[ $SPli ]]; then         ###Aktivate Player left on USB device "$i" - Spotify
-                    sudo /root/librespot --name $PLAYERli --cache /tmp --bitrate 320 --backend alsa --device airplayli$i --onstart "./var/www/spotifyconnect.sh $i 1 li" --onstop "./var/www/spotifyconnect.sh $i 0 li" > /dev/null 2>&1 & echo $!
+                    sudo /root/librespot --name $PLAYERli --cache /tmp --bitrate 320 --device airplayli$i --onevent "./var/www/spotifyconnect.sh $i 1 li" > /dev/null 2>&1 & echo $!
             fi
             if [[ $SPre ]]; then         ###Aktivate Player right on USB device "$i" - Spotify
-                    sudo /root/librespot --name $PLAYERre --cache /tmp --bitrate 320 --backend alsa --device airplayre$i --onstart "./var/www/spotifyconnect.sh $i 1 re" --onstop "./var/www/spotifyconnect.sh $i 0 re" > /dev/null 2>&1 & echo $!
+                    sudo /root/librespot --name $PLAYERre --cache /tmp --bitrate 320 --device airplayre$i --onevent "./var/www/spotifyconnect.sh $i 1 re" > /dev/null 2>&1 & echo $!
             fi
             echo 0 > /opt/innotune/settings/status_shairplay/status_shairplay"$i".txt           ### Airplay ablöschen
             echo 0 > /opt/innotune/settings/status_shairplay/status_shairplayli"$i".txt         ### Airplay ablöschen
