@@ -632,4 +632,15 @@ if (isset($_GET['getversion'])) {
     $version_local = file($datei); // Datei in ein Array einlesen
     echo $version_local[0];
 }
+
+if (isset($_GET['log'])) {
+    echo nl2br(file_get_contents("/var/www/checkprocesses.log"));
+}
+if (isset($_GET['logfile'])) {
+    $filepath = "/var/www/checkprocesses.log";
+    header('Content-Type: application/octet-stream');
+    header("Content-Transfer-Encoding: Binary");
+    header("Content-disposition: attachment; filename=\"" . basename($filepath) . "\""); 
+    readfile($filepath);
+}
 ?>

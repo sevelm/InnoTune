@@ -3,7 +3,7 @@
 # $1 = player nummer
 # $2 = ein/aus
 # $3 = li/re
-
+a=$2
 if [ "$PLAYER_EVENT" = "start" ]; then
   a=1
 elif [ "$PLAYER_EVENT" = "stop" ] || [ "$PLAYER_EVENT" = "pause" ]; then

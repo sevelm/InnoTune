@@ -102,6 +102,22 @@ sudo rm /root/librespot-linux-armhf-raspberry_pi.zip
 sudo apt-get -y install build-essential portaudio19-dev
 sudo cp /opt/innotune/update/cache/InnoTune/librespot /root/librespot
 
+#process info files
+sudo touch /opt/innotune/settings/p_shairplay
+sudo touch /opt/innotune/settings/p_squeeze
+sudo touch /opt/innotune/settings/p_spotify
+sudo chmod 777 /opt/innotune/settings/p_*
+
+#process log file
+sudo touch /var/www/checkprocesses.log
+sudo chmod 777 /var/www/checkprocesses.log
+
+#add script to cron if it isn't already added
+is_added=$(crontab -l | grep checkprocesses.sh | wc -l)
+if [[ $is_added -eq 0 ]]; then
+    crontab -l | { cat; echo "* * * * * /var/www/checkprocesses.sh"; } | crontab -
+fi
+
 #InnoPlay Mobile
 sudo git clone https://github.com/AElmecker/InnoPlayMobile.git /usr/share/squeezeboxserver/HTML/InnoPlayMobile
 sudo rm -r /usr/share/squeezeboxserver/HTML/m
