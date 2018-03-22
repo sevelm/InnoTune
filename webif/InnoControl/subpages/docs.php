@@ -140,6 +140,32 @@ $version_local = file($datei); // Datei in ein Array einlesen
     </div>
 </div>
 
+<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Log</h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+      <div class="mdl-grid">
+          <div class="mdl-cell mdl-cell--6-col">
+              <h5 class="mdl-cell mdl-cell--7-col">Logfile downloaden</h5>
+              <br>
+          </div>
+          <div class="mdl-cell mdl-cell--6-col">
+              <h5 style="margin-top: 0">Letzten Einträge:</h5>
+              <ul>
+                <li>Derzeit nicht verfügbar!</li>
+              </ul>
+          </div>
+      </div>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <a href="/api/helper.php?logfile"
+           class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+            Sichern
+        </a>
+    </div>
+</div>
+
 <script type="application/javascript">
     document.getElementById('userfile').onchange = function () {
         document.getElementById('display-text').textContent = document.getElementById('userfile').value.split(/(\\|\/)/g).pop();
