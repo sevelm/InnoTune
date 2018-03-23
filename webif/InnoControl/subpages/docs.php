@@ -152,9 +152,15 @@ $version_local = file($datei); // Datei in ein Array einlesen
           </div>
           <div class="mdl-cell mdl-cell--6-col">
               <h5 style="margin-top: 0">Letzten Einträge:</h5>
-              <ul>
-                <li>Derzeit nicht verfügbar!</li>
-              </ul>
+              <p>
+                <?php
+                    $out = array();
+                    exec("tail -5 /var/www/checkprocesses.log", $out);
+                    foreach($out as $line) {
+                      echo "$line<br>";
+                    }
+                ?>
+              </p>
           </div>
       </div>
     </div>
