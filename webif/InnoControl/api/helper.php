@@ -640,7 +640,7 @@ if (isset($_GET['logfile'])) {
     $filepath = "/var/www/checkprocesses.log";
     header('Content-Type: application/octet-stream');
     header("Content-Transfer-Encoding: Binary");
-    header("Content-disposition: attachment; filename=\"" . basename($filepath) . "\""); 
+    header("Content-disposition: attachment; filename=\"" . basename($filepath) . "\"");
     readfile($filepath);
 }
 ?>

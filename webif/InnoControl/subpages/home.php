@@ -93,7 +93,7 @@ if ($pos1 == 1) {
                         Speicher:&nbsp;
                         <div class="mdl-cell--hide-phone"><b>{{formatSizeUnits(sysinfo.diskspace)}} belegt von {{formatSizeUnits(sysinfo.disksize)}} /&nbsp; </b></div>
                         <div class="mdl-layout-spacer mdl-cell--hide-desktop mdl-cell--hide-tablet"></div>
-                        <b>{{sysinfo.diskpercent}}%</b>
+                        <b>{{100 - sysinfo.diskpercent}}%</b>
                   </span>
                 </li>
                 <li class="mdl-list__item">
