@@ -18,6 +18,7 @@ if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
      /etc/init.d/logitechmediaserver restart
      IPLMS="-s $(ip route show | grep 'src' | grep 'eth0' | awk '{print $9}')"
      START_PORT=10000
+     /var/www/msb_set_credentials.sh > /dev/null 2>&1 &
   else
      /etc/init.d/logitechmediaserver stop & update-rc.d logitechmediaserver remove
      START_PORT=11000
