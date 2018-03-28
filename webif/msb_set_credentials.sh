@@ -18,5 +18,10 @@ if [[ $con -lt 20 ]]; then
     response=$(printf "setsncredentials squeeze@innotune.at innotune\n" | nc -q 120 localhost 9090)
     count=$((count+1))
   done
+    datetime=$(date '+%d-%m-%Y %H:%M:%S')
+    echo "$datetime successfully set credentials (LMS)" >> /var/www/checkprocesses.log
   echo "successfully set credentials"
+else
+  datetime=$(date '+%d-%m-%Y %H:%M:%S')
+  echo "$datetime failed to set credentials (LMS)" >> /var/www/checkprocesses.log
 fi
