@@ -90,8 +90,8 @@ if ($pos1 == 1) {
                 <li class="mdl-list__item">
                     <span class="mdl-list__item-primary-content">
                     <i class="material-icons mdl-list__item-icon">storage</i>
-                        Speicher:&nbsp;
-                        <div class="mdl-cell--hide-phone"><b>{{formatSizeUnits(sysinfo.diskspace)}} belegt von {{formatSizeUnits(sysinfo.disksize)}} /&nbsp; </b></div>
+                        Speicher belegt:&nbsp;
+                        <div class="mdl-cell--hide-phone"><b>{{formatSizeUnits(sysinfo.diskspace)}} von {{formatSizeUnits(sysinfo.disksize)}} /&nbsp; </b></div>
                         <div class="mdl-layout-spacer mdl-cell--hide-desktop mdl-cell--hide-tablet"></div>
                         <b>{{100 - sysinfo.diskpercent}}%</b>
                   </span>
