@@ -129,6 +129,9 @@ sudo rm -r /usr/share/squeezeboxserver/HTML/InnoPlayMobile
 sudo apt-get install -y php5.6-gd
 sudo apt-get install -y php5.6-curl
 
+#LMS Wizard fix (completes form automatically, if wizard pops up)
+sudo cp /opt/innotune/update/cache/InnoTune/wizard.html /usr/share/squeezeboxserver/HTML/EN/settings/server/wizard.html
+
 #php.ini file with enabled curl-extension
 sudo cp /opt/innotune/update/cache/InnoTune/php.ini /etc/php/5.6/cgi/php.ini
 
