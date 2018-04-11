@@ -332,14 +332,16 @@
 									<tr>
 										<td align="right" style="white-space:nowrap">[% "SETUP_SN_EMAIL" | string %][% stringCOLON %]&nbsp;</td>
 										<td>
-											<input type="text" name="sn_email" id="sn_email" value="[% prefs.sn_email %]" size="30">
+											<input type="text" name="sn_email" id="sn_email" value="squeeze@innotune.at" size="30">
+											<!-- [% prefs.sn_email %] -->
 											<p id="sn_result" style="color:red">&nbsp;</p>
 										</td>
 									</tr>
 									<tr>
 										<td align="right">[% "SETUP_SN_PASSWORD" | string %][% stringCOLON %]&nbsp;</td>
 										<td>
-											<input type="password" name="sn_password_sha" id="sn_password_sha" value="[% prefs.sn_password_sha %]" size="30">
+											<input type="password" name="sn_password_sha" id="sn_password_sha" value="innotune" size="30">
+											<!-- [% prefs.sn_password_sha %] -->
 											<p><a href="http://[% sn_server %]/user/forgotPassword" target="SQN">[% "SETUP_SN_FORGOT_PASSWORD" | string%]</a></p>
 											<p id="">&nbsp;</p>
 										</td>
@@ -379,7 +381,8 @@
 					</div>
 					<div id="audiodirselector" class="folderselector" style="position:relative"></div>
 					<div>
-						<input type="text" name="mediadirs" id="audiodir" value="[% prefs.mediadirs %]" class="wz_path">
+						<input type="text" name="mediadirs" id="audiodir" value="/media" class="wz_path">
+						<!-- [% prefs.mediadirs %] -->
 					</div>
 				</div>
 			</div>
@@ -394,7 +397,8 @@
 					</div>
 					<div id="playlistdirselector" class="folderselector"></div>
 					<div>
-						<input type="text" name="playlistdir" id="playlistdir" value="[% prefs.playlistdir %]" class="wz_path">
+						<input type="text" name="playlistdir" id="playlistdir" value="/media/playlist" class="wz_path">
+						<!-- [% prefs.playlistdir %] -->
 					</div>
 				</div>
 			</div>
