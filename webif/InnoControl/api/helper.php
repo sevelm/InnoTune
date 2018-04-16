@@ -98,6 +98,26 @@ if (isset($_GET['activedevices'])) {
     echo exec("sudo /var/www/sudoscript.sh showsoundcard 0");
 }
 
+if (isset($_GET['mappeddevices'])) {
+    $file = fopen("/opt/innotune/settings/mapping.txt", "r");
+    if($file) {
+      $i = 0;
+      $strarr = "";
+      while (($line = fgets($file)) !== false) {
+        $strarr = $strarr . "1;";
+        $i = $i + 1;
+      }
+      while ($i < 10) {
+        $strarr = $strarr . ";";
+        $i = $i + 1;
+      }
+      fclose($file);
+      echo $strarr;
+    } else {
+      echo ";;;;;;;;;";
+    }
+}
+
 // Zeile 1   >> Modus (0=AUS;1=NORMAL;2=GETEILT)          $array_setting[0]
 // Zeile 2   >> Bezeichnung Zone (Normal)                 $array_setting[1]
 // Zeile 3   >> Bezeichnung Zone (Geteilt-links)          $array_setting[2]
@@ -117,6 +137,12 @@ if (isset($_GET['getdevice'])) {
     $datei = "/opt/innotune/settings/settings_player/dev" . $dev . ".txt"; // Name der Datei
     $usb_mode = file($datei);
     $device = trim($usb_mode[0]) . ";" . trim($usb_mode[1]) . ";" . trim($usb_mode[2]) . ";" . trim($usb_mode[3]) . ";" . trim($usb_mode[4]) . ";" . trim($usb_mode[5]) . ";" . trim($usb_mode[6]) . ";" . trim($usb_mode[7]) . ";" . trim($usb_mode[8]) . ";" . trim($usb_mode[9]) . ";" . trim($usb_mode[10]) . ";" . trim($usb_mode[11]) . ";" . trim($usb_mode[12]) . ";" . trim($usb_mode[13]);
+    $execstring = "aplay -l | grep sndc" . $dev . " | cut -d \":\" -f1 | cut -c 6-";
+    $devpath = exec("cat /opt/innotune/settings/mapping.txt | grep sndc" . $dev . " | cut -c 8-");
+    if($devpath == "") {
+      $devpath = exec("cat /opt/innotune/settings/mapping_current.txt | grep sndc" . $dev . " | cut -c 8-");
+    }
+    $device = $device . ";" . $devpath;
     echo $device;
 }
 
@@ -531,6 +557,7 @@ function between($von, $bis, $string)
 //Objekt 4: disk size in kb
 //Objekt 5: disk full in kb
 //Objekt 6: disk full in %
+//Objekt 7: Cpu-Temperatur in Celcius
 if (isset($_GET['getsysinfo'])) {
     $cpu = shell_exec("cat /proc/stat");
     $cpu = between("cpu  ", "\n", $cpu);
@@ -549,7 +576,10 @@ if (isset($_GET['getsysinfo'])) {
     $diskinfo = shell_exec("df -Pl|grep '^/dev'|awk 'NR==1{print $2, $3,100-$5}' | sed 's/%//'");
     $diskinfo = str_replace(" ", ";", $diskinfo);
 
-    echo $cpuproz . ";" . $ramproz . ";" . trim($uptime) . ";" . trim($diskinfo);
+    $tempraw = intval(shell_exec("cat /sys/class/thermal/thermal_zone0/temp"));
+    $temp = round(($tempraw/1000));
+
+    echo $cpuproz . ";" . $ramproz . ";" . trim($uptime) . ";" . trim($diskinfo) . ";" . $temp;
 }
 
 if (isset($_GET['update'])) {

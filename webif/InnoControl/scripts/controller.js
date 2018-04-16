@@ -690,6 +690,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                     $scope.sysinfo.disksize = arr[3];
                     $scope.sysinfo.diskspace = arr[4];
                     $scope.sysinfo.diskpercent = arr[5];
+                    $scope.sysinfo.cputemp = arr[6];
                 }
             });
     };

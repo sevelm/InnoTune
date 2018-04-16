@@ -61,7 +61,7 @@ if ($pos1 == 1) {
                                                                            version="1.1" baseProfile="full" width="32"
                                                                            height="32" viewBox="0 0 32.00 32.00"
                                                                            enable-background="new 0 0 32.00 32.00"
-                                                                           xml:space="preserve">
+                                                                           xml:space="preserve" style="vertical-align: unset">
 	<path fill="#757575" fill-opacity="1" stroke-linejoin="round"
           d="M 6,4L 18,4L 18,5L 21,5L 21,7L 18,7L 18,9L 21,9L 21,11L 18,11L 18,13L 21,13L 21,15L 18,15L 18,17L 21,17L 21,19L 18,19L 18,20L 6,20L 6,19L 3,19L 3,17L 6,17L 6,15L 3,15L 3,13L 6,13L 6,11L 3,11L 3,9L 6,9L 6,7L 3,7L 3,5L 6,5L 6,4 Z M 11,15L 11,18L 12,18L 12,15L 11,15 Z M 13,15L 13,18L 14,18L 14,15L 13,15 Z M 15,15L 15,18L 16,18L 16,15L 15,15 Z "></path>
 </svg></i>
@@ -73,12 +73,23 @@ if ($pos1 == 1) {
                 </li>
                 <li class="mdl-list__item">
                     <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon"><svg style="width:32px;height:32px; vertical-align: unset;" viewBox="0 0 32 32">
+    <path fill="#757575" d="M17,17A5,5 0 0,1 12,22A5,5 0 0,1 7,17C7,15.36 7.79,13.91 9,13V5A3,3 0 0,1 12,2A3,3 0 0,1 15,5V13C16.21,13.91 17,15.36 17,17M11,8V14.17C9.83,14.58 9,15.69 9,17A3,3 0 0,0 12,20A3,3 0 0,0 15,17C15,15.69 14.17,14.58 13,14.17V8H11Z" />
+</svg></i>
+
+                        CPU Temperatur:&nbsp;
+                        <div class="mdl-layout-spacer mdl-cell--hide-desktop mdl-cell--hide-tablet"></div>
+                        <b>{{sysinfo.cputemp}}°C</b>
+                    </span>
+                </li>
+                <li class="mdl-list__item">
+                    <span class="mdl-list__item-primary-content">
                         <i class="material-icons mdl-list__item-icon"><svg xmlns="http://www.w3.org/2000/svg"
                                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
                                                                            version="1.1" baseProfile="full" width="32"
                                                                            height="32" viewBox="0 0 32.00 32.00"
                                                                            enable-background="new 0 0 32.00 32.00"
-                                                                           xml:space="preserve">
+                                                                           xml:space="preserve" style="vertical-align: unset">
 	<path fill="#757575" fill-opacity="1" stroke-width="0.2" stroke-linejoin="round"
           d="M 16.9994,16.9981L 6.9994,16.9981L 6.9994,6.99807L 16.9994,6.99807M 20.9994,10.9981L 20.9994,8.99807L 18.9994,8.99807L 18.9994,6.99807C 18.9994,5.89406 18.1034,4.99807 16.9994,4.99807L 14.9994,4.99807L 14.9994,2.99807L 12.9994,2.99807L 12.9994,4.99807L 10.9994,4.99807L 10.9994,2.99807L 8.9994,2.99807L 8.9994,4.99807L 6.9994,4.99807C 5.8944,4.99807 4.9994,5.89406 4.9994,6.99807L 4.9994,8.99807L 2.9994,8.99807L 2.9994,10.9981L 4.9994,10.9981L 4.9994,12.9981L 2.9994,12.9981L 2.9994,14.9981L 4.9994,14.9981L 4.9994,16.9981C 4.9994,18.1031 5.8944,18.9981 6.9994,18.9981L 8.9994,18.9981L 8.9994,20.9981L 10.9994,20.9981L 10.9994,18.9981L 12.9994,18.9981L 12.9994,20.9981L 14.9994,20.9981L 14.9994,18.9981L 16.9994,18.9981C 18.1034,18.9981 18.9994,18.1031 18.9994,16.9981L 18.9994,14.9981L 20.9994,14.9981L 20.9994,12.9981L 18.9994,12.9981L 18.9994,10.9981M 12.9994,12.9981L 10.9994,12.9981L 10.9994,10.9981L 12.9994,10.9981M 14.9994,8.99807L 8.9994,8.99807L 8.9994,14.9981L 14.9994,14.9981L 14.9994,8.99807 Z "/>
 </svg></i>
@@ -194,6 +205,7 @@ if ($pos1 == 1) {
                     <span ng-if="device.betrieb=='geteilterbetrieb'" class="mdl-list__item-sub-title">{{device.nameL}} - {{device.nameR}}</span>
                     <span ng-if="device.betrieb=='gekoppelt'" class="mdl-list__item-sub-title">Mit <strong>{{devices[device.linktoDevice-1].name}}</strong> gekoppelt</span>
                     <span ng-if="device.betrieb=='deaktiviert'" class="mdl-list__item-sub-title">Deaktiviert</span>
+                    <!--<span ng-if="device.betrieb=='nichtverbunden'" class="mdl-list__item-sub-title">Nicht verfügbar</span>-->
                 </span>
                 <span class="mdl-list__item-secondary-content">
                     <span class="mdl-list__item-secondary-info">Mac-Adresse</span>
@@ -202,6 +214,7 @@ if ($pos1 == 1) {
                     <span ng-if="device.betrieb=='geteilterbetrieb'" class="mdl-list__item-secondary-action">{{device.macL}} - {{device.macR}}</span>
                     <span ng-if="device.betrieb=='gekoppelt'" class="mdl-list__item-secondary-action">{{devices[device.linktoDevice-1].mac}}</span>
                     <span ng-if="device.betrieb=='deaktiviert'" class="mdl-list__item-secondary-action">-</span>
+                    <!--<span ng-if="device.betrieb=='nichtverbunden'" class="mdl-list__item-secondary-action">-</span>-->
                 </span>
             </li>
         </ul>
