@@ -19,9 +19,9 @@ if [[ $con -lt 20 ]]; then
     count=$((count+1))
   done
     datetime=$(date '+%d-%m-%Y %H:%M:%S')
-    echo "$datetime successfully set credentials (LMS)" >> /var/www/checkprocesses.log
+    echo "$datetime LMS Logindaten wurden gesetzt" >> /var/www/checkprocesses.log
   echo "successfully set credentials"
 else
   datetime=$(date '+%d-%m-%Y %H:%M:%S')
-  echo "$datetime failed to set credentials (LMS)" >> /var/www/checkprocesses.log
+  echo "$datetime Fehler beim setzen der LMS Logindaten" >> /var/www/checkprocesses.log
 fi
