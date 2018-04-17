@@ -118,6 +118,12 @@ if [[ $is_added -eq 0 ]]; then
     crontab -l | { cat; echo "* * * * * /var/www/checkprocesses.sh"; } | crontab -
 fi
 
+#add script to cron if it isn't already added
+is_added=$(crontab -l | grep checkcputemp.sh | wc -l)
+if [[ $is_added -eq 0 ]]; then
+    crontab -l | { cat; echo "*/15 * * * * /var/www/checkcputemp.sh"; } | crontab -
+fi
+
 #InnoPlay Mobile
 sudo git clone https://github.com/AElmecker/InnoPlayMobile.git /usr/share/squeezeboxserver/HTML/InnoPlayMobile
 sudo rm -r /usr/share/squeezeboxserver/HTML/m
