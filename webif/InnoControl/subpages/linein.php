@@ -50,7 +50,7 @@ if ($pos1 == 1) {
                         if($tinkerboard){
                             echo "<md-option ng-if=\"opt.id!=1\" ng-value=\"opt.id\" ng-repeat=\"opt in devices\">InnoAmp {{formatId(opt.id-1)}}</md-option>";
                         } else{
-                            echo "<md-option ng-value=\"opt.id\" ng-repeat=\"opt in devices\">InnoAmp {{formatId(opt.id-1)}}</md-option>";
+                            echo "<md-option ng-value=\"opt.id\" ng-repeat=\"opt in devices\">InnoAmp {{formatId(opt.id)}}</md-option>";
                         }?>
                     </md-select>
                 </md-input-container>
