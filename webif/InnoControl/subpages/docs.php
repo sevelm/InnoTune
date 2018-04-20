@@ -169,6 +169,10 @@ $version_local = file($datei); // Datei in ein Array einlesen
            class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
             Sichern
         </a>
+        <a href="/log/"
+           class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+            Weitere Logs
+        </a>
     </div>
 </div>
 

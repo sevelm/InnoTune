@@ -44,38 +44,40 @@ if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
           SPli=$(cat /opt/innotune/settings/settings_player/dev"$i".txt | head -n12  | tail -n1)
           SPre=$(cat /opt/innotune/settings/settings_player/dev"$i".txt | head -n13 | tail -n1)
 
+          datetime=$(date '+%d-%m-%Y')
+
           if [[ $PLAYER ]] || [[ $PLAYERli"$i" ]] || [[ $PLAYERre"$i" ]]; then
               ########### Start Airplay
               if [[ $AP ]]; then           ###Aktivate Player on USB device "$i" - AirPlay
-                    shairport-sync -w -p $(($PORT_BASE+1)) -a "$PLAYER" --on-start "/var/www/spotifyconnect.sh $i 1" --on-stop "/var/www/spotifyconnect.sh $i 0" -o alsa -- -d airplay"$i" > /dev/null 2>&1 & echo "$i;" >> /opt/innotune/settings/p_shairplay
+                    shairport-sync -v -w -p $(($PORT_BASE+1)) -a "$PLAYER" --on-start "/var/www/spotifyconnect.sh $i 1" --on-stop "/var/www/spotifyconnect.sh $i 0" -o alsa -- -d airplay"$i" >> /var/www/InnoControl/log/airplay$i-$datetime 2>&1 & echo "$i;" >> /opt/innotune/settings/p_shairplay
               fi
               if [[ $APli ]]; then         ###Aktivate Player left on USB device "$i" - AirPlay
-                    shairport-sync -w -p $(($PORT_BASE+2)) -a "$PLAYERli" --on-start "/var/www/spotifyconnect.sh $i 1 li" --on-stop "/var/www/spotifyconnect.sh $i 0 li" -o alsa -- -d airplayli"$i" > /dev/null 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_shairplay
+                    shairport-sync -v -w -p $(($PORT_BASE+2)) -a "$PLAYERli" --on-start "/var/www/spotifyconnect.sh $i 1 li" --on-stop "/var/www/spotifyconnect.sh $i 0 li" -o alsa -- -d airplayli"$i" >> /var/www/InnoControl/log/airplayli$i-$datetime 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_shairplay
               fi
               if [[ $APre ]]; then         ###Aktivate Player right on USB device "$i" - AirPlay
-                    shairport-sync -w -p $(($PORT_BASE+3)) -a "$PLAYERre" --on-start "/var/www/spotifyconnect.sh $i 1 re" --on-stop "/var/www/spotifyconnect.sh $i 0 re" -o alsa -- -d airplayre"$i" > /dev/null 2>&1 & echo "$i;re" >> /opt/innotune/settings/p_shairplay
+                    shairport-sync -v -w -p $(($PORT_BASE+3)) -a "$PLAYERre" --on-start "/var/www/spotifyconnect.sh $i 1 re" --on-stop "/var/www/spotifyconnect.sh $i 0 re" -o alsa -- -d airplayre"$i" >> /var/www/InnoControl/log/airplayre$i-$datetime 2>&1 & echo "$i;re" >> /opt/innotune/settings/p_shairplay
               fi
 
               ########### Start Squeezelite
               if [[ $SQMAC ]]; then       ###Aktivate Player on USB device "$i" - Squeezbox
-              /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeeze"$i" -n "$PLAYER" -m "$SQMAC" -z  > /dev/null 2>&1 & echo "$i;" >> /opt/innotune/settings/p_squeeze
+              /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeeze"$i" -n "$PLAYER" -m "$SQMAC" -z -d all=info -f /var/www/InnoControl/log/squeeze$i-$datetime > /dev/null 2>&1 & echo "$i;" >> /opt/innotune/settings/p_squeeze
               fi
               if [[ $SQliMAC ]]; then     ###Aktivate Player on USB device "$i" left - Squeezbox
-              /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeezeli"$i" -n "$PLAYERli" -m "$SQliMAC" -z  > /dev/null 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_squeeze
+              /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeezeli"$i" -n "$PLAYERli" -m "$SQliMAC" -z -d all=info -f /var/www/InnoControl/log/squeezeli$i-$datetime 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_squeeze
               fi
               if [[ $SQreMAC ]]; then     ###Aktivate Player on USB device "$i" right - Squeezbox
-              /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeezere"$i" -n "$PLAYERre" -m "$SQreMAC" -z  > /dev/null 2>&1 & echo "$i;re" >> /opt/innotune/settings/p_squeeze
+              /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeezere"$i" -n "$PLAYERre" -m "$SQreMAC" -z -d all=info -f /var/www/InnoControl/log/squeezere$i-$datetime 2>&1 & echo "$i;re" >> /opt/innotune/settings/p_squeeze
               fi
 
               ########### Start Spotify Connect
               if [[ $SP ]]; then           ###Aktivate Player on USB device "$i" - Spotify
-                      sudo /root/librespot --name "$PLAYER" --cache /tmp --bitrate 320 --backend alsa --device airplay$i --onevent "/var/www/spotifyconnect.sh $i 1" > /dev/null 2>&1 & echo "$i;" >> /opt/innotune/settings/p_spotify
+                      sudo /root/librespot -v --name "$PLAYER" --cache /tmp --bitrate 320 --backend alsa --device airplay$i --onevent "/var/www/spotifyconnect.sh $i 1" >> /var/www/InnoControl/log/spotify$i-$datetime 2>&1 & echo "$i;" >> /opt/innotune/settings/p_spotify
                       fi
               if [[ $SPli ]]; then         ###Aktivate Player left on USB device "$i" - Spotify
-                      sudo /root/librespot --name "$PLAYERli" --cache /tmp --bitrate 320 --backend alsa --device airplayli$i --onevent "/var/www/spotifyconnect.sh $i 1 li" > /dev/null 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_spotify
+                      sudo /root/librespot -v --name "$PLAYERli" --cache /tmp --bitrate 320 --backend alsa --device airplayli$i --onevent "/var/www/spotifyconnect.sh $i 1 li" >> /var/www/InnoControl/log/spotifyli$i-$datetime 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_spotify
               fi
               if [[ $SPre ]]; then         ###Aktivate Player right on USB device "$i" - Spotify
-                      sudo /root/librespot --name "$PLAYERre" --cache /tmp --bitrate 320 --backend alsa --device airplayre$i --onevent "/var/www/spotifyconnect.sh $i 1 re" > /dev/null 2>&1 & echo "$i;re" >> /opt/innotune/settings/p_spotify
+                      sudo /root/librespot -v --name "$PLAYERre" --cache /tmp --bitrate 320 --backend alsa --device airplayre$i --onevent "/var/www/spotifyconnect.sh $i 1 re" >> /var/www/InnoControl/log/spotifyre$i-$datetime 2>&1 & echo "$i;re" >> /opt/innotune/settings/p_spotify
               fi
               echo 0 > /opt/innotune/settings/status_shairplay/status_shairplay"$i".txt           ### Airplay ablöschen
               echo 0 > /opt/innotune/settings/status_shairplay/status_shairplayli"$i".txt         ### Airplay ablöschen
@@ -84,6 +86,7 @@ if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
 
               #aplay -f cd -D dmixer"$i" /dev/zero > /dev/null 2>&1 & echo $!                     ### Grundstille erzeugen
               amixer -c "$i" set PCM 100%       > /dev/null 2>&1                                  ### Lautstärke Setzen
+              #amixer -c sndc"$i" set PCM 100%       > /dev/null 2>&1                                  ### Lautstärke Setzen
               /var/www/sudoscript.sh set_vol "$i" MuteIfMPD 100       > /dev/null 2>&1            ### MPD Lautstärke setzen
               /var/www/sudoscript.sh set_vol "$i" MuteIfAirplay 100   > /dev/null 2>&1            ### (Sh)Airplay Lautstärke setzen
               /var/www/sudoscript.sh set_vol "$i" MuteIfLineIn 100    > /dev/null 2>&1            ### Line-In Lautstärke setzen
@@ -163,44 +166,46 @@ else
           SPli=$(cat /opt/innotune/settings/settings_player/dev"$i".txt | head -n12  | tail -n1)
           SPre=$(cat /opt/innotune/settings/settings_player/dev"$i".txt | head -n13 | tail -n1)
 
+          datetime=$(date '+%d-%m-%Y')
+
           if [[ $PLAYER ]] || [[ $PLAYERli"$i" ]] || [[ $PLAYERre"$i" ]]; then
 
               if [[ $1 -eq 1 ]]; then
                   ########### Start Airplay
                   if [[ $AP ]]; then           ###Aktivate Player on USB device "$i" - AirPlay
-                        shairport-sync -w -p $(($PORT_BASE+1)) -a "$PLAYER" --on-start "/var/www/spotifyconnect.sh $i 1" --on-stop "/var/www/spotifyconnect.sh $i 0" -o alsa -- -d airplay"$i" > /dev/null 2>&1 & echo "$i;" >> /opt/innotune/settings/p_shairplay
+                        shairport-sync -v -w -p $(($PORT_BASE+1)) -a "$PLAYER" --on-start "/var/www/spotifyconnect.sh $i 1" --on-stop "/var/www/spotifyconnect.sh $i 0" -o alsa -- -d airplay"$i" >> /var/www/InnoControl/log/airplay$i-$datetime 2>&1 & echo "$i;" >> /opt/innotune/settings/p_shairplay
                   fi
                   if [[ $APli ]]; then         ###Aktivate Player left on USB device "$i" - AirPlay
-                        shairport-sync -w -p $(($PORT_BASE+2)) -a "$PLAYERli" --on-start "/var/www/spotifyconnect.sh $i 1 li" --on-stop "/var/www/spotifyconnect.sh $i 0 li" -o alsa -- -d airplayli"$i" > /dev/null 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_shairplay
+                        shairport-sync -v -w -p $(($PORT_BASE+2)) -a "$PLAYERli" --on-start "/var/www/spotifyconnect.sh $i 1 li" --on-stop "/var/www/spotifyconnect.sh $i 0 li" -o alsa -- -d airplayli"$i" >> /var/www/InnoControl/log/airplayli$i-$datetime 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_shairplay
                   fi
                   if [[ $APre ]]; then         ###Aktivate Player right on USB device "$i" - AirPlay
-                        shairport-sync -w -p $(($PORT_BASE+3)) -a "$PLAYERre" --on-start "/var/www/spotifyconnect.sh $i 1 re" --on-stop "/var/www/spotifyconnect.sh $i 0 re" -o alsa -- -d airplayre"$i" > /dev/null 2>&1 & echo "$i;re" >> /opt/innotune/settings/p_shairplay
+                        shairport-sync -v -w -p $(($PORT_BASE+3)) -a "$PLAYERre" --on-start "/var/www/spotifyconnect.sh $i 1 re" --on-stop "/var/www/spotifyconnect.sh $i 0 re" -o alsa -- -d airplayre"$i" >> /var/www/InnoControl/log/airplayre$i-$datetime 2>&1 & echo "$i;re" >> /opt/innotune/settings/p_shairplay
                   fi
               fi
 
               if [[ $1 -eq 2 ]]; then
                   ########### Start Squeezelite
                   if [[ $SQMAC ]]; then       ###Aktivate Player on USB device "$i" - Squeezbox
-                  /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeeze"$i" -n "$PLAYER" -m "$SQMAC" -z  > /dev/null 2>&1 & echo "$i;" >> /opt/innotune/settings/p_squeeze
+                      /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeeze"$i" -n "$PLAYER" -m "$SQMAC" -z -d all=info -f /var/www/InnoControl/log/squeeze$i-$datetime > /dev/null 2>&1 & echo "$i;" >> /opt/innotune/settings/p_squeeze
                   fi
                   if [[ $SQliMAC ]]; then     ###Aktivate Player on USB device "$i" left - Squeezbox
-                  /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeezeli"$i" -n "$PLAYERli" -m "$SQliMAC" -z  > /dev/null 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_squeeze
+                      /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeezeli"$i" -n "$PLAYERli" -m "$SQliMAC" -z -d all=info -f /var/www/InnoControl/log/squeezeli$i-$datetime 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_squeeze
                   fi
                   if [[ $SQreMAC ]]; then     ###Aktivate Player on USB device "$i" right - Squeezbox
-                  /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeezere"$i" -n "$PLAYERre" -m "$SQreMAC" -z  > /dev/null 2>&1 & echo "$i;re" >> /opt/innotune/settings/p_squeeze
+                      /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeezere"$i" -n "$PLAYERre" -m "$SQreMAC" -z -d all=info -f /var/www/InnoControl/log/squeezere$i-$datetime 2>&1 & echo "$i;re" >> /opt/innotune/settings/p_squeeze
                   fi
               fi
 
               if [[ $1 -eq 3 ]]; then
                   ########### Start Spotify Connect
                   if [[ $SP ]]; then           ###Aktivate Player on USB device "$i" - Spotify
-                          sudo /root/librespot --name "$PLAYER" --cache /tmp --bitrate 320 --device airplay$i --onevent "/var/www/spotifyconnect.sh $i 1" > /dev/null 2>&1 & echo "$i;" >> /opt/innotune/settings/p_spotify
+                          sudo /root/librespot -v --name "$PLAYER" --cache /tmp --bitrate 320 --backend alsa --device airplay$i --onevent "/var/www/spotifyconnect.sh $i 1" >> /var/www/InnoControl/log/spotify$i-$datetime 2>&1 & echo "$i;" >> /opt/innotune/settings/p_spotify
                           fi
                   if [[ $SPli ]]; then         ###Aktivate Player left on USB device "$i" - Spotify
-                          sudo /root/librespot --name "$PLAYERli" --cache /tmp --bitrate 320 --device airplayli$i --onevent "/var/www/spotifyconnect.sh $i 1 li" > /dev/null 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_spotify
+                          sudo /root/librespot -v --name "$PLAYERli" --cache /tmp --bitrate 320 --backend alsa --device airplayli$i --onevent "/var/www/spotifyconnect.sh $i 1 li" >> /var/www/InnoControl/log/spotifyli$i-$datetime 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_spotify
                   fi
                   if [[ $SPre ]]; then         ###Aktivate Player right on USB device "$i" - Spotify
-                          sudo /root/librespot --name "$PLAYERre" --cache /tmp --bitrate 320 --device airplayre$i --onevent "/var/www/spotifyconnect.sh $i 1 re" > /dev/null 2>&1 & echo "$i;re" >> /opt/innotune/settings/p_spotify
+                          sudo /root/librespot -v --name "$PLAYERre" --cache /tmp --bitrate 320 --backend alsa --device airplayre$i --onevent "/var/www/spotifyconnect.sh $i 1 re" >> /var/www/InnoControl/log/spotifyre$i-$datetime 2>&1 & echo "$i;re" >> /opt/innotune/settings/p_spotify
                   fi
               fi
               echo 0 > /opt/innotune/settings/status_shairplay/status_shairplay"$i".txt           ### Airplay ablöschen
@@ -209,6 +214,7 @@ else
               echo 0 > /opt/innotune/settings/status_line-in/line-in"$i".txt                      ### Line-In ablöschen
 
               amixer -c "$i" set PCM 100%       > /dev/null 2>&1                                  ### Lautstärke Setzen
+              #amixer -c sndc"$i" set PCM 100%       > /dev/null 2>&1  
               /var/www/sudoscript.sh set_vol "$i" MuteIfMPD 100       > /dev/null 2>&1            ### MPD Lautstärke setzen
               /var/www/sudoscript.sh set_vol "$i" MuteIfAirplay 100   > /dev/null 2>&1            ### (Sh)Airplay Lautstärke setzen
               /var/www/sudoscript.sh set_vol "$i" MuteIfLineIn 100    > /dev/null 2>&1            ### Line-In Lautstärke setzen

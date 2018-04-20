@@ -112,6 +112,10 @@ sudo chmod 777 /opt/innotune/settings/p_*
 sudo touch /var/www/checkprocesses.log
 sudo chmod 777 /var/www/checkprocesses.log
 
+sudo mkdir /var/www/InnoControl/log
+sudo chmod 777 /var/www/InnoControl/log
+
+
 #add script to cron if it isn't already added
 is_added=$(crontab -l | grep checkprocesses.sh | wc -l)
 if [[ $is_added -eq 0 ]]; then
@@ -119,9 +123,21 @@ if [[ $is_added -eq 0 ]]; then
 fi
 
 #add script to cron if it isn't already added
+#is_added=$(crontab -l | grep check_soundcards.sh | wc -l)
+#if [[ $is_added -eq 0 ]]; then
+#    crontab -l | { cat; echo "*/15 * * * * /var/www/check_soundcards.sh"; } | crontab -
+#fi
+
+#add script to cron if it isn't already added
 is_added=$(crontab -l | grep checkcputemp.sh | wc -l)
 if [[ $is_added -eq 0 ]]; then
     crontab -l | { cat; echo "*/15 * * * * /var/www/checkcputemp.sh"; } | crontab -
+fi
+
+#add script to cron if it isn't already added
+is_added=$(crontab -l | grep archivelogs.sh | wc -l)
+if [[ $is_added -eq 0 ]]; then
+    crontab -l | { cat; echo "45 3 * * * /var/www/archivelogs.sh"; } | crontab -
 fi
 
 #InnoPlay Mobile
