@@ -115,18 +115,23 @@ sudo chmod 777 /var/www/checkprocesses.log
 sudo mkdir /var/www/InnoControl/log
 sudo chmod 777 /var/www/InnoControl/log
 
+if [[ ! -d "/opt/innotune/settings/settings_player/oac" ]]; then
+  sudo mkdir /opt/innotune/settings/settings_player/oac
+  for (( c=1; c < 10; c++ ))
+  do
+    path="/opt/innotune/settings/settings_player/oac/oac0$c.txt"
+    echo "1" > $path
+  done
+  path="/opt/innotune/settings/settings_player/oac/oac10.txt"
+  echo "1" > $path
+  sudo chmod -R 777 /opt/innotune/settings/settings_player/oac
+fi
 
 #add script to cron if it isn't already added
 is_added=$(crontab -l | grep checkprocesses.sh | wc -l)
 if [[ $is_added -eq 0 ]]; then
     crontab -l | { cat; echo "* * * * * /var/www/checkprocesses.sh"; } | crontab -
 fi
-
-#add script to cron if it isn't already added
-#is_added=$(crontab -l | grep check_soundcards.sh | wc -l)
-#if [[ $is_added -eq 0 ]]; then
-#    crontab -l | { cat; echo "*/15 * * * * /var/www/check_soundcards.sh"; } | crontab -
-#fi
 
 #add script to cron if it isn't already added
 is_added=$(crontab -l | grep checkcputemp.sh | wc -l)

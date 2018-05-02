@@ -161,6 +161,15 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         if (id == null) {
             $scope.selectedDevice = null;
         } else {
+          var found = false;
+          for (var i = 0; i < $scope.devices.length; i++) {
+              if ($scope.devices[i].id == id
+                    && $scope.devices[i].betrieb == 'nichtverbunden') {
+                      found = true;
+                  $scope.selectedDevice = null;
+              }
+          }
+          if (!found) {
             $http.get('api/helper.php?vol&dev=' + $scope.formatId(id))
                 .success(function (data) {
                     var arr = data.split(";");
@@ -191,6 +200,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                     $scope.selectedDevice = $scope.devices[i];
                 }
             }
+          }
         }
     };
 
@@ -256,6 +266,41 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         });
     };
 
+    $scope.resetLogs = function (event) {
+      var confirm = $mdDialog.confirm()
+          .title('Bist du sicher?')
+          .textContent('Alle Logs werden gelöscht!')
+          .ariaLabel('Der Server ist die Zeit nicht erreichbar!')
+          .targetEvent(event)
+          .ok('Ok')
+          .cancel('Abbrechen');
+      $mdDialog.show(confirm).then(function () {
+          $http.get('api/helper.php?reset_usb_mapping')
+              .success(function (data) {
+                  location.href = "index.php#/docs";
+              });
+      }, function () {
+
+      });
+    };
+
+    $scope.resetMapping = function (event) {
+      var confirm = $mdDialog.confirm()
+          .title('Bist du sicher?')
+          .textContent('Die Gerätereihenfolge kann sich verändern und dadurch alle Zonen beinflussen!')
+          .ariaLabel('Der Server ist die Zeit nicht erreichbar!')
+          .targetEvent(event)
+          .ok('Ok')
+          .cancel('Abbrechen');
+      $mdDialog.show(confirm).then(function () {
+          $http.get('api/helper.php?reset_logs')
+              .success(function (data) {
+                  location.href = "scripts/reboot.php";
+              });
+      }, function () {
+
+      });
+    };
 
     $scope.genAudioConf = function (event) {
         var confirm = $mdDialog.confirm()
@@ -518,8 +563,10 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                 '&NAME_NORMAL=' + $scope.selectedDevice.name +
                 '&MAC_NORMAL=' + $scope.selectedDevice.mac +
                 '&AP_NORMAL=' + $scope.checkAirplay($scope.selectedDevice.airplay) +
-                '&SP_NORMAL=' + $scope.checkSpotify($scope.selectedDevice.spotify));
+                '&SP_NORMAL=' + $scope.checkSpotify($scope.selectedDevice.spotify) +
+                '&oac=' + $scope.selectedDevice.oac);
             $scope.playerConfChanged = 1;
+            console.log($scope.selectedDevice);
 
         } else if ($scope.selectedDevice.betrieb == 'geteilterbetrieb') {
             $http.get('api/helper.php?device_set&dev=' + id +
@@ -530,7 +577,8 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                 '&APli_GETEILT=' + $scope.checkAirplay($scope.selectedDevice.airplayL) +
                 '&APre_GETEILT=' + $scope.checkAirplay($scope.selectedDevice.airplayR) +
                 '&SPli_GETEILT=' + $scope.checkSpotify($scope.selectedDevice.spotifyL) +
-                '&SPre_GETEILT=' + $scope.checkSpotify($scope.selectedDevice.spotifyR));
+                '&SPre_GETEILT=' + $scope.checkSpotify($scope.selectedDevice.spotifyR) +
+                '&oac=' + $scope.selectedDevice.oac);
             $scope.playerConfChanged = 1;
         }
 
@@ -571,7 +619,8 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                             mac: dev[4],
                                             airplay: $airplayString,
                                             spotify: $spotifyString,
-                                            vol: {}
+                                            vol: {},
+                                            oac: parseInt(dev[15])
                                         });
                                     } else if (dev[0] == 2) {
                                         $betrieb = "geteilterbetrieb";
@@ -615,7 +664,8 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                             airplayR: $airplayStringR,
                                             spotifyL: $spotifyStringL,
                                             spotifyR: $spotifyStringR,
-                                            vol: {}
+                                            vol: {},
+                                            oac: parseInt(dev[15])
                                         });
                                     } else if(parseInt(dev[0]) > 10 && parseInt(dev[0]) <= 20){
                                         $betrieb = "gekoppelt";

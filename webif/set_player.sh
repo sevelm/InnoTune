@@ -1,6 +1,8 @@
 #!/bin/bash
 
 if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
+  killall playmonitor
+  /var/www/src/playmonitor > /dev/null 2>&1 &
   killall shairport-sync
   killall squeezelite-armv6hf
   killall squeezeboxserver
@@ -60,7 +62,7 @@ if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
 
               ########### Start Squeezelite
               if [[ $SQMAC ]]; then       ###Aktivate Player on USB device "$i" - Squeezbox
-              /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeeze"$i" -n "$PLAYER" -m "$SQMAC" -z -d all=info -f /var/www/InnoControl/log/squeeze$i-$datetime > /dev/null 2>&1 & echo "$i;" >> /opt/innotune/settings/p_squeeze
+              /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeeze"$i" -n "$PLAYER" -m "$SQMAC" -z -d all=info -f /var/www/InnoControl/log/squeeze$i-$datetime 2>&1 & echo "$i;" >> /opt/innotune/settings/p_squeeze
               fi
               if [[ $SQliMAC ]]; then     ###Aktivate Player on USB device "$i" left - Squeezbox
               /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeezeli"$i" -n "$PLAYERli" -m "$SQliMAC" -z -d all=info -f /var/www/InnoControl/log/squeezeli$i-$datetime 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_squeeze
@@ -214,7 +216,7 @@ else
               echo 0 > /opt/innotune/settings/status_line-in/line-in"$i".txt                      ### Line-In ablöschen
 
               amixer -c "$i" set PCM 100%       > /dev/null 2>&1                                  ### Lautstärke Setzen
-              #amixer -c sndc"$i" set PCM 100%       > /dev/null 2>&1  
+              #amixer -c sndc"$i" set PCM 100%       > /dev/null 2>&1
               /var/www/sudoscript.sh set_vol "$i" MuteIfMPD 100       > /dev/null 2>&1            ### MPD Lautstärke setzen
               /var/www/sudoscript.sh set_vol "$i" MuteIfAirplay 100   > /dev/null 2>&1            ### (Sh)Airplay Lautstärke setzen
               /var/www/sudoscript.sh set_vol "$i" MuteIfLineIn 100    > /dev/null 2>&1            ### Line-In Lautstärke setzen

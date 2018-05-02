@@ -77,6 +77,12 @@ if ($pos1 == 1) {
                     <md-option value="geteilterbetrieb">Geteilter Betrieb</md-option>
                 </md-select>
             </div>
+            <div class="mdl-grid">
+              <h5 class="mdl-cell--6-col">Audiokanal durchgehend offen halten:&nbsp;</h5>
+              <md-switch class="mdl-cell" ng-model="selectedDevice.oac" aria-label="oac"
+                         ng-true-value="1" ng-false-value="0">
+              </md-switch>
+            </div>
             <hr>
             <!-- Normalbetrieb -->
             <div id="normalbetrieb" ng-if="selectedDevice.betrieb=='normalbetrieb'">
