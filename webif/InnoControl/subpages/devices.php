@@ -35,19 +35,11 @@ if ($pos1 == 1) {
         <devices></devices>
     </div>
     <div class="mdl-card__actions mdl-card--border">
-        <button ng-if="audioConfChanged" style="color:#ff362f" ng-click="genAudioConf($event)"
+        <button ng-style="audioConfChanged && {'color':'#ff362f'}" ng-click="genAudioConf($event)"
                 class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
             Audio Konfiguration erzeugen
         </button>
-        <button ng-if="!audioConfChanged" ng-click="genAudioConf($event)"
-                class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-            Audio Konfiguration erzeugen
-        </button>
-        <button ng-if="playerConfChanged" style="color:#ff362f" ng-click="genPlayerConf($event)"
-                class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-            Player Konfiguration erzeugen
-        </button>
-        <button ng-if="!playerConfChanged" ng-click="genPlayerConf($event)"
+        <button ng-style="playerConfChanged && {'color':'#ff362f'}" ng-click="genPlayerConf($event)"
                 class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
             Player Konfiguration erzeugen
         </button>
@@ -80,7 +72,7 @@ if ($pos1 == 1) {
             <div class="mdl-grid">
               <h5 class="mdl-cell--6-col">Audiokanal durchgehend offen halten:&nbsp;</h5>
               <md-switch class="mdl-cell" ng-model="selectedDevice.oac" aria-label="oac"
-                         ng-true-value="1" ng-false-value="0">
+                         ng-true-value="1" ng-false-value="0" ng-change="selectedDevice.changed=true">
               </md-switch>
             </div>
             <hr>
@@ -89,7 +81,7 @@ if ($pos1 == 1) {
                 <div class="mdl-grid">
                     <h6 class="mdl-cell mdl-cell--2-col">Name</h6>
                     <md-input-container class="md-block mdl-cell">
-                        <input aria-label="name" name="name" ng-model="selectedDevice.name">
+                        <input aria-label="name" name="name" ng-model="selectedDevice.name" ng-change="selectedDevice.changed=true">
                     </md-input-container>
                 </div>
                 <div class="mdl-grid">
@@ -97,7 +89,7 @@ if ($pos1 == 1) {
                     <md-input-container class="md-block mdl-cell">
                         <input placeholder="00:00:00:00:00:xx" aria-label="mac" name="mac"
                                pattern="([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
-                               ng-model="selectedDevice.mac">
+                               ng-model="selectedDevice.mac"  ng-change="selectedDevice.changed=true">
                     </md-input-container>
                     <div class="md-block mdl-cell">
                         <p>Mac Beispiel: 00:00:00:00:00:xx</p>
@@ -106,14 +98,14 @@ if ($pos1 == 1) {
                 <div class="mdl-grid">
                     <h6 class="mdl-cell mdl-cell--5-col">Shairplay</h6>
                     <md-switch aria-label="airplay" class="mdl-cell" ng-model="selectedDevice.airplay" ng-true-value="1"
-                               ng-false-value="0">
+                               ng-false-value="0" ng-change="selectedDevice.changed=true">
                     </md-switch>
                     <div class="mdl-layout-spacer"></div>
                 </div>
                 <div class="mdl-grid">
                     <h6 class="mdl-cell mdl-cell--5-col">Spotify Connect</h6>
                     <md-switch aria-label="airplay" class="mdl-cell" ng-model="selectedDevice.spotify" ng-true-value="1"
-                               ng-false-value="0">
+                               ng-false-value="0" ng-change="selectedDevice.changed=true">
                     </md-switch>
                     <div class="mdl-layout-spacer"></div>
                 </div>
@@ -124,11 +116,11 @@ if ($pos1 == 1) {
                 <div class="mdl-grid">
                     <p class="mdl-cell mdl-cell--2-col">Name Links</p>
                     <md-input-container class="md-block mdl-cell">
-                        <input aria-label="nameL" name="name" ng-model="selectedDevice.nameL">
+                        <input aria-label="nameL" name="name" ng-model="selectedDevice.nameL" ng-change="selectedDevice.changed=true">
                     </md-input-container>
                     <p class="mdl-cell mdl-cell--2-col">Name Rechts</p>
                     <md-input-container class="md-block mdl-cell">
-                        <input aria-label="nameR" name="name" ng-model="selectedDevice.nameR">
+                        <input aria-label="nameR" name="name" ng-model="selectedDevice.nameR" ng-change="selectedDevice.changed=true">
                     </md-input-container>
                 </div>
                 <div class="mdl-grid">
@@ -136,33 +128,33 @@ if ($pos1 == 1) {
                     <md-input-container class="md-block mdl-cell">
                         <input placeholder="00:00:00:00:00:xx" aria-label="macL" name="mac"
                                pattern="([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
-                               ng-model="selectedDevice.macL">
+                               ng-model="selectedDevice.macL" ng-change="selectedDevice.changed=true">
                     </md-input-container>
                     <p class="mdl-cell mdl-cell--2-col">Mac Rechts</p>
                     <md-input-container class="md-block mdl-cell">
                         <input placeholder="00:00:00:00:00:xx" aria-label="macR" name="mac"
                                pattern="([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
-                               ng-model="selectedDevice.macR">
+                               ng-model="selectedDevice.macR" ng-change="selectedDevice.changed=true">
                     </md-input-container>
                 </div>
                 <div class="mdl-grid">
                     <p class="mdl-cell mdl-cell--2-col">Shairplay Links</p>
                     <md-switch class="mdl-cell" ng-model="selectedDevice.airplayL" aria-label="airplayL"
-                               ng-true-value="1" ng-false-value="0">
+                               ng-true-value="1" ng-false-value="0" ng-change="selectedDevice.changed=true">
                     </md-switch>
                     <p class="mdl-cell mdl-cell--2-col">Shairplay Rechts</p>
                     <md-switch class="mdl-cell" ng-model="selectedDevice.airplayR" aria-label="airplayR"
-                               ng-true-value="1" ng-false-value="0">
+                               ng-true-value="1" ng-false-value="0" ng-change="selectedDevice.changed=true">
                     </md-switch>
                 </div>
                 <div class="mdl-grid">
                     <p class="mdl-cell mdl-cell--2-col">Spotify Connect Links</p>
                     <md-switch class="mdl-cell" ng-model="selectedDevice.spotifyL" aria-label="airplayL"
-                               ng-true-value="1" ng-false-value="0">
+                               ng-true-value="1" ng-false-value="0" ng-change="selectedDevice.changed=true">
                     </md-switch>
                     <p class="mdl-cell mdl-cell--2-col">Spotify Connect Rechts</p>
                     <md-switch class="mdl-cell" ng-model="selectedDevice.spotifyR" aria-label="airplayR"
-                               ng-true-value="1" ng-false-value="0">
+                               ng-true-value="1" ng-false-value="0" ng-change="selectedDevice.changed=true">
                     </md-switch>
                 </div>
             </div>
@@ -199,15 +191,13 @@ if ($pos1 == 1) {
         </div>
     </div>
     <div ng-if="selectedDevice && !selectedDevice.linktoDevice" class="mdl-card__actions mdl-card--border">
-        <button ng-click="saveDevice()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+        <button ng-style="selectedDevice.changed && {'color':'#ff362f'}" ng-click="saveDevice()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
             Speichern
         </button>
     </div>
     <div ng-if="selectedDevice && selectedDevice.linktoDevice" class="mdl-card__actions mdl-card--border">
         <md-button ng-click="setAudioConfigurationDeactivated()">Kopplung aufheben</md-button>
     </div>
-
-
     <div class="mdl-card__menu">
         <button disabled ng-if="selectedDevice" ng-click="selectedDevice.linktoDevice=true"
                 class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">

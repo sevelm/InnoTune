@@ -1,0 +1,16 @@
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .demo-card-wide{
+        width: 100%;
+    }
+    .mdl-card__supporting-text{
+        text-align: center;
+    }
+    .unselectable{
+        width: 30% !important;
+        height: 30% !important;
+    }
+
+    .mdl-card__title{
+        height: 50%;
+    }
+}

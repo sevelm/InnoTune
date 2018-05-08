@@ -409,7 +409,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                     $scope.playlists[id].vol_background = parseInt(arr[0]);
                     $scope.playlists[id].vol_dev = [];
                     for (var i = 1; i < 11; i++) {
-                        if (arr[i].includes("/")) {
+                        if (arr[i].indexOf("/")!=-1) {
                             var tmparr = arr[i].split("/");
                             $scope.playlists[id].vol_dev.push({
                                 id: i-1,
@@ -556,6 +556,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
 
     $scope.saveDevice = function () {
+        $scope.selectedDevice.changed = false;
         var id = $scope.formatId($scope.selectedDevice.id);
 
         if ($scope.selectedDevice.betrieb == 'normalbetrieb') {
@@ -727,7 +728,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                 if (data != 0 && arr[0] != "none") {
                     $scope.sysinfo.cpu = arr[0];
                     $scope.sysinfo.ram = arr[1];
-                    if (!arr[2].includes(":")) {
+                    if (!arr[2].indexOf(":")!=-1) {
                         $scope.sysinfo.uptime = arr[2] + " min";
                     } else if (arr[2].length > 3 && arr[2].length < 6) {
                         $scope.sysinfo.uptime = arr[2] + " h";
@@ -783,7 +784,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                     $scope.rssvoice.vol_dev = [];
 
                     for (var i = 0; i < $scope.devices.length; i++) {
-                        if (arr[i + 1].includes("/")) {
+                        if (arr[i + 1].indexOf("/") != -1) {
                             var tmparr = arr[i + 1].split("/");
                             $scope.rssvoice.vol_dev.push({
                                 id: i,
@@ -897,7 +898,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             $http.get('api/helper.php?reset'+resetstr)
                 .success(function (data) {
 
-                    if(data.includes("network")){
+                    if(data.indexOf("network")!=-1){
                         location.href = "scripts/reboot.php?dhcp=dhcp";
                     }else {
                         location.href = "scripts/reboot.php";
@@ -913,3 +914,10 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $interval($scope.getSysInfo, 4000);
     $scope.getDevices();
 });
+
+if (!String.prototype.startsWith) {
+    String.prototype.startsWith = function(searchString, position) {
+        position = position || 0;
+        return this.indexOf(searchString, position) === position;
+    };
+}
