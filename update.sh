@@ -134,6 +134,18 @@ if [[ $is_added -eq 0 ]]; then
 fi
 
 #add script to cron if it isn't already added
+#is_added=$(crontab -l | grep check_soundcards.sh | wc -l)
+#if [[ $is_added -eq 0 ]]; then
+#    crontab -l | { cat; echo "*/15 * * * * /var/www/check_soundcards.sh"; } | crontab -
+#fi
+
+#add script to cron if it isn't already added
+is_added=$(crontab -l | grep checklogsize.sh | wc -l)
+if [[ $is_added -eq 0 ]]; then
+    crontab -l | { cat; echo "*/5 * * * * /var/www/checklogsize.sh"; } | crontab -
+fi
+
+#add script to cron if it isn't already added
 is_added=$(crontab -l | grep checkcputemp.sh | wc -l)
 if [[ $is_added -eq 0 ]]; then
     crontab -l | { cat; echo "*/15 * * * * /var/www/checkcputemp.sh"; } | crontab -
