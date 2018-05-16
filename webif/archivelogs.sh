@@ -22,7 +22,7 @@ cd /var/www/InnoControl/log/old
 for i in *; do
   size=$(du -k $i | cut -f1)
   echo "size of $i is $size"
-  if [[ "$size" -gt "500000" ]]; then
+  if [[ "$size" -gt "200000" ]]; then
     sudo rm $i
   fi
 done

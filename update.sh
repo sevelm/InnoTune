@@ -142,7 +142,10 @@ fi
 #add script to cron if it isn't already added
 is_added=$(crontab -l | grep checklogsize.sh | wc -l)
 if [[ $is_added -eq 0 ]]; then
-    crontab -l | { cat; echo "*/5 * * * * /var/www/checklogsize.sh"; } | crontab -
+    crontab -l | { cat; echo "* * * * * /var/www/checklogsize.sh"; } | crontab -
+else
+    crontab -l | grep -v "*/5 * * * * /var/www/checklogsize.sh" | crontab -
+    crontab -l | { cat; echo "* * * * * /var/www/checklogsize.sh"; } | crontab -
 fi
 
 #add script to cron if it isn't already added
