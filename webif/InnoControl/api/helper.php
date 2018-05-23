@@ -46,6 +46,18 @@ if (isset($_GET['vol_mute'])) {
     exec("sudo /var/www/sudoscript.sh set_vol $dev airplay 0");
     exec("sudo /var/www/sudoscript.sh set_vol $dev LineIn 0");
 }
+
+if(isset($_GET['eq'])) {
+    $dev = $_GET['dev'];
+    echo exec("sudo /var/www/sudoscript.sh show_eq $dev");
+}
+
+if(isset($_GET['eq_set'])) {
+    $dev = $_GET['dev'];
+    $freq = $_GET['freq'];
+    $value = $_GET['value'];
+    exec("sudo /var/www/sudoscript.sh set_eq $dev $freq $value");
+}
 // </editor-fold>
 
 // <editor-fold desc="Settings">
@@ -140,6 +152,14 @@ if (isset($_GET['getdevice'])) {
     $oac = trim(file("/opt/innotune/settings/settings_player/oac/oac" . $dev . ".txt")[0]);
     $device = $device . ";;" . $oac;
     echo $device;
+}
+
+if (isset($_GET['reset_usb_mapping'])) {
+    exec("sudo /var/www/sudoscript.sh resetudev");
+}
+
+if(isset($_GET['reset_logs'])) {
+  exec("sudo /var/www/resetlogs.sh");
 }
 
 if (isset($_GET['set_audio_configuration'])) {

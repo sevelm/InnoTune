@@ -155,3 +155,95 @@ if ($pos1 == 1) {
     </div>
 </div>
 
+<div class="mdl-shadow--2dp mdl-cell mdl-cell--top mdl-cell--4-col"></div>
+<div ng-if="selectedDevice" class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--top mdl-cell--8-col">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">Equalizer</h2>
+  </div>
+
+  <div ng-if="selectedDevice.betrieb!='deaktiviert' && selectedDevice.betrieb!=='gekoppelt'">
+      <div id="mpd_vol" class="mdl-grid">
+          <h6 class="mdl-cell mdl-cell--3-col">Tiefen</h6>
+          <md-slider-container class="mdl-cell mdl-cell--9-col">
+              <md-slider flex="" ng-change="changeEq('low')" md-discrete=""  min="0" max="10" step="1" ng-model="selectedDevice.eq.low"
+                         id="red-slider" aria-label="low">
+              </md-slider>
+              <md-input-container>
+                  <input flex="" type="number" ng-change="changeEq('low')" ng-model="selectedDevice.eq.low"
+                         aria-controls="red-slider" aria-label="low">
+              </md-input-container>
+          </md-slider-container>
+      </div>
+      <div id="squeezebox_vol" class="mdl-grid">
+          <h6 class="mdl-cell mdl-cell--3-col">Mitten</h6>
+          <md-slider-container class="mdl-cell mdl-cell--9-col">
+              <md-slider flex="" ng-change="changeEq('mid')" min="0" md-discrete=""  max="10" step="1" ng-model="selectedDevice.eq.mid"
+                         id="red-slider" aria-label="mid">
+              </md-slider>
+              <md-input-container>
+                  <input flex="" type="number" ng-change="changeEq('mid')" ng-model="selectedDevice.eq.mid"
+                         aria-controls="red-slider" aria-label="mid">
+              </md-input-container>
+          </md-slider-container>
+      </div>
+      <div id="airplay_vol" class="mdl-grid">
+          <h6 class="mdl-cell mdl-cell--3-col">Höhen</h6>
+          <md-slider-container class="mdl-cell mdl-cell--9-col">
+              <md-slider flex="" ng-change="changeEq('high')"  md-discrete=""  min="0" max="10" step="1" ng-model="selectedDevice.eq.high"
+                         id="red-slider" aria-label="high">
+              </md-slider>
+              <md-input-container>
+                  <input flex="" type="number" ng-change="changeEq('high')" ng-model="selectedDevice.eq.high"
+                         aria-controls="red-slider" aria-label="high">
+              </md-input-container>
+          </md-slider-container>
+      </div>
+      <div class="mdl-card__actions mdl-card--border">
+        <button ng-click="resetEqSettings()"
+                class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+            Zurücksetzen
+        </button>
+      </div>
+  </div>
+
+  <!-- Slider deaktivieren wenn der betrieb auch deaktiviert oder gekoppelt ist -->
+  <div ng-if="selectedDevice.betrieb=='deaktiviert' || selectedDevice.betrieb=='gekoppelt'">
+      <div id="mpd_vol" class="mdl-grid">
+          <h6 class="mdl-cell mdl-cell--3-col">Tiefen</h6>
+          <md-slider-container class="mdl-cell mdl-cell--9-col">
+              <md-slider flex="" min="0" max="10"  disabled ng-model="selectedDevice.eq.low" id="red-slider" aria-label="low">
+              </md-slider>
+              <md-input-container>
+                  <input flex="" type="number" disabled ng-model="selectedDevice.eq.low"
+                         aria-controls="red-slider" aria-label="low">
+              </md-input-container>
+          </md-slider-container>
+      </div>
+      <div id="squeezebox_vol" class="mdl-grid">
+          <h6 class="mdl-cell mdl-cell--3-col">Mitten</h6>
+          <md-slider-container class="mdl-cell mdl-cell--9-col">
+              <md-slider flex="" min="0" max="10" disabled ng-model="selectedDevice.eq.mid"
+                         id="red-slider" aria-label="mid">
+              </md-slider>
+              <md-input-container>
+                  <input flex="" type="number" disabled ng-model="selectedDevice.eq.mid"
+                         aria-controls="red-slider" aria-label="mid">
+              </md-input-container>
+          </md-slider-container>
+      </div>
+      <div id="airplay_vol" class="mdl-grid">
+          <h6 class="mdl-cell mdl-cell--3-col">Höhen</h6>
+          <md-slider-container class="mdl-cell mdl-cell--9-col">
+              <md-slider flex="" min="0" max="10" disabled ng-model="selectedDevice.eq.high"
+                         id="red-slider" aria-label="high">
+              </md-slider>
+              <md-input-container>
+                  <input flex="" type="number" disabled ng-model="selectedDevice.eq.high"
+                         aria-controls="red-slider" aria-label="high">
+              </md-input-container>
+          </md-slider-container>
+      </div>
+  </div>
+</div>
+</div>
+</div>
