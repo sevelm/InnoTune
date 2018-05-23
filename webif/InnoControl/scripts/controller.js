@@ -229,6 +229,35 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         $http.get('api/helper.php?vol_set&dev=' + id + '&player=' + player + '&value=' + value);
     };
 
+    $scope.changeEq = function (freq) {
+      var value = 0;
+      var id = $scope.formatId($scope.selectedDevice.id);
+
+      switch (freq) {
+        case 'low':
+          value = $scope.selectedDevice.eq.low * 10;
+          break;
+        case 'mid':
+          value = $scope.selectedDevice.eq.mid * 10;
+          break;
+        case 'high':
+          value = $scope.selectedDevice.eq.high * 10;
+          break;
+      }
+      $http.get('api/helper.php?eq_set&dev=' + id + '&freq=' + freq + '&value=' + value);
+    }
+
+    $scope.resetEqSettings = function () {
+      var value = 66;
+      var id = $scope.formatId($scope.selectedDevice.id);
+      $http.get('api/helper.php?eq_set&dev=' + id + '&freq=low&value=' + value);
+      $http.get('api/helper.php?eq_set&dev=' + id + '&freq=mid&value=' + value);
+      $http.get('api/helper.php?eq_set&dev=' + id + '&freq=high&value=' + value);
+      $scope.selectedDevice.eq.low = 7;
+      $scope.selectedDevice.eq.mid = 7;
+      $scope.selectedDevice.eq.high = 7;
+    }
+
     /**
      * Shows the Reboot Toast an REBOOT Button
      */
