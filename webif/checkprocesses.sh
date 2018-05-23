@@ -34,7 +34,8 @@ if [[ $uptime -gt 5 ]]; then
     if [[ $pc -ne $count ]]; then
         for (( c=1; c<=$pc; c++ ))
         do
-          zonename=$(ps ax | grep librespot | sed "${c}q;d" | grep -Po "(?<=--name ).*?(?= --cache)")
+          lc=$(($c*2))
+          zonename=$(ps ax | grep librespot | sed "${lc}q;d" | grep -Po "(?<=--name ).*?(?= --cache)")
           echo "$datetime Spotify: $zonename läuft" >> /var/www/checkprocesses.log
         done
         echo "$datetime $pc von $count Spotify-Instanzen laufen" >> /var/www/checkprocesses.log

@@ -22,6 +22,7 @@ killall playmonitor
 
 # Settings Ordner
 cp -R /opt/innotune/update/cache/InnoTune/settings/* -n /opt/innotune/settings
+sudo mkdir /opt/innotune/settings/settings_player/eq
 sudo chmod -R 777 /opt/innotune/settings
 
 # WebInterface Ordner
@@ -114,6 +115,9 @@ sudo chmod 777 /var/www/checkprocesses.log
 
 sudo mkdir /var/www/InnoControl/log
 sudo chmod 777 /var/www/InnoControl/log
+
+sudo apt-get install -y libasound2-dev
+sudo apt-get install -y libasound2-plugin-equal
 
 if [[ ! -d "/opt/innotune/settings/settings_player/oac" ]]; then
   sudo mkdir /opt/innotune/settings/settings_player/oac
