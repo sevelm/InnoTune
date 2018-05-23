@@ -184,7 +184,19 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                         }
                     }
                 });
-
+            $http.get('api/helper.php?eq&dev=' + $scope.formatId(id))
+                .success(function (data) {
+                    var arr = data.split(";");
+                    if(data != 0) {
+                      for(var i = 0; i < $scope.devices.length; i++) {
+                        if($scope.devices[i].id == id) {
+                          $scope.devices[i].eq.low = Math.round(parseInt(arr[0]) / 10);
+                          $scope.devices[i].eq.mid = Math.round(parseInt(arr[1]) / 10);
+                          $scope.devices[i].eq.high = Math.round(parseInt(arr[2]) / 10);
+                        }
+                      }
+                    }
+                });
             $http.get('api/helper.php?lineinstatus&dev=' + $scope.formatId(id))
                 .success(function (data) {
                     if (data > 0) {
