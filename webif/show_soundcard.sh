@@ -6,25 +6,115 @@
 
 ##########################################################
 
+######################## UDEV RULE #############################################
+
+# clearing mapping_current file
+> /opt/innotune/settings/mapping_current.txt
+
+######################### CARD01 ###############################################
+# card 1 could be hdmi audio, therefore we alternatively check if it has id "rockchipminiarm",
+# if it isn't a InnoAMP
+
 if [ "$(cat /proc/asound/card1/stream0 | grep "Burr")" ]
 then
-       CARD01=aktiv
+      if [[ "$(cat /proc/asound/card1/id | cut -c 5- | cut -c 1)" = "C" ]]; then
+        if [[ -f /opt/innotune/settings/mapping.txt ]]; then
+          hnm=$(tail -1 /opt/innotune/settings/mapping.txt | cut -d ";" -f1 | cut -c 5-)
+          hnmc=$(tail -1 /opt/innotune/settings/mapping_current.txt | cut -d ";" -f1 | cut -c 5-)
+          if [[ "$hnmc" -gt "$hnm" ]]; then
+            cn=$(($hnmc+1))
+          else
+            cn=$(($hnm+1))
+          fi
+          if [[ "$cn" -ne "10" ]]; then
+            cn="0$cn"
+          fi
+          eval $(echo CARD$cn='aktiv')
+        else
+          CARD01=aktiv
+          cn="01"
+        fi
+      else
+        cn=$(cat /proc/asound/card1/id | cut -c 5-)
+        eval $(echo CARD$cn='aktiv')
+      fi
+       devpath=$(udevadm info -a -p $(udevadm info -q path -n /dev/snd/pcmC1D0c) | grep "looking at device" | cut -d "'" -f2 | rev | cut -c11- | rev)
+       echo "sndc$cn;$devpath" >> /opt/innotune/settings/mapping_current.txt
 elif [ "$(cat /proc/asound/card1/id | grep "rockchipminiarm")" ]
 then
        CARD01=aktiv
 fi
-CARD02=$(cat /proc/asound/card2/stream0 | grep "Burr")
-CARD03=$(cat /proc/asound/card3/stream0 | grep "Burr")
-CARD04=$(cat /proc/asound/card4/stream0 | grep "Burr")
-CARD05=$(cat /proc/asound/card5/stream0 | grep "Burr")
-CARD06=$(cat /proc/asound/card6/stream0 | grep "Burr")
-CARD07=$(cat /proc/asound/card7/stream0 | grep "Burr")
-CARD08=$(cat /proc/asound/card8/stream0 | grep "Burr")
-CARD09=$(cat /proc/asound/card9/stream0 | grep "Burr")
-CARD10=$(cat /proc/asound/card10/stream0 | grep "Burr")
 
+################################## CARD 2-9 ####################################
+for i in {2..9}
+do
+  if [[ "$(cat /proc/asound/card$i/id | cut -c 5- | cut -c 1)" = "C" ]]; then
+    if [[ -f /opt/innotune/settings/mapping.txt ]]; then
+      hnm=$(tail -1 /opt/innotune/settings/mapping.txt | cut -d ";" -f1 | cut -c 5-)
+      hnm=$(($hnm+1))
+      hnmc=$(tail -1 /opt/innotune/settings/mapping_current.txt | cut -d ";" -f1 | cut -c 5-)
+      hnmc=$(($hnmc+1))
+      if [[ "$hnmc" -gt "$hnm" ]]; then
+        cn=$(($hnmc))
+      else
+        cn=$(($hnm))
+      fi
+      if [[ "$cn" -ne "10" ]]; then
+        cn="0$cn"
+      fi
+      eval $(echo CARD$cn='$(cat /proc/asound/card'$i'/stream0 | grep "Burr")')
+    else
+        cn="0$i"
+        eval $(echo CARD$cn='$(cat /proc/asound/card'$i'/stream0 | grep "Burr")')
+    fi
+  else
+    cn=$(cat /proc/asound/card$i/id | cut -c 5-)
+    eval $(echo CARD$cn='$(cat /proc/asound/card'$i'/stream0 | grep "Burr")')
+  fi
+
+  devpath=$(udevadm info -a -p $(udevadm info -q path -n /dev/snd/pcmC"$i"D0c) | grep "looking at device" | cut -d "'" -f2 | rev | cut -c11- | rev)
+  if [ $devpath ]; then
+    echo "sndc$cn;$devpath" >> /opt/innotune/settings/mapping_current.txt
+  fi
+done
+
+######################### CARD10 ###############################################
+
+if [[ "$(cat /proc/asound/card10/id | cut -c 5- | cut -c 1)" = "C" ]]; then
+  if [[ -f /opt/innotune/settings/mapping.txt ]]; then
+    hnm=$(tail -1 /opt/innotune/settings/mapping.txt | cut -d ";" -f1 | cut -c 5-)
+    hnm=$(($hnm+1))
+    hnmc=$(tail -1 /opt/innotune/settings/mapping_current.txt | cut -d ";" -f1 | cut -c 5-)
+    hnmc=$(($hnmc+1))
+    if [[ "$hnmc" -gt "$hnm" ]]; then
+      cn=$(($hnmc))
+    else
+      cn=$(($hnm))
+    fi
+    if [[ "$cn" -ne "10" ]]; then
+      cn="0$cn"
+    fi
+    eval $(echo CARD$cn='$(cat /proc/asound/card'$i'/stream0 | grep "Burr")')
+  else
+      cn="0$i"
+      eval $(echo CARD$cn='$(cat /proc/asound/card'$i'/stream0 | grep "Burr")')
+  fi
+else
+  cn="$(cat /proc/asound/card10/id | cut -c 5-)"
+  eval $(echo CARD$cn='$(cat /proc/asound/card10/stream0 | grep "Burr")')
+fi
+
+devpath=$(udevadm info -a -p $(udevadm info -q path -n /dev/snd/pcmC10D0c) | grep "looking at device" | cut -d "'" -f2 | rev | cut -c13- | rev)
+if [ $devpath ]; then
+  echo "sndc$cn;$devpath" >> /opt/innotune/settings/mapping_current.txt
+fi
+
+######################## OUTPUT ################################################
+
+# output to /opt/innotune/settings/usb_dev.txt
 echo -e "${CARD01:+1}\n""${CARD02:+1}\n""${CARD03:+1}\n""${CARD04:+1}\n""${CARD05:+1}\n""${CARD06:+1}\n""${CARD07:+1}\n""${CARD08:+1}\n""${CARD09:+1}\n""${CARD10:+1}\n" > /opt/innotune/settings/usb_dev.txt
 
+# output to shell with param $1 (allowed param values are 0-10)
 case "$1" in
 	0) echo "${CARD01:+1};${CARD02:+1};${CARD03:+1};${CARD04:+1};${CARD05:+1};${CARD06:+1};${CARD07:+1};${CARD08:+1};${CARD09:+1};${CARD10:+1}";;
         1) echo ${CARD01:+1};;

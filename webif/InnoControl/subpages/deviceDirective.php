@@ -14,6 +14,8 @@
             <p ng-if="device.betrieb=='normalbetrieb'">{{device.name}}</p>
             <p ng-if="device.betrieb=='geteilterbetrieb'">{{device.nameR}} - {{device.nameL}}</p>
             <p ng-if="device.betrieb=='deaktiviert'">Deaktiviert</p>
+            <p ng-if="device.betrieb=='nichtverbunden'">Nicht verfügbar</p>
+            <p>{{device.display}}</p>
         </div>
     </md-list-item>
 </md-list>

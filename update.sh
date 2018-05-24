@@ -8,8 +8,6 @@
 
 ############Section: Update############
 
-sudo apt-get update
-
 # Killall
 killall shairport
 killall shairport-sync
@@ -19,6 +17,8 @@ killall mpd
 killall aplay
 killall librespot
 killall playmonitor
+
+sudo apt-get update
 
 # Settings Ordner
 cp -R /opt/innotune/update/cache/InnoTune/settings/* -n /opt/innotune/settings
@@ -79,12 +79,7 @@ sudo chmod -R 777 /media/Soundfiles/uploads
 mkdir /media/Soundfiles/tts
 sudo chmod -R 777 /media/Soundfiles/tts
 
-
-# Shairport (old)
-#sudo git clone https://github.com/abrasive/shairport.git /opt/shairport
-#cd /opt/shairport
-#sudo ./configure
-#sudo make install
+# Shairport (old) remove if it still exists
 sudo rm /usr/local/bin/shairport
 sudo rm -R /opt/shairport
 
@@ -92,11 +87,6 @@ sudo rm -R /opt/shairport
 sudo apt-get -y install shairport-sync
 sudo systemctl stop shairport-sync
 sudo systemctl disable shairport-sync
-
-# Spotify Connect (old)
-#cd /root
-#wget -nc https://github.com/herrernst/librespot/releases/download/v20170717-910974e/librespot-linux-armhf-raspberry_pi.zip
-#unzip -f librespot-linux-armhf-raspberry_pi.zip -d .
 
 #Spotify Connect
 sudo rm /root/librespot-linux-armhf-raspberry_pi.zip

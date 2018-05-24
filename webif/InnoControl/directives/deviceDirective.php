@@ -31,6 +31,8 @@ if ($pos1 == 1) {
             <p ng-if="device.betrieb=='geteilterbetrieb'">{{device.nameL}} - {{device.nameR}}</p>
             <p ng-if="device.betrieb=='gekoppelt'">Gekoppelt mit <strong>{{devices[device.linktoDevice-1].name}}</strong></p>
             <p ng-if="device.betrieb=='deaktiviert'">Deaktiviert</p>
+            <p ng-if="device.betrieb=='nichtverbunden'">Nicht verfügbar</p>
+            <p>{{device.display}}</p>
         </div>
     </md-list-item>
 </md-list>

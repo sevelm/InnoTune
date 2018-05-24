@@ -43,6 +43,11 @@ if ($pos1 == 1) {
                 class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
             Player Konfiguration erzeugen
         </button>
+        <button ng-click="resetMapping($event)"
+                class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                style="color: rgb(255, 54, 47);">
+            USB-Geräte-Zuweisung zurücksetzen
+        </button>
     </div>
 </div>
 

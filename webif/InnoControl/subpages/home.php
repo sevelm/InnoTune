@@ -205,7 +205,7 @@ if ($pos1 == 1) {
                     <span ng-if="device.betrieb=='geteilterbetrieb'" class="mdl-list__item-sub-title">{{device.nameL}} - {{device.nameR}}</span>
                     <span ng-if="device.betrieb=='gekoppelt'" class="mdl-list__item-sub-title">Mit <strong>{{devices[device.linktoDevice-1].name}}</strong> gekoppelt</span>
                     <span ng-if="device.betrieb=='deaktiviert'" class="mdl-list__item-sub-title">Deaktiviert</span>
-                    <!--<span ng-if="device.betrieb=='nichtverbunden'" class="mdl-list__item-sub-title">Nicht verfügbar</span>-->
+                    <span ng-if="device.betrieb=='nichtverbunden'" class="mdl-list__item-sub-title">Nicht verfügbar</span>
                 </span>
                 <span class="mdl-list__item-secondary-content">
                     <span class="mdl-list__item-secondary-info">Mac-Adresse</span>
@@ -214,7 +214,7 @@ if ($pos1 == 1) {
                     <span ng-if="device.betrieb=='geteilterbetrieb'" class="mdl-list__item-secondary-action">{{device.macL}} - {{device.macR}}</span>
                     <span ng-if="device.betrieb=='gekoppelt'" class="mdl-list__item-secondary-action">{{devices[device.linktoDevice-1].mac}}</span>
                     <span ng-if="device.betrieb=='deaktiviert'" class="mdl-list__item-secondary-action">-</span>
-                    <!--<span ng-if="device.betrieb=='nichtverbunden'" class="mdl-list__item-secondary-action">-</span>-->
+                    <span ng-if="device.betrieb=='nichtverbunden'" class="mdl-list__item-secondary-action">-</span>
                 </span>
             </li>
         </ul>
