@@ -1,7 +1,8 @@
 #!/bin/bash
 uptimeraw=$(awk '{print $1}' /proc/uptime | cut -d "." -f1)
 uptime=$(($uptimeraw / 60))
-if [[ $uptime -gt 5 ]]; then
+updating=$(ps cax | grep update.sh | wc -l)
+if [[ $uptime -gt 5 ]] && [[ $updating -eq 0 ]]; then
   is_running=$(ps cax | grep set_player | wc -l)
   if [[ $is_running -eq 0 ]]; then
     datetime=$(date '+%d-%m-%Y %H:%M:%S')
