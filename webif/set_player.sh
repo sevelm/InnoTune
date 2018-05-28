@@ -62,13 +62,13 @@ if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
 
               ########### Start Squeezelite
               if [[ $SQMAC ]]; then       ###Aktivate Player on USB device "$i" - Squeezbox
-              /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeeze"$i" -n "$PLAYER" -m "$SQMAC" -z -d all=info -f /var/www/InnoControl/log/squeeze$i-$datetime 2>&1 & echo "$i;" >> /opt/innotune/settings/p_squeeze
+              /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeeze"$i" -n "$PLAYER" -m "$SQMAC" -z > /dev/null 2>&1 & echo "$i;" >> /opt/innotune/settings/p_squeeze
               fi
               if [[ $SQliMAC ]]; then     ###Aktivate Player on USB device "$i" left - Squeezbox
-              /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeezeli"$i" -n "$PLAYERli" -m "$SQliMAC" -z -d all=info -f /var/www/InnoControl/log/squeezeli$i-$datetime 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_squeeze
+              /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeezeli"$i" -n "$PLAYERli" -m "$SQliMAC" -z > /dev/null 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_squeeze
               fi
               if [[ $SQreMAC ]]; then     ###Aktivate Player on USB device "$i" right - Squeezbox
-              /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeezere"$i" -n "$PLAYERre" -m "$SQreMAC" -z -d all=info -f /var/www/InnoControl/log/squeezere$i-$datetime 2>&1 & echo "$i;re" >> /opt/innotune/settings/p_squeeze
+              /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeezere"$i" -n "$PLAYERre" -m "$SQreMAC" -z > /dev/null 2>&1 & echo "$i;re" >> /opt/innotune/settings/p_squeeze
               fi
 
               ########### Start Spotify Connect
@@ -188,13 +188,13 @@ else
               if [[ $1 -eq 2 ]]; then
                   ########### Start Squeezelite
                   if [[ $SQMAC ]]; then       ###Aktivate Player on USB device "$i" - Squeezbox
-                      /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeeze"$i" -n "$PLAYER" -m "$SQMAC" -z -d all=info -f /var/www/InnoControl/log/squeeze$i-$datetime > /dev/null 2>&1 & echo "$i;" >> /opt/innotune/settings/p_squeeze
+                      /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeeze"$i" -n "$PLAYER" -m "$SQMAC" -z > /dev/null 2>&1 & echo "$i;" >> /opt/innotune/settings/p_squeeze
                   fi
                   if [[ $SQliMAC ]]; then     ###Aktivate Player on USB device "$i" left - Squeezbox
-                      /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeezeli"$i" -n "$PLAYERli" -m "$SQliMAC" -z -d all=info -f /var/www/InnoControl/log/squeezeli$i-$datetime 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_squeeze
+                      /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeezeli"$i" -n "$PLAYERli" -m "$SQliMAC" -z > /dev/null 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_squeeze
                   fi
                   if [[ $SQreMAC ]]; then     ###Aktivate Player on USB device "$i" right - Squeezbox
-                      /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeezere"$i" -n "$PLAYERre" -m "$SQreMAC" -z -d all=info -f /var/www/InnoControl/log/squeezere$i-$datetime 2>&1 & echo "$i;re" >> /opt/innotune/settings/p_squeeze
+                      /usr/bin/squeezelite-armv6hf -b 2048:4096 -a 60:16:16:0 -r 44100,44100 -R -u hMX -o squeezere"$i" -n "$PLAYERre" -m "$SQreMAC" -z > /dev/null 2>&1 & echo "$i;re" >> /opt/innotune/settings/p_squeeze
                   fi
               fi
 
