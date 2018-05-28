@@ -22,6 +22,11 @@ if [[ $uptime -gt 5 ]] && [[ $updating -eq 0 ]]; then
           echo "$datetime Shairplay: $zonename läuft" >> /var/www/checkprocesses.log
         done
         echo "$datetime $pc von $count Shairplay-Instanzen laufen" >> /var/www/checkprocesses.log
+        if [[ $pc -eq 0 ]] && [[ ! $(command -v shairport-sync) ]]; then
+          sudo apt-get install -y shairport-sync
+          sudo systemctl stop shairport-sync
+          sudo systemctl disable shairport-sync
+        fi
         /var/www/set_player.sh 1
     fi
 
