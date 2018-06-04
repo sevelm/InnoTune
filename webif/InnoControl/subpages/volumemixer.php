@@ -12,8 +12,7 @@ $pos1 = strcasecmp($actual_kernel, $tb_kernel);
 if ($pos1 == 1) {
     $tinkerboard = true;
 }
-
-
+$needsConfig = intval(shell_exec("cat /etc/asound.conf | grep plug:equal | wc -l"));
 ?>
 
 
@@ -203,6 +202,13 @@ if ($pos1 == 1) {
                 class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
             Zurücksetzen
         </button>
+        <?php
+        if($needsConfig == 0) {
+          echo '<a href="#devices" style="color:#ff362f"
+                  class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+              Audiokonfiguration muss erzeugt werden!
+          </a>';
+        }?>
       </div>
   </div>
 

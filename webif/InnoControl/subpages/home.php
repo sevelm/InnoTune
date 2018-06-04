@@ -10,9 +10,6 @@ $actual_kernel = (shell_exec("uname -r"));
 $tb_kernel  = '4.4.73-rockchip';
 $pos1 = strcasecmp($actual_kernel, $tb_kernel);
 
-echo $actual_kernel;
-
-
 if ($pos1 == 1) {
     $tinkerboard = true;
 }
@@ -23,37 +20,39 @@ if ($pos1 == 1) {
 <style>
     .welcome-card-wide > .mdl-card__title {
         color: #fff;
-        height: 300px;
+        height: 200px;
         background: url('images/cover.png') center / cover;
     }
 
 </style>
 
-<div class="welcome-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--hide-phone">
-    <div class="mdl-card__title">
-        <h2 class="mdl-card__title-text">Welcome</h2>
-    </div>
-    <div class="mdl-card__menu">
-        <a target="_blank"
-           href="https://twitter.com/home?status=%23innotune%20The%20best%20source%20for%20Multiroom%20audio!"
-           class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-            <i class="material-icons">share</i>
-            <md-tooltip md-direction="bottom">Teilen</md-tooltip>
-        </a>
-    </div>
-</div>
-
 <div class="mdl-grid mdl-cell--6-col no-spacing">
-    <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--top mdl-cell--12-col">
-        <div class="mdl-card__title">
-            <h2 class="mdl-card__title-text">InnoServer Status</h2>
-        </div>
+    <div class="welcome-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--top mdl-cell--12-col">
+        <div class="mdl-card__title"></div>
         <div class="mdl-card__menu">
-            <b ng-if="sysinfo.cpu<'90'" style="color: green; font-size: 18px">Gut</b>
+            <b ng-if="sysinfo.cpu<'90'" style="color: white; font-size: 18px">Gut</b>
             <b ng-if="sysinfo.cpu>'90'" style="color: red; font-size: 18px">Ausgelastet</b>
         </div>
         <div ng-init="getSysInfo()" class="mdl-card__supporting-text">
             <ul class="demo-list-icon mdl-list" style="padding: 0">
+                <li class="mdl-list__item">
+                  <span class="mdl-list__item-primary-content">
+                      <i class="material-icons mdl-list__item-icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                         version="1.1" baseProfile="full" width="32"
+                                                                         height="32" viewBox="0 0 32.00 32.00"
+                                                                         enable-background="new 0 0 32.00 32.00"
+                                                                         xml:space="preserve" style="vertical-align: unset">
+                          <path d="M0 0h24v24H0z" fill="none"/>
+                          <path fill="#757575" fill-opacity="1" stroke-linejoin="round"
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                      </svg></i>
+
+                      Kernel:&nbsp;
+                      <div class="mdl-layout-spacer mdl-cell--hide-desktop mdl-cell--hide-tablet"></div>
+                      <b><?php echo $actual_kernel; ?></b>
+                  </span>
+                </li>
                 <li class="mdl-list__item">
                     <span class="mdl-list__item-primary-content">
                         <i class="material-icons mdl-list__item-icon"><svg xmlns="http://www.w3.org/2000/svg"
@@ -176,7 +175,8 @@ if ($pos1 == 1) {
         </div>
     </div>
 </div>
-<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--top mdl-cell--6-col">
+<div class="mdl-grid mdl-cell--6-col no-spacing">
+  <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--top mdl-cell--12-col">
     <div class="mdl-card__title">
         <h2 class="mdl-card__title-text">InnoServer</h2>
     </div>
@@ -225,4 +225,5 @@ if ($pos1 == 1) {
             <md-tooltip md-direction="bottom">Geräte neu laden</md-tooltip>
         </a>
     </div>
+  </div>
 </div>
