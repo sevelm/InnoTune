@@ -12,7 +12,7 @@ PID1=$(cat /opt/innotune/settings/status_line-in/line-in$card_out.txt | head -n1
 PID2=$(cat /opt/innotune/settings/status_line-in/line-in$card_out.txt | head -n2 | tail -n1)               #Abfrage ob Line bereits ausgegeben wird
 
 # Line-In beenden wenn aktiv
-if [ $PID1 != "0" ] || [ $PID2 != "0" ]; then  
+if [ $PID1 != "0" ] || [ $PID2 != "0" ]; then
       kill $PID1 $PID2
       echo -e "0\n""0\n" > /opt/innotune/settings/status_line-in/line-in$card_out.txt
       amixer -c $card_out set MuteIfLineIn_$card_out 100%
@@ -22,20 +22,20 @@ fi
 
 
 # Line-In wiedergeben
-if [[ $card_in ]]; then      
+if [[ $card_in ]]; then
       amixer -c $card_out set MuteIfLineIn_$card_out 1%
       amixer -c $card_out set MuteIfLineInli_$card_out 1%
       amixer -c $card_out set MuteIfLineInre_$card_out 1%
-        if [ $zone2 == "2" ]; then 
+        if [ $zone2 == "2" ]; then
 #              newPID1=$(arecord -B 1 -f cd -D plug:dsnoop$card_in | aplay -B 1 -D plug:LineInli$card_out > /dev/null 2>&1 & echo $!)
 #              newPID2=$(arecord -B 1 -f cd -D plug:dsnoop$card_in | aplay -B 1 -D plug:LineInre$card_out > /dev/null 2>&1 & echo $!)
-              newPID1=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D plug:LineInli$card_out > /dev/null 2>&1 & echo $!)
-              newPID2=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D plug:LineInre$card_out > /dev/null 2>&1 & echo $!)
+              newPID1=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineInli$card_out > /dev/null 2>&1 & echo $!)
+              newPID2=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineInre$card_out > /dev/null 2>&1 & echo $!)
         else
-#              newPID1=$(arecord -B 1 -f cd -D plug:dsnoop$card_in | aplay -B 1 -D plug:LineIn$card_out > /dev/null 2>&1 & echo $!) 
-              newPID1=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D plug:LineIn$card_out  > /dev/null 2>&1 & echo $!)
+#              newPID1=$(arecord -B 1 -f cd -D plug:dsnoop$card_in | aplay -B 1 -D plug:LineIn$card_out > /dev/null 2>&1 & echo $!)
+              newPID1=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineIn$card_out  > /dev/null 2>&1 & echo $!)
 
-        fi     
+        fi
       echo -e "$newPID1\n""$newPID2\n""$card_in\n" > /opt/innotune/settings/status_line-in/line-in$card_out.txt
 fi
 

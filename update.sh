@@ -18,10 +18,13 @@ killall aplay
 killall librespot
 killall playmonitor
 
-#Set apt repository to xenial (important for odroid updates)
-sudo cp /opt/innotune/update/cache/InnoTune/sources.list /etc/apt/sources.list
+## raspi only
+if [[ $(cat /etc/os-release | grep Raspbian | wc -l) -eq 0 ]]; then
+  #Set apt repository to xenial (important for odroid updates)
+  sudo cp /opt/innotune/update/cache/InnoTune/sources.list /etc/apt/sources.list
+fi
 
-sudo apt-get update
+sudo apt-get -y update
 
 # Settings Ordner
 cp -R /opt/innotune/update/cache/InnoTune/settings/* -n /opt/innotune/settings
@@ -184,6 +187,10 @@ sudo cp /opt/innotune/update/cache/InnoTune/php.ini /etc/php/5.6/cgi/php.ini
 grep -q -F "*/15 * * * * /var/www/playercheck.sh" /var/spool/cron/crontabs/root || echo "*/15 * * * * /var/www/playercheck.sh" >> /var/spool/cron/crontabs/root
 grep -q -F "3 3 * * * sudo shutdown -r now" /var/spool/cron/crontabs/root || echo "3 3 * * * sudo shutdown -r now" >> /var/spool/cron/crontabs/root
 
+# install additional packages for raspberry_pi
+if [[ $(cat /etc/os-release | grep Raspbian | wc -l) -ge 1 ]]; then
+  sudo apt-get install -y libportaudio2
+fi
 # Overwrite current Version number with new
 cd /opt/innotune/update/cache
 sudo cat InnoTune/version.txt > /var/www/version.txt
