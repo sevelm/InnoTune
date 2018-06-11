@@ -19,9 +19,7 @@ killall librespot
 killall playmonitor
 
 ## raspi only
-israspi=$(cat /etc/os-release | grep Raspbian | wc -l)
-isodroidu3=$(uname -a | grep "innotune 3.8.13.16" | wc -l)
-if [[ "$israspi" -eq "0" ]] && [[ "$isodroidu3" -eq "0" ]]; then
+if [[ $(cat /etc/os-release | grep Raspbian | wc -l) -eq 0 ]]; then
   #Set apt repository to xenial (important for odroid updates)
   sudo cp /opt/innotune/update/cache/InnoTune/sources.list /etc/apt/sources.list
 fi
@@ -190,7 +188,7 @@ grep -q -F "*/15 * * * * /var/www/playercheck.sh" /var/spool/cron/crontabs/root 
 grep -q -F "3 3 * * * sudo shutdown -r now" /var/spool/cron/crontabs/root || echo "3 3 * * * sudo shutdown -r now" >> /var/spool/cron/crontabs/root
 
 # install additional packages for raspberry_pi
-if [[ "$israspi" -ge "1" ]]; then
+if [[ $(cat /etc/os-release | grep Raspbian | wc -l) -ge 1 ]]; then
   sudo apt-get install -y libportaudio2
 fi
 # Overwrite current Version number with new
