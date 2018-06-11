@@ -19,7 +19,9 @@ killall librespot
 killall playmonitor
 
 ## raspi only
-if [[ $(cat /etc/os-release | grep Raspbian | wc -l) -eq 0 ]]; then
+$israspi=$(cat /etc/os-release | grep Raspbian | wc -l)
+$isodroidu3=$(uname -a | grep "innotune 3.8.13.16" | wc -l)
+if [[ $israspi -eq 0 ]] && [[ $isodroidu3 -eq 0 ]]; then
   #Set apt repository to xenial (important for odroid updates)
   sudo cp /opt/innotune/update/cache/InnoTune/sources.list /etc/apt/sources.list
 fi
