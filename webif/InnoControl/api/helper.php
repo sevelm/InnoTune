@@ -624,20 +624,30 @@ if (isset($_GET['get_usbmount'])) {
     echo shell_exec("grep --only-matching --perl-regex \"(?<=ENABLED\=).*\" /etc/usbmount/usbmount.conf");
 }
 
+if (isset($_GET['get_netmount'])) {
+  echo shell_exec("cat /opt/innotune/settings/netmount.txt");
+}
+
 if (isset($_GET['savenetworkmount'])) {
-    $PATH = ($_GET["path"]);
-    $MOUNTPOINT = ($_GET["mountpoint"]);
-    $TYPE = ($_GET["type"]);
-    $OPTIONS = ($_GET["options"]);
+    $PATH = trim($_GET["path"]);
+    $MOUNTPOINT = "/media/" . trim($_GET["mountpoint"]);
+    $TYPE = trim($_GET["type"]);
+    $OPTIONS = trim($_GET["options"]);
 
-    echo $mount = trim($PATH) . " " . trim($MOUNTPOINT) . " " . trim($TYPE) . " " . $OPTIONS . " 0 0";
+    $mount = $PATH . " " . $MOUNTPOINT . " " . $TYPE . " " . $OPTIONS . " 0 0";
 
-    shell_exec("sudo /var/www/sudoscript.sh networkmount \"$mount\" $MOUNTPOINT");
+    shell_exec("sudo /var/www/sudoscript.sh networkmount \"$mount\" \"$MOUNTPOINT\" \"$PATH\" \"$TYPE\" \"$OPTIONS\"");
 }
 
-if (isset($_GET['getnetworkmount'])) {
-    echo file_get_contents("/etc/fstab");
+if(isset($_GET['removenetworkmount'])) {
+  $PATH = trim($_GET["path"]);
+  $MOUNTPOINT = trim($_GET["mountpoint"]);
+  $TYPE = trim($_GET["type"]);
+  $FSTAB = trim($_GET['fstab']);
+
+  shell_exec("sudo /var/www/sudoscript.sh removenetworkmount \"$MOUNTPOINT\" \"$PATH\" \"$TYPE\" \"$FSTAB\"");
 }
+
 /*class MyDB extends SQLite3
 {
     function __construct()

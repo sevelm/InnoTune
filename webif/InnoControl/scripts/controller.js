@@ -1083,6 +1083,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
 
     $scope.saveNetworkMount = function () {
+        document.getElementById("loadingsymbol").style.display = "block";
         if($scope.options == undefined){
             $scope.options = "";
         }
@@ -1097,15 +1098,45 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                     '&mountpoint='+$scope.networkmount.mountpoint +
                     '&type='+$scope.networkmount.type +
                     '&options='+$scope.networkmount.options);
+
+                    location.reload();
         });
     };
 
     $scope.getNetworkMount = function () {
-        $http.get('api/helper.php?getnetworkmount')
+        $http.get('api/helper.php?get_netmount')
             .success(function (data) {
-                $scope.networkmount.list = data;
+                $scope.networkmount.list = [];
+                var rawtext = data.split('\n');
+                console.log(rawtext.length);
+                for(var i = 0; i < rawtext.length-1; i++) {
+                    if(rawtext[i] != "") {
+                      var rawline = rawtext[i].split(';');
+                      $scope.networkmount.list.push({dir:rawline[0], net:rawline[1], fs:rawline[2], fstab:rawline[3]});
+                    }
+                }
             });
+    };
 
+    $scope.removeNetworkMount = function (entry) {
+      var confirm = $mdDialog.confirm()
+          .title('Bist du sicher?')
+          .textContent('Der Netzwerkspeicher wird entfernt.')
+          .targetEvent(event)
+          .ok('Ok')
+          .cancel('Abbrechen');
+        $mdDialog.show(confirm).then(function () {
+          $http.get('api/helper.php?removenetworkmount' +
+              '&path=' + entry.net +
+              '&mountpoint=' + entry.dir +
+              '&type=' + entry.fs +
+              '&fstab=' + entry.fstab)
+              .success(function() {
+                  location.reload();
+              });
+        }, function () {
+
+        });
     };
 
 

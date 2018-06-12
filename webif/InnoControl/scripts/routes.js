@@ -90,7 +90,7 @@ app.config(function ($routeProvider) {
                 return: function () {
                     resetColor();
                     document.getElementById("storageanchor").style.backgroundColor = "#263238";
-                    document.getElementById("location").innerHTML = "USB-Mount";
+                    document.getElementById("location").innerHTML = "Speichergeräte";
                 }
             }
         })

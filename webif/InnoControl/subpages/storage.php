@@ -9,18 +9,34 @@
 </style>
 
 <!-- Netzwerkspeicher Einstellungen -->
-<!-- :(
 <div ng-init="getNetworkMount()" class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--top mdl-cell--6-col">
     <div class="mdl-card__title">
         <h2 class="mdl-card__title-text">Netzwerkspeicher</h2>
     </div>
     <div class="mdl-card__supporting-text">
-        <h6>Verbundene Mountpoints:</h6>
-        <div class="mdl-textfield mdl-js-textfield mdl-cell mdl-cell--12-col">
-                     <textarea class="mdl-textfield__input" type="text" rows="3"
-                               id="text7">{{networkmount.list}}</textarea>
-        </div>
-        <h6>Neuen Mountpoint hinzufügen: </h6>
+        <h5>Verbundene Mountpoints:</h5>
+
+        <div class="mdl-grid" style="padding:0">
+           <div class="mdl-cell mdl-cell--3-col" style=" font-weight: bold;">Lokaler Ordner</div>
+           <div class="mdl-cell mdl-cell--4-col" style=" font-weight: bold;">Adresse</div>
+           <div class="mdl-cell mdl-cell--3-col" style=" font-weight: bold;">Dateisystem</div>
+           <div class="mdl-cell mdl-cell--1-col" style="margin-top:0">
+           </div>
+         </div>
+           <div ng-repeat="entry in networkmount.list" class="mdl-cell mdl-cell--12-col" ng-click="">
+             <div class="mdl-grid" style="padding:0">
+                <div class="mdl-cell mdl-cell--3-col">{{entry.dir}}</div>
+                <div class="mdl-cell mdl-cell--4-col">{{entry.net}}</div>
+                <div class="mdl-cell mdl-cell--3-col">{{entry.fs}}</div>
+                <div class="mdl-cell mdl-cell--1-col" style="margin-top:0">
+                  <button ng-click="removeNetworkMount(entry)" style="margin-top:0" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-cell mdl-cell--1-col">
+                      <i class="material-icons">delete</i>
+                      <md-tooltip md-direction="bottom">Löschen</md-tooltip>
+                  </button>
+                </div>
+              </div>
+           </div>
+        <h5>Neuen Mountpoint hinzufügen: </h5>
         <div class="mdl-grid">
             <p class="mdl-cell mdl-cell--3-col">Pfad</p>
             <md-input-container class="md-block mdl-cell settingsW">
@@ -29,11 +45,11 @@
             <p>zb.: <b>//192.168.0.240/Share</b></p>
         </div>
         <div class="mdl-grid">
-            <p class="mdl-cell  mdl-cell--3-col">Mountpoint</p>
+            <p class="mdl-cell  mdl-cell--3-col">Mountpoint-Ordner</p>
             <md-input-container class="md-block mdl-cell settingsW">
                 <input style="color:gray" ng-model="networkmount.mountpoint" aria-label="mountpoint">
             </md-input-container>
-            <p>zb.: <b>/media/nas</b></p>
+            <p>zb.: <b>nas</b></p>
         </div>
         <div class="mdl-grid">
             <p class="mdl-cell  mdl-cell--3-col">Typ</p>
@@ -59,7 +75,7 @@
             Pfad im LMS: <b>Eigene Musik -> Musikordner -> Mountpoint</b>
         </div>
     </div>
-</div>-->
+</div>
 <!-- Usb-Mount Einstellungen -->
 <div ng-init="showUSBSwitch()"
      class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--top mdl-cell--6-col">
