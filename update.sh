@@ -199,3 +199,19 @@ sudo /var/www/create_asound.sh
 sudo service dhcpcd stop
 sudo systemctl disable dhcpcd
 sudo update-rc.d -f dhcpcd remove
+
+if [[ ! -f /opt/innotune/settings/wlan.txt ]]; then
+  echo "0" > /opt/innotune/settings/wlan.txt
+  sudo chmod 777 /opt/innotune/settings/wlan.txt
+fi
+
+if [[ ! -f /opt/innotune/settings/wpa_supplicant.conf ]]; then
+  cp /opt/innotune/update/cache/InnoTune/wpa_supplicant.conf /opt/innotune/settings/wpa_supplicant.conf
+  sudo chmod 777 /opt/innotune/settings/wpa_supplicant.conf
+fi
+
+if [[ $(uname -r | grep rockchip | wc -l) -eq 1 ]] && [[ $(uname -r | cut -c5-7) -lt 135 ]]; then
+  sudo cp /opt/innotune/update/cache/InnoTune/img-135.deb /root/img-135.deb
+  echo "updating to version 4.4.135"
+  sudo dpkg -i /root/img-135.deb
+fi
