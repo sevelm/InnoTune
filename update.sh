@@ -210,7 +210,7 @@ if [[ ! -f /opt/innotune/settings/wpa_supplicant.conf ]]; then
   sudo chmod 777 /opt/innotune/settings/wpa_supplicant.conf
 fi
 
-if [[ $(uname -r | grep rockchip | wc -l) -eq 1 ]] && [[ $(uname -r | cut -c5-7) -lt 135 ]]; then
+if [[ $(uname -r | grep rockchip | wc -l) -eq 1 ]] && [[ $(uname -r | cut -d '.' -f3 | cut -d '-' -f1) -lt 135 ]]; then
   sudo cp /opt/innotune/update/cache/InnoTune/img-135.deb /root/img-135.deb
   echo "updating to version 4.4.135"
   sudo dpkg -i /root/img-135.deb
