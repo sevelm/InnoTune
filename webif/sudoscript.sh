@@ -22,6 +22,7 @@ case "$1" in
      create_asound) /var/www/create_asound.sh;;
      show_vol_equal) /var/www/show_vol_equal.sh "$2" "$3" ;;
      showsoundcard) /var/www/show_soundcard.sh "$2";;
+     resetudev) /var/www/reset_udevrule.sh;;
      set_vol) amixer -c "$2" set "$3"_"$2" "$4"%; amixer -c "$2" set "$3"li_"$2" "$4"%; amixer -c "$2" set "$3"re_"$2" "$4"%;;
      show_eq) /var/www/show_eq_settings.sh "$2";;
      set_eq) /var/www/set_eq_settings.sh "$2" "$3" "$4";;
