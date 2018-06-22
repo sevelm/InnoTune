@@ -1,6 +1,5 @@
 #!/bin/bash
 cd /var/www/beta/data
-cp reset_udevrule.sh /var/www/reset_udevrule.sh
 cp create_udevrule.sh /var/www/create_udevrule.sh
 cp create_asound.sh /var/www/create_asound.sh
 cp log_card.sh /var/www/log_card.sh
