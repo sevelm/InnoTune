@@ -65,6 +65,10 @@ if (isset($_GET['shnet'])) {
     echo exec("sudo /var/www/sudoscript.sh shnet all");
 }
 
+if (isset($_GET['wifi'])) {
+    echo exec("iwlist wlan0 scan | grep ESSID | cut -d '\"' -f2 | sort -u | tr '\n' ';'");
+}
+
 if (isset($_GET['setnet'])) {
     $DHCP = $_GET['dhcp'];
     $IP = $_GET['ip'];
@@ -72,6 +76,9 @@ if (isset($_GET['setnet'])) {
     $GATE = $_GET['gate'];
     $DNS1 = $_GET['dns1'];
     $DNS2 = $_GET['dns2'];
+    $WLAN = $_GET['wlan'];
+    $SSID = $_GET['ssid'];
+    $PSK = $_GET['psk'];
 
     $array = file("/opt/innotune/settings/network.txt"); // Datei in ein Array einlesen
     array_splice($array, 0, 1, "$DHCP" . "\n");
@@ -82,7 +89,7 @@ if (isset($_GET['setnet'])) {
     array_splice($array, 6, 1, "$DNS2" . "\n");
     $string = implode("", $array);
     file_put_contents("/opt/innotune/settings/network.txt", $string);
-
+    exec("/var/www/setwlan.sh \"$SSID\" \"$PSK\" \"$WLAN\"");
     exec('sudo /var/www/sudoscript.sh setnet');
 }
 
@@ -606,6 +613,10 @@ if (isset($_GET['getsysinfo'])) {
 
 if (isset($_GET['update'])) {
     exec("sudo /var/www/sudoscript.sh update", $output, $return_var);
+}
+
+if(isset($_GET['updateKernel'])) {
+    exec("sudo /var/www/sudoscript.sh updateKernel", $output, $return_var);
 }
 
 if (isset($_GET['reset'])) {

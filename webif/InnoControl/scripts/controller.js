@@ -143,7 +143,10 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                 '&subnet=' + $scope.network.subnet +
                 '&gate=' + $scope.network.gate +
                 '&dns1=' + $scope.network.dns1 +
-                '&dns2=' + $scope.network.dns2)
+                '&dns2=' + $scope.network.dns2 +
+                '&wlan=' + $scope.network.wlan +
+                '&ssid=' + $scope.network.ssid +
+                '&psk=' + $scope.network.psk)
                 .success(function () {
                     location.href = "scripts/reboot.php?ip=" + $scope.network.ip + "&dhcp=" + $scope.network.dhcp;
                 });
@@ -396,8 +399,15 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                     $scope.network.mac = arr[4];
                     $scope.network.dns1 = arr[5];
                     $scope.network.dns2 = arr[6];
+                    $scope.network.wlan = arr[7];
+                    $scope.network.ssid = arr[8];
+                    $scope.network.psk = arr[9];
                 }
                 $scope.onChangeDHCP();
+            });
+        $http.get('api/helper.php?wifi')
+            .success(function (data) {
+                $scope.network.wifis = data.split(";");
             });
     };
 
@@ -1081,6 +1091,26 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             });
         });
     };
+
+    $scope.updateKernel = function () {
+      var update = $mdDialog.confirm()
+          .title('Achtung!')
+          .textContent('Der Kernel wird aktualisiert. Hier können in seltenen Fällen Komplikationen auftreten ' +
+          'und dadurch zu einem fehlerhaften System führen. Das Kernel-Update muss nicht ausgeführt werden und ' +
+          'durch das Drücken des "Verstanden"-Button erklären Sie, dass Sie selbst die Verantwortung für ein ' +
+          'fehlerhaftes System nach dem Update tragen.')
+          .ariaLabel('Update!')
+          .targetEvent(event)
+          .ok('Verstanden')
+          .cancel('Abbrechen');
+      $mdDialog.show(update).then(function () {
+          document.getElementById("loadingsymbol").style.display = "block";
+
+          $http.get('api/helper.php?updateKernel').success(function () {
+              location.href = "/scripts/reboot.php?update=true"
+          });
+      });
+  };
 
     $scope.saveNetworkMount = function () {
         document.getElementById("loadingsymbol").style.display = "block";

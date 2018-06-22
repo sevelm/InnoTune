@@ -13,6 +13,10 @@ $version_server = file($datei); // Datei in ein Array einlesen
 //Aktuelle Version einlesen
 $datei = "/var/www/version.txt"; // Name der Datei
 $version_local = file($datei); // Datei in ein Array einlesen
+
+$kernel_datei = "/var/www/kernel/version.txt";
+$kernel = file($kernel_datei);
+$kernel_local = exec("uname -r");
 ?>
 <style>
     /*noinspection CssUnusedSymbol*/
@@ -64,12 +68,22 @@ $version_local = file($datei); // Datei in ein Array einlesen
                     <p><?php echo $version_local[0]; ?></p>
                 </div>
                 <div class="mdl-grid">
-                    <br>
-                </div>
-                <div class="mdl-grid">
                     <h5 class="mdl-cell mdl-cell--7-col">Verfügbare Version</h5>
                     <p><?php echo $version_server[0]; ?></p>
                 </div>
+                <br>
+                <?php
+                  if (strpos($kernel_local, 'rockchip') !== false) {
+                 ?>
+                  <div class="mdl-grid">
+                      <h5 class="mdl-cell mdl-cell--7-col">Aktuelle Kernelversion</h5>
+                      <p><?php echo $kernel_local; ?></p>
+                  </div>
+                  <div class="mdl-grid">
+                      <h5 class="mdl-cell mdl-cell--7-col">Verfügbare Kernelversion</h5>
+                      <p><?php echo $kernel[0]; ?></p>
+                  </div>
+                <?php }?>
             </div>
             <div class="mdl-cell mdl-cell--6-col">
                 <h5 style="margin-top: 0">Changelog:</h5>
@@ -81,21 +95,30 @@ $version_local = file($datei); // Datei in ein Array einlesen
             </div>
         </div>
     </div>
+    <div class="mdl-card__actions mdl-card--border">
     <?php
     if (strcmp(trim($version_local[0]), trim($version_server[0])) == 0) {
-        echo "    <div class=\"mdl-card__actions mdl-card--border\" >
-        <button disabled='' class=\"mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect\" >
+        echo "<button disabled='' class=\"mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect\" >
             UPDATE
-        </button >
-    </div>";
+        </button >";
     } else {
-        echo "    <div class=\"mdl-card__actions mdl-card--border\" >
-        <button ng-click='update()' class=\"mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect\" >
+        echo "<button ng-click='update()' class=\"mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect\" >
             UPDATE
-        </button >
-    </div>";
+        </button >";
+    }
+    if (strpos($kernel_local, 'rockchip') !== false) {
+      if (strcmp(trim($kernel_local), trim($kernel[0])) == 0) {
+          echo "<button disabled='' class=\"mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect\" >
+              KERNEL-UPDATE
+          </button >";
+      } else {
+          echo "<button ng-click='updateKernel()' class=\"mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect\" >
+              KERNEL-UPDATE
+          </button >";
+      }
     }
     ?>
+  </div>
 </div>
 
 <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--6-col">
