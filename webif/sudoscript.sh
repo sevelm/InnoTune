@@ -13,6 +13,8 @@ case "$1" in
                                  sudo chmod -R 777 /opt/innotune/settings;;
      update) /var/www/update.sh;;
      updateKernel) /var/www/kernel/update.sh;;
+     updateBeta) /var/www/update.sh
+                 /var/www/beta/update.sh;;
      set_linein) /var/www/set_linein.sh "$2" "$3" "$4";;
      setplayer) /etc/init.d/setplayer restart;;
      shnet) /var/www/show_network.sh "$2";;
