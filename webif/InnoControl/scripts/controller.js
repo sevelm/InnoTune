@@ -1093,24 +1093,43 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
 
     $scope.updateKernel = function () {
+        var update = $mdDialog.confirm()
+            .title('Achtung!')
+            .textContent('Der Kernel wird aktualisiert. Hier können in seltenen Fällen Komplikationen auftreten ' +
+            'und dadurch zu einem fehlerhaften System führen. Das Kernel-Update muss nicht ausgeführt werden und ' +
+            'durch das Drücken des "Verstanden"-Button erklären Sie, dass Sie selbst die Verantwortung für ein ' +
+            'fehlerhaftes System nach dem Update tragen.')
+            .ariaLabel('Update!')
+            .targetEvent(event)
+            .ok('Verstanden')
+            .cancel('Abbrechen');
+        $mdDialog.show(update).then(function () {
+            document.getElementById("loadingsymbol").style.display = "block";
+
+            $http.get('api/helper.php?updateKernel').success(function () {
+                location.href = "/scripts/reboot.php?update=true"
+            });
+        });
+    };
+
+    $scope.updateBeta = function () {
       var update = $mdDialog.confirm()
-          .title('Achtung!')
-          .textContent('Der Kernel wird aktualisiert. Hier können in seltenen Fällen Komplikationen auftreten ' +
-          'und dadurch zu einem fehlerhaften System führen. Das Kernel-Update muss nicht ausgeführt werden und ' +
-          'durch das Drücken des "Verstanden"-Button erklären Sie, dass Sie selbst die Verantwortung für ein ' +
-          'fehlerhaftes System nach dem Update tragen.')
+          .title('Bist du sicher?')
+          .textContent('Hiermit wird eine Beta-Version des Systems installiert, diese enthaltet neueste ' +
+            'Features kann aber auch vereinzelte Bugs beinhalten.')
           .ariaLabel('Update!')
           .targetEvent(event)
-          .ok('Verstanden')
+          .ok('Update')
           .cancel('Abbrechen');
       $mdDialog.show(update).then(function () {
           document.getElementById("loadingsymbol").style.display = "block";
 
-          $http.get('api/helper.php?updateKernel').success(function () {
+          $http.get('api/helper.php?updateBeta').success(function () {
               location.href = "/scripts/reboot.php?update=true"
           });
       });
   };
+
 
     $scope.saveNetworkMount = function () {
         document.getElementById("loadingsymbol").style.display = "block";

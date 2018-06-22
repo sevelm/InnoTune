@@ -12,10 +12,11 @@ if (isset($_POST['settings_upload'])) {
     if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
         exec("sudo /var/www/sudoscript.sh restore_settings");
         $CONTROL_INPUT="erfolgreich";
+        header('Location: http://'.$_SERVER['SERVER_ADDR'].'/scripts/reboot.php');
     } else {
         $CONTROL_INPUT="fehlgeschlagen!";
+        header('Location: http://'.$_SERVER['SERVER_ADDR'].'/#docs?result='.$CONTROL_INPUT);
     }
-    header('Location: http://'.$_SERVER['SERVER_ADDR'].'/#docs?result='.$CONTROL_INPUT);
 }
 
 if (isset($_POST['music_upload'])){

@@ -619,6 +619,10 @@ if(isset($_GET['updateKernel'])) {
     exec("sudo /var/www/sudoscript.sh updateKernel", $output, $return_var);
 }
 
+if(isset($_GET['updateBeta'])) {
+    exec("sudo /var/www/sudoscript.sh updateBeta", $output, $return_var);
+}
+
 if (isset($_GET['reset'])) {
     if (isset($_GET["network"])) {
         echo shell_exec("sudo /var/www/sudoscript.sh reset net");

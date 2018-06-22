@@ -17,6 +17,9 @@ $version_local = file($datei); // Datei in ein Array einlesen
 $kernel_datei = "/var/www/kernel/version.txt";
 $kernel = file($kernel_datei);
 $kernel_local = exec("uname -r");
+
+$beta_datei = "https://raw.githubusercontent.com/JHoerbst/InnoTune/master/webif/beta/version.txt";
+$beta = file($beta_datei);
 ?>
 <style>
     /*noinspection CssUnusedSymbol*/
@@ -71,6 +74,10 @@ $kernel_local = exec("uname -r");
                     <h5 class="mdl-cell mdl-cell--7-col">Verfügbare Version</h5>
                     <p><?php echo $version_server[0]; ?></p>
                 </div>
+                <div class="mdl-grid">
+                    <h5 class="mdl-cell mdl-cell--7-col">Verfügbare Beta-Version</h5>
+                    <p><?php echo $beta[0]; ?></p>
+                </div>
                 <br>
                 <?php
                   if (strpos($kernel_local, 'rockchip') !== false) {
@@ -114,6 +121,15 @@ $kernel_local = exec("uname -r");
       } else {
           echo "<button ng-click='updateKernel()' class=\"mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect\" >
               KERNEL-UPDATE
+          </button >";
+      }
+      if (strcmp(trim($version_local[0]), trim($beta[0])) >= 0) {
+          echo "<button disabled='' class=\"mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect\" >
+              BETA-UPDATE
+          </button >";
+      } else {
+          echo "<button ng-click='updateBeta()' class=\"mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect\" >
+              BETA-UPDATE
           </button >";
       }
     }
