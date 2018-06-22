@@ -15,8 +15,8 @@
     </div>
     <div class="mdl-card__supporting-text">
         <h5>Verbundene Mountpoints:</h5>
-
-        <div class="mdl-grid" style="padding:0">
+        <div ng-if="networkmount.list.length==0"><ul><li><h6>Keine Mountpoints verbunden!</h6></li></ul></div>
+        <div class="mdl-grid" style="padding:0" ng-if="networkmount.list.length!=0">
            <div class="mdl-cell mdl-cell--3-col" style=" font-weight: bold;">Lokaler Ordner</div>
            <div class="mdl-cell mdl-cell--4-col" style=" font-weight: bold;">Adresse</div>
            <div class="mdl-cell mdl-cell--3-col" style=" font-weight: bold;">Dateisystem</div>
