@@ -17,10 +17,11 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.uploadfile = undefined;
     $scope.sysinfo = {};
     $scope.networkmount = {};
+    $scope.LineInSelection = [];
     $scope.resetcb = {
-        usb:false,
-        network:false,
-        playlists:false
+        usb: false,
+        network: false,
+        playlists: false
     };
 
 
@@ -58,18 +59,86 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         location.reload();
     };
 
-    $scope.playlinein = function (idIN, idOUT) {
-        idIN = $scope.formatId(idIN);
-        idOUT = $scope.formatId(idOUT);
 
-        $http.get('api/helper.php?setlinein&card_in=' + idIN + '&card_out=' + idOUT);
+    $scope.getLineInStatus = function () {
+        for (let i = 0; i < $scope.devices.length; i++) {
+            $http.get('api/helper.php?lineinstatus&dev=' + $scope.formatId($scope.devices[i].id))
+                .success(function (data) {
+                    if(data.indexOf(";") >=0){
+                        $scope.devices[i].lineinStatusre = data.substr(0,data.indexOf(";"));
+                        $scope.devices[i].lineinStatusli = data.substr(data.indexOf(";")+1);
+                    } else {
+                        $scope.devices[i].lineinStatus = data;
+                    }
+                });
+        }
+
+    };
+    $scope.checkLineInStatus = function (lineinStatus) {
+        if (parseInt(lineinStatus) == parseInt($scope.formatId($scope.selectedDevice.id))) {
+            console.log("Play von: " + parseInt($scope.formatId($scope.selectedDevice.id)) + ", Play auf: " + lineinStatus);
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    $scope.playlinein = function (idIN) {
+        idIN = $scope.formatId(idIN);
+        var idOUT = "";
+        for (var i = 0; i < $scope.LineInSelection.length; i++) {
+            if ($scope.LineInSelection[i].toString().indexOf("li") >= 0 || $scope.LineInSelection[i].toString().indexOf("re") >= 0) {
+                var idOUT = $scope.formatId($scope.LineInSelection[i].toString().match(/\d+/)[0]);
+                var lire = $scope.LineInSelection[i].toString().replace($scope.LineInSelection[i].toString().match(/\d+/)[0],'');
+                $http.get('api/helper.php?setlinein&card_in=' + idIN + '&card_out=' + idOUT + '&mode='+lire);
+                if(lire=="li"){
+                    $scope.devices[parseInt(idOUT)-1].lineinStatusli = idIN;
+
+                } else if(lire=="re"){
+                    $scope.devices[parseInt(idOUT)-1].lineinStatusre = idIN;
+                }
+            } else {
+                idOUT = $scope.formatId($scope.LineInSelection[i]);
+                $http.get('api/helper.php?setlinein&card_in=' + idIN + '&card_out=' + idOUT);
+                $scope.devices[parseInt(idOUT)-1].lineinStatus = idIN;
+            }
+        }
         $scope.selectedDevice.lineinStatus = idIN;
     };
 
-    $scope.stoplinein = function (idOUT) {
-        idOUT = $scope.formatId(idOUT);
+    $scope.toggleSelection = function toggleSelection(id) {
+        var idx = $scope.LineInSelection.indexOf(id);
 
-        $http.get('api/helper.php?setlinein&card_out=' + idOUT);
+        // Is currently selected
+        if (idx > -1) {
+            $scope.LineInSelection.splice(idx, 1);
+        }
+
+        // Is newly selected
+        else {
+            $scope.LineInSelection.push(id);
+        }
+    };
+
+    $scope.stoplinein = function () {
+        for (var i = 0; i < $scope.LineInSelection.length; i++) {
+            $http.get('api/helper.php?setlinein&card_out=' + $scope.formatId($scope.LineInSelection[i]));
+
+            var idOUT = $scope.formatId($scope.LineInSelection[i].toString().match(/\d+/)[0]);
+            var lire = $scope.LineInSelection[i].toString().replace($scope.LineInSelection[i].toString().match(/\d+/)[0],'');
+            if(lire != ""){
+                if(lire=="li"){
+                    $scope.devices[parseInt(idOUT)-1].lineinStatusli = null;
+
+                } else if(lire=="re") {
+                    $scope.devices[parseInt(idOUT)-1].lineinStatusre = null;
+                }
+            } else {
+                $scope.devices[parseInt(idOUT)-1].lineinStatus = null;
+            }
+        }
+
+
         $scope.selectedDevice.lineinStatus = null;
     };
 
@@ -164,58 +233,53 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         if (id == null) {
             $scope.selectedDevice = null;
         } else {
-          var found = false;
-          for (var i = 0; i < $scope.devices.length; i++) {
-              if ($scope.devices[i].id == id
-                    && $scope.devices[i].betrieb == 'nichtverbunden') {
-                      found = true;
-                  $scope.selectedDevice = null;
-              }
-          }
-          if (!found) {
-            $http.get('api/helper.php?vol&dev=' + $scope.formatId(id))
-                .success(function (data) {
-                    var arr = data.split(";");
-                    if (data != 0) {
-                        for (var i = 0; i < $scope.devices.length; i++) {
-                            if ($scope.devices[i].id == id) {
-                                $scope.devices[i].vol.mpd = parseInt(arr[0]) / 10;
-                                $scope.devices[i].vol.squeezebox = parseInt(arr[1]) / 10;
-                                $scope.devices[i].vol.airplay = parseInt(arr[2]) / 10;
-                                $scope.devices[i].vol.linein = parseInt(arr[3]) / 10;
-                            }
-                        }
-                    }
-                });
-            $http.get('api/helper.php?eq&dev=' + $scope.formatId(id))
-                .success(function (data) {
-                    var arr = data.split(";");
-                    if(data != 0) {
-                      for(var i = 0; i < $scope.devices.length; i++) {
-                        if($scope.devices[i].id == id) {
-                          $scope.devices[i].eq.low = Math.round(parseInt(arr[0]) / 10);
-                          $scope.devices[i].eq.mid = Math.round(parseInt(arr[1]) / 10);
-                          $scope.devices[i].eq.high = Math.round(parseInt(arr[2]) / 10);
-                        }
-                      }
-                    }
-                });
-            $http.get('api/helper.php?lineinstatus&dev=' + $scope.formatId(id))
-                .success(function (data) {
-                    if (data > 0) {
-                        for (var i = 0; i < $scope.devices.length; i++) {
-                            if ($scope.devices[i].id == id) {
-                                $scope.devices[i].lineinStatus = data;
-                            }
-                        }
-                    }
-                });
+            var found = false;
             for (var i = 0; i < $scope.devices.length; i++) {
-                if ($scope.devices[i].id == id) {
-                    $scope.selectedDevice = $scope.devices[i];
+                if ($scope.devices[i].id == id
+                    && $scope.devices[i].betrieb == 'nichtverbunden') {
+                    found = true;
+                    $scope.selectedDevice = null;
                 }
             }
-          }
+            if (!found) {
+                //Volume
+                $http.get('api/helper.php?vol&dev=' + $scope.formatId(id))
+                    .success(function (data) {
+                        var arr = data.split(";");
+                        if (data != 0) {
+                            for (var i = 0; i < $scope.devices.length; i++) {
+                                if ($scope.devices[i].id == id) {
+                                    $scope.devices[i].vol.mpd = parseInt(arr[0]) / 10;
+                                    $scope.devices[i].vol.squeezebox = parseInt(arr[1]) / 10;
+                                    $scope.devices[i].vol.airplay = parseInt(arr[2]) / 10;
+                                    $scope.devices[i].vol.linein = parseInt(arr[3]) / 10;
+                                }
+                            }
+                        }
+                    });
+                //Equalizer
+                $http.get('api/helper.php?eq&dev=' + $scope.formatId(id))
+                    .success(function (data) {
+                        var arr = data.split(";");
+                        if (data != 0) {
+                            for (var i = 0; i < $scope.devices.length; i++) {
+                                if ($scope.devices[i].id == id) {
+                                    $scope.devices[i].eq.low = Math.round(parseInt(arr[0]) / 10);
+                                    $scope.devices[i].eq.mid = Math.round(parseInt(arr[1]) / 10);
+                                    $scope.devices[i].eq.high = Math.round(parseInt(arr[2]) / 10);
+                                }
+                            }
+                        }
+                    });
+                //Line-In Status
+                $scope.getLineInStatus();
+
+                for (var i = 0; i < $scope.devices.length; i++) {
+                    if ($scope.devices[i].id == id) {
+                        $scope.selectedDevice = $scope.devices[i];
+                    }
+                }
+            }
         }
     };
 
@@ -245,32 +309,32 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
 
     $scope.changeEq = function (freq) {
-      var value = 0;
-      var id = $scope.formatId($scope.selectedDevice.id);
+        var value = 0;
+        var id = $scope.formatId($scope.selectedDevice.id);
 
-      switch (freq) {
-        case 'low':
-          value = $scope.selectedDevice.eq.low * 10;
-          break;
-        case 'mid':
-          value = $scope.selectedDevice.eq.mid * 10;
-          break;
-        case 'high':
-          value = $scope.selectedDevice.eq.high * 10;
-          break;
-      }
-      $http.get('api/helper.php?eq_set&dev=' + id + '&freq=' + freq + '&value=' + value);
+        switch (freq) {
+            case 'low':
+                value = $scope.selectedDevice.eq.low * 10;
+                break;
+            case 'mid':
+                value = $scope.selectedDevice.eq.mid * 10;
+                break;
+            case 'high':
+                value = $scope.selectedDevice.eq.high * 10;
+                break;
+        }
+        $http.get('api/helper.php?eq_set&dev=' + id + '&freq=' + freq + '&value=' + value);
     }
 
     $scope.resetEqSettings = function () {
-      var value = 66;
-      var id = $scope.formatId($scope.selectedDevice.id);
-      $http.get('api/helper.php?eq_set&dev=' + id + '&freq=low&value=' + value);
-      $http.get('api/helper.php?eq_set&dev=' + id + '&freq=mid&value=' + value);
-      $http.get('api/helper.php?eq_set&dev=' + id + '&freq=high&value=' + value);
-      $scope.selectedDevice.eq.low = 7;
-      $scope.selectedDevice.eq.mid = 7;
-      $scope.selectedDevice.eq.high = 7;
+        var value = 66;
+        var id = $scope.formatId($scope.selectedDevice.id);
+        $http.get('api/helper.php?eq_set&dev=' + id + '&freq=low&value=' + value);
+        $http.get('api/helper.php?eq_set&dev=' + id + '&freq=mid&value=' + value);
+        $http.get('api/helper.php?eq_set&dev=' + id + '&freq=high&value=' + value);
+        $scope.selectedDevice.eq.low = 7;
+        $scope.selectedDevice.eq.mid = 7;
+        $scope.selectedDevice.eq.high = 7;
     }
 
     /**
@@ -311,39 +375,39 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
 
     $scope.resetLogs = function (event) {
-      var confirm = $mdDialog.confirm()
-          .title('Bist du sicher?')
-          .textContent('Alle Logs werden gelöscht!')
-          .ariaLabel('Der Server ist die Zeit nicht erreichbar!')
-          .targetEvent(event)
-          .ok('Ok')
-          .cancel('Abbrechen');
-      $mdDialog.show(confirm).then(function () {
-          $http.get('api/helper.php?reset_usb_mapping')
-              .success(function (data) {
-                  location.href = "index.php#/docs";
-              });
-      }, function () {
+        var confirm = $mdDialog.confirm()
+            .title('Bist du sicher?')
+            .textContent('Alle Logs werden gelöscht!')
+            .ariaLabel('Der Server ist die Zeit nicht erreichbar!')
+            .targetEvent(event)
+            .ok('Ok')
+            .cancel('Abbrechen');
+        $mdDialog.show(confirm).then(function () {
+            $http.get('api/helper.php?reset_usb_mapping')
+                .success(function (data) {
+                    location.href = "index.php#/docs";
+                });
+        }, function () {
 
-      });
+        });
     };
 
     $scope.resetMapping = function (event) {
-      var confirm = $mdDialog.confirm()
-          .title('Bist du sicher?')
-          .textContent('Die Gerätereihenfolge kann sich verändern und dadurch alle Zonen beinflussen!')
-          .ariaLabel('Der Server ist die Zeit nicht erreichbar!')
-          .targetEvent(event)
-          .ok('Ok')
-          .cancel('Abbrechen');
-      $mdDialog.show(confirm).then(function () {
-          $http.get('api/helper.php?reset_logs')
-              .success(function (data) {
-                  location.href = "scripts/reboot.php";
-              });
-      }, function () {
+        var confirm = $mdDialog.confirm()
+            .title('Bist du sicher?')
+            .textContent('Die Gerätereihenfolge kann sich verändern und dadurch alle Zonen beinflussen!')
+            .ariaLabel('Der Server ist die Zeit nicht erreichbar!')
+            .targetEvent(event)
+            .ok('Ok')
+            .cancel('Abbrechen');
+        $mdDialog.show(confirm).then(function () {
+            $http.get('api/helper.php?reset_logs')
+                .success(function (data) {
+                    location.href = "scripts/reboot.php";
+                });
+        }, function () {
 
-      });
+        });
     };
 
     $scope.genAudioConf = function (event) {
@@ -460,20 +524,20 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                     $scope.playlists[id].vol_background = parseInt(arr[0]);
                     $scope.playlists[id].vol_dev = [];
                     for (var i = 1; i < 11; i++) {
-                        if (arr[i].indexOf("/")!=-1) {
+                        if (arr[i].indexOf("/") != -1) {
                             var tmparr = arr[i].split("/");
                             $scope.playlists[id].vol_dev.push({
-                                id: i-1,
+                                id: i - 1,
                                 volumeL: parseInt(tmparr[0]),
                                 volumeR: parseInt(tmparr[1])
                             })
                         } else {
-                            $scope.playlists[id].vol_dev.push({id: i-1, volume: parseInt(arr[i])})
+                            $scope.playlists[id].vol_dev.push({id: i - 1, volume: parseInt(arr[i])})
                         }
                     }
                 }
 
-                $scope.devices.sort(function(a, b) {
+                $scope.devices.sort(function (a, b) {
                     return a.id > b.id;
                 });
             });
@@ -538,7 +602,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
 
 
     $scope.addPlaylist = function () {
-        if($scope.playlists[$scope.playlists.length - 1] == undefined){
+        if ($scope.playlists[$scope.playlists.length - 1] == undefined) {
             $scope.playlists.push({id: 0, name: ""});
         } else {
             $scope.playlists.push({id: ($scope.playlists[$scope.playlists.length - 1].id + 1), name: ""});
@@ -579,11 +643,11 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
 
     $scope.setLinkConfiguration = function () {
         var id = $scope.formatId($scope.selectedDevice.id);
-        var linkedid = 10+ parseInt($scope.formatId($scope.selectedDevice.linktoDevice));
+        var linkedid = 10 + parseInt($scope.formatId($scope.selectedDevice.linktoDevice));
 
 
         $http.get('api/helper.php?set_audio_configuration&dev=' + id + '&mode=' + linkedid)
-         .success(function () {
+            .success(function () {
                 $scope.audioConfChanged = 1;
                 $scope.showToast();
             });
@@ -618,7 +682,6 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                 '&SP_NORMAL=' + $scope.checkSpotify($scope.selectedDevice.spotify) +
                 '&oac=' + $scope.selectedDevice.oac);
             $scope.playerConfChanged = 1;
-            console.log($scope.selectedDevice);
 
         } else if ($scope.selectedDevice.betrieb == 'geteilterbetrieb') {
             $http.get('api/helper.php?device_set&dev=' + id +
@@ -641,215 +704,243 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             .success(function (data) {
                 var arr = data.split(";");
                 $http.get('api/helper.php?mappeddevices')
-                .success(function(mapdata) {
-                  var mapped = mapdata.split(";");
-                  $scope.devicestmp = [];
-                  var reqcount = 1;
-                  var maxreq = 0;
-                  for (var i = 0; i < arr.length; i++) {
-                      (function (e) {
-                          const tmp_id = (i + 1);
-                          if (arr[i] == 1) {
-                              maxreq++;
-                              $http.get('api/helper.php?getdevice&dev=' + $scope.formatId(tmp_id))
-                                  .success(function (data) {
-                                      var dev = data.split(";");
-                                      if (dev[0] == 1) {
-                                          $betrieb = "normalbetrieb";
-                                          $airplayString = 0;
-                                          if (dev[7].startsWith("AP")) {
-                                              $airplayString = 1;
-                                          } else {
-                                              $airplayString = 0;
-                                          }
+                    .success(function (mapdata) {
+                        var mapped = mapdata.split(";");
+                        $scope.devicestmp = [];
+                        var reqcount = 1;
+                        var maxreq = 0;
+                        for (var i = 0; i < arr.length; i++) {
+                            (function (e) {
+                                const tmp_id = (i + 1);
+                                if (arr[i] == 1) {
+                                    maxreq++;
+                                    $http.get('api/helper.php?getdevice&dev=' + $scope.formatId(tmp_id))
+                                        .success(function (data) {
+                                            var dev = data.split(";");
+                                            if (dev[0] == 1) {
+                                                $betrieb = "normalbetrieb";
+                                                $airplayString = 0;
+                                                if (dev[7].startsWith("AP")) {
+                                                    $airplayString = 1;
+                                                } else {
+                                                    $airplayString = 0;
+                                                }
 
-                                          $spotifyString = 0;
-                                          if (dev[10].startsWith("SP")) {
-                                              $spotifyString = 1;
-                                          } else {
-                                              $spotifyString = 0;
-                                          }
+                                                $spotifyString = 0;
+                                                if (dev[10].startsWith("SP")) {
+                                                    $spotifyString = 1;
+                                                } else {
+                                                    $spotifyString = 0;
+                                                }
 
-                                          $scope.devicestmp.push({
-                                              id: tmp_id,
-                                              betrieb: $betrieb,
-                                              name: dev[1],
-                                              mac: dev[4],
-                                              airplay: $airplayString,
-                                              spotify: $spotifyString,
-                                              vol: {},
-                                              eq: {},
-                                              path: dev[14],
-                                              oac: parseInt(dev[15]),
-                                              display: null
-                                          });
-                                      } else if (dev[0] == 2) {
-                                          $betrieb = "geteilterbetrieb";
+                                                $scope.devicestmp.push({
+                                                    id: tmp_id,
+                                                    betrieb: $betrieb,
+                                                    name: dev[1],
+                                                    mac: dev[4],
+                                                    airplay: $airplayString,
+                                                    spotify: $spotifyString,
+                                                    vol: {},
+                                                    eq: {},
+                                                    path: dev[14],
+                                                    oac: parseInt(dev[15]),
+                                                    display: null
+                                                });
+                                            } else if (dev[0] == 2) {
+                                                $betrieb = "geteilterbetrieb";
 
-                                          $airplayStringL = 0;
-                                          if (dev[8].startsWith("AP")) {
-                                              $airplayStringL = 1;
-                                          } else {
-                                              $airplayStringL = 0;
-                                          }
+                                                $airplayStringL = 0;
+                                                if (dev[8].startsWith("AP")) {
+                                                    $airplayStringL = 1;
+                                                } else {
+                                                    $airplayStringL = 0;
+                                                }
 
-                                          $airplayStringR = 0;
-                                          if (dev[9].startsWith("AP")) {
-                                              $airplayStringR = 1;
-                                          } else {
-                                              $airplayStringR = 0;
-                                          }
+                                                $airplayStringR = 0;
+                                                if (dev[9].startsWith("AP")) {
+                                                    $airplayStringR = 1;
+                                                } else {
+                                                    $airplayStringR = 0;
+                                                }
 
-                                          $spotifyStringL = 0;
-                                          if (dev[11].startsWith("SP")) {
-                                              $spotifyStringL = 1;
-                                          } else {
-                                              $spotifyStringL = 0;
-                                          }
+                                                $spotifyStringL = 0;
+                                                if (dev[11].startsWith("SP")) {
+                                                    $spotifyStringL = 1;
+                                                } else {
+                                                    $spotifyStringL = 0;
+                                                }
 
-                                          $spotifyStringR = 0;
-                                          if (dev[12].startsWith("SP")) {
-                                              $spotifyStringR = 1;
-                                          } else {
-                                              $spotifyStringR = 0;
-                                          }
+                                                $spotifyStringR = 0;
+                                                if (dev[12].startsWith("SP")) {
+                                                    $spotifyStringR = 1;
+                                                } else {
+                                                    $spotifyStringR = 0;
+                                                }
 
-                                          $scope.devicestmp.push({
-                                              id: tmp_id,
-                                              betrieb: $betrieb,
-                                              nameL: dev[2],
-                                              nameR: dev[3],
-                                              macL: dev[5],
-                                              macR: dev[6],
-                                              airplayL: $airplayStringL,
-                                              airplayR: $airplayStringR,
-                                              spotifyL: $spotifyStringL,
-                                              spotifyR: $spotifyStringR,
-                                              vol: {},
-                                              eq: {},
-                                              path: dev[14],
-                                              oac: parseInt(dev[15]),
-                                              display: null
-                                          });
-                                      } else if(parseInt(dev[0]) > 10 && parseInt(dev[0]) <= 20){
-                                          $betrieb = "gekoppelt";
-                                          $scope.devicestmp.push({id: tmp_id, betrieb: $betrieb, linktoDevice: parseInt(dev[0])-10, vol: {}, eq: {}, display: null});
-                                      }else {
-                                          $betrieb = "deaktiviert";
-                                          $scope.devicestmp.push({id: tmp_id, betrieb: $betrieb, vol: {}, eq:{}, path: dev[14], display: null});
-                                      }
+                                                $scope.devicestmp.push({
+                                                    id: tmp_id,
+                                                    betrieb: $betrieb,
+                                                    nameL: dev[2],
+                                                    nameR: dev[3],
+                                                    macL: dev[5],
+                                                    macR: dev[6],
+                                                    airplayL: $airplayStringL,
+                                                    airplayR: $airplayStringR,
+                                                    spotifyL: $spotifyStringL,
+                                                    spotifyR: $spotifyStringR,
+                                                    vol: {},
+                                                    eq: {},
+                                                    path: dev[14],
+                                                    oac: parseInt(dev[15]),
+                                                    display: null
+                                                });
+                                            } else if (parseInt(dev[0]) > 10 && parseInt(dev[0]) <= 20) {
+                                                $betrieb = "gekoppelt";
+                                                $scope.devicestmp.push({
+                                                    id: tmp_id,
+                                                    betrieb: $betrieb,
+                                                    linktoDevice: parseInt(dev[0]) - 10,
+                                                    vol: {},
+                                                    eq: {},
+                                                    display: null
+                                                });
+                                            } else {
+                                                $betrieb = "deaktiviert";
+                                                $scope.devicestmp.push({
+                                                    id: tmp_id,
+                                                    betrieb: $betrieb,
+                                                    vol: {},
+                                                    eq: {},
+                                                    path: dev[14],
+                                                    display: null
+                                                });
+                                            }
 
-                                      $scope.devicestmp.sort(function(a, b) {
-                                          return a.id > b.id;
-                                      });
+                                            $scope.devicestmp.sort(function (a, b) {
+                                                return a.id > b.id;
+                                            });
 
-                                      if ($scope.devicestmp !== $scope.devices) {
-                                          $scope.devices = $scope.devicestmp;
-                                      }
-                                      $scope.createDeviceTree(reqcount, maxreq);
-                                      reqcount++;
-                                  });
-                          } else if (mapped[i] == 1) {
-                            maxreq++;
-                            $http.get('api/helper.php?getdevice&dev=' + $scope.formatId(tmp_id))
-                                .success(function (data) {
-                                    var dev = data.split(";");
-                                    $betrieb = "nichtverbunden";
-                                    if (dev[0] == 1) {
-                                        $airplayString = 0;
-                                        if (dev[7].startsWith("AP")) {
-                                            $airplayString = 1;
-                                        } else {
-                                            $airplayString = 0;
-                                        }
-
-                                        $spotifyString = 0;
-                                        if (dev[10].startsWith("SP")) {
-                                            $spotifyString = 1;
-                                        } else {
-                                            $spotifyString = 0;
-                                        }
-
-                                        $scope.devicestmp.push({
-                                            id: tmp_id,
-                                            betrieb: $betrieb,
-                                            name: dev[1],
-                                            mac: dev[4],
-                                            airplay: $airplayString,
-                                            spotify: $spotifyString,
-                                            vol: {},
-                                            eq: {},
-                                            path: dev[14],
-                                            oac: parseInt(dev[15]),
-                                            display: null
+                                            if ($scope.devicestmp !== $scope.devices) {
+                                                $scope.devices = $scope.devicestmp;
+                                            }
+                                            $scope.createDeviceTree(reqcount, maxreq);
+                                            reqcount++;
                                         });
-                                    } else if (dev[0] == 2) {
-                                        $airplayStringL = 0;
-                                        if (dev[8].startsWith("AP")) {
-                                            $airplayStringL = 1;
-                                        } else {
-                                            $airplayStringL = 0;
-                                        }
+                                } else if (mapped[i] == 1) {
+                                    maxreq++;
+                                    $http.get('api/helper.php?getdevice&dev=' + $scope.formatId(tmp_id))
+                                        .success(function (data) {
+                                            var dev = data.split(";");
+                                            $betrieb = "nichtverbunden";
+                                            if (dev[0] == 1) {
+                                                $airplayString = 0;
+                                                if (dev[7].startsWith("AP")) {
+                                                    $airplayString = 1;
+                                                } else {
+                                                    $airplayString = 0;
+                                                }
 
-                                        $airplayStringR = 0;
-                                        if (dev[9].startsWith("AP")) {
-                                            $airplayStringR = 1;
-                                        } else {
-                                            $airplayStringR = 0;
-                                        }
+                                                $spotifyString = 0;
+                                                if (dev[10].startsWith("SP")) {
+                                                    $spotifyString = 1;
+                                                } else {
+                                                    $spotifyString = 0;
+                                                }
 
-                                        $spotifyStringL = 0;
-                                        if (dev[11].startsWith("SP")) {
-                                            $spotifyStringL = 1;
-                                        } else {
-                                            $spotifyStringL = 0;
-                                        }
+                                                $scope.devicestmp.push({
+                                                    id: tmp_id,
+                                                    betrieb: $betrieb,
+                                                    name: dev[1],
+                                                    mac: dev[4],
+                                                    airplay: $airplayString,
+                                                    spotify: $spotifyString,
+                                                    vol: {},
+                                                    eq: {},
+                                                    path: dev[14],
+                                                    oac: parseInt(dev[15]),
+                                                    display: null
+                                                });
+                                            } else if (dev[0] == 2) {
+                                                $airplayStringL = 0;
+                                                if (dev[8].startsWith("AP")) {
+                                                    $airplayStringL = 1;
+                                                } else {
+                                                    $airplayStringL = 0;
+                                                }
 
-                                        $spotifyStringR = 0;
-                                        if (dev[12].startsWith("SP")) {
-                                            $spotifyStringR = 1;
-                                        } else {
-                                            $spotifyStringR = 0;
-                                        }
+                                                $airplayStringR = 0;
+                                                if (dev[9].startsWith("AP")) {
+                                                    $airplayStringR = 1;
+                                                } else {
+                                                    $airplayStringR = 0;
+                                                }
 
-                                        $scope.devicestmp.push({
-                                            id: tmp_id,
-                                            betrieb: $betrieb,
-                                            nameL: dev[2],
-                                            nameR: dev[3],
-                                            macL: dev[5],
-                                            macR: dev[6],
-                                            airplayL: $airplayStringL,
-                                            airplayR: $airplayStringR,
-                                            spotifyL: $spotifyStringL,
-                                            spotifyR: $spotifyStringR,
-                                            vol: {},
-                                            eq: {},
-                                            path: dev[14],
-                                            oac: parseInt(dev[15]),
-                                            display: null
+                                                $spotifyStringL = 0;
+                                                if (dev[11].startsWith("SP")) {
+                                                    $spotifyStringL = 1;
+                                                } else {
+                                                    $spotifyStringL = 0;
+                                                }
+
+                                                $spotifyStringR = 0;
+                                                if (dev[12].startsWith("SP")) {
+                                                    $spotifyStringR = 1;
+                                                } else {
+                                                    $spotifyStringR = 0;
+                                                }
+
+                                                $scope.devicestmp.push({
+                                                    id: tmp_id,
+                                                    betrieb: $betrieb,
+                                                    nameL: dev[2],
+                                                    nameR: dev[3],
+                                                    macL: dev[5],
+                                                    macR: dev[6],
+                                                    airplayL: $airplayStringL,
+                                                    airplayR: $airplayStringR,
+                                                    spotifyL: $spotifyStringL,
+                                                    spotifyR: $spotifyStringR,
+                                                    vol: {},
+                                                    eq: {},
+                                                    path: dev[14],
+                                                    oac: parseInt(dev[15]),
+                                                    display: null
+                                                });
+                                            } else if (parseInt(dev[0]) > 10 && parseInt(dev[0]) <= 20) {
+                                                $scope.devicestmp.push({
+                                                    id: tmp_id,
+                                                    betrieb: $betrieb,
+                                                    linktoDevice: parseInt(dev[0]) - 10,
+                                                    vol: {},
+                                                    eq: {},
+                                                    display: null
+                                                });
+                                            } else {
+                                                $scope.devicestmp.push({
+                                                    id: tmp_id,
+                                                    betrieb: $betrieb,
+                                                    vol: {},
+                                                    eq: {},
+                                                    path: dev[14],
+                                                    display: null
+                                                });
+                                            }
+
+                                            $scope.devicestmp.sort(function (a, b) {
+                                                return a.id > b.id;
+                                            });
+
+                                            if ($scope.devicestmp !== $scope.devices) {
+                                                $scope.devices = $scope.devicestmp;
+                                            }
+                                            $scope.createDeviceTree(reqcount, maxreq);
+                                            reqcount++;
                                         });
-                                    } else if(parseInt(dev[0]) > 10 && parseInt(dev[0]) <= 20){
-                                        $scope.devicestmp.push({id: tmp_id, betrieb: $betrieb, linktoDevice: parseInt(dev[0])-10, vol: {}, eq: {}, display: null});
-                                    }else {
-                                        $scope.devicestmp.push({id: tmp_id, betrieb: $betrieb, vol: {}, eq:{}, path: dev[14], display: null});
-                                    }
-
-                                    $scope.devicestmp.sort(function(a, b) {
-                                        return a.id > b.id;
-                                    });
-
-                                    if ($scope.devicestmp !== $scope.devices) {
-                                        $scope.devices = $scope.devicestmp;
-                                    }
-                                    $scope.createDeviceTree(reqcount, maxreq);
-                                    reqcount++;
-                                });
-                          }
-                      })(i);
-                    }
-                  });
-              });
+                                }
+                            })(i);
+                        }
+                    });
+            });
 
         $http.get('api/helper.php?getchangedconf')
             .success(function (data) {
@@ -862,87 +953,84 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
 
     };
 
-    $scope.createDeviceTree = function(count, length) {
-      if(count == length) {
-        console.log("create device tree");
-        var devicetree = {p1:null, p2:null, p3:null, p4:null};
-        console.log($scope.devices.length);
-        $scope.devices.filter(function(elem, index, self) {
-          return self[index].id == self.indexOf(elem).id;
-        });
-        console.log($scope.devices.length);
-        for(var i = 0; i < $scope.devices.length; i++) {
-            var fullpath = $scope.devices[i].path;
-            var shortpath = fullpath.substring(fullpath.lastIndexOf("/1-1.")+5, fullpath.length).slice(0, -6);
-            var ports = shortpath.split('.');
-            var leaf = null;
-            for(var y = 0; y < ports.length; y++) {
-                switch (ports[y]) {
-                  case "1":
-                    if (leaf == null) {
-                      if(devicetree.p1 == null) {
-                        $scope.devices[i].display = "InnoServer, Port: 1";
-                        devicetree.p1 = {dev: $scope.devices[i], p2:null, p3:null, p4:null};
-                      } else {
-                        leaf = devicetree.p1;
-                      }
+    $scope.createDeviceTree = function (count, length) {
+        if (count == length) {
+            var devicetree = {p1: null, p2: null, p3: null, p4: null};
+            $scope.devices.filter(function (elem, index, self) {
+                return self[index].id == self.indexOf(elem).id;
+            });
+            for (var i = 0; i < $scope.devices.length; i++) {
+                var fullpath = $scope.devices[i].path;
+                var shortpath = fullpath.substring(fullpath.lastIndexOf("/1-1.") + 5, fullpath.length).slice(0, -6);
+                var ports = shortpath.split('.');
+                var leaf = null;
+                for (var y = 0; y < ports.length; y++) {
+                    switch (ports[y]) {
+                        case "1":
+                            if (leaf == null) {
+                                if (devicetree.p1 == null) {
+                                    $scope.devices[i].display = "InnoServer, Port: 1";
+                                    devicetree.p1 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
+                                } else {
+                                    leaf = devicetree.p1;
+                                }
+                            }
+                            break;
+                        case "2":
+                            if (leaf == null) {
+                                if (devicetree.p2 == null) {
+                                    $scope.devices[i].display = "InnoServer, Port: 2";
+                                    devicetree.p2 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
+                                } else {
+                                    leaf = devicetree.p2;
+                                }
+                            } else {
+                                if (leaf.p2 == null) {
+                                    $scope.devices[i].display = "InnoAmp " + $scope.formatId(leaf.dev.id) + ", Port: 2";
+                                    leaf.p2 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
+                                } else {
+                                    leaf = leaf.p2;
+                                }
+                            }
+                            break;
+                        case "3":
+                            if (leaf == null) {
+                                if (devicetree.p3 == null) {
+                                    $scope.devices[i].display = "InnoServer, Port: 3";
+                                    devicetree.p3 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
+                                } else {
+                                    leaf = devicetree.p3;
+                                }
+                            } else {
+                                if (leaf.p3 == null) {
+                                    $scope.devices[i].display = "InnoAmp " + $scope.formatId(leaf.dev.id) + ", Port: 3";
+                                    leaf.p3 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
+                                } else {
+                                    leaf = leaf.p3;
+                                }
+                            }
+                            break;
+                        case "4":
+                            if (leaf == null) {
+                                if (devicetree.p4 == null) {
+                                    $scope.devices[i].display = "InnoServer, Port: 4";
+                                    devicetree.p4 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
+                                } else {
+                                    leaf = devicetree.p4;
+                                }
+                            } else {
+                                if (leaf.p4 == null) {
+                                    $scope.devices[i].display = "InnoAmp " + $scope.formatId(leaf.dev.id) + ", Port: 4";
+                                    leaf.p4 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
+                                } else {
+                                    leaf = leaf.p4;
+                                }
+                            }
+                            break;
                     }
-                    break;
-                  case "2":
-                    if (leaf == null) {
-                      if(devicetree.p2 == null) {
-                        $scope.devices[i].display = "InnoServer, Port: 2";
-                        devicetree.p2 = {dev: $scope.devices[i], p2:null, p3:null, p4:null};
-                      } else {
-                        leaf = devicetree.p2;
-                      }
-                    } else {
-                        if(leaf.p2 == null) {
-                          $scope.devices[i].display = "InnoAmp " + $scope.formatId(leaf.dev.id) + ", Port: 2";
-                          leaf.p2 = {dev: $scope.devices[i], p2:null, p3:null, p4:null};
-                        } else {
-                          leaf = leaf.p2;
-                        }
-                    }
-                    break;
-                  case "3":
-                    if (leaf == null) {
-                      if(devicetree.p3 == null) {
-                        $scope.devices[i].display = "InnoServer, Port: 3";
-                        devicetree.p3 = {dev: $scope.devices[i], p2:null, p3:null, p4:null};
-                      } else {
-                        leaf = devicetree.p3;
-                      }
-                    } else {
-                        if(leaf.p3 == null) {
-                          $scope.devices[i].display = "InnoAmp " + $scope.formatId(leaf.dev.id) + ", Port: 3";
-                          leaf.p3 = {dev: $scope.devices[i], p2:null, p3:null, p4:null};
-                        } else {
-                          leaf = leaf.p3;
-                        }
-                    }
-                    break;
-                  case "4":
-                    if (leaf == null) {
-                      if(devicetree.p4 == null) {
-                        $scope.devices[i].display = "InnoServer, Port: 4";
-                        devicetree.p4 = {dev: $scope.devices[i], p2:null, p3:null, p4:null};
-                      } else {
-                        leaf = devicetree.p4;
-                      }
-                    } else {
-                        if(leaf.p4 == null) {
-                          $scope.devices[i].display = "InnoAmp " + $scope.formatId(leaf.dev.id) + ", Port: 4";
-                          leaf.p4 = {dev: $scope.devices[i], p2:null, p3:null, p4:null};
-                        } else {
-                          leaf = leaf.p4;
-                        }
-                    }
-                    break;
                 }
             }
         }
-      }
     };
 
     $scope.getVoiceRssKey = function () {
@@ -974,7 +1062,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                 if (data != 0 && arr[0] != "none") {
                     $scope.sysinfo.cpu = arr[0];
                     $scope.sysinfo.ram = arr[1];
-                    if (!arr[2].indexOf(":")!=-1) {
+                    if (!arr[2].indexOf(":") != -1) {
                         $scope.sysinfo.uptime = arr[2] + " min";
                     } else if (arr[2].length > 3 && arr[2].length < 6) {
                         $scope.sysinfo.uptime = arr[2] + " h";
@@ -1043,7 +1131,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                     }
                 }
             });
-        $scope.devices.sort(function(a, b) {
+        $scope.devices.sort(function (a, b) {
             return a.id > b.id;
         });
     };
@@ -1133,23 +1221,23 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
 
     $scope.saveNetworkMount = function () {
         document.getElementById("loadingsymbol").style.display = "block";
-        if($scope.options == undefined){
+        if ($scope.options == undefined) {
             $scope.options = "";
         }
         $http.get('api/helper.php?savenetworkmount' +
-            '&path='+$scope.networkmount.path +
-            '&mountpoint='+$scope.networkmount.mountpoint +
-            '&type='+$scope.networkmount.type +
-            '&options='+$scope.networkmount.options)
+            '&path=' + $scope.networkmount.path +
+            '&mountpoint=' + $scope.networkmount.mountpoint +
+            '&type=' + $scope.networkmount.type +
+            '&options=' + $scope.networkmount.options)
             .success(function () {
                 console.log('api/helper.php?savenetworkmount' +
-                    '&path='+$scope.networkmount.path +
-                    '&mountpoint='+$scope.networkmount.mountpoint +
-                    '&type='+$scope.networkmount.type +
-                    '&options='+$scope.networkmount.options);
+                    '&path=' + $scope.networkmount.path +
+                    '&mountpoint=' + $scope.networkmount.mountpoint +
+                    '&type=' + $scope.networkmount.type +
+                    '&options=' + $scope.networkmount.options);
 
-                    location.reload();
-        });
+                location.reload();
+            });
     };
 
     $scope.getNetworkMount = function () {
@@ -1157,32 +1245,36 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             .success(function (data) {
                 $scope.networkmount.list = [];
                 var rawtext = data.split('\n');
-                console.log(rawtext.length);
-                for(var i = 0; i < rawtext.length-1; i++) {
-                    if(rawtext[i] != "") {
-                      var rawline = rawtext[i].split(';');
-                      $scope.networkmount.list.push({dir:rawline[0], net:rawline[1], fs:rawline[2], fstab:rawline[3]});
+                for (var i = 0; i < rawtext.length - 1; i++) {
+                    if (rawtext[i] != "") {
+                        var rawline = rawtext[i].split(';');
+                        $scope.networkmount.list.push({
+                            dir: rawline[0],
+                            net: rawline[1],
+                            fs: rawline[2],
+                            fstab: rawline[3]
+                        });
                     }
                 }
             });
     };
 
     $scope.removeNetworkMount = function (entry) {
-      var confirm = $mdDialog.confirm()
-          .title('Bist du sicher?')
-          .textContent('Der Netzwerkspeicher wird entfernt.')
-          .targetEvent(event)
-          .ok('Ok')
-          .cancel('Abbrechen');
+        var confirm = $mdDialog.confirm()
+            .title('Bist du sicher?')
+            .textContent('Der Netzwerkspeicher wird entfernt.')
+            .targetEvent(event)
+            .ok('Ok')
+            .cancel('Abbrechen');
         $mdDialog.show(confirm).then(function () {
-          $http.get('api/helper.php?removenetworkmount' +
-              '&path=' + entry.net +
-              '&mountpoint=' + entry.dir +
-              '&type=' + entry.fs +
-              '&fstab=' + entry.fstab)
-              .success(function() {
-                  location.reload();
-              });
+            $http.get('api/helper.php?removenetworkmount' +
+                '&path=' + entry.net +
+                '&mountpoint=' + entry.dir +
+                '&type=' + entry.fs +
+                '&fstab=' + entry.fstab)
+                .success(function () {
+                    location.reload();
+                });
         }, function () {
 
         });
@@ -1202,21 +1294,21 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             var resetstr = "";
 
 
-            if($scope.resetcb.network == true){
+            if ($scope.resetcb.network == true) {
                 resetstr += "&network";
             }
-            if($scope.resetcb.usb == true){
+            if ($scope.resetcb.usb == true) {
                 resetstr += "&usb";
             }
-            if($scope.resetcb.playlists == true){
+            if ($scope.resetcb.playlists == true) {
                 resetstr += "&playlists"
             }
-            $http.get('api/helper.php?reset'+resetstr)
+            $http.get('api/helper.php?reset' + resetstr)
                 .success(function (data) {
 
-                    if(data.indexOf("network")!=-1){
+                    if (data.indexOf("network") != -1) {
                         location.href = "scripts/reboot.php?dhcp=dhcp";
-                    }else {
+                    } else {
                         location.href = "scripts/reboot.php";
                     }
                 });
@@ -1232,7 +1324,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
 });
 
 if (!String.prototype.startsWith) {
-    String.prototype.startsWith = function(searchString, position) {
+    String.prototype.startsWith = function (searchString, position) {
         position = position || 0;
         return this.indexOf(searchString, position) === position;
     };
