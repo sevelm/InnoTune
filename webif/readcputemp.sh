@@ -1,7 +1,7 @@
 #!/bin/bash
 if [[ -f /sys/class/thermal/thermal_zone0/temp ]]; then
   t0=$(cat /sys/class/thermal/thermal_zone0/temp)
-  if [[ $(uname -r | grep rockchip | wc -l) ]]; then
+  if [[ $(uname -r | grep rockchip | wc -l) -eq 1 ]]; then
     t1=$(cat /sys/class/thermal/thermal_zone1/temp)
     if [[ "${t0/Invalid argument}" = "$t0" ]]; then
         echo "$t1"

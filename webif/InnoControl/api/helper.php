@@ -66,7 +66,7 @@ if (isset($_GET['shnet'])) {
 }
 
 if (isset($_GET['wifi'])) {
-    echo exec("iwlist wlan0 scan | grep ESSID | cut -d '\"' -f2 | sort -u | tr '\n' ';'");
+    echo exec("sudo /var/www/sudoscript.sh listwifi");
 }
 
 if(isset($_GET['testwlan'])) {

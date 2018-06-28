@@ -200,6 +200,7 @@ sudo service dhcpcd stop
 sudo systemctl disable dhcpcd
 sudo update-rc.d -f dhcpcd remove
 
+# add wlan files
 if [[ ! -f /opt/innotune/settings/wlan.txt ]]; then
   echo "0" > /opt/innotune/settings/wlan.txt
   sudo chmod 777 /opt/innotune/settings/wlan.txt
@@ -209,3 +210,6 @@ if [[ ! -f /opt/innotune/settings/wpa_supplicant.conf ]]; then
   cp /opt/innotune/update/cache/InnoTune/wpa_supplicant.conf /opt/innotune/settings/wpa_supplicant.conf
   sudo chmod 777 /opt/innotune/settings/wpa_supplicant.conf
 fi
+
+cp /opt/innotune/update/cache/InnoTune/wpa_supplicant.conf /opt/innotune/settings/test_wpa.conf
+sudo chmod 777 /opt/innotune/settings/test_wpa.conf

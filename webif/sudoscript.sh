@@ -20,6 +20,7 @@ case "$1" in
      shnet) /var/www/show_network.sh "$2";;
      setnet) /var/www/set_network.sh "$2";;
      testwlan) /var/www/testwlan.sh "$2" "$3";;
+     listwifi) /var/www/listwifis.sh;;
      create_asound) /var/www/create_asound.sh;;
      show_vol_equal) /var/www/show_vol_equal.sh "$2" "$3" ;;
      showsoundcard) /var/www/show_soundcard.sh "$2";;
