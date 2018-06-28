@@ -19,6 +19,7 @@ case "$1" in
      setplayer) /etc/init.d/setplayer restart;;
      shnet) /var/www/show_network.sh "$2";;
      setnet) /var/www/set_network.sh "$2";;
+     testwlan) /var/www/testwlan.sh "$2" "$3";;
      create_asound) /var/www/create_asound.sh;;
      show_vol_equal) /var/www/show_vol_equal.sh "$2" "$3" ;;
      showsoundcard) /var/www/show_soundcard.sh "$2";;

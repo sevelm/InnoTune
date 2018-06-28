@@ -127,6 +127,16 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             });
     };
 
+    $scope.testWlan = function () {
+        $scope.network.test = "-1";
+        $http.get('api/helper.php?testwlan' +
+                  '&ssid=' + $scope.network.ssid +
+                  '&psk=' + $scope.network.psk)
+                  .success(function (data) {
+                      $scope.network.test = data;
+                  });
+    };
+
     $scope.setNetworkSettings = function () {
         //noinspection JSUnresolvedFunction,JSValidateTypes
         var confirm = $mdDialog.confirm()
@@ -402,12 +412,14 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                     $scope.network.wlan = arr[7];
                     $scope.network.ssid = arr[8];
                     $scope.network.psk = arr[9];
+                    $scope.network.wlanfailed = arr[10];
+                    $scope.network.macwlan = arr[11];
                 }
                 $scope.onChangeDHCP();
             });
         $http.get('api/helper.php?wifi')
             .success(function (data) {
-                $scope.network.wifis = data.split(";");
+                $scope.network.wifilist = data.split(";");
             });
     };
 

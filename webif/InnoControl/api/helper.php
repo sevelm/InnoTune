@@ -69,6 +69,12 @@ if (isset($_GET['wifi'])) {
     echo exec("iwlist wlan0 scan | grep ESSID | cut -d '\"' -f2 | sort -u | tr '\n' ';'");
 }
 
+if(isset($_GET['testwlan'])) {
+  $SSID = $_GET['ssid'];
+  $PSK = $_GET['psk'];
+  echo exec("sudo /var/www/sudoscript.sh testwlan \"$SSID\" \"$PSK\"");
+}
+
 if (isset($_GET['setnet'])) {
     $DHCP = $_GET['dhcp'];
     $IP = $_GET['ip'];
