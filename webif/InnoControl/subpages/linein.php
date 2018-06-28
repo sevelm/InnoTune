@@ -256,6 +256,16 @@ if ($pos1 == 1) {
                 <td></td>
                 <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/linein.php?card_out=01&volume=V</td>
             </tr>
+            <tr>
+                <td><b>Wiedergabe von Line-In Zone01 auf Zone2 Links:</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/linein.php?setlinein&card_in=01&card_out=02&mode=li</td>
+            </tr>
+            <tr>
+                <td><b>Wiedergabe von Line-In Zone01 auf Zone2 Rechts:</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/linein.php?setlinein&card_in=01&card_out=02&mode=re</td>
+            </tr>
         </table>
     </div>
 </div>
