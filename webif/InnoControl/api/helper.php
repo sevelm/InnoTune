@@ -47,12 +47,12 @@ if (isset($_GET['vol_mute'])) {
     exec("sudo /var/www/sudoscript.sh set_vol $dev LineIn 0");
 }
 
-if(isset($_GET['eq'])) {
+if (isset($_GET['eq'])) {
     $dev = $_GET['dev'];
     echo exec("sudo /var/www/sudoscript.sh show_eq $dev");
 }
 
-if(isset($_GET['eq_set'])) {
+if (isset($_GET['eq_set'])) {
     $dev = $_GET['dev'];
     $freq = $_GET['freq'];
     $value = $_GET['value'];
@@ -125,21 +125,21 @@ if (isset($_GET['activedevices'])) {
 
 if (isset($_GET['mappeddevices'])) {
     $file = fopen("/opt/innotune/settings/mapping.txt", "r");
-    if($file) {
-      $i = 0;
-      $strarr = "";
-      while (($line = fgets($file)) !== false) {
-        $strarr = $strarr . "1;";
-        $i = $i + 1;
-      }
-      while ($i < 10) {
-        $strarr = $strarr . ";";
-        $i = $i + 1;
-      }
-      fclose($file);
-      echo $strarr;
+    if ($file) {
+        $i = 0;
+        $strarr = "";
+        while (($line = fgets($file)) !== false) {
+            $strarr = $strarr . "1;";
+            $i = $i + 1;
+        }
+        while ($i < 10) {
+            $strarr = $strarr . ";";
+            $i = $i + 1;
+        }
+        fclose($file);
+        echo $strarr;
     } else {
-      echo ";;;;;;;;;";
+        echo ";;;;;;;;;";
     }
 }
 
@@ -164,8 +164,8 @@ if (isset($_GET['getdevice'])) {
     $device = trim($usb_mode[0]) . ";" . trim($usb_mode[1]) . ";" . trim($usb_mode[2]) . ";" . trim($usb_mode[3]) . ";" . trim($usb_mode[4]) . ";" . trim($usb_mode[5]) . ";" . trim($usb_mode[6]) . ";" . trim($usb_mode[7]) . ";" . trim($usb_mode[8]) . ";" . trim($usb_mode[9]) . ";" . trim($usb_mode[10]) . ";" . trim($usb_mode[11]) . ";" . trim($usb_mode[12]) . ";" . trim($usb_mode[13]);
     $execstring = "aplay -l | grep sndc" . $dev . " | cut -d \":\" -f1 | cut -c 6-";
     $devpath = exec("cat /opt/innotune/settings/mapping.txt | grep sndc" . $dev . " | cut -c 44- | rev | cut -c 12- | rev");
-    if($devpath == "") {
-      $devpath = exec("cat /opt/innotune/settings/mapping_current.txt | grep sndc" . $dev . " | cut -c 44- | rev | cut -c 12- | rev");
+    if ($devpath == "") {
+        $devpath = exec("cat /opt/innotune/settings/mapping_current.txt | grep sndc" . $dev . " | cut -c 44- | rev | cut -c 12- | rev");
     }
     $oac = trim(file("/opt/innotune/settings/settings_player/oac/oac" . $dev . ".txt")[0]);
     $device = $device . ";" . $devpath . ";" . $oac;
@@ -176,8 +176,8 @@ if (isset($_GET['reset_usb_mapping'])) {
     exec("sudo /var/www/sudoscript.sh resetudev");
 }
 
-if(isset($_GET['reset_logs'])) {
-  exec("sudo /var/www/resetlogs.sh");
+if (isset($_GET['reset_logs'])) {
+    exec("sudo /var/www/resetlogs.sh");
 }
 
 if (isset($_GET['set_audio_configuration'])) {
@@ -269,29 +269,37 @@ if (isset($_GET['player_configuration'])) {
 if (isset($_GET['lineinstatus'])) {
     $DEVICE = ($_GET["dev"]);
 
-    $datei = "/opt/innotune/settings/status_line-in/line-in$DEVICE.txt"; // Name der Datei
-    $array_linein = file($datei); // Datei in ein Array einlesen
-// Zeile 1  >> PID                                $array_linein[0]
-// Zeile 2  >> PID 2 (optional wenn modus 2)      $array_linein[1]
-// Zeile 3  >> Quelle                             $array_linein[2]
+    $mode = trim(file("/opt/innotune/settings/settings_player/dev$DEVICE.txt")[0]);
 
-    echo $array_linein[2];
+    if ($mode == "1") {
+        echo file("/opt/innotune/settings/status_line-in/line-in$DEVICE.txt")[2];
+    } elseif ($mode == "2") {
+        $OUTPUT = trim(file("/opt/innotune/settings/status_line-in/line-inre$DEVICE.txt")[2]);
+        $OUTPUT .= ";" . trim(file("/opt/innotune/settings/status_line-in/line-inli$DEVICE.txt")[2]);
+        echo $OUTPUT;
+    }
+
+
 }
 if (isset($_GET['setlinein'])) {
     $CARD_OUT = ($_GET["card_out"]);
     $CARD_IN = ($_GET["card_in"]);
     $VOL = ($_GET["volume"]);
+    $MODE = ($_GET["mode"]);
 
-// Settings USB-Gerät einlesen
+    // Settings USB-Gerät einlesen
     $datei = "/opt/innotune/settings/settings_player/dev$CARD_OUT.txt"; // Name der Datei
     $array_usb_mode = file($datei); // Datei in ein Array einlesen
 
-    if ($CARD_OUT != "" && $CARD_IN != "" && $VOL == "") {
-        exec("sudo /var/www/sudoscript.sh set_linein $CARD_OUT $CARD_IN $array_usb_mode[0]", $output, $return_var);
-    } elseif ($CARD_OUT != "" && $VOL == "") {
+    if ($CARD_OUT != "" && $CARD_IN != "" && $VOL == "") {    //Abspielen
+        $BETRIEB = trim((string)$array_usb_mode[0]);
+        exec("sudo /var/www/sudoscript.sh set_linein $CARD_OUT $CARD_IN $BETRIEB $MODE");
+
+    } elseif ($CARD_OUT != "" && $VOL == "") { // Stoppen
         exec("sudo /var/www/sudoscript.sh set_linein $CARD_OUT", $output, $return_var);
     }
 
+    //Lautstärke anpassen
     if ($VOL != "" && $CARD_OUT != "" && $CARD_IN == "") {
         exec("sudo /var/www/sudoscript.sh set_vol $CARD_OUT LineIn $VOL", $output, $return_var);
     }
@@ -336,7 +344,6 @@ if (isset($_GET['getplaylist'])) {
     for ($i = $PLAYLISTID * 12; $i < (($PLAYLISTID * 12) + 11); $i++) {
         echo trim($playlists[$i + 1]) . ";";
     }
-
 
 
     //.csv File
@@ -612,7 +619,7 @@ if (isset($_GET['getsysinfo'])) {
     $diskinfo = str_replace(" ", ";", $diskinfo);
 
     $tempraw = intval(shell_exec("/var/www/readcputemp.sh"));
-    $temp = round(($tempraw/1000));
+    $temp = round(($tempraw / 1000));
 
     echo $cpuproz . ";" . $ramproz . ";" . trim($uptime) . ";" . trim($diskinfo) . ";" . $temp;
 }
@@ -621,11 +628,11 @@ if (isset($_GET['update'])) {
     exec("sudo /var/www/sudoscript.sh update", $output, $return_var);
 }
 
-if(isset($_GET['updateKernel'])) {
+if (isset($_GET['updateKernel'])) {
     exec("sudo /var/www/sudoscript.sh updateKernel", $output, $return_var);
 }
 
-if(isset($_GET['updateBeta'])) {
+if (isset($_GET['updateBeta'])) {
     exec("sudo /var/www/sudoscript.sh updateBeta", $output, $return_var);
 }
 
@@ -646,7 +653,7 @@ if (isset($_GET['get_usbmount'])) {
 }
 
 if (isset($_GET['get_netmount'])) {
-  echo shell_exec("cat /opt/innotune/settings/netmount.txt");
+    echo shell_exec("cat /opt/innotune/settings/netmount.txt");
 }
 
 if (isset($_GET['savenetworkmount'])) {
@@ -660,13 +667,13 @@ if (isset($_GET['savenetworkmount'])) {
     shell_exec("sudo /var/www/sudoscript.sh networkmount \"$mount\" \"$MOUNTPOINT\" \"$PATH\" \"$TYPE\" \"$OPTIONS\"");
 }
 
-if(isset($_GET['removenetworkmount'])) {
-  $PATH = trim($_GET["path"]);
-  $MOUNTPOINT = trim($_GET["mountpoint"]);
-  $TYPE = trim($_GET["type"]);
-  $FSTAB = trim($_GET['fstab']);
+if (isset($_GET['removenetworkmount'])) {
+    $PATH = trim($_GET["path"]);
+    $MOUNTPOINT = trim($_GET["mountpoint"]);
+    $TYPE = trim($_GET["type"]);
+    $FSTAB = trim($_GET['fstab']);
 
-  shell_exec("sudo /var/www/sudoscript.sh removenetworkmount \"$MOUNTPOINT\" \"$PATH\" \"$TYPE\" \"$FSTAB\"");
+    shell_exec("sudo /var/www/sudoscript.sh removenetworkmount \"$MOUNTPOINT\" \"$PATH\" \"$TYPE\" \"$FSTAB\"");
 }
 
 /*class MyDB extends SQLite3
