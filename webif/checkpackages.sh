@@ -38,6 +38,8 @@ fi
 if [[ $(dpkg-query -W -f='${Status}\n' shairport-sync | wc -l) -ne 1 ]]; then
   echo "shairport not installed...installing" >> /var/www/checkprocesses.log
   sudo apt-get install -f -y shairport-sync
+  sudo systemctl stop shairport-sync
+  sudo systemctl disable shairport-sync
   if [[ $(dpkg-query -W -f='${Status}\n' shairport-sync | grep installed | wc -l) -eq 1 ]]; then
     echo "shairport installed" >> /var/www/checkprocesses.log
   else

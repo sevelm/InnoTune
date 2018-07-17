@@ -79,7 +79,7 @@ do
 done
 
 ######################### CARD10 ###############################################
-
+i=$(($i+1))
 if [[ "$(cat /proc/asound/card10/id | cut -c 5- | cut -c 1)" = "C" ]]; then
   if [[ -f /opt/innotune/settings/mapping.txt ]]; then
     hnm=$(tail -1 /opt/innotune/settings/mapping.txt | cut -d ";" -f1 | cut -c 5-)
@@ -94,14 +94,14 @@ if [[ "$(cat /proc/asound/card10/id | cut -c 5- | cut -c 1)" = "C" ]]; then
     if [[ "$cn" -ne "10" ]]; then
       cn="0$cn"
     fi
-    eval $(echo CARD$cn='$(cat /proc/asound/card'$i'/stream0 | grep "Burr")')
+    eval $(echo CARD$cn='$(cat /proc/asound/card10/stream0 | grep "Burr")')
   else
-      cn="0$i"
-      eval $(echo CARD$cn='$(cat /proc/asound/card'$i'/stream0 | grep "Burr")')
+    CARD10=aktiv
+    cn="10"
   fi
 else
-  cn="$(cat /proc/asound/card10/id | cut -c 5-)"
-  eval $(echo CARD$cn='$(cat /proc/asound/card10/stream0 | grep "Burr")')
+  cn=$(cat /proc/asound/card10/id | cut -c 5-)
+  eval $(echo CARD$cn='aktiv')
 fi
 
 devpath=$(udevadm info -a -p $(udevadm info -q path -n /dev/snd/pcmC10D0c) | grep "looking at device" | cut -d "'" -f2 | rev | cut -c13- | rev)
