@@ -5,7 +5,7 @@ Update Repository for InnoTune
 
 #### Manuelles Update:
 1. apt-get install git
-2. mkdir /opt/innotune/update/cache
+2. mkdir -p /opt/innotune/update/cache
 3. cd /opt/innotune/update/cache
 4. git clone https://github.com/JHoerbst/InnoTune.git
 5. sudo chmod -R 0777 InnoTune
