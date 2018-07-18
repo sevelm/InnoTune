@@ -212,7 +212,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             .title('Bist du sicher?')
             .textContent('Der Server wird neugestartet.')
             .ariaLabel('Der Server ist die Zeit nicht erreichbar!')
-            .targetEvent(event)
+            .targetEvent()
             .ok('Ok')
             .cancel('Abbrechen');
         $mdDialog.show(confirm).then(function () {
@@ -374,7 +374,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             .title('Bist du sicher?')
             .textContent('Der Server wird neugestartet.')
             .ariaLabel('Der Server ist nicht erreichbar!')
-            .targetEvent(event)
+            .targetEvent()
             .ok('Ok')
             .cancel('Abbrechen');
         $mdDialog.show(confirm).then(function () {
@@ -389,7 +389,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             .title('Bist du sicher?')
             .textContent('Alle Logs werden gelöscht!')
             .ariaLabel('Der Server ist die Zeit nicht erreichbar!')
-            .targetEvent(event)
+            .targetEvent()
             .ok('Ok')
             .cancel('Abbrechen');
         $mdDialog.show(confirm).then(function () {
@@ -407,7 +407,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             .title('Bist du sicher?')
             .textContent('Die Gerätereihenfolge kann sich verändern und dadurch alle Zonen beinflussen!')
             .ariaLabel('Der Server ist die Zeit nicht erreichbar!')
-            .targetEvent(event)
+            .targetEvent()
             .ok('Ok')
             .cancel('Abbrechen');
         $mdDialog.show(confirm).then(function () {
@@ -425,7 +425,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             .title('Bist du sicher?')
             .textContent('Der Server wird neugestartet.')
             .ariaLabel('Der Server ist die Zeit nicht erreichbar!')
-            .targetEvent(event)
+            .targetEvent()
             .ok('Ok')
             .cancel('Abbrechen');
         $mdDialog.show(confirm).then(function () {
@@ -444,7 +444,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             .title('Bist du sicher?')
             .textContent('Sind Sie sicher? Media Server & (Sh)Airplay wird neu gestartet, dies kann mehrere Minuten dauern!.')
             .ariaLabel('Der LMS ist kurz nicht erreichbar!')
-            .targetEvent(event)
+            .targetEvent()
             .ok('Ok')
             .cancel('Abbrechen');
         $mdDialog.show(confirm).then(function () {
@@ -1180,7 +1180,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             .title('Bist du sicher?')
             .textContent('Update auf neue Version! Der Server wird neu gestartet, dies kann mehrere Minuten dauern!.')
             .ariaLabel('Update!')
-            .targetEvent(event)
+            .targetEvent()
             .ok('Ok')
             .cancel('Abbrechen');
         $mdDialog.show(update).then(function () {
@@ -1200,7 +1200,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             'durch das Drücken des "Verstanden"-Button erklären Sie, dass Sie selbst die Verantwortung für ein ' +
             'fehlerhaftes System nach dem Update tragen.')
             .ariaLabel('Update!')
-            .targetEvent(event)
+            .targetEvent()
             .ok('Verstanden')
             .cancel('Abbrechen');
         $mdDialog.show(update).then(function () {
@@ -1218,7 +1218,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
           .textContent('Hiermit wird eine Beta-Version des Systems installiert, diese enthaltet neueste ' +
             'Features kann aber auch vereinzelte Bugs beinhalten.')
           .ariaLabel('Update!')
-          .targetEvent(event)
+          .targetEvent()
           .ok('Update')
           .cancel('Abbrechen');
       $mdDialog.show(update).then(function () {
@@ -1275,7 +1275,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         var confirm = $mdDialog.confirm()
             .title('Bist du sicher?')
             .textContent('Der Netzwerkspeicher wird entfernt.')
-            .targetEvent(event)
+            .targetEvent()
             .ok('Ok')
             .cancel('Abbrechen');
         $mdDialog.show(confirm).then(function () {
@@ -1299,7 +1299,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             .title('Bist du sicher?')
             .textContent('Die Konfiguration wird zurückgesetzt.')
             .ariaLabel('Der Server ist die Zeit nicht erreichbar!')
-            .targetEvent(event)
+            .targetEvent()
             .ok('Ok')
             .cancel('Abbrechen');
         $mdDialog.show(confirm).then(function () {

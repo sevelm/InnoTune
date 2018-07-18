@@ -54,9 +54,6 @@ if (isset($_GET['stop_usbmount'])) {
                 <span ng-show="networkForm.gate.$error.pattern"
                       style="color:red">IP Adresse ist nicht möglich!</span>
 
-
-
-
                 <div class="mdl-grid">
                     <p class="mdl-cell ">Subnetmask</p>
                     <md-input-container class="md-block mdl-cell settingsN">
@@ -93,12 +90,71 @@ if (isset($_GET['stop_usbmount'])) {
                         <input id="mac" style="color:gray" ng-model="network.mac" readonly aria-label="mac">
                     </md-input-container>
                 </div>
+                <?php
+                if (!(exec("cat /etc/os-release | grep Raspbian | wc -l") == 0 &&
+                    exec("uname -r | grep rockchip | wc -l") == 0)) {?>
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text">Wlan-Einstellungen</h2>
+                </div>
+                <div class="mdl-grid">
+                  <h6 ng-if="network.wlanfailed == 'true'">
+                    Wlan-Verbindung fehlgeschlagen, bitte vergewissern Sie sich ob die eingegebenen Daten korrekt sind!
+                  </h6>
+                </div>
+                <div class="mdl-grid">
+                    <p class="mdl-cell mdl-cell--5-col">
+                        Wlan verwenden</p>
+                    <md-switch class="mdl-cell mdl-cell--1-col" ng-true-value="'1'"
+                               ng-false-value="'0'" ng-model="network.wlan"
+                               aria-label="Switch 3">
+                    </md-switch>
+                    <div class="mdl-layout-spacer"></div>
+                </div>
+                <div class="mdl-grid">
+                    <p class="mdl-cell">MAC-Adresse</p>
+                    <md-input-container class="md-block mdl-cell settingsN">
+                        <input id="wlanmac" style="color:gray" ng-model="network.macwlan" readonly aria-label="macwlan">
+                    </md-input-container>
+                </div>
+                <div class="mdl-grid">
+                    <p class="mdl-cell">SSID</p>
+                    <!--<md-input-container class="md-block mdl-cell settingsN">
+                        <input ng-model="network.ssid" aria-label="ssid">
+                    </md-input-container>-->
+                    <md-select placeholder="{{network.ssid}}" ng-model="network.ssid"
+                               ng-change=""
+                               class="mdl-cell md-no-underline" style="color: #545454">
+                        <md-option ng-repeat="wifiname in network.wifilist" value="{{wifiname}}">{{wifiname}}</md-option>
+                    </md-select>
+                </div>
+                <div class="mdl-grid">
+                    <p class="mdl-cell">Passwort</p>
+                    <md-input-container class="md-block mdl-cell settingsN">
+                        <input ng-model="network.psk" type="text" aria-label="wlanpassword">
+                    </md-input-container>
+                </div>
+                <div class="mdl-grid">
+                  <h6 ng-if="network.test == 1">
+                    Wlan-Test erfolgreich. Wlan kann verwendet werden.
+                  </h6>
+                  <h6 ng-if="network.test == 0">
+                    Wlan-Test fehlgeschlagen
+                  </h6>
+                  <h6 ng-if="network.test == -1">
+                    Test läuft...
+                  </h6>
+                </div>
+              <?php } ?>
             </ng-form>
         </div>
         <div class="mdl-card__actions mdl-card--border">
             <button ng-click="setNetworkSettings()"
                     class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
                 Speichern
+            </button>
+            <button ng-click="testWlan()"
+                    class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                Wlan-Test
             </button>
         </div>
     </div>
