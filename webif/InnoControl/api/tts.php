@@ -216,13 +216,12 @@ if (empty($pids)) {
 
         if ($Minute == 0) {
             $words = "Es ist" . $Stunde . "Uhr.";
-        }elseif ($Minute == 1) {
+        } elseif ($Minute == 1) {
             $words = "Es ist" . $Stunde . "Uhr und eine Minute.";
         } else {
             $words = "Es ist" . $Stunde . "Uhr und" . $Minute . "Minuten.";
         }
     }
-
     echo "Text to Speech Input: <b>" . $words . "</b><br>";
 
     //Umlaute konvertieren
@@ -236,7 +235,7 @@ if (empty($pids)) {
     echo "Parameter VoiceRSS: <b>" . $inlay . "</b><br>";
 
     // Speicherort der MP3 Datei
-    $file = "/media/Soundfiles/tts/" . str_replace(" ", "_", $words_neu) . $speed . ".mp3";
+    $file = "/media/Soundfiles/tts/" . strtoupper($lang) . str_replace(" ", "_", $words_neu) . $speed . ".mp3";
     $file = str_replace("ä", "ae", $file);
 
     // Prüfen ob die MP3 Datei bereits vorhanden ist
@@ -245,17 +244,20 @@ if (empty($pids)) {
         file_put_contents($file, $mp3);
     }
 
-    echo "Script Aufruf: /var/www/src/ttsvolplay " . str_replace(" ", "_", $words_neu) . $speed;
+    echo "Script Aufruf: /var/www/src/ttsvolplay " . strtoupper($lang) . str_replace(" ", "_", $words_neu) . $speed;
     echo "<br>Speicherort: " . $file;
 
     //Update MPD Library
-    shell_exec("mpc update");
+    exec("mpc update");
+    //Sleep
+    sleep(1);
+
     //Execute ttsvolplay
     // Check ob der TTS-Request zur Warteschlange hinzugefügt werden soll
     if (isset($_GET["noqueue"])) {
-        shell_exec("sudo /var/www/sudoscript.sh ttsvolplay " . str_replace(" ", "_", $words_neu) . $speed . " > /dev/null 2>/dev/null &");
+        shell_exec("sudo /var/www/sudoscript.sh ttsvolplay " . strtoupper($lang) . str_replace(" ", "_", $words_neu) . $speed . " > /dev/null 2>/dev/null &");
     } else {
-        shell_exec("sudo /var/www/sudoscript.sh ttsvolplay " . str_replace(" ", "_", $words_neu) . $speed);
+        shell_exec("sudo /var/www/sudoscript.sh ttsvolplay " . strtoupper($lang) . str_replace(" ", "_", $words_neu) . $speed);
     }
 } else {
     echo "Fehler!";

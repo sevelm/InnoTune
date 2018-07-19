@@ -9,6 +9,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.network = {};
     $scope.settings = {};
     $scope.rssvoice = {};
+    $scope.rssvoice.languages = ["de-de","en-us","fr-fr","it-it","pl-pl"];
     $scope.rssvoice.vol_dev = [];
     $scope.playlists = [];
     $scope.playlists.vol_dev = [];
@@ -1053,7 +1054,6 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                     $scope.rssvoice.key = arr[0];
                 }
             });
-
     };
 
     $scope.saveRssVoiceKey = function (key) {

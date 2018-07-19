@@ -21,21 +21,45 @@
         <br>
         <h5>Beispiel Loxone Virtueller Ausgang:</h5>
         <br>
-        <md-input-container class="md-block mdl-cell">
-            <label id="textlabel" for="text" style="font-size: larger">Text:</label>
-            <input id="text" name="test" ng-model="texttts" type="text" aria-label="textlabel">
-        </md-input-container>
-            <center>
-                <b><a id="copyElement" target="_blank"
-                      href="http://<?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text={{texttts}}">
-                        <?php echo $_SERVER['SERVER_ADDR'] ?>
-                        /api/tts.php?text={{texttts}}
-                    </a></b>
-            </center>
-        <button class="mdl-button mdl-js-button mdl-button--fab" onclick="copy()">
-            <i class="material-icons">content_copy</i>
-        </button>
-        <b>Kopieren</b>
+        <div class="mdl-grid">
+            <md-input-container class="md-block mdl-cell mdl-cell--8-col">
+                <label id="textlabel" for="text" style="color:#4b4b4b;font-size: larger">Text:</label>
+                <textarea rows="3" id="text" name="test" ng-model="texttts" type="text"
+                          aria-label="textlabel"></textarea>
+            </md-input-container>
+            <md-input-container class="md-block mdl-cell mdl-cell--4-col">
+                <p id="vlabel" style="color:#4b4b4b;font-size: larger">Sprache:</p>
+                <md-select id="lang" placeholder="{{rssvoice.languages[0]}}" ng-model="rssvoice.selectedLanguage"
+                           ng-change="" style="color: #545454;">
+                    <md-option style="font-size: larger" ng-repeat="lang in rssvoice.languages" value="{{lang}}">
+                        {{lang}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <center>
+            <button ng-disabled="texttts==null||texttts.length==0" id="playbtn" onclick="playtts()"
+                    link="http://<?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text={{texttts}}&lang={{rssvoice.selectedLanguage}}"
+                    class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect ng-scope">Wiedergabe
+            </button>
+        </center>
+        <div class="mdl-grid" style="padding-top: 3em">
+            <div class="mdl-cell--3-col">
+                <button class="mdl-button mdl-js-button mdl-button--fab" onclick="copy()">
+                    <i class="material-icons">content_copy</i>
+                </button>
+                <b>Link Kopieren</b>
+            </div>
+            <div class="mdl-cell--9-col">
+                <center>
+                    <b><a id="copyElement" target="_blank"
+                          href="http://<?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text={{texttts}}&lang={{rssvoice.selectedLanguage}}">
+                            <?php echo $_SERVER['SERVER_ADDR'] ?>
+                            /api/tts.php?text={{texttts}}<span ng-if="rssvoice.selectedLanguage">{{"&lang="+rssvoice.selectedLanguage}}</span>
+                        </a></b>
+                </center>
+            </div>
+        </div>
     </div>
     <div class="mdl-card__menu mdl-cell--hide-phone" ng-if="rssvoice.key">
         VoiceRss-Key: <b>{{rssvoice.key}}</b><br>
@@ -114,32 +138,41 @@
                 <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?time=1</td>
             </tr>
             <tr>
-              <td><b>Nur Ausgeben wenn Kanal frei ist:</b></td>
-              <td></td>
-              <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&noqueue</td>
+                <td><b>Nur Ausgeben wenn Kanal frei ist:</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&noqueue</td>
             </tr>
             <tr>
-              <td><b>Geschwindigkeit der Sprachausgabe (-10 bis 0):</b></td>
-              <td></td>
-              <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&speed=-3</td>
+                <td><b>Geschwindigkeit der Sprachausgabe (-10 bis 0):</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&speed=-3</td>
             </tr>
             <tr>
-              <td><b>Ausgabe an Squeezeboxlautstärke anpassen:</b></td>
-              <td></td>
-              <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&vol_01=squeeze&mac_01=00:00:00:00:00:01</td>
+                <td><b>Ausgabe an Squeezeboxlautstärke anpassen:</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&vol_01=squeeze&mac_01=00:00:00:00:00:01
+                </td>
+            </tr>
+            <tr>
+                <td><b>Verschiedene Sprachen: (en-us,fr-fr,it-it,pl-pl,de-de)</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&lang=en-us
+                </td>
             </tr>
             <tr>
                 <td><b>Lautstärke Zone01 links Squeeze rechts Mute (0%):</b></td>
                 <td></td>
-                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/tts.php?text=test&vol_01=squeeze/0&mac_01=00:00:00:00:00:01</td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>
+                    /api/tts.php?text=test&vol_01=squeeze/0&mac_01=00:00:00:00:00:01
+                </td>
             </tr>
             <tr>
-                <td><b>Wenn bei geteilten Betrieb nur eine Lautstärke angegeben wird, erfolgt die Ausgabe auf beiden Lautsprechern!</b></td>
+                <td><b>Wenn bei geteilten Betrieb nur eine Lautstärke angegeben wird, erfolgt die Ausgabe auf beiden
+                        Lautsprechern!</b></td>
             </tr>
         </table>
     </div>
 </div>
-
 
 
 <script>
@@ -163,5 +196,9 @@
         copyElement.remove();
 
         angular.element(document.getElementById('InnoController')).scope().makeToast('URL kopiert!');
+    }
+
+    function playtts() {
+        $.get(encodeURI($("#playbtn").attr('link')));
     }
 </script>
