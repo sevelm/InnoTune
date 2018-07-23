@@ -31,7 +31,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -67,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="mdl-cell">
         <div style="margin: 0 auto; align-items: center" class="demo-card-wide mdl-card mdl-shadow--2dp">
             <div class="mdl-card__title">
-                <img style="height: 50%;width: 50%" class="unselectable" src="images/loginlogo.png">
+                <img style="width: 50%" class="unselectable" src="images/loginlogo.png">
                 <h2 class="mdl-card__title-text unselectable" style="font-size: 28px;">InnoControl</h2>
             </div>
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
