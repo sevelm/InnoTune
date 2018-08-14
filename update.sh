@@ -25,6 +25,7 @@ if [[ $(cat /etc/os-release | grep Raspbian | wc -l) -eq 0 ]]; then
 fi
 
 sudo apt-get -y update
+sudo apt-get install -f
 
 # Settings Ordner
 cp -R /opt/innotune/update/cache/InnoTune/settings/* -n /opt/innotune/settings
