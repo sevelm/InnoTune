@@ -1192,6 +1192,13 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         });
     };
 
+    $scope.fixDependencies = function () {
+        document.getElementById("loadingsymbol").style.display = "block";
+        $http.get('api/helper.php?fixDependencies').success(function () {
+            location.reload();
+        });
+    };
+
     $scope.updateKernel = function () {
         var update = $mdDialog.confirm()
             .title('Achtung!')

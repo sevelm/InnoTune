@@ -25,7 +25,6 @@ if [[ $(cat /etc/os-release | grep Raspbian | wc -l) -eq 0 ]]; then
 fi
 
 sudo apt-get -y update
-sudo apt-get install -f
 
 # Settings Ordner
 cp -R /opt/innotune/update/cache/InnoTune/settings/* -n /opt/innotune/settings
@@ -192,6 +191,10 @@ grep -q -F "3 3 * * * sudo shutdown -r now" /var/spool/cron/crontabs/root || ech
 if [[ $(cat /etc/os-release | grep Raspbian | wc -l) -ge 1 ]]; then
   sudo apt-get install -y libportaudio2
 fi
+
+# fix unmet dependencies/broken packages
+sudo apt-get -f -y install
+
 # Overwrite current Version number with new
 cd /opt/innotune/update/cache
 sudo cat InnoTune/version.txt > /var/www/version.txt
