@@ -17,6 +17,10 @@ if (isset($_GET['lms_save'])) {
     $value = $_GET['value'];
     file_put_contents("/opt/innotune/settings/logitechmediaserver.txt", $value);
 }
+
+if (isset($_GET['reset_lms'])) {
+    echo exec("sudo /var/www/sudoscript.sh reset_lms");
+}
 // </editor-fold>
 
 //Lautstärke muss in einem externen file regeln zu sein da man sonst für die App sich einloggen müsste

@@ -39,6 +39,8 @@ case "$1" in
               mpc repeat off;;
      mpdrepeat) mpc repeat on;;
      reboot) reboot;;
+     reset_lms) /etc/init.d/logitechmediaserver stop & update-rc.d logitechmediaserver remove  & killall squeezeboxserver
+                rm /var/lib/squeezeboxserver/prefs/server.prefs;;
      stop_lms) /etc/init.d/logitechmediaserver stop & update-rc.d logitechmediaserver remove  & killall squeezeboxserver;;
      start_lms) /etc/init.d/logitechmediaserver start;;
      start_sendudp) /etc/init.d/sendUDP start & update-rc.d sendUDP defaults;;

@@ -44,6 +44,14 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             });
     };
 
+    $scope.resetLms = function () {
+      document.getElementById("loadingsymbol").style.display = "block";
+        $http.get('api/helper.php?reset_lms')
+            .success(function (data) {
+                location.href = "scripts/reboot.php";
+            });
+    };
+
     $scope.changedLmsSwitch = function () {
         $scope.lmsCB = $scope.lmsCB == 1 ? 0 : 1;
 

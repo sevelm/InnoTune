@@ -137,6 +137,9 @@ $beta = file($beta_datei);
     <button ng-click='fixDependencies()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" >
         FIX SHAIRPLAY
     </button >
+    <button ng-click='resetLms()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" >
+        RESET LMS
+    </button >
   </div>
 </div>
 
