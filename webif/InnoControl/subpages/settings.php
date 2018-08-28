@@ -152,10 +152,14 @@ if (isset($_GET['stop_usbmount'])) {
                     class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
                 Speichern
             </button>
-            <button ng-click="testWlan()"
-                    class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                Wlan-Test
-            </button>
+            <?php
+            if (!(exec("cat /etc/os-release | grep Raspbian | wc -l") == 0 &&
+                exec("uname -r | grep rockchip | wc -l") == 0)) {?>
+              <button ng-click="testWlan()"
+                      class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                  Wlan-Test
+              </button>
+            <?php } ?>
         </div>
     </div>
 </div>
@@ -178,8 +182,15 @@ if (isset($_GET['stop_usbmount'])) {
             <div class="mdl-grid">
                 <p class="mdl-cell ">Passwort</p>
                 <md-input-container class="md-block mdl-cell settingsW">
-                    <input name="password" ng-model="settings.password" type="text" aria-label="password">
+                    <input name="password" ng-model="settings.password" type="text" aria-label="password"
+                        ng-pattern="passwordPattern" aria-controls="password-help" aria-describedby="password-help">
                 </md-input-container>
+                <div>
+                  <i class="material-icons">info</i>
+                  <md-tooltip md-direction="bottom">
+                    Erlaubte Zeichen: a-z A-Z ß 0-9 ! &quot; § % / ( ) = ? * '
+                  </md-tooltip>
+                </div>
             </div>
             <div class="mdl-grid">
                 <p class="mdl-cell ">Port Webinterface</p>

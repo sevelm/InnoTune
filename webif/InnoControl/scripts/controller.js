@@ -5,6 +5,9 @@
 var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, $mdToast, $interval, $location) {
     $scope.ipPattern = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
     $scope.macPattern = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
+    $scope.mntDir = /^[a-zA-Z0-9_-]*$/;
+    $scope.urlPattern = /^[^\\]*$/;
+    $scope.passwordPattern = /^[a-zA-Z0-9!"§%/()=ß?'*]*$/;
     $scope.admin = "admin";
     $scope.network = {};
     $scope.settings = {};
@@ -18,12 +21,14 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.uploadfile = undefined;
     $scope.sysinfo = {};
     $scope.networkmount = {};
+    $scope.netfs = [];
     $scope.LineInSelection = [];
     $scope.resetcb = {
         usb: false,
         network: false,
         playlists: false
     };
+    $scope.shairinstances = 0;
 
 
     $scope.formatId = function (id) {
@@ -1075,6 +1080,13 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         }
     };
 
+    $scope.getShairplayInstance = function () {
+      $http.get('api/helper.php?getshairplayinstance')
+        .success(function (data) {
+          $scope.shairinstances = data;
+        });
+    };
+
     $scope.getSysInfo = function () {
         $http.get('api/helper.php?getsysinfo')
             .success(function (data) {
@@ -1268,6 +1280,14 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
 
     $scope.getNetworkMount = function () {
+        $http.get('api/helper.php?netfs')
+            .success(function (data) {
+                $scope.netfs = data.split('\n');
+                $scope.netfs.splice(-1,1);
+                for (var i = 0; i < $scope.netfs.length; i++) {
+                  $scope.netfs[i] = $scope.netfs[i].trim();
+                }
+            });
         $http.get('api/helper.php?get_netmount')
             .success(function (data) {
                 $scope.networkmount.list = [];
@@ -1346,7 +1366,9 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
 
     //Interval für System Info
+    $scope.getShairplayInstance();
     $interval($scope.getSysInfo, 4000);
+    $interval($scope.getShairplayInstance, 10000);
     $scope.getDevices();
 });
 

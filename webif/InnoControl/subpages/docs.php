@@ -57,14 +57,13 @@ $beta = file($beta_datei);
         </div>
     </div>
 </div>
-
-<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--6-col">
     <div class="mdl-card__title">
         <h2 class="mdl-card__title-text">Update</h2>
     </div>
     <div class="mdl-card__supporting-text">
         <div class="mdl-grid">
-            <div class="mdl-cell mdl-cell--6-col">
+            <div class="mdl-cell mdl-cell--12-col">
                 <br>
                 <div class="mdl-grid">
                     <h5 class="mdl-cell mdl-cell--7-col">Aktuelle Version</h5>
@@ -92,14 +91,14 @@ $beta = file($beta_datei);
                   </div>
                 <?php }?>
             </div>
-            <div class="mdl-cell mdl-cell--6-col">
+            <!--<div class="mdl-cell mdl-cell--6-col">
                 <h5 style="margin-top: 0">Changelog:</h5>
                 <ul>
                 <?php
-                    echo shell_exec("cd /opt/innotune/update/cache/InnoTune ; git log --date=short --pretty=format:'<li> <a href=\"http://github.com/JHoerbst/InnoTune/commit/%H\"> view commit &bull;</a> %x09%ad: %s</li> ' | head -n 5");
+                    //echo shell_exec("cd /opt/innotune/update/cache/InnoTune ; git log --date=short --pretty=format:'<li> <a href=\"http://github.com/JHoerbst/InnoTune/commit/%H\"> view commit &bull;</a> %x09%ad: %s</li> ' | head -n 5");
                 ?>
                 </ul>
-            </div>
+            </div>-->
         </div>
     </div>
     <div class="mdl-card__actions mdl-card--border">
@@ -134,13 +133,34 @@ $beta = file($beta_datei);
       }
     }
     ?>
-    <button ng-click='fixDependencies()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" >
-        FIX SHAIRPLAY
-    </button >
-    <button ng-click='resetLms()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" >
-        RESET LMS
-    </button >
   </div>
+</div>
+
+<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--6-col">
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Problembehandlung</h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+      <b>Problem:</b><br>
+      Es werden keine Zonen bei Airplay angezeigt.<br>
+      Laufende Shairplay-Instanzen: {{shairinstances}}<br><br>
+      <b>Behandlung:</b><br>
+      Shaiplay mit "Fix-Shairplay"-Button nachinstallieren.
+      <br><br><br><br>
+      <b>Problem:</b><br>
+      Logitech Media Server fragt plötzlich nach einem Benutzer/Passwort.<br>
+      Ich habe die LMS Logindaten vergessen.<br><br>
+      <b>Behandlung:</b><br>
+      Einstellungen des Logitech Media Servers zurücksetzten mit "Reset LMS".<br>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+      <button ng-click='fixDependencies()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" >
+          FIX SHAIRPLAY
+      </button>
+      <button ng-click='resetLms()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" >
+          RESET LMS
+      </button>
+    </div>
 </div>
 
 <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--6-col">

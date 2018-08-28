@@ -69,6 +69,10 @@ if (isset($_GET['shnet'])) {
     echo exec("sudo /var/www/sudoscript.sh shnet all");
 }
 
+if (isset($_GET['getshairplayinstance'])) {
+  echo exec("ps cax | grep shair | wc -l");
+}
+
 if (isset($_GET['wifi'])) {
     echo exec("sudo /var/www/sudoscript.sh listwifi");
 }
@@ -662,6 +666,10 @@ if (isset($_GET['get_usbmount'])) {
 
 if (isset($_GET['get_netmount'])) {
     echo shell_exec("cat /opt/innotune/settings/netmount.txt");
+}
+
+if (isset($_GET['netfs'])) {
+  echo shell_exec('echo "$(ls /lib/modules/$(uname -r)/kernel/fs)"');
 }
 
 if (isset($_GET['savenetworkmount'])) {
