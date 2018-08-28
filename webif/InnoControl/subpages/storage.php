@@ -14,6 +14,17 @@
         <h2 class="mdl-card__title-text">Netzwerkspeicher</h2>
     </div>
     <div class="mdl-card__supporting-text">
+        <?php
+          $kernel_datei = "/var/www/kernel/version.txt";
+          $kernel = file($kernel_datei);
+          $kernel_local = exec("uname -r");
+
+          if (strpos($kernel_local, 'rockchip') !== false) {
+            if (strcmp(trim($kernel_local), trim($kernel[0])) != 0) {
+                echo "<h4>Updaten Sie bitte Ihren Kernel!</h4>";
+              }
+          }
+        ?>
         <h5>Verbundene Mountpoints:</h5>
         <div ng-if="networkmount.list.length==0"><ul><li><h6>Keine Mountpoints verbunden!</h6></li></ul></div>
         <div class="mdl-grid" style="padding:0" ng-if="networkmount.list.length!=0">
@@ -40,22 +51,28 @@
         <div class="mdl-grid">
             <p class="mdl-cell mdl-cell--3-col">Pfad</p>
             <md-input-container class="md-block mdl-cell settingsW">
-                <input style="color:gray" ng-model="networkmount.path" aria-label="path">
+                <input style="color:gray" ng-model="networkmount.path" aria-label="path" ng-pattern="urlPattern">
             </md-input-container>
             <p>zb.: <b>//192.168.0.240/Share</b></p>
         </div>
         <div class="mdl-grid">
             <p class="mdl-cell  mdl-cell--3-col">Mountpoint-Ordner</p>
             <md-input-container class="md-block mdl-cell settingsW">
-                <input style="color:gray" ng-model="networkmount.mountpoint" aria-label="mountpoint">
+                <input style="color:gray" ng-model="networkmount.mountpoint" aria-label="mountpoint"
+                  ng-pattern="mntDir">
             </md-input-container>
             <p>zb.: <b>nas</b></p>
         </div>
         <div class="mdl-grid">
             <p class="mdl-cell  mdl-cell--3-col">Typ</p>
-            <md-input-container class="md-block mdl-cell settingsW">
+            <!--<md-input-container class="md-block mdl-cell settingsW">
                 <input style="color:gray" ng-model="networkmount.type" aria-label="type">
-            </md-input-container>
+            </md-input-container>-->
+            <md-select placeholder="" ng-model="networkmount.type"
+                       ng-change="networkmount.type"
+                       class="mdl-cell md-no-underline" style="color: #545454">
+                <md-option ng-repeat="fstype in netfs" value="{{fstype}}">{{fstype}}</md-option>
+            </md-select>
             <p>zb.: <b>cifs</b></p>
         </div>
         <div class="mdl-grid">

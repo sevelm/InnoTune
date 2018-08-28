@@ -1268,14 +1268,21 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             '&mountpoint=' + $scope.networkmount.mountpoint +
             '&type=' + $scope.networkmount.type +
             '&options=' + $scope.networkmount.options)
-            .success(function () {
-                console.log('api/helper.php?savenetworkmount' +
-                    '&path=' + $scope.networkmount.path +
-                    '&mountpoint=' + $scope.networkmount.mountpoint +
-                    '&type=' + $scope.networkmount.type +
-                    '&options=' + $scope.networkmount.options);
-
-                location.reload();
+            .success(function (data) {
+                console.log(data);
+                if (data.includes("error")) {
+                  document.getElementById("loadingsymbol").style.display = "none";
+                  var error = $mdDialog.confirm()
+                      .title('Fehler!')
+                      .textContent('Bei der Einbindung des Netzwerkspeichers ist ein Fehler aufgetreten!' +
+                        ' Vergewissern Sie sich ob Ihre Daten korrekt sind.')
+                      .ariaLabel('Fehler')
+                      .targetEvent()
+                      .ok('OK');
+                  $mdDialog.show(error);
+                } else {
+                  location.reload();
+                }
             });
     };
 

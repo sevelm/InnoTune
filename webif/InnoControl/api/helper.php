@@ -680,7 +680,7 @@ if (isset($_GET['savenetworkmount'])) {
 
     $mount = $PATH . " " . $MOUNTPOINT . " " . $TYPE . " " . $OPTIONS . " 0 0";
 
-    shell_exec("sudo /var/www/sudoscript.sh networkmount \"$mount\" \"$MOUNTPOINT\" \"$PATH\" \"$TYPE\" \"$OPTIONS\"");
+    echo shell_exec("sudo /var/www/sudoscript.sh networkmount \"$mount\" \"$MOUNTPOINT\" \"$PATH\" \"$TYPE\" \"$OPTIONS\"");
 }
 
 if (isset($_GET['removenetworkmount'])) {
