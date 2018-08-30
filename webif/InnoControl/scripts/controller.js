@@ -22,6 +22,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.sysinfo = {};
     $scope.networkmount = {};
     $scope.netfs = [];
+    $scope.netdirs = ["net0","net1","net2","net3","net4"];
     $scope.LineInSelection = [];
     $scope.resetcb = {
         usb: false,

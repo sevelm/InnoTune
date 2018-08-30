@@ -9,9 +9,9 @@
 
 # checkt ob mountpoint order existiert, wenn nicht dann wird dieser angelegt und
 # die rechte werden vergeben
-if [ ! -d "$2" ]; then
-  mkdir "/media/$2"
-  chmod 777 "/media/$2"
+if [ ! -d "/media/$2" ]; then
+  sudo mkdir "/media/$2"
+  sudo chmod 777 "/media/$2"
 fi
 
 sudo mount -t "$4" -o "$5" "$3" "$2"

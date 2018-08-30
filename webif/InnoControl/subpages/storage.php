@@ -57,11 +57,16 @@
         </div>
         <div class="mdl-grid">
             <p class="mdl-cell  mdl-cell--3-col">Mountpoint-Ordner</p>
-            <md-input-container class="md-block mdl-cell settingsW">
+            <!--<md-input-container class="md-block mdl-cell settingsW">
                 <input style="color:gray" ng-model="networkmount.mountpoint" aria-label="mountpoint"
                   ng-pattern="mntDir">
-            </md-input-container>
-            <p>zb.: <b>nas</b></p>
+            </md-input-container>-->
+            <md-select placeholder="" ng-model="networkmount.mountpoint"
+                       ng-change="networkmount.mountpoint"
+                       class="mdl-cell md-no-underline" style="color: #545454">
+                <md-option ng-repeat="dir in netdirs" value="{{dir}}">{{dir}}</md-option>
+            </md-select>
+            <p>zb.: <b>net0</b></p>
         </div>
         <div class="mdl-grid">
             <p class="mdl-cell  mdl-cell--3-col">Typ</p>
@@ -80,7 +85,8 @@
             <md-input-container class="md-block mdl-cell settingsW">
                 <input style="color:gray" ng-model="networkmount.options" aria-label="options">
             </md-input-container>
-            <p>zb.: <b>user=name,password=pass,...</b></p>
+            <p>zb.: <b>user=name,password=pass</b></p>
+            <p>Falls keine Optionen das Bsp. in das Feld eintragen.</p>
         </div>
         <br>
         <button ng-click="saveNetworkMount()"

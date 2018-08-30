@@ -64,7 +64,19 @@ sudo apt-get -y install mpc
 sudo apt-get -y install bc
 
 # Cifs
-#sudo apt-get -y install cifs-utils
+sudo apt-get -y install cifs-utils
+
+sudo mkdir /media/net0
+sudo mkdir /media/net1
+sudo mkdir /media/net2
+sudo mkdir /media/net3
+sudo mkdir /media/net4
+
+sudo chmod 777 /media/net0
+sudo chmod 777 /media/net1
+sudo chmod 777 /media/net2
+sudo chmod 777 /media/net3
+sudo chmod 777 /media/net4
 
 ############Section: Fixes############
 
