@@ -106,6 +106,51 @@
         <h2 class="mdl-card__title-text">API Text to Speech:</h2>
     </div>
     <div class="mdl-card__supporting-text">
+      <div class="mdl-grid mdl-cell mdl-cell--12-col">
+        <div class="mdl-cell mdl-cell--2-col"><b>Parameter</b></div>
+        <div class="mdl-cell mdl-cell--2-col"><b>Werte</b></div>
+        <div class="mdl-cell mdl-cell--8-col"><b>Beschreibung</b></div>
+
+        <div class="mdl-cell mdl-cell--2-col">text</div>
+        <div class="mdl-cell mdl-cell--2-col">jeder Wert</div>
+        <div class="mdl-cell mdl-cell--8-col">Der zu ausgebende Text</div>
+
+        <div class="mdl-cell mdl-cell--2-col">noqueue</div>
+        <div class="mdl-cell mdl-cell--2-col">Keine Werte</div>
+        <div class="mdl-cell mdl-cell--8-col">Text wird nur ausgegeben wenn derzeit keine andere TTS-Ausgabe erfolgt.</div>
+
+        <div class="mdl-cell mdl-cell--2-col">vol_xx</div>
+        <div class="mdl-cell mdl-cell--2-col">0-100, squeeze</div>
+        <div class="mdl-cell mdl-cell--8-col">Laustärke einer einzelnen Zone. xx ist Zonennummer (01-10).
+          Mit einem / können verschiedene Werte für links/rechts angegeben werden.
+          Bei "squeeze" wird die Lautstärke an die Radiolautstärke angepasst. (Dazu ist Parameter mac_xx notwendig)</div>
+
+        <div class="mdl-cell mdl-cell--2-col">vol_all</div>
+        <div class="mdl-cell mdl-cell--2-col">0-100, squeeze</div>
+        <div class="mdl-cell mdl-cell--8-col">Lautstärke aller Zonen. Parameter vol_xx hat über vol_all Priorität.</div>
+
+        <div class="mdl-cell mdl-cell--2-col">vol_back</div>
+        <div class="mdl-cell mdl-cell--2-col">0-100</div>
+        <div class="mdl-cell mdl-cell--8-col">Lautstärke der Hintergrundmusik</div>
+
+        <div class="mdl-cell mdl-cell--2-col">mac_xx</div>
+        <div class="mdl-cell mdl-cell--2-col">00:00:00:00:00:xx</div>
+        <div class="mdl-cell mdl-cell--8-col">Mac-Adresse der Zone. xx ist Zonennummer (01-10). Unter InnoAmp's können
+         Sie die Nummern nachsehen. Dieser Parameter wird zusammen mit vol_xx=squeeze verwendet.</div>
+
+        <div class="mdl-cell mdl-cell--2-col">time</div>
+        <div class="mdl-cell mdl-cell--2-col">1</div>
+        <div class="mdl-cell mdl-cell--8-col">Ausgabe der Uhrzeit</div>
+
+        <div class="mdl-cell mdl-cell--2-col">speed</div>
+        <div class="mdl-cell mdl-cell--2-col">-10 - 0</div>
+        <div class="mdl-cell mdl-cell--8-col">Wiedergabegeschwindigkeit. (0 ist Standardwert)</div>
+
+        <div class="mdl-cell mdl-cell--2-col">lang</div>
+        <div class="mdl-cell mdl-cell--2-col">en-us, fr-fr, it-it, pl-pl, de-de</div>
+        <div class="mdl-cell mdl-cell--8-col">Sprache der Textausgabe. Standardwert ist "de-de".
+           Hinweis: Der Text wird nicht in andere Sprachen übersetzt!</div>
+      </div>
         <table>
             <tr>
                 <td><b>Hintergrund-50%; Zone01-50%; alle anderen Zonen Mute:</b></td>
