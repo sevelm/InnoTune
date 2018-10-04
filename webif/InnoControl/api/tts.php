@@ -18,7 +18,14 @@ for ($i = 1; $i < 10; $i++) {
         if ($squeezevol <= 90 && $squeezevol > 0) {
             $squeezevol = $squeezevol + 10;
         }
-        $_GET["vol_0$i"] = intval($zonemastervol[1]) * ($squeezevol / 100);
+        $val = ceil((intval($zonemastervol[1])) * ($squeezevol) / 60);
+        if ($val < 50) {
+          $val = 50;
+        } else if ($val > 80) {
+            $val = 80;
+        }
+
+        $_GET["vol_0$i"] = $val;
     } else if (strpos($_GET["vol_0$i"], "squeeze/") !== false) {
         $zonemastervol = explode(";", exec("sudo /var/www/sudoscript.sh show_vol_equal 0" . $i . " all"));
         if (isset($_GET["mac_0$i"])) {
@@ -30,7 +37,12 @@ for ($i = 1; $i < 10; $i++) {
         if ($squeezevol <= 90 && $squeezevol > 0) {
             $squeezevol = $squeezevol + 10;
         }
-        $vall = intval($zonemastervol[1]) * ($squeezevol / 100);
+        $vall = ceil(intval($zonemastervol[1]) * ($squeezevol / 60));
+        if ($vall < 50) {
+          $vall = 50;
+        } else if ($vall > 80) {
+            $vall = 80;
+        }
         $valr = explode("/", $_GET["vol_0$i"])[1];
         $_GET["vol_0$i"] = "$vall/$valr";
     } else if (strpos($_GET["vol_0$i"], "/squeeze") !== false) {
@@ -44,7 +56,12 @@ for ($i = 1; $i < 10; $i++) {
         if ($squeezevol <= 90 && $squeezevol > 0) {
             $squeezevol = $squeezevol + 10;
         }
-        $valr = intval($zonemastervol[1]) * ($squeezevol / 100);
+        $valr = ceil(intval($zonemastervol[1]) * ($squeezevol / 60));
+        if ($valr < 50) {
+          $valr = 50;
+        } else if ($valr > 80) {
+            $valr = 80;
+        }
         $vall = explode("/", $_GET["vol_0$i"])[0];
         $_GET["vol_0$i"] = "$vall/$valr";
     }
@@ -60,7 +77,13 @@ if ($_GET["vol_10"] == "squeeze") {
     if ($squeezevol <= 90 && $squeezevol > 0) {
         $squeezevol = $squeezevol + 10;
     }
-    $_GET["vol_10"] = intval($zonemastervol[1]) * ($squeezevol / 100);
+    $val = ceil(intval($zonemastervol[1]) * ($squeezevol / 60));
+    if ($val < 50) {
+      $val = 50;
+    } else if ($val > 80) {
+        $val = 80;
+    }
+    $_GET["vol_10"] = $val;
 }
 // Variablen definieren
 $VOL_BACK = trim($_GET["vol_back"]);
