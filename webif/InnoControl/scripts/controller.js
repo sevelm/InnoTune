@@ -1276,7 +1276,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                   var error = $mdDialog.confirm()
                       .title('Fehler!')
                       .textContent('Bei der Einbindung des Netzwerkspeichers ist ein Fehler aufgetreten!' +
-                        ' Vergewissern Sie sich ob Ihre Daten korrekt sind.')
+                        ' Vergewissern Sie sich ob Ihre Daten korrekt sind. Error: ' + data)
                       .ariaLabel('Fehler')
                       .targetEvent()
                       .ok('OK');

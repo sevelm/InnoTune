@@ -14,12 +14,13 @@ if [ ! -d "/media/$2" ]; then
   sudo chmod 777 "/media/$2"
 fi
 
-sudo mount -t "$4" -o "$5" "$3" "$2"
+sudo mount -t "$4" -o "$5" "$3" "$2" &> /tmp/mttmp
 # check ob mount befehl funktioniert hat, wenn ja dann wird mount gespeichert
 if [[ $? -eq 0 ]]; then
     echo "successfully mounted"
     echo "$2;$3;$4;$1" >> /opt/innotune/settings/netmount.txt
     echo "$1" >> /etc/fstab
 else
-    echo "error not saving networkmount"
+    error=$(cat /tmp/mttmp)
+    echo "error not saving networkmount. $error"
 fi
