@@ -91,14 +91,6 @@ $beta = file($beta_datei);
                   </div>
                 <?php }?>
             </div>
-            <!--<div class="mdl-cell mdl-cell--6-col">
-                <h5 style="margin-top: 0">Changelog:</h5>
-                <ul>
-                <?php
-                    //echo shell_exec("cd /opt/innotune/update/cache/InnoTune ; git log --date=short --pretty=format:'<li> <a href=\"http://github.com/JHoerbst/InnoTune/commit/%H\"> view commit &bull;</a> %x09%ad: %s</li> ' | head -n 5");
-                ?>
-                </ul>
-            </div>-->
         </div>
     </div>
     <div class="mdl-card__actions mdl-card--border">
@@ -205,17 +197,13 @@ $beta = file($beta_datei);
     </div>
 </div>
 
-<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--6-col">
     <div class="mdl-card__title">
         <h2 class="mdl-card__title-text">Log</h2>
     </div>
     <div class="mdl-card__supporting-text">
       <div class="mdl-grid">
-          <div class="mdl-cell mdl-cell--6-col">
-              <h5 class="mdl-cell mdl-cell--7-col">Logfile downloaden</h5>
-              <br>
-          </div>
-          <div class="mdl-cell mdl-cell--6-col">
+          <div class="mdl-cell mdl-cell--12-col">
               <h5 style="margin-top: 0">Letzten Einträge:</h5>
               <p>
                 <?php
@@ -243,6 +231,24 @@ $beta = file($beta_datei);
                 style="color: rgb(255, 54, 47);">
             Logs löschen
         </button>
+    </div>
+</div>
+
+<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--6-col">
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Changelog</h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+      <div class="mdl-grid">
+          <div class="mdl-cell mdl-cell--12-col">
+                <h5 style="margin-top: 0">Changelog:</h5>
+                <ul>
+                <?php
+                    echo shell_exec("cd /opt/innotune/update/cache/InnoTune ; git log --date=short --pretty=format:'<li> <a href=\"http://github.com/JHoerbst/InnoTune/commit/%H\"> view commit &bull;</a> %x09%ad: %s</li> ' | head -n 5");
+                ?>
+                </ul>
+          </div>
+      </div>
     </div>
 </div>
 
