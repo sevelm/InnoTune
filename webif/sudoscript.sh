@@ -4,6 +4,9 @@
 # Config
 ##########################################################
 
+# set_vol)  # removes leading zeros from card out (Amp 08 and 09 wont work otherwise)
+#           card=$(echo $2 | sed 's/^0*//')
+#          amixer -c "$card" set "$3"_"$2" "$4"%; amixer -c "$card" set "$3"li_"$2" "$4"%; amixer -c "$card" set "$3"re_"$2" "$4"%;;
 
 case "$1" in
      store_settings) cd /opt/innotune/settings/
@@ -53,6 +56,9 @@ case "$1" in
      usbmount) sudo sed -i 's/^\(ENABLED\).*/\1'="$2"'/'  /etc/usbmount/usbmount.conf;;
      networkmount) echo $(/var/www/mountnetwork.sh "$2" "$3" "$4" "$5" "$6");;
      removenetworkmount) /var/www/unmountnetwork.sh "$2" "$3" "$4" "$5";;
+     itunesmount) sudo /var/www/itunesmnt.sh "$2" "$3" "$4";;
+     itunesrefresh) sudo /var/www/itunesrefresh.sh;;
+     itunesunmount) sudo /var/www/itunesumnt.sh;;
      reset) OUTPUT="$(/var/www/reset.sh "$2")"
             echo "${OUTPUT}";;
     *) echo "ERROR: invalid parameter: $1 (for $0)"; exit 1 ;;

@@ -30,6 +30,8 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         playlists: false
     };
     $scope.shairinstances = 0;
+    $scope.editMacs = false;
+    $scope.ituneslib = {};
 
 
     $scope.formatId = function (id) {
@@ -305,9 +307,83 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                     }
                 }
             }
+            $scope.selectDeviceDefaultValues();
         }
     };
 
+    $scope.restoreDefault = function() {
+      $scope.editMacs = false;
+      var id = $scope.formatId($scope.selectedDevice.id);
+      if ($scope.selectedDevice.betrieb == 'normalbetrieb') {
+        $scope.selectedDevice.name = "InnoAmp " + id;
+        $scope.selectedDevice.nameL = "";
+        $scope.selectedDevice.nameR = "";
+        $scope.selectedDevice.mac = "00:00:00:00:00:" + id;
+        $scope.selectedDevice.macL = "";
+        $scope.selectedDevice.macR = "";
+      } else if ($scope.selectedDevice.betrieb == 'geteilterbetrieb') {
+        $scope.selectedDevice.name = "";
+        $scope.selectedDevice.nameL = "InnoAmp " + id + " Links";
+        $scope.selectedDevice.nameR = "InnoAmp " + id + " Rechts";
+        $scope.selectedDevice.mac = "";
+        $scope.selectedDevice.macL = "00:00:00:00:01:" + id;
+        $scope.selectedDevice.macR = "00:00:00:00:02:" + id;
+      } else {
+        $scope.selectedDevice.name = "";
+        $scope.selectedDevice.nameL = "";
+        $scope.selectedDevice.nameR = "";
+        $scope.selectedDevice.mac = "";
+        $scope.selectedDevice.macL = "";
+        $scope.selectedDevice.macR = "";
+      }
+      $scope.selectedDevice.changed = true;
+    };
+
+    $scope.selectDeviceDefaultValues = function() {
+      $scope.editMacs = false;
+      if ($scope.selectedDevice != null) {
+        var id = $scope.formatId($scope.selectedDevice.id);
+        if ($scope.selectedDevice.betrieb == 'normalbetrieb') {
+            if(!$scope.selectedDevice.name) {
+              $scope.selectedDevice.name = "InnoAmp " + id;
+              $scope.selectedDevice.changed = true;
+            }
+            if (!$scope.selectedDevice.mac) {
+              $scope.selectedDevice.mac = "00:00:00:00:00:" + id;
+              $scope.selectedDevice.changed = true;
+            } else {
+              if ($scope.selectedDevice.mac !== "00:00:00:00:00:" + id) {
+                $scope.editMacs = true;
+              }
+            }
+        } else if ($scope.selectedDevice.betrieb == 'geteilterbetrieb') {
+            if(!$scope.selectedDevice.nameL) {
+              $scope.selectedDevice.nameL = "InnoAmp " + id + " Links";
+              $scope.selectedDevice.changed = true;
+            }
+            if(!$scope.selectedDevice.nameR) {
+              $scope.selectedDevice.nameR = "InnoAmp " + id + " Rechts";
+              $scope.selectedDevice.changed = true;
+            }
+            if (!$scope.selectedDevice.macL) {
+              $scope.selectedDevice.macL = "00:00:00:00:01:" + id;
+              $scope.selectedDevice.changed = true;
+            } else {
+              if ($scope.selectedDevice.macL !== "00:00:00:00:01:" + id) {
+                $scope.editMacs = true;
+              }
+            }
+            if (!$scope.selectedDevice.macR) {
+              $scope.selectedDevice.macR = "00:00:00:00:02:" + id;
+              $scope.selectedDevice.changed = true;
+            } else {
+              if ($scope.selectedDevice.macR !== "00:00:00:00:02:" + id) {
+                $scope.editMacs = true;
+              }
+            }
+        }
+      }
+    };
     /**
      * Changes the Volume in the devices variable and sends it to the server.
      * @param {string} player chooses the player to change volume.
@@ -1333,6 +1409,43 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         }, function () {
 
         });
+    };
+
+    $scope.saveItunes = function() {
+      document.getElementById("loadingsymbol").style.display = "block";
+      $http.get('api/helper.php?saveitunesmount' +
+                '&path=' + $scope.ituneslib.path +
+                '&user=' + $scope.ituneslib.user +
+                '&pass=' + $scope.ituneslib.password)
+                .success(function (data) {
+                    document.getElementById("loadingsymbol").style.display = "none";
+                    if(data.includes("error")) {
+                      var error = $mdDialog.confirm()
+                          .title('Fehler!')
+                          .textContent('Bei der Einbindung von iTunes ist ein Fehler aufgetreten!' +
+                            ' Vergewissern Sie sich ob Ihre Daten korrekt sind. Error: ' + data)
+                          .ariaLabel('Fehler')
+                          .targetEvent()
+                          .ok('OK');
+                      $mdDialog.show(error);
+                    }
+                });
+    };
+
+    $scope.refreshItunes = function() {
+      document.getElementById("loadingsymbol").style.display = "block";
+      $http.get('api/helper.php?refreshitunes')
+          .success(function(data) {
+            document.getElementById("loadingsymbol").style.display = "none";
+          });
+    };
+
+    $scope.deleteItunes = function() {
+      document.getElementById("loadingsymbol").style.display = "block";
+      $http.get('api/helper.php?removeitunesmount')
+          .success(function(data) {
+            document.getElementById("loadingsymbol").style.display = "none";
+          });
     };
 
 

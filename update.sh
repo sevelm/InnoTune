@@ -229,3 +229,8 @@ fi
 
 cp /opt/innotune/update/cache/InnoTune/wpa_supplicant.conf /opt/innotune/settings/test_wpa.conf
 sudo chmod 777 /opt/innotune/settings/test_wpa.conf
+
+sudo mkdir /opt/itunesshare
+sudo chmod 777 /opt/itunesshare
+sudo touch /opt/ituneslogin
+sudo chmod 644 /opt/ituneslogin

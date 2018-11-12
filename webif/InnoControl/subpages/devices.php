@@ -67,7 +67,7 @@ if ($pos1 == 1) {
             <div class="mdl-grid">
                 <h5 class="mdl-cell--3-col">Modus:&nbsp;</h5>
                 <md-select placeholder="{{selectedDevice.betrieb}}" ng-model="selectedDevice.betrieb"
-                           ng-change="setAudioConfiguration()"
+                           ng-change="setAudioConfiguration();selectDeviceDefaultValues();"
                            class="mdl-cell--5-col md-no-underline" style="color: #545454">
                     <md-option value="deaktiviert">Deaktiviert</md-option>
                     <md-option value="normalbetrieb">Normalbetrieb</md-option>
@@ -94,11 +94,18 @@ if ($pos1 == 1) {
                     <md-input-container class="md-block mdl-cell">
                         <input placeholder="00:00:00:00:00:xx" aria-label="mac" name="mac"
                                pattern="([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
-                               ng-model="selectedDevice.mac"  ng-change="selectedDevice.changed=true">
+                               ng-model="selectedDevice.mac"  ng-change="selectedDevice.changed=true"
+                               ng-disabled="!editMacs">
                     </md-input-container>
                     <div class="md-block mdl-cell">
                         <p>Mac Beispiel: 00:00:00:00:00:xx</p>
                     </div>
+                </div>
+                <div class="mdl-grid">
+                  <md-checkbox ng-model="editMacs"
+                    aria-label="Benutzerdefinierte Mac-Adresse">
+                    Benutzerdefinierte Mac-Adresse
+                  </md-checkbox>
                 </div>
                 <div class="mdl-grid">
                     <h6 class="mdl-cell mdl-cell--5-col">Shairplay</h6>
@@ -133,14 +140,22 @@ if ($pos1 == 1) {
                     <md-input-container class="md-block mdl-cell">
                         <input placeholder="00:00:00:00:00:xx" aria-label="macL" name="mac"
                                pattern="([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
-                               ng-model="selectedDevice.macL" ng-change="selectedDevice.changed=true">
+                               ng-model="selectedDevice.macL" ng-change="selectedDevice.changed=true"
+                               ng-disabled="!editMacs">
                     </md-input-container>
                     <p class="mdl-cell mdl-cell--2-col">Mac Rechts</p>
                     <md-input-container class="md-block mdl-cell">
                         <input placeholder="00:00:00:00:00:xx" aria-label="macR" name="mac"
                                pattern="([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
-                               ng-model="selectedDevice.macR" ng-change="selectedDevice.changed=true">
+                               ng-model="selectedDevice.macR" ng-change="selectedDevice.changed=true"
+                               ng-disabled="!editMacs">
                     </md-input-container>
+                </div>
+                <div class="mdl-grid">
+                  <md-checkbox ng-model="editMacs"
+                    aria-label="Benutzerdefinierte Mac-Adresse">
+                    Benutzerdefinierte Mac-Adresse
+                  </md-checkbox>
                 </div>
                 <div class="mdl-grid">
                     <p class="mdl-cell mdl-cell--2-col">Shairplay Links</p>
@@ -208,6 +223,11 @@ if ($pos1 == 1) {
                 class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
             <i class="material-icons">link</i>
             <md-tooltip md-direction="bottom">Mit anderem Gerät koppeln</md-tooltip>
+        </button>
+        <button ng-if="selectedDevice" ng-click="restoreDefault()"
+                class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">settings_backup_restore</i>
+            <md-tooltip md-direction="bottom">Werte auf Standard zurücksetzen</md-tooltip>
         </button>
     </div>
 </div>

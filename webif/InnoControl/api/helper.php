@@ -692,6 +692,22 @@ if (isset($_GET['removenetworkmount'])) {
     shell_exec("sudo /var/www/sudoscript.sh removenetworkmount \"$MOUNTPOINT\" \"$PATH\" \"$TYPE\" \"$FSTAB\"");
 }
 
+if (isset($_GET['saveitunesmount'])) {
+    $PATH = trim($_GET["path"]);
+    $USER = trim($_GET["user"]);
+    $PASS = trim($_GET["pass"]);
+
+    echo shell_exec("sudo /var/www/sudoscript.sh itunesmount \"$PATH\" \"$USER\" \"$PASS\"");
+}
+
+if (isset($_GET['refreshitunes'])) {
+    shell_exec("sudo /var/www/sudoscript.sh itunesrefresh");
+}
+
+if (isset($_GET['removeitunesmount'])) {
+    shell_exec("sudo /var/www/sudoscript.sh itunesunmount");
+}
+
 /*class MyDB extends SQLite3
 {
     function __construct()

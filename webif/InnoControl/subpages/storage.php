@@ -63,7 +63,8 @@
             </md-input-container>-->
             <md-select placeholder="" ng-model="networkmount.mountpoint"
                        ng-change="networkmount.mountpoint"
-                       class="mdl-cell md-no-underline" style="color: #545454">
+                       class="mdl-cell md-no-underline" style="color: #545454"
+                       aria-label="mountpoint">
                 <md-option ng-repeat="dir in netdirs" value="{{dir}}">{{dir}}</md-option>
             </md-select>
             <p>zb.: <b>net0</b></p>
@@ -75,7 +76,8 @@
             </md-input-container>-->
             <md-select placeholder="" ng-model="networkmount.type"
                        ng-change="networkmount.type"
-                       class="mdl-cell md-no-underline" style="color: #545454">
+                       class="mdl-cell md-no-underline" style="color: #545454"
+                       aria-label="type">
                 <md-option ng-repeat="fstype in netfs" value="{{fstype}}">{{fstype}}</md-option>
             </md-select>
             <p>zb.: <b>cifs</b></p>
@@ -132,4 +134,49 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--top mdl-cell--6-col">
+  <div class="mdl-card__title">
+      <h2 class="mdl-card__title-text">iTunes Bibliothek</h2>
+  </div>
+  <div class="mdl-card__supporting-text">
+    <h5>Bibliothek einbinden:</h5>
+    <div class="mdl-grid">
+        <p class="mdl-cell mdl-cell--3-col">Pfad</p>
+        <md-input-container class="md-block mdl-cell settingsW">
+            <input style="color:gray" ng-model="ituneslib.path" aria-label="path" ng-pattern="urlPattern">
+        </md-input-container>
+        <p>zb.: <b>//192.168.0.240/Share</b></p>
+    </div>
+    <div class="mdl-grid">
+        <p class="mdl-cell mdl-cell--3-col">Benutzer</p>
+        <md-input-container class="md-block mdl-cell settingsW">
+            <input style="color:gray" ng-model="ituneslib.user" aria-label="user" type="text">
+        </md-input-container>
+    </div>
+    <div class="mdl-grid">
+        <p class="mdl-cell mdl-cell--3-col">Passwort</p>
+        <md-input-container class="md-block mdl-cell settingsW">
+            <input style="color:gray" ng-model="ituneslib.password" aria-label="password" type="password">
+        </md-input-container>
+    </div>
+  </div>
+  <div class="mdl-card__actions mdl-card--border">
+    <button ng-click='saveItunes()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" >
+        Speichern
+    </button>
+  </div>
+  <div class="mdl-card__menu">
+      <button ng-click="refreshItunes()"
+              class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+          <i class="material-icons">autorenew</i>
+          <md-tooltip md-direction="bottom">Aktualisieren</md-tooltip>
+      </button>
+      <button ng-click="deleteItunes()"
+              class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+          <i class="material-icons">delete</i>
+          <md-tooltip md-direction="bottom">Löschen</md-tooltip>
+      </button>
+  </div>
 </div>
