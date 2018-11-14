@@ -234,3 +234,8 @@ sudo mkdir /opt/itunesshare
 sudo chmod 777 /opt/itunesshare
 sudo touch /opt/ituneslogin
 sudo chmod 644 /opt/ituneslogin
+
+sudo touch /opt/innotune/settings/validate.txt
+sudo chmod 777 /opt/innotune/settings/validate.txt
+sudo touch /var/www/InnoControl/log/validate.log
+sudo chmod 777 /var/www/InnoControl/log/validate.log
