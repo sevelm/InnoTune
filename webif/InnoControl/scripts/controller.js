@@ -32,7 +32,60 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.shairinstances = 0;
     $scope.editMacs = false;
     $scope.ituneslib = {};
+    $scope.updateErrors = [];
 
+    $scope.getUpdateValidation = function() {
+        $http.get('api/helper.php?validateupdate')
+          .success(function (data) {
+            $scope.updateErrors = [];
+            var arr = data.split("\n");
+            arr.forEach(function (element) {
+              if (element.includes(";")) {
+                var elementData = element.split(";");
+                $scope.updateErrors.push({package: elementData[0], status: elementData[1]});
+              }
+            });
+          });
+    };
+
+    $scope.reinstallPackage = function(package) {
+        if (package.status === 'failed') {
+          document.getElementById('spinner' + package.package).style.removeProperty('display');
+            document.getElementById('button' + package.package).style.display = "none";
+          $http.get('api/helper.php?reinstall=' + package.package)
+            .success(function(data) {
+                if(data.includes('invalid or already installed')) {
+                  var confirm = $mdDialog.confirm()
+                      .title('Fehler')
+                      .textContent('Das Paket "' + package.package + '" ist ungültig.')
+                      .targetEvent()
+                      .ok('Ok')
+                  $mdDialog.show(confirm);
+                } else {
+                  if (data.includes(';installed')) {
+                    var index = $scope.updateErrors.indexOf(package);
+                    $scope.updateErrors[index] = {package: package.package, status: "installed"};
+                  } else {
+                    var confirm = $mdDialog.confirm()
+                        .title('Fehler')
+                        .textContent('Beim installieren des Pakets "' + package.package + '" ist ein Fehler aufgetreten.')
+                        .targetEvent()
+                        .ok('Ok')
+                    $mdDialog.show(confirm);
+                  }
+                }
+                document.getElementById('button' + package.package).style.removeProperty('display');
+                document.getElementById('spinner' + package.package).style.display = "none";
+            });
+        }
+    };
+
+    $scope.rebootAndValidate = function() {
+      $http.get('api/helper.php?revalidate')
+            .success(function() {
+              location.href = "scripts/reboot.php";
+            });
+    };
 
     $scope.formatId = function (id) {
         if (id != 10) {
@@ -1487,6 +1540,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
 
     //Interval für System Info
+    $scope.getUpdateValidation();
     $scope.getShairplayInstance();
     $interval($scope.getSysInfo, 4000);
     $interval($scope.getShairplayInstance, 10000);

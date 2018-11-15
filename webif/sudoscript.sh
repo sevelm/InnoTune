@@ -59,8 +59,10 @@ case "$1" in
      itunesmount) sudo /var/www/itunesmnt.sh "$2" "$3" "$4";;
      itunesrefresh) sudo /var/www/itunesrefresh.sh;;
      itunesunmount) sudo /var/www/itunesumnt.sh;;
-     reset) OUTPUT="$(/var/www/reset.sh "$2")"
-            echo "${OUTPUT}";;
+     reinstall) OUTPUT=$(sudo /var/www/reinstallPackage.sh "$2")
+                echo "${OUTPUT}";;
+     reset) OUTPUT=$(/var/www/reset.sh "$2")
+            echo "$OUTPUT";;
     *) echo "ERROR: invalid parameter: $1 (for $0)"; exit 1 ;;
 esac
 

@@ -3,7 +3,8 @@ validate=$(cat /opt/innotune/settings/validate.txt | head -n1 | tail -n1)
 if [ $validate == "1" ]; then
   > /var/www/InnoControl/log/validate.log
   declare -a packages=("php5.6-gd" "php5.6-curl" "libasound2-plugin-equal"
-                       "libasound2-dev" "shairport-sync")
+                       "libasound2-dev" "shairport-sync" "usbmount" "zip"
+                       "mpc" "bc" "cifs-utils")
 
   for package in "${packages[@]}"
   do

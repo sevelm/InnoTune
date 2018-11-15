@@ -88,10 +88,6 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
                style="right: 20%; color: red">
                 Der Server muss neu gestartet werden!
             </a>
-            <a href="/old"
-               class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-cell--hide-phone ">
-                Alte Konfigurationsseite
-            </a>
             <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="verticalmenu">
                 <i class="material-icons">more_vert</i>
             </button>
@@ -143,6 +139,14 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
             <a id="docsanchor" name="routeanchors" class="mdl-navigation__link" href="#docs"><i
                         class="mdl-color-text--blue-grey-400 material-icons"
                         role="presentation">system_update_alt</i>Dokumente</a>
+            <a id="updatesummaryanchor" name="routeanchors" class="mdl-navigation__link" href="#updatesummary"
+               ng-if="updateErrors.length > 0"
+               style="color:#ff362f">
+                <i class="mdl-color-text--blue-grey-400 material-icons"
+                   role="presentation"
+                   style="color:#ff362f !important">sync_problem</i>
+                Update-Fehler
+            </a>
             <div class="mdl-layout-spacer"></div>
             <a id="settingsanchor" name="routeanchors" class="mdl-navigation__link" href="#settings"><i
                         class="mdl-color-text--blue-grey-400 material-icons"

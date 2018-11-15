@@ -94,6 +94,16 @@ app.config(function ($routeProvider) {
                 }
             }
         })
+        .when("/updatesummary", {
+            templateUrl: "subpages/updatesummary.php",
+            resolve: {
+                return: function () {
+                    resetColor();
+                    document.getElementById("updatesummaryanchor").style.backgroundColor = "#263238";
+                    document.getElementById("location").innerHTML = "Update Zusammenfassung";
+                }
+            }
+        })
         .otherwise({
             templateUrl: "subpages/home.php",
             resolve: {

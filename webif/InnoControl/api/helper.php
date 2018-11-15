@@ -560,7 +560,8 @@ if (isset($_GET['setvoicersskey'])) {
 if (isset($_GET['getvoiceoutputvol'])) {
     $datei = "/opt/innotune/settings/voiceoutput/voiceoutputvol.txt"; // Name der Datei
     $array_config = file($datei); // Datei in ein Array einlesen
-    echo trim($array_config[0]) . ";" . trim($array_config[1]) . ";" . trim($array_config[2]) . ";" . trim($array_config[3]) . ";" . trim($array_config[4]) . ";" . trim($array_config[5]) . ";" . trim($array_config[6]) . ";" . trim($array_config[7]) . ";" . trim($array_config[8]) . ";" . trim($array_config[9]) . ";" . trim($array_config[10]);
+    echo trim($array_config[0]) . ";" . trim($array_config[1]) . ";" . trim($array_config[2]) . ";" . trim($array_config[3]) . ";" . trim($array_config[4]) . ";" . trim($array_config[5]) .
+    ";" . trim($array_config[6]) . ";" . trim($array_config[7]) . ";" . trim($array_config[8]) . ";" . trim($array_config[9]) . ";" . trim($array_config[10]);
 }
 if (isset($_GET['setvoiceoutputvol'])) {
     $file = file("/opt/innotune/settings/voiceoutput/voiceoutputvol.txt"); // Datei in ein Array einlesen
@@ -642,6 +643,19 @@ if (isset($_GET['updateKernel'])) {
 
 if (isset($_GET['updateBeta'])) {
     exec("sudo /var/www/sudoscript.sh updateBeta", $output, $return_var);
+}
+
+if (isset($_GET['validateupdate'])) {
+    echo shell_exec("cat /var/www/InnoControl/log/validate.log");
+}
+
+if (isset($_GET['revalidate'])) {
+    shell_exec("echo \"1\" > /opt/innotune/settings/validate.txt");
+}
+
+if (isset($_GET['reinstall'])) {
+    $package = $_GET['reinstall'];
+    echo shell_exec("sudo /var/www/sudoscript.sh reinstall \"$package\"");
 }
 
 if (isset($_GET['fixDependencies'])) {
