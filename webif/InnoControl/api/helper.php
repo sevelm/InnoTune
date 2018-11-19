@@ -658,6 +658,14 @@ if (isset($_GET['reinstall'])) {
     echo shell_exec("sudo /var/www/sudoscript.sh reinstall \"$package\"");
 }
 
+if (isset($_GET['reinstall_lms'])) {
+    shell_exec("sudo /var/www/sudoscript.sh reinstall_lms");
+}
+
+if (isset($_GET['lmslog'])) {
+    echo shell_exec("cat /var/log/squeezeboxserver/server.log");
+}
+
 if (isset($_GET['fixDependencies'])) {
     exec("sudo /var/www/sudoscript.sh fixDependencies", $output, $return_var);
 }

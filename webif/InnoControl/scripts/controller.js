@@ -33,6 +33,31 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.editMacs = false;
     $scope.ituneslib = {};
     $scope.updateErrors = [];
+    $scope.collapseRL = false;
+    $scope.collapseUL = false;
+    $scope.collapseLL = false;
+
+    $scope.setCollapseRL = function() {
+      $scope.collapseRL = !$scope.collapseRL;
+    }
+
+    $scope.setCollapseUL = function() {
+      $scope.collapseUL = !$scope.collapseUL;
+    }
+
+    $scope.setCollapseLL = function() {
+      $scope.collapseLL = !$scope.collapseLL;
+    }
+
+    $scope.reinstallLms = function() {
+      document.getElementById("loadingsymbol").style.display = "block";
+      $http.get('api/helper.php?reinstall_lms')
+            .success(function () {
+              $http.get('api/helper.php?update').success(function () {
+                  location.href = "/scripts/reboot.php?update=true"
+              });
+            });
+    };
 
     $scope.getUpdateValidation = function() {
         $http.get('api/helper.php?validateupdate')

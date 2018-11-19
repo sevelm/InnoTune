@@ -239,3 +239,5 @@ sudo touch /opt/innotune/settings/validate.txt
 sudo chmod 777 /opt/innotune/settings/validate.txt
 sudo touch /var/www/InnoControl/log/validate.log
 sudo chmod 777 /var/www/InnoControl/log/validate.log
+sudo touch /var/www/InnoControl/log/reinstall_lms.log
+sudo chmod 777 /var/www/InnoControl/log/reinstall_lms.log

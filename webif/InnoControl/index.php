@@ -140,12 +140,17 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
                         class="mdl-color-text--blue-grey-400 material-icons"
                         role="presentation">system_update_alt</i>Dokumente</a>
             <a id="updatesummaryanchor" name="routeanchors" class="mdl-navigation__link" href="#updatesummary"
-               ng-if="updateErrors.length > 0"
-               style="color:#ff362f">
+               ng-if="updateErrors.length > 0" style="color:#ff362f">
                 <i class="mdl-color-text--blue-grey-400 material-icons"
                    role="presentation"
-                   style="color:#ff362f !important">sync_problem</i>
-                Update-Fehler
+                   style="color:#ff362f !important">feedback</i>
+                Meldungen
+            </a>
+            <a id="updatesummaryanchor" name="routeanchors" class="mdl-navigation__link" href="#updatesummary"
+               ng-if="updateErrors.length == 0">
+                <i class="mdl-color-text--blue-grey-400 material-icons"
+                   role="presentation">feedback</i>
+                Meldungen
             </a>
             <div class="mdl-layout-spacer"></div>
             <a id="settingsanchor" name="routeanchors" class="mdl-navigation__link" href="#settings"><i

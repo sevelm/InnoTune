@@ -61,6 +61,7 @@ case "$1" in
      itunesunmount) sudo /var/www/itunesumnt.sh;;
      reinstall) OUTPUT=$(sudo /var/www/reinstallPackage.sh "$2")
                 echo "${OUTPUT}";;
+     reinstall_lms) sudo /var/www/reinstall_lms.sh > /var/www/InnoControl/log/reinstall_lms.log;;
      reset) OUTPUT=$(/var/www/reset.sh "$2")
             echo "$OUTPUT";;
     *) echo "ERROR: invalid parameter: $1 (for $0)"; exit 1 ;;

@@ -100,7 +100,7 @@ app.config(function ($routeProvider) {
                 return: function () {
                     resetColor();
                     document.getElementById("updatesummaryanchor").style.backgroundColor = "#263238";
-                    document.getElementById("location").innerHTML = "Update Zusammenfassung";
+                    document.getElementById("location").innerHTML = "Server Meldungen";
                 }
             }
         })
