@@ -64,6 +64,9 @@
             ng-click="reinstallLms()">
             Reinstall
     </button>
+    <button ng-click='resetLms()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" >
+        Reset LMS
+    </button>
     <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
        href="/log/reinstall_lms.log">
         Speichern

@@ -128,73 +128,48 @@ $beta = file($beta_datei);
   </div>
 </div>
 
-<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--6-col">
-    <div class="mdl-card__title">
-        <h2 class="mdl-card__title-text">Problembehandlung</h2>
-    </div>
-    <div class="mdl-card__supporting-text">
-      <b>Problem:</b><br>
-      Es werden keine Zonen bei Airplay angezeigt.<br>
-      Laufende Shairplay-Instanzen: {{shairinstances}}<br><br>
-      <b>Behandlung:</b><br>
-      Shaiplay mit "Fix-Shairplay"-Button nachinstallieren.
-      <br><br><br><br>
-      <b>Problem:</b><br>
-      Logitech Media Server fragt plötzlich nach einem Benutzer/Passwort.<br>
-      Ich habe die LMS Logindaten vergessen.<br><br>
-      <b>Behandlung:</b><br>
-      Einstellungen des Logitech Media Servers zurücksetzten mit "Reset LMS".<br>
-    </div>
-    <div class="mdl-card__actions mdl-card--border">
-      <button ng-click='fixDependencies()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" >
-          FIX SHAIRPLAY
-      </button>
-      <button ng-click='resetLms()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" >
-          RESET LMS
-      </button>
-    </div>
-</div>
+<div class="mdl-cell mdl-cell--6-col" style="margin: 0">
+  <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+      <div class="mdl-card__title">
+          <h2 class="mdl-card__title-text">Sicherung exportieren</h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+          <h5>Einstellungen auf PC Sichern</h5>
+          <br>
+      </div>
+      <div class="mdl-card__actions mdl-card--border">
+          <a href="/scripts/download.php?file=settings"
+             class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+              Sichern
+          </a>
+      </div>
+  </div>
+  <div ng-init="isfileuploaded()" class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+      <div class="mdl-card__title">
+          <h2 class="mdl-card__title-text">Sicherung importieren</h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+          <h5>Einstellung in InnoTune importieren.</h5>
+          Wichtig! Dateiname: <b>settings.zip</b>
+          <br/>
+          <br>
+          <div class="mdl-card__actions mdl-card--border">
+              <form enctype="multipart/form-data" action="scripts/upload.php?settings_upload" method="POST">
+                  <input type="hidden" name="MAX_FILE_SIZE" value="512000"/>
+                  <label class="mdl-button">
+                      <input name="userfile" id="userfile" type="file" accept="settings.zip" ng-click="settingsupload=1"/>
+                      Settings importieren
+                  </label>
+                  <span id="display-text"></span>
+                  <button id="settings_upload" type="submit" disabled name="settings_upload" value="Wiederherstellen"
+                          class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Wiederherstellen
+                  </button>
 
-<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--6-col">
-    <div class="mdl-card__title">
-        <h2 class="mdl-card__title-text">Sicherung exportieren</h2>
-    </div>
-    <div class="mdl-card__supporting-text">
-        <h5>Einstellungen auf PC Sichern</h5>
-        <br>
-    </div>
-    <div class="mdl-card__actions mdl-card--border">
-        <a href="/scripts/download.php?file=settings"
-           class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-            Sichern
-        </a>
-    </div>
-</div>
-<div ng-init="isfileuploaded()" class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--6-col">
-    <div class="mdl-card__title">
-        <h2 class="mdl-card__title-text">Sicherung importieren</h2>
-    </div>
-    <div class="mdl-card__supporting-text">
-        <h5>Einstellung in InnoTune importieren.</h5>
-        Wichtig! Dateiname: <b>settings.zip</b>
-        <br/>
-        <br>
-        <div class="mdl-card__actions mdl-card--border">
-            <form enctype="multipart/form-data" action="scripts/upload.php?settings_upload" method="POST">
-                <input type="hidden" name="MAX_FILE_SIZE" value="512000"/>
-                <label class="mdl-button">
-                    <input name="userfile" id="userfile" type="file" accept="settings.zip" ng-click="settingsupload=1"/>
-                    Settings importieren
-                </label>
-                <span id="display-text"></span>
-                <button id="settings_upload" type="submit" disabled name="settings_upload" value="Wiederherstellen"
-                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Wiederherstellen
-                </button>
+              </form>
+          </div>
 
-            </form>
-        </div>
-
-    </div>
+      </div>
+  </div>
 </div>
 
 <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--6-col">
