@@ -21,6 +21,22 @@ if (isset($_GET['lms_save'])) {
 if (isset($_GET['reset_lms'])) {
     echo exec("sudo /var/www/sudoscript.sh reset_lms");
 }
+
+if (isset($_GET['check_lms'])) {
+  $datei = "/opt/innotune/settings/logitechmediaserver.txt"; // Name der Datei
+  $array_lms = file($datei); // Datei in ein Array einlesen
+  // Zeile 1 >> checkbox LMS              $array_config[0]
+  if ($array_lms[0] == "1") {
+    $host = 'localhost';
+    if ($socket = @ fsockopen($host, 9000, $errno, $errstr, 30)) {
+      echo "ok";
+    } else {
+      echo 'error';
+    }
+  } else {
+    echo "ok";
+  }
+}
 // </editor-fold>
 
 //Lautstärke muss in einem externen file regeln zu sein da man sonst für die App sich einloggen müsste

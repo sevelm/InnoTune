@@ -42,7 +42,12 @@
     <h2 class="mdl-card__title-text">Logitech Media Server</h2>
   </div>
   <div class="mdl-card__supporting-text">
-    <h5>Status</h5>
+    <div ng-if="lmsstate == 'ok'">
+      <h5>Status</h5>
+    </div>
+    <div ng-if="lmsstate != 'ok'">
+      <h5 style="color:#ff362f">Status</h5>
+    </div>
     <?php
     $host = 'localhost';
     if ($socket = @ fsockopen($host, 9000, $errno, $errstr, 30)) {

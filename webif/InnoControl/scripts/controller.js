@@ -33,6 +33,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.editMacs = false;
     $scope.ituneslib = {};
     $scope.updateErrors = [];
+    $scope.lmsstate;
     $scope.collapseRL = false;
     $scope.collapseUL = false;
     $scope.collapseLL = false;
@@ -103,6 +104,13 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                 document.getElementById('spinner' + package.package).style.display = "none";
             });
         }
+    };
+
+    $scope.checkLmsStatus = function() {
+      $http.get('api/helper.php?check_lms')
+          .success(function (data) {
+              $scope.lmsstate = data;
+          });
     };
 
     $scope.rebootAndValidate = function() {
@@ -1567,8 +1575,13 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     //Interval für System Info
     $scope.getUpdateValidation();
     $scope.getShairplayInstance();
+    // 4 sec
     $interval($scope.getSysInfo, 4000);
+    // 10 sec
     $interval($scope.getShairplayInstance, 10000);
+    // 60 sec
+    $scope.checkLmsStatus();
+    $interval($scope.checkLmsStatus, 60000);
     $scope.getDevices();
 });
 
