@@ -48,6 +48,7 @@ do
                                                         if [ $(echo "if ($timetoplay1 >= 7200.376459999084) 1 else 0" | bc) -eq 1 ] ## reboot every 2 hour
                                                         then
                                                         printf "$playerID power 0 \nexit\n" | nc $server $port
+                                                        sleep 1
                                                         printf "$playerID play \nexit\n" | nc $server $port
                                                         echo "$playername:restart">>/tmp/playercheck.log
                                                 fi
