@@ -211,15 +211,26 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
 
     $scope.toggleSelection = function toggleSelection(id) {
         var idx = $scope.LineInSelection.indexOf(id);
-
+        var isChecked = document.getElementById("checkbox" + id).checked;
         // Is currently selected
-        if (idx > -1) {
-            $scope.LineInSelection.splice(idx, 1);
-        }
-
-        // Is newly selected
-        else {
-            $scope.LineInSelection.push(id);
+        if (isChecked !== undefined) {
+            if (isChecked) {
+                if (idx == -1) {
+                    $scope.LineInSelection.push(id);
+                }
+            } else {
+                if (idx > -1) {
+                    $scope.LineInSelection.splice(idx, 1);
+                }
+            }
+        } else {
+            if (idx > -1) {
+                $scope.LineInSelection.splice(idx, 1);
+            }
+            // Is newly selected
+            else {
+                $scope.LineInSelection.push(id);
+            }
         }
     };
 
