@@ -86,7 +86,10 @@ if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
               echo 0 > /opt/innotune/settings/status_shairplay/status_shairplay"$i".txt           ### Airplay ablöschen
               echo 0 > /opt/innotune/settings/status_shairplay/status_shairplayli"$i".txt         ### Airplay ablöschen
               echo 0 > /opt/innotune/settings/status_shairplay/status_shairplayre"$i".txt         ### Airplay ablöschen
-              echo 0 > /opt/innotune/settings/status_line-in/line-in"$i".txt                      ### Line-In ablöschen
+              echo 0 > /opt/innotune/settings/status_line-in/line-in"$i".txt                      ### Line-In (stereo) ablöschen
+              echo 0 > /opt/innotune/settings/status_line-in/line-inre"$i".txt                    ### Line-In (mono rechts) ablöschen
+              echo 0 > /opt/innotune/settings/status_line-in/line-inli"$i".txt                    ### Line-In (mono links) ablöschen
+
 
               #aplay -f cd -D dmixer"$i" /dev/zero > /dev/null 2>&1 & echo $!                     ### Grundstille erzeugen
               amixer -c "$i" set PCM 100%       > /dev/null 2>&1                                  ### Lautstärke Setzen
