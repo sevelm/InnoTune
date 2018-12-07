@@ -9,13 +9,21 @@
 <div ng-repeat="playlist in playlists"  class="mdl-grid">
     <p class="mdl-cell mdl-cell--2-col">Playlist {{playlist.id+1}}:</p>
     <md-input-container style="height: 15px;" class="md-block mdl-cell mdl-cell--4-col">
-        <input placeholder="Name..." class="" ng-model="playlist.name" aria-label="playlist0{{p.id+1}}">
+        <input placeholder="Name..." class="" ng-model="playlist.name" ng-change="playlist.changed=true" aria-label="playlist0{{p.id+1}}">
     </md-input-container>
 
-    <button ng-click="savePlaylistName(playlist.id)" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-cell mdl-cell--1-col">
-        <i class="material-icons">save</i>
-        <md-tooltip md-direction="bottom">Speichern</md-tooltip>
-    </button>
+    <div ng-if="playlist.changed">
+        <button ng-click="savePlaylistName(playlist.id)" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-cell mdl-cell--1-col">
+            <i class="material-icons" style="color: rgb(255, 54, 47) !important">save</i>
+            <md-tooltip md-direction="bottom">Speichern</md-tooltip>
+        </button>
+    </div>
+    <div ng-if="!playlist.changed">
+        <button ng-click="savePlaylistName(playlist.id)" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-cell mdl-cell--1-col">
+            <i class="material-icons">save</i>
+            <md-tooltip md-direction="bottom">Speichern</md-tooltip>
+        </button>
+    </div>
     <button ng-click="deletePlaylist(playlist.id)" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-cell mdl-cell--1-col">
         <i class="material-icons">delete</i>
         <md-tooltip md-direction="bottom">Löschen</md-tooltip>

@@ -167,11 +167,13 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         for (let i = 0; i < $scope.devices.length; i++) {
             $http.get('api/helper.php?lineinstatus&dev=' + $scope.formatId($scope.devices[i].id))
                 .success(function (data) {
-                    if(data.indexOf(";") >=0){
-                        $scope.devices[i].lineinStatusre = data.substr(0,data.indexOf(";"));
-                        $scope.devices[i].lineinStatusli = data.substr(data.indexOf(";")+1);
-                    } else {
-                        $scope.devices[i].lineinStatus = data;
+                    if ($scope.devices[i] !== undefined) {
+                        if(data.indexOf(";") >=0){
+                            $scope.devices[i].lineinStatusre = data.substr(0,data.indexOf(";"));
+                            $scope.devices[i].lineinStatusli = data.substr(data.indexOf(";")+1);
+                        } else {
+                            $scope.devices[i].lineinStatus = data;
+                        }
                     }
                 });
         }
@@ -748,7 +750,20 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         $scope.playlists.splice(id, 1);
     };
 
+    $scope.sortDevicesList = function () {
+        $scope.devices.sort(function (a, b) {
+            if (a.id > b.id) {
+              return 1;
+            }
+            if (a.id < b.id) {
+              return -1;
+            }
+            return 0;
+        });
+    };
+
     $scope.savePlaylist = function (id) {
+        $scope.selectedPlaylist.volchanged = false;
         var volStr = "";
         for (var i = 0; i < 10; i++) {
             if ($scope.devices[i] != null && $scope.devices[i].betrieb == "geteilterbetrieb") {
@@ -771,12 +786,12 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
 
     $scope.savePlaylistName = function (id) {
+        $scope.playlists[id].changed = false;
         if ($scope.playlists[id].vol_background == undefined) {
             $http.get('api/helper.php?saveplaylist' +
                 '&ID=' + (id + 1) +
                 '&NAME=' + $scope.playlists[id].name +
                 '&VOL_BACKGROUND=-1')
-
                 .success(function (data) {
                     location.reload();
                 });
@@ -784,7 +799,6 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             $http.get('api/helper.php?saveplaylist' +
                 '&ID=' + (id + 1) +
                 '&NAME=' + $scope.playlists[id].name)
-
                 .success(function (data) {
                     location.reload();
                 });
@@ -1601,4 +1615,20 @@ if (!String.prototype.startsWith) {
         position = position || 0;
         return this.indexOf(searchString, position) === position;
     };
+}
+
+//polyfill string includes
+if (!String.prototype.includes) {
+  String.prototype.includes = function(search, start) {
+    'use strict';
+    if (typeof start !== 'number') {
+      start = 0;
+    }
+
+    if (start + search.length > this.length) {
+      return false;
+    } else {
+      return this.indexOf(search, start) !== -1;
+    }
+  };
 }

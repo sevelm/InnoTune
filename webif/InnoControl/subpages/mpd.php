@@ -56,7 +56,8 @@
                 <md-input-container class="md-block playlstvol mdl-cell--12-col">
                     <label id="background">Hintergrundmusik</label>
                     <input aria-label="background" type="number" step="any" name="background"
-                           ng-model="selectedPlaylist.vol_background" min="0" max="100">
+                           ng-model="selectedPlaylist.vol_background" min="0" max="100"
+                           ng-change="selectedPlaylist.volchanged=true">
                 </md-input-container>
             </div>
             <playlistvolume></playlistvolume>
@@ -85,10 +86,18 @@
         </div>
     </div>
     <div ng-if="selectedPlaylist" class="mdl-card__menu">
-        <button ng-click="savePlaylist(selectedPlaylist.id)"
-                class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-            <i class="material-icons">save</i>
-        </button>
+        <div ng-if="selectedPlaylist.volchanged">
+          <button ng-click="savePlaylist(selectedPlaylist.id)"
+                  class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+              <i class="material-icons" style="color: rgb(255, 54, 47) !important">save</i>
+          </button>
+        </div>
+        <div ng-if="!selectedPlaylist.volchanged">
+          <button ng-click="savePlaylist(selectedPlaylist.id)"
+                  class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+              <i class="material-icons">save</i>
+          </button>
+        </div>
     </div>
 </div>
 

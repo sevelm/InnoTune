@@ -7,7 +7,10 @@ if ($pos1 == 1) {
     $tinkerboard = true;
 }
 ?>
-<div ng-repeat="vol in selectedPlaylist.vol_dev" ng-if="devices[vol.id]!=null" class="mdl-grid">
+<div ng-init="sortDevicesList()"
+     ng-repeat="vol in selectedPlaylist.vol_dev"
+     ng-if="devices[vol.id]!=null"
+     class="mdl-grid">
     <!-- Normalbetrieb-->
     <md-input-container ng-if="devices[vol.id].betrieb=='normalbetrieb'"
                         class="md-block playlstvol mdl-cell--12-col">
@@ -21,7 +24,7 @@ if ($pos1 == 1) {
         ?>
 
         <input aria-label="dev01" type="number" step="5" name="dev01"
-               ng-model="vol.volume" min="0" max="100">
+               ng-model="vol.volume" min="0" max="100" ng-change="selectedPlaylist.volchanged=true">
     </md-input-container>
 
     <!-- Deaktiviert -->
@@ -37,7 +40,8 @@ if ($pos1 == 1) {
         ?>
         <input disabled aria-label="dev01" type="number" step="5"
                name="dev01"
-               ng-model="vol.volume" min="0" max="100">
+               ng-model="vol.volume" min="0" max="100"
+               ng-change="selectedPlaylist.volchanged=true">
     </md-input-container>
 
     <!-- Geteilter Betrieb -->
@@ -53,7 +57,8 @@ if ($pos1 == 1) {
         ?>
         <input aria-label="dev01" type="number" step="5"
                name="dev01"
-               ng-model="vol.volumeL" min="0" max="100">
+               ng-model="vol.volumeL" min="0" max="100"
+               ng-change="selectedPlaylist.volchanged=true">
     </md-input-container>
     <md-input-container ng-if="devices[vol.id].betrieb=='geteilterbetrieb'"
                         class="md-block playlstvol mdl-cell--6-col">
@@ -67,6 +72,7 @@ if ($pos1 == 1) {
         ?>
         <input aria-label="dev01" type="number" step="5"
                name="dev01"
-               ng-model="vol.volumeR" min="0" max="100">
+               ng-model="vol.volumeR" min="0" max="100"
+               ng-change="selectedPlaylist.volchanged=true">
     </md-input-container>
 </div>
