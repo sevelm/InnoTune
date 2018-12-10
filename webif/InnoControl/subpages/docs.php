@@ -42,17 +42,17 @@ $beta = file($beta_datei);
     <div class="mdl-card__supporting-text">
         <div class="mdl-grid">
             <h5 class="mdl-cell mdl-cell--5-col">Loxone Musterprojekt Downloaden</h5>
-            <a style="border-radius: 0;" href="/scripts/download.php?file=loxone"
+            <a style="border-radius: 0;" href="http://www.innotune.at/download" target="_blank"
                class="mdl-button mdl-button--primary mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-cell mdl-cell--2-col">Download</a>
         </div>
         <div class="mdl-grid">
             <h5 class="mdl-cell mdl-cell--5-col">Virtuelle Ausgänge</h5>
-            <a style="border-radius: 0;" href="/scripts/download.php?file=virtuelle_ausgaenge"
+            <a style="border-radius: 0;" href="http://www.innotune.at/download" target="_blank"
                class="mdl-button mdl-button--primary mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-cell mdl-cell--2-col">Download</a>
         </div>
         <div class="mdl-grid">
             <h5 class="mdl-cell mdl-cell--5-col">InnoTune-Loxone Integrator</h5>
-            <a style="border-radius: 0;" href="http://www.innotune.at/download"
+            <a style="border-radius: 0;" href="http://www.innotune.at/download" target="_blank"
                class="mdl-button mdl-button--primary mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-cell mdl-cell--2-col">Download</a>
         </div>
     </div>
