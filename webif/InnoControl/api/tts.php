@@ -15,14 +15,11 @@ for ($i = 1; $i < 10; $i++) {
         } else {
             $squeezevol = intval(exec("echo $(printf \"00:00:00:00:00:0$i mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
         }
-        if ($squeezevol <= 90 && $squeezevol > 0) {
-            $squeezevol = $squeezevol + 10;
-        }
         $val = ceil((intval($zonemastervol[1])) * ($squeezevol) / 60);
-        if ($val < 50) {
-          $val = 50;
-        } else if ($val > 80) {
-            $val = 80;
+        if ($val < 0) {
+          $val = 0;
+        } else if ($val > 60) {
+            $val = 60;
         }
 
         $_GET["vol_0$i"] = $val;
