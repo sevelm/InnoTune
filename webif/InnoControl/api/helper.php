@@ -660,9 +660,14 @@ if (isset($_GET['logfile'])) {
 }
 
 if (isset($_GET['addradio'])) {
-    $radioId = $_GET['id'];
-    $radioData = $_GET['data'];
-    echo exec("sudo /var/www/sudoscript.sh addradio \"$radioId\" \"$radioData\"");
+    $id = $_GET['id'];
+    $name = $_GET['name'];
+    $type = $_GET['type'];
+    $image = $_GET['image'];
+    $url = $_GET['url'];
+
+    $data = "$id;$name;$type;$image;$url";
+    echo shell_exec("sudo /var/www/sudoscript.sh addradio \"$name\" \"$data\"");
 }
 
 if (isset($_GET['radiohistory'])) {
