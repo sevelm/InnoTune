@@ -338,25 +338,6 @@ if (isset($_GET['playlists'])) {
     for ($i = 0; $i < (count($playlists) / 12); $i++) {
         echo trim($playlists[$i * 12]) . ";";
     }
-
-    //.csv
-    /*$row = 1;
-    if (($handle = fopen("/opt/innotune/settings/volmpdplay.csv", "r")) !== FALSE) {
-        while (($data = fgetcsv($handle, 100, ";")) !== FALSE) {
-            $num = count($data);
-            $row++;
-            echo $data[0] . ";";
-        }
-        fclose($handle);
-    }*/
-
-    /*$db = new MyDB();
-    $results = $db->query('SELECT ID,NAME FROM PLAYLISTS');
-    while ($row = $results->fetchArray()) {
-        echo $row['ID'] . ";";
-        echo $row['NAME'] . ";";
-    }
-    $db->close();*/
 }
 
 if (isset($_GET['getplaylist'])) {
@@ -368,43 +349,6 @@ if (isset($_GET['getplaylist'])) {
     for ($i = $PLAYLISTID * 12; $i < (($PLAYLISTID * 12) + 11); $i++) {
         echo trim($playlists[$i + 1]) . ";";
     }
-
-
-    //.csv File
-    /*$row = 0;
-    if (($handle = fopen("/opt/innotune/settings/volmpdplay.csv", "r")) !== FALSE) {
-        while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
-            $num = count($data);
-            if ($row == $PLAYLISTID) {
-                for ($c = 1; $c < $num; $c++) {
-                    echo $data[$c] . ";";
-                }
-            }
-            $row++;
-
-        }
-        fclose($handle);
-    }*/
-
-    //SQL
-    /*
-    $db = new MyDB();
-    $results = $db->query("SELECT * FROM PLAYLISTS WHERE ID = $PLAYLISTID");
-    while ($row = $results->fetchArray()) {
-        echo $row['VOL_BACKGROUND'] . ";";
-        echo $row['VOL_01'] . ";";
-        echo $row['VOL_02'] . ";";
-        echo $row['VOL_03'] . ";";
-        echo $row['VOL_04'] . ";";
-        echo $row['VOL_05'] . ";";
-        echo $row['VOL_06'] . ";";
-        echo $row['VOL_07'] . ";";
-        echo $row['VOL_08'] . ";";
-        echo $row['VOL_09'] . ";";
-        echo $row['VOL_10'] . ";";
-    }
-    $db->close();
-*/
 }
 
 if (isset($_GET['deleteplaylist'])) {
@@ -425,21 +369,6 @@ if (isset($_GET['deleteplaylist'])) {
     array_splice($file, $PLAYLISTID + 11, 1, "");
     $string = implode("", $file);
     file_put_contents("/opt/innotune/settings/mpdvolplay.txt", $string);
-    /*$file = file("/opt/innotune/settings/mpdvolplay.txt"); // Datei in ein Array einlesen
-    $db = new MyDB();
-    $PLAYLISTID = $_GET["ID"];
-    $ID = intval($PLAYLISTID);
-
-    if (!$db) {
-        echo $db->lastErrorMsg();
-    } else {
-        $query = "DELETE FROM PLAYLISTS WHERE ID=$ID; DELETE FROM SQLITE_SEQUENCE WHERE NAME = 'PLAYLISTS' ";
-echo $query;
-        $update = $db->exec($query);
-    }
-    $db->close();*/
-
-
 }
 
 if (isset($_GET['saveplaylist'])) {
@@ -489,48 +418,6 @@ if (isset($_GET['saveplaylist'])) {
     }
     $string = implode("", $file);
     file_put_contents("/opt/innotune/settings/mpdvolplay.txt", $string);
-
-    /*$db = new MyDB();
-    $ID = intval($PLAYLISTID);
-
-    if (!$db) {
-        echo $db->lastErrorMsg();
-    } else {
-        if ($_GET["NAME"] != null) {
-            $NAME = $_GET["NAME"];
-
-            $query = "INSERT OR REPLACE
-                    INTO
-                      PLAYLISTS (id, NAME)
-                    VALUES
-                      ($ID, '$NAME')";
-
-            $update = $db->exec($query);
-            if ($VOL_BACKGROUND == "-1") {
-                $query = "UPDATE PLAYLISTS set VOL_BACKGROUND = 0 WHERE ID = $ID";
-
-                $count = $db->exec($query);
-            }
-        } else {
-            $query = "UPDATE PLAYLISTS set VOL_BACKGROUND = '$VOL_BACKGROUND',
-                          VOL_01 = '$VOL_DEV01',
-                          VOL_02 = '$VOL_DEV02',
-                          VOL_03 = '$VOL_DEV03',
-                          VOL_04 = '$VOL_DEV04',
-                          VOL_05 = '$VOL_DEV05',
-                          VOL_06 = '$VOL_DEV06',
-                          VOL_07 = '$VOL_DEV07',
-                          VOL_08 = '$VOL_DEV08',
-                          VOL_09 = '$VOL_DEV09',
-                          VOL_10 = '$VOL_DEV10' WHERE ID = $ID";
-
-            echo $query;
-
-            $count = $db->exec($query);
-        }
-    }
-
-    $db->close();*/
 }
 
 //Button Start Playlist
@@ -746,45 +633,13 @@ if (isset($_GET['removeitunesmount'])) {
     shell_exec("sudo /var/www/sudoscript.sh itunesunmount");
 }
 
-/*class MyDB extends SQLite3
-{
-    function __construct()
-    {
-        $this->open('test.db');
-    }
-}*/
-/*if (isset($_GET['sqlite'])) {
-    $sql = <<<EOF
-    DROP TABLE PLAYLISTS;
-      CREATE TABLE PLAYLISTS
-      (ID INTEGER PRIMARY KEY ,
-      NAME           TEXT    NOT NULL,
-      VOL_BACKGROUND TEXT  ,
-      VOL_01        TEXT,
-      VOL_02        TEXT,
-      VOL_03        TEXT,
-      VOL_04        TEXT,
-      VOL_05        TEXT,
-      VOL_06        TEXT,
-      VOL_07        TEXT,
-      VOL_08        TEXT,
-      VOL_09        TEXT,
-      VOL_10        TEXT);
-EOF;
+if (isset($_GET['checkpulseaudio'])) {
+    echo shell_exec("sudo /var/www/sudoscript.sh checkpa");
+}
 
-    $db = new MyDB();
-
-    $ret = $db->exec($sql);
-    if (!$ret) {
-        echo $db->lastErrorMsg();
-    } else {
-        echo "Table created successfully\n";
-    }
-    $db->close();
-
-
-}*/
-
+if (isset($_GET['removepulseaudio'])) {
+    echo shell_exec("sudo /var/www/sudoscript.sh removepa");
+}
 
 /* PHP-Methods for iOS InnoPlay */
 if (isset($_GET['getversion'])) {
@@ -802,5 +657,15 @@ if (isset($_GET['logfile'])) {
     header("Content-Transfer-Encoding: Binary");
     header("Content-disposition: attachment; filename=\"" . basename($filepath) . "\"");
     readfile($filepath);
+}
+
+if (isset($_GET['addradio'])) {
+    $radioId = $_GET['id'];
+    $radioData = $_GET['data'];
+    echo exec("sudo /var/www/sudoscript.sh addradio \"$radioId\" \"$radioData\"");
+}
+
+if (isset($_GET['radiohistory'])) {
+    echo file_get_contents("/opt/innotune/settings/history.txt");
 }
 ?>

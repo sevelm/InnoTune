@@ -21,6 +21,9 @@ killall playmonitor
 #Set apt repository to xenial (important for odroid updates)
 sudo cp /opt/innotune/update/cache/InnoTune/sources.list /etc/apt/sources.list
 
+#remove pulseaudio (pa may cause conflicts)
+sudo apt-get -y purge pulseaudio
+
 sudo apt-get -y update
 
 # Settings Ordner

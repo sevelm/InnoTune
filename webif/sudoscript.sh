@@ -59,6 +59,11 @@ case "$1" in
      itunesmount) sudo /var/www/itunesmnt.sh "$2" "$3" "$4";;
      itunesrefresh) sudo /var/www/itunesrefresh.sh;;
      itunesunmount) sudo /var/www/itunesumnt.sh;;
+     checkpa) out=$(ps cax | grep pulseaudio | wc -l)
+              out2=$(dpkg-query -W -f='${Status}\n' pulseaudio | cut -d ' ' -f 3)
+              echo "$out;$out2";;
+     removepa) sudo apt-get -y purge pulseaudio;;
+     addradio) sudo /var/www/radiohistory.sh "$2" "$3";;
      reinstall) OUTPUT=$(sudo /var/www/reinstallPackage.sh "$2")
                 echo "${OUTPUT}";;
      reinstall_lms) sudo /var/www/reinstall_lms.sh > /var/www/InnoControl/log/reinstall_lms.log;;

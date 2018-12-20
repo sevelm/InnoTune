@@ -37,6 +37,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.collapseRL = false;
     $scope.collapseUL = false;
     $scope.collapseLL = false;
+    $scope.pastatus = {installed: 'unknown', running: 'unknown'};
 
     $scope.setCollapseRL = function() {
       $scope.collapseRL = !$scope.collapseRL;
@@ -48,6 +49,31 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
 
     $scope.setCollapseLL = function() {
       $scope.collapseLL = !$scope.collapseLL;
+    }
+
+    $scope.removePa = function() {
+      document.getElementById("loadingsymbol").style.display = "block";
+      $http.get('api/helper.php?removepulseaudio')
+            .success(function () {
+                location.href = "/scripts/reboot.php?update=true";
+            });
+    };
+
+    $scope.getPa = function() {
+      $http.get('api/helper.php?checkpulseaudio')
+            .success(function (data) {
+                var arr = data.split(';');
+                if (arr[0] == "0") {
+                  $scope.pastatus.running = 'Nein';
+                } else {
+                  $scope.pastatus.running = 'Ja';
+                }
+                if (arr[1] == "installed\n") {
+                  $scope.pastatus.installed = 'Ja';
+                } else {
+                  $scope.pastatus.installed = 'Nein';
+                }
+            });
     }
 
     $scope.reinstallLms = function() {
