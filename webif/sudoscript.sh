@@ -62,6 +62,10 @@ case "$1" in
      checkpa) out=$(ps cax | grep pulseaudio | wc -l)
               out2=$(dpkg-query -W -f='${Status}\n' pulseaudio | cut -d ' ' -f 3)
               echo "$out;$out2";;
+     logports) killall tcpdump
+               sudo /var/www/logports.sh "$2" &> /dev/null;;
+     checklogports) out=$(sudo ps cax | grep tcpdump | wc -l)
+                    echo "$out";;
      removepa) sudo apt-get -y purge pulseaudio;;
      addradio) sudo /var/www/radiohistory.sh "$2" "$3";;
      reinstall) OUTPUT=$(sudo /var/www/reinstallPackage.sh "$2")

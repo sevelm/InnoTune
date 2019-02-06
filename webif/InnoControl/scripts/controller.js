@@ -37,6 +37,8 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.collapseRL = false;
     $scope.collapseUL = false;
     $scope.collapseLL = false;
+    $scope.logports = false;
+    $scope.logportsRunning = false;
     $scope.pastatus = {installed: 'unknown', running: 'unknown'};
 
     $scope.setCollapseRL = function() {
@@ -50,6 +52,36 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.setCollapseLL = function() {
       $scope.collapseLL = !$scope.collapseLL;
     }
+
+    $scope.getLogPorts = function() {
+      $http.get('api/helper.php?getlogports')
+            .success(function (data) {
+              $scope.logports = data == "1";
+            });
+      $http.get('api/helper.php?checklogports')
+            .success(function (data) {
+              $scope.logportsRunning = data.replace("\n", "") != "0";
+            });
+    };
+
+    $scope.setLogPorts = function() {
+      var log = "1";
+      if ($scope.logports) {
+        log = "0";
+      }
+      $http.get('api/helper.php?setlogports=' + log)
+            .success(function (data) {
+              $scope.logports = !$scope.logports;
+              $http.get('api/helper.php?checklogports')
+                    .success(function (data) {
+                      $scope.logportsRunning = data.replace("\n", "") != "0";
+                    });
+            });
+    };
+
+    $scope.downloadPortLogs = function() {
+
+    };
 
     $scope.removePa = function() {
       document.getElementById("loadingsymbol").style.display = "block";
@@ -609,7 +641,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             .ok('Ok')
             .cancel('Abbrechen');
         $mdDialog.show(confirm).then(function () {
-            $http.get('api/helper.php?reset_usb_mapping')
+            $http.get('api/helper.php?reset_logs')
                 .success(function (data) {
                     location.href = "index.php#/docs";
                 });
@@ -1634,6 +1666,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.checkLmsStatus();
     $interval($scope.checkLmsStatus, 60000);
     $scope.getDevices();
+    $scope.getLogPorts();
 });
 
 if (!String.prototype.startsWith) {

@@ -31,6 +31,10 @@ cp -R /opt/innotune/update/cache/InnoTune/settings/* -n /opt/innotune/settings
 sudo mkdir /opt/innotune/settings/settings_player/eq
 sudo chmod -R 777 /opt/innotune/settings
 
+sudo touch /opt/innotune/settings/logports
+sudo chmod 777 /opt/innotune/settings/logports
+echo "0" > /opt/innotune/settings/logports
+
 # WebInterface Ordner
 cp -R /opt/innotune/update/cache/InnoTune/webif/* /var/www
 sudo chmod -R 777 /var/www
@@ -176,6 +180,11 @@ fi
 is_added=$(crontab -l | grep archivelogs.sh | wc -l)
 if [[ $is_added -eq 0 ]]; then
     crontab -l | { cat; echo "45 3 * * * /var/www/archivelogs.sh"; } | crontab -
+fi
+
+is_added=$(crontab -l | grep filesizechecker.sh | wc -l)
+if [[ $is_added -eq 0 ]]; then
+    crontab -l | { cat; echo "30 */1 * * * /var/www/filesizechecker.sh"; } | crontab -
 fi
 
 #InnoPlay Mobile

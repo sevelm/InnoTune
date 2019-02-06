@@ -116,6 +116,28 @@
       </button>
     </div>
   </div>
+
+  <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+    <div class="mdl-card__title">
+      <h2 class="mdl-card__title-text">TCP-Dump</h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+      TCP-Dump zeichnet die Pakete die zum Server gesenden werden auf.<br>
+      Damit kann besser analysiert werden welche Netzwerkkomponente Befehle zum Server sendet.<br><br>
+      Läuft: <span ng-if="logportsRunning == true">Ja</span>
+      <span ng-if="logportsRunning == false">Nein</span>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+      <button ng-click='setLogPorts()'
+              class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+          <span ng-if="logports == true">Stop</span>
+          <span ng-if="logports == false">Start</span>
+      </button>
+      <a href="/log/logports.tar.gz" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+          Download
+      </a>
+    </div>
+  </div>
 </div>
 
 <div class="mdl-cell mdl-cell--6-col">

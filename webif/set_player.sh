@@ -2,6 +2,7 @@
 
 if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
   #/var/www/checkpackages.sh > /dev/null 2>&1 &
+  /var/www/checklogports.sh > /dev/null 2>&1 &
   /var/www/validateupdate.sh > /dev/null 2>&1 &
   killall playmonitor
   /var/www/src/playmonitor > /dev/null 2>&1 &

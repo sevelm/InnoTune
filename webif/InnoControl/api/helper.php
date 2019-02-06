@@ -673,4 +673,18 @@ if (isset($_GET['addradio'])) {
 if (isset($_GET['radiohistory'])) {
     echo file_get_contents("/opt/innotune/settings/history.txt");
 }
+
+if (isset($_GET['getlogports'])) {
+  echo file_get_contents("/opt/innotune/settings/logports");
+}
+
+if (isset($_GET['setlogports'])) {
+  $var = $_GET['setlogports'];
+  file_put_contents("/opt/innotune/settings/logports", $var);
+  echo shell_exec("sudo /var/www/sudoscript.sh logports $var");
+}
+
+if (isset($_GET['checklogports'])) {
+  echo shell_exec("sudo /var/www/sudoscript.sh checklogports");
+}
 ?>
