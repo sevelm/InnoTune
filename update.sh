@@ -251,3 +251,6 @@ sudo touch /var/www/InnoControl/log/validate.log
 sudo chmod 777 /var/www/InnoControl/log/validate.log
 sudo touch /var/www/InnoControl/log/reinstall_lms.log
 sudo chmod 777 /var/www/InnoControl/log/reinstall_lms.log
+
+#update voice rss key
+echo "c8f843969ced443ba02e6e1efde33851" > /opt/innotune/settings/voiceoutput/voicersskey.txt
