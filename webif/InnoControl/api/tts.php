@@ -266,8 +266,8 @@ if (empty($pids)) {
           echo "suspicious string length: " . strlen($mp3) . "<br>";
           echo $mp3 . "<br>";
           $error = true;
-
-          file_put_contents("/media/Soundfiles/tts/error.txt", "Message: " . $mp3 . "\nParameter: " . $inlay);
+          file_put_contents("/media/Soundfiles/tts/error.txt",
+            "Timestamp: " . date("H:i:s d.m.Y") . "\nMessage: " . $mp3 . "\nParameter: " . $inlay);
         } else {
           file_put_contents($file, $mp3);
         }
@@ -279,7 +279,8 @@ if (empty($pids)) {
           echo "suspicious string length: " . strlen($mp3) . "<br>";
           echo $mp3 . "<br>";
           $error = true;
-          file_put_contents("/media/Soundfiles/tts/error.txt", "Message: " . $mp3 . "\nParameter: " . $inlay);
+          file_put_contents("/media/Soundfiles/tts/error.txt",
+            "Timestamp: " . date("H:i:s d.m.Y") . "\nMessage: " . $mp3 . "\nParameter: " . $inlay);
         } else {
           file_put_contents($file, $mp3);
         }
