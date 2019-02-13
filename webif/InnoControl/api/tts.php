@@ -258,26 +258,50 @@ if (empty($pids)) {
     $file = "/media/Soundfiles/tts/" . strtoupper($lang) . str_replace(" ", "_", $words_neu) . $speed . ".mp3";
     $file = str_replace("ä", "ae", $file);
 
+    $error = false;
     // Prüfen ob die MP3 Datei bereits vorhanden ist
     if (!file_exists($file)) {
         $mp3 = file_get_contents('http://api.voicerss.org/?' . $inlay); // HTTPS ist auch möglich
-        file_put_contents($file, $mp3);
+        if (strlen($mp3) < 100) {
+          echo "suspicious string length: " . strlen($mp3) . "<br>";
+          echo $mp3 . "<br>";
+          $error = true;
+
+          file_put_contents("/media/Soundfiles/tts/error.txt", "Message: " . $mp3 . "\nParameter: " . $inlay);
+        } else {
+          file_put_contents($file, $mp3);
+        }
+    } else {
+      if (filesize($file) < 100) {
+        echo "suspicious filesize: " . filesize($file) . " Bytes <br>";
+        $mp3 = file_get_contents('http://api.voicerss.org/?' . $inlay); // HTTPS ist auch möglich
+        if (strlen($mp3) < 100) {
+          echo "suspicious string length: " . strlen($mp3) . "<br>";
+          echo $mp3 . "<br>";
+          $error = true;
+          file_put_contents("/media/Soundfiles/tts/error.txt", "Message: " . $mp3 . "\nParameter: " . $inlay);
+        } else {
+          file_put_contents($file, $mp3);
+        }
+      }
     }
 
-    echo "Script Aufruf: /var/www/src/ttsvolplay " . strtoupper($lang) . str_replace(" ", "_", $words_neu) . $speed;
-    echo "<br>Speicherort: " . $file;
+    if (!$error) {
+      echo "Script Aufruf: /var/www/src/ttsvolplay " . strtoupper($lang) . str_replace(" ", "_", $words_neu) . $speed;
+      echo "<br>Speicherort: " . $file;
 
-    //Update MPD Library
-    exec("mpc update");
-    //Sleep
-    sleep(1);
+      //Update MPD Library
+      exec("mpc update");
+      //Sleep
+      sleep(1);
 
-    //Execute ttsvolplay
-    // Check ob der TTS-Request zur Warteschlange hinzugefügt werden soll
-    if (isset($_GET["noqueue"])) {
-        shell_exec("sudo /var/www/sudoscript.sh ttsvolplay " . strtoupper($lang) . str_replace(" ", "_", $words_neu) . $speed . " > /dev/null 2>/dev/null &");
-    } else {
-        shell_exec("sudo /var/www/sudoscript.sh ttsvolplay " . strtoupper($lang) . str_replace(" ", "_", $words_neu) . $speed);
+      //Execute ttsvolplay
+      // Check ob der TTS-Request zur Warteschlange hinzugefügt werden soll
+      if (isset($_GET["noqueue"])) {
+          shell_exec("sudo /var/www/sudoscript.sh ttsvolplay " . strtoupper($lang) . str_replace(" ", "_", $words_neu) . $speed . " > /dev/null 2>/dev/null &");
+      } else {
+          shell_exec("sudo /var/www/sudoscript.sh ttsvolplay " . strtoupper($lang) . str_replace(" ", "_", $words_neu) . $speed);
+      }
     }
 } else {
     echo "Fehler!";
