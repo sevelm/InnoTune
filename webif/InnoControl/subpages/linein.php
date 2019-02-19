@@ -239,32 +239,61 @@ if ($pos1 == 1) {
             <tr>
                 <td><b>Wiedergabe von Line-In Zone01 auf Zone02:</b></td>
                 <td style="padding:0 50px 0 50px;"></td>
-                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/linein.php?setlinein&card_in=01&card_out=02</td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/helper.php?setlinein&card_in=01&card_out=02</td>
             </tr>
             <tr>
                 <td><b>Wiedergabe von Line-In Zone01 auf Zone01:</b></td>
                 <td></td>
-                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/linein.php?setlinein&card_in=01&card_out=01</td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/helper.php?setlinein&card_in=01&card_out=01</td>
             </tr>
             <tr>
                 <td><b>Wiedergabe von Line-In Zone01 Stop:</b></td>
                 <td></td>
-                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/linein.php?setlinein&card_out=01</td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/helper.php?setlinein&card_out=01</td>
+            </tr>
+            <tr>
+                <td><b>Lautstärke von Line-In Zone01:</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/helper.php?setlinein&card_out=01&volume=V</td>
+            </tr>
+            <tr>
+                <td><b>Wiedergabe von Line-In Zone01 auf Zone2 Links:</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/helper.php?setlinein&card_in=01&card_out=02&mode=li</td>
+            </tr>
+            <tr>
+                <td><b>Wiedergabe von Line-In Zone01 auf Zone2 Rechts:</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/helper.php?setlinein&card_in=01&card_out=02&mode=re</td>
+            </tr>
+            <tr>
+                <td><b>Wiedergabe von Line-In Zone2 Links Stop:</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/helper.php?setlinein&card_out=02li</td>
+            </tr>
+            <tr>
+                <td><b>Wiedergabe von Line-In Zone2 Rechts Stop:</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/helper.php?setlinein&card_out=02re</td>
+            </tr>
+            <tr><td><br></td></tr>
+            <tr>
+                <td>Alte Befehle (können weiterhin benutzt werden)<td>
+            </tr>
+            <tr>
+                <td><b>Wiedergabe von Line-In Zone01 auf Zone02:</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/linein.php?card_in=01&card_out=02</td>
+            </tr>
+            <tr>
+                <td><b>Wiedergabe von Line-In Zone01 Stop:</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/linein.php?card_out=01</td>
             </tr>
             <tr>
                 <td><b>Lautstärke von Line-In Zone01:</b></td>
                 <td></td>
                 <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/linein.php?card_out=01&volume=V</td>
-            </tr>
-            <tr>
-                <td><b>Wiedergabe von Line-In Zone01 auf Zone2 Links:</b></td>
-                <td></td>
-                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/linein.php?setlinein&card_in=01&card_out=02&mode=li</td>
-            </tr>
-            <tr>
-                <td><b>Wiedergabe von Line-In Zone01 auf Zone2 Rechts:</b></td>
-                <td></td>
-                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/linein.php?setlinein&card_in=01&card_out=02&mode=re</td>
             </tr>
         </table>
     </div>
