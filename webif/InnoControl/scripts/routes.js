@@ -104,6 +104,16 @@ app.config(function ($routeProvider) {
                 }
             }
         })
+        .when("/knx", {
+            templateUrl: "subpages/knx.php",
+            resolve: {
+                return: function () {
+                    resetColor();
+                    document.getElementById("knxanchor").style.backgroundColor = "#263238";
+                    document.getElementById("location").innerHTML = "KNX-Schnittstelle";
+                }
+            }
+        })
         .otherwise({
             templateUrl: "subpages/home.php",
             resolve: {

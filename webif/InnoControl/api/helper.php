@@ -687,4 +687,47 @@ if (isset($_GET['setlogports'])) {
 if (isset($_GET['checklogports'])) {
   echo shell_exec("sudo /var/www/sudoscript.sh checklogports");
 }
+
+if (isset($_GET['startknx'])) {
+  echo shell_exec("sudo /var/www/sudoscript.sh runknx " . $_GET['startknx']);
+}
+
+if (isset($_GET['getknx'])) {
+  echo shell_exec("sudo /var/www/sudoscript.sh getknx");
+}
+
+if (isset($_GET['setknx'])) {
+  $address = $_GET['address'];
+  echo shell_exec("sudo /var/www/sudoscript.sh setknx \"$address\"");
+}
+
+if (isset($_GET['getknxcmds'])) {
+  echo file_get_contents("/opt/innotune/settings/knxcmd.txt");
+}
+
+if (isset($_GET['setknxcmd'])) {
+  $group = $_GET['group'];
+  $type = $_GET['type'];
+  $cmd = $_GET['cmd'];
+  $cmdoff = $_GET['cmdoff'];
+  echo shell_exec("sudo /var/www/sudoscript.sh setknxcmd \"$group\" \"$group|$type|$cmd|$cmdoff\"");
+}
+
+if (isset($_GET['deleteknxcmd'])) {
+  $group = $_GET['group'];
+  echo shell_exec("sudo /var/www/sudoscript.sh deleteknxcmd \"$group\"");
+}
+
+if (isset($_GET['checkknx'])) {
+    $installed = shell_exec("dpkg -s knxd | grep Status");
+    if (strpos($installed, "Status: install ok installed") !== false) {
+        echo "1";
+    } else {
+        echo "0";
+    }
+}
+
+if (isset($_GET['installknx'])) {
+    shell_exec("sudo /var/www/sudoscript.sh installknx");
+}
 ?>

@@ -29,6 +29,9 @@ if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
      START_PORT=11000
   fi
 
+  KNX=$(cat /opt/innotune/settings/knxrun.txt)
+  sudo /var/www/knxrun.sh $KNX
+
   for i in $(seq -f "%02g" 1 10)
   do
   	PORT_BASE=$(($START_PORT+10*${i#0}))

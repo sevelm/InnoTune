@@ -73,6 +73,17 @@ case "$1" in
      reinstall_lms) sudo /var/www/reinstall_lms.sh > /var/www/InnoControl/log/reinstall_lms.log;;
      reset) OUTPUT=$(/var/www/reset.sh "$2")
             echo "$OUTPUT";;
+     getknx) settings=$(cat /opt/innotune/settings/knx.txt)
+             running=$(cat /opt/innotune/settings/knxrun.txt)
+             current=$(ps cax | grep knx | wc -l)
+             echo "$settings;$running;$current";;
+     runknx) /var/www/knxrun.sh "$2" &> /dev/null;;
+     setknx) echo "$2" > /opt/innotune/settings/knx.txt
+             #edit knx address in /etc/knxd.conf
+             sed -i "/^KNXD_OPTS/c\KNXD_OPTS=\"-e $2 -E 1.1.245:1 -c -DTRS -b usb\"" /etc/knxd.conf;;
+     installknx) /var/www/knxinstaller.sh;;
+     setknxcmd) /var/www/knxeditcmd.sh "1" "$2" "$3";;
+     deleteknxcmd) /var/www/knxeditcmd.sh "0" "$2" "$3";;
     *) echo "ERROR: invalid parameter: $1 (for $0)"; exit 1 ;;
 esac
 

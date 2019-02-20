@@ -41,6 +41,137 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.logportsRunning = false;
     $scope.pastatus = {installed: 'unknown', running: 'unknown'};
 
+    $scope.knxcmds = [];
+    $scope.knxcmd = {
+        group: '',
+        type: 0,
+        cmd: '',
+        cmdoff: '',
+        changed: false
+    };
+    $scope.knx = {changed: false};
+    $scope.knxinstalled = false;
+    $scope.knxAddressPattern = /^(?:[0-9]{1,3}\.){2}[0-9]{1,3}$/;
+    $scope.knxGroupPattern = /^(?:[0-9]{1,3}\/){2}[0-9]{1,3}$/;
+
+    $scope.saveKnxSettings = function() {
+        $http.get('api/helper.php?setknx&address=' + $scope.knx.address)
+              .success(function () {
+                  $scope.knx.changed = false;
+              });
+    };
+
+    $scope.saveKnxCmd = function() {
+        if ($scope.knxcmd.type === '1') {
+            $scope.knxcmd.cmdoff = '';
+        }
+        $http.get('api/helper.php?setknxcmd&group=' + $scope.knxcmd.group +
+                    '&type=' + $scope.knxcmd.type +
+                    '&cmd=' + encodeURIComponent($scope.knxcmd.cmd) +
+                    '&cmdoff=' + encodeURIComponent($scope.knxcmd.cmdoff))
+              .success(function () {
+                  $scope.knxcmd = {
+                      group: '',
+                      type: 0,
+                      cmd: '',
+                      cmdoff: '',
+                      changed: false
+                  };
+                  $scope.getKnxCmds();
+              });
+    };
+
+    $scope.resetKnxCmd = function() {
+        $scope.knxcmd = {
+            group: '',
+            type: 0,
+            cmd: '',
+            cmdoff: '',
+            changed: false
+        };
+    };
+
+    $scope.editKnxCmd = function(cmd) {
+        $scope.knxcmd = {
+            group: cmd.group,
+            type: cmd.type,
+            cmd: cmd.cmd,
+            cmdoff: cmd.cmdoff,
+            changed: false
+        };
+    };
+
+    $scope.deleteKnxCmd = function(cmd) {
+        $http.get('api/helper.php?deleteknxcmd&group=' + cmd.group)
+              .success(function () {
+                $scope.getKnxCmds();
+              });
+    };
+
+    $scope.getKnxSettings = function() {
+        $http.get('api/helper.php?getknx')
+              .success(function (csv) {
+                var data = csv.split(';');
+                $scope.knx.address = data[0];
+                $scope.knx.running = data[1];
+                $scope.knx.current = data[2];
+              });
+    };
+
+    $scope.getKnxCmds = function() {
+        $http.get('api/helper.php?getknxcmds')
+              .success(function (csv) {
+                  var lines = csv.split('\n');
+                  $scope.knxcmds = [];
+                  lines.forEach(function (element) {
+                    if (element.includes("|")) {
+                      var data = element.split("|");
+                      $scope.knxcmds.push({
+                          group: data[0],
+                          type: data[1],
+                          cmd: data[2],
+                          cmdoff: data[3]
+                        });
+                    }
+                  });
+              });
+    };
+
+    $scope.restartKnx = function() {
+        $http.get('api/helper.php?startknx=1')
+              .success(function () {
+                  $scope.getKnxSettings();
+              });
+    };
+
+    $scope.stopKnx = function() {
+        $http.get('api/helper.php?startknx=0')
+              .success(function () {
+                  $scope.getKnxSettings();
+              });
+    };
+
+    $scope.checkKnx = function() {
+        $http.get('api/helper.php?checkknx')
+              .success(function (data) {
+                  console.log(data);
+                  if (data == "1") {
+                      $scope.knxinstalled = true;
+                  } else {
+                      $scope.knxinstalled = false;
+                  }
+              });
+    };
+
+    $scope.installKnx = function() {
+        document.getElementById("loadingsymbol").style.display = "block";
+        $http.get('api/helper.php?installknx')
+              .success(function () {
+                  $scope.checkKnx();
+                  document.getElementById("loadingsymbol").style.display = "none";
+              });
+    };
+
     $scope.setCollapseRL = function() {
       $scope.collapseRL = !$scope.collapseRL;
     }
