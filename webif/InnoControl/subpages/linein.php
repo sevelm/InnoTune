@@ -128,7 +128,7 @@ if ($pos1 == 1) {
                         }*/ ?>
                 <h5 class="mdl-cell mdl-cell--4-col" style="padding-top: 10px">Wiedergabe auf Gerät:</h5>
                 <ul class="demo-list-control mdl-list mdl-cell--4-col md-no-underline" style="padding: 0;margin: 0">
-                    <span ng-repeat="opt in devices">
+                    <span ng-repeat="opt in devices | orderBy : 'id'">
                         <!-- Normalbetrieb -->
                         <li class="mdl-list__item" ng-if="opt.betrieb=='normalbetrieb'">
                             <span class="mdl-list__item-primary-content">

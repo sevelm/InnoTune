@@ -377,29 +377,23 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
 
     $scope.playlinein = function (idIN) {
+        $scope.sortDevices();
         idIN = $scope.formatId(idIN);
         var idOUT = "";
         for (var i = 0; i < $scope.LineInSelection.length; i++) {
             if ($scope.LineInSelection[i].toString().indexOf("li") >= 0 || $scope.LineInSelection[i].toString().indexOf("re") >= 0) {
                 var idOUT = $scope.formatId($scope.LineInSelection[i].toString().match(/\d+/)[0]);
-                var lire = $scope.LineInSelection[i].toString().replace($scope.LineInSelection[i].toString().match(/\d+/)[0],'');
                 $http.get('api/helper.php?setlinein&card_in=' + idIN + '&card_out=' + idOUT + '&mode='+lire);
-                if(lire=="li"){
-                    $scope.devices[parseInt(idOUT)-1].lineinStatusli = idIN;
-
-                } else if(lire=="re"){
-                    $scope.devices[parseInt(idOUT)-1].lineinStatusre = idIN;
-                }
             } else {
                 idOUT = $scope.formatId($scope.LineInSelection[i]);
                 $http.get('api/helper.php?setlinein&card_in=' + idIN + '&card_out=' + idOUT);
-                $scope.devices[parseInt(idOUT)-1].lineinStatus = idIN;
             }
         }
-        $scope.selectedDevice.lineinStatus = idIN;
+        $interval($scope.getLineInStatus, 200, 1);
     };
 
     $scope.toggleSelection = function toggleSelection(id) {
+        $scope.sortDevices();
         var idx = $scope.LineInSelection.indexOf(id);
         var isChecked = document.getElementById("checkbox" + id).checked;
         // Is currently selected
@@ -425,25 +419,11 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
 
     $scope.stoplinein = function () {
+        $scope.sortDevices();
         for (var i = 0; i < $scope.LineInSelection.length; i++) {
             $http.get('api/helper.php?setlinein&card_out=' + $scope.formatId($scope.LineInSelection[i]));
-
-            var idOUT = $scope.formatId($scope.LineInSelection[i].toString().match(/\d+/)[0]);
-            var lire = $scope.LineInSelection[i].toString().replace($scope.LineInSelection[i].toString().match(/\d+/)[0],'');
-            if(lire != ""){
-                if(lire=="li"){
-                    $scope.devices[parseInt(idOUT)-1].lineinStatusli = null;
-
-                } else if(lire=="re") {
-                    $scope.devices[parseInt(idOUT)-1].lineinStatusre = null;
-                }
-            } else {
-                $scope.devices[parseInt(idOUT)-1].lineinStatus = null;
-            }
         }
-
-
-        $scope.selectedDevice.lineinStatus = null;
+        $interval($scope.getLineInStatus, 200, 2);
     };
 
     $scope.muteAmp = function (id) {
@@ -1341,6 +1321,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                 }
                             })(i);
                         }
+                    $scope.sortDevices();
                     });
             });
 
@@ -1353,6 +1334,14 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
 
             });
 
+    };
+
+    $scope.sortDevices = function() {
+        if ($scope.devices !== undefined) {
+            $scope.devices.sort(function(a, b) {
+                return a.id - b.id;
+            });
+        }
     };
 
     $scope.createDeviceTree = function (count, length) {

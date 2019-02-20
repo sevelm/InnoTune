@@ -7,7 +7,7 @@ if ($pos1 == 1) {
     $tinkerboard = true;
 }
 ?>
-<div class="mdl-grid" ng-repeat="dev in rssvoice.vol_dev">
+<div class="mdl-grid" ng-init="sortDevices()" ng-repeat="dev in rssvoice.vol_dev | orderBy : 'id'">
     <!-- Normalbetrieb -->
     <md-input-container ng-if="devices[dev.id].betrieb=='normalbetrieb'"
                         class="md-block playlstvol mdl-cell--12-col">
