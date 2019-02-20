@@ -33,7 +33,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.editMacs = false;
     $scope.ituneslib = {};
     $scope.updateErrors = [];
-    $scope.lmsstate;
+    $scope.lmsstate = "ok";
     $scope.collapseRL = false;
     $scope.collapseUL = false;
     $scope.collapseLL = false;
@@ -167,8 +167,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         document.getElementById("loadingsymbol").style.display = "block";
         $http.get('api/helper.php?installknx')
               .success(function () {
-                  $scope.checkKnx();
-                  document.getElementById("loadingsymbol").style.display = "none";
+                  location.href = "/scripts/reboot.php?update=true"
               });
     };
 
@@ -1793,9 +1792,8 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $interval($scope.getSysInfo, 4000);
     // 10 sec
     $interval($scope.getShairplayInstance, 10000);
-    // 60 sec
-    $scope.checkLmsStatus();
-    $interval($scope.checkLmsStatus, 60000);
+    // 30 sec
+    $interval($scope.checkLmsStatus, 30000);
     $scope.getDevices();
     $scope.getLogPorts();
 });
