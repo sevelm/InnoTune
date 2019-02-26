@@ -1,22 +1,5 @@
 #!/bin/bash
-
-##########################################################
-# 					Config
-# Shell Script zum Updaten des InnoTune-Systems
-# Source: https://github.com/JHoerbst/InnoTune.git
-##########################################################
-
-############Section: Update############
-
-# Killall
-killall shairport
-killall shairport-sync
-killall squeezelite-armv6hf
-killall squeezeboxserver
-killall mpd
-killall aplay
-killall librespot
-killall playmonitor
+echo "running update001"
 
 #Set apt repository to xenial (important for odroid updates)
 sudo cp /opt/innotune/update/cache/InnoTune/sources.list /etc/apt/sources.list
@@ -24,20 +7,9 @@ sudo cp /opt/innotune/update/cache/InnoTune/sources.list /etc/apt/sources.list
 #remove pulseaudio (pa may cause conflicts)
 sudo apt-get -y purge pulseaudio
 
-sudo apt-get -y update
-
-# Settings Ordner
-cp -R /opt/innotune/update/cache/InnoTune/settings/* -n /opt/innotune/settings
-sudo mkdir /opt/innotune/settings/settings_player/eq
-sudo chmod -R 777 /opt/innotune/settings
-
 sudo touch /opt/innotune/settings/logports
 sudo chmod 777 /opt/innotune/settings/logports
 echo "0" > /opt/innotune/settings/logports
-
-# WebInterface Ordner
-cp -R /opt/innotune/update/cache/InnoTune/webif/* /var/www
-sudo chmod -R 777 /var/www
 
 # ExPL Ordner
 sudo cp -R /opt/innotune/update/cache/InnoTune/ExPL /var/lib/squeezeboxserver/cache/InstalledPlugins/Plugins/
@@ -128,12 +100,6 @@ sudo chmod 777 /var/www/checkprocesses.log
 sudo mkdir /var/www/InnoControl/log
 sudo chmod 777 /var/www/InnoControl/log
 
-#sudo mkdir /var/log/innologs
-#sudo chmod 777 /var/log/innologs
-
-#sudo cp /opt/innotune/update/cache/InnoTune/fstab /etc/fstab
-#sudo cp /opt/innotune/update/cache/InnoTune/innolog /etc/logrotate.d/innolog
-
 sudo apt-get install -y libasound2-dev
 sudo apt-get install -y libasound2-plugin-equal
 
@@ -156,21 +122,6 @@ if [[ $is_added -eq 0 ]]; then
 fi
 
 #add script to cron if it isn't already added
-#is_added=$(crontab -l | grep check_soundcards.sh | wc -l)
-#if [[ $is_added -eq 0 ]]; then
-#    crontab -l | { cat; echo "*/15 * * * * /var/www/check_soundcards.sh"; } | crontab -
-#fi
-
-#add script to cron if it isn't already added
-#is_added=$(crontab -l | grep checklogsize.sh | wc -l)
-#if [[ $is_added -eq 0 ]]; then
-#    crontab -l | { cat; echo "* * * * * /var/www/checklogsize.sh"; } | crontab -
-#else
-#    crontab -l | grep -v "*/5 * * * * /var/www/checklogsize.sh" | crontab -
-#    crontab -l | { cat; echo "* * * * * /var/www/checklogsize.sh"; } | crontab -
-#fi
-
-#add script to cron if it isn't already added
 is_added=$(crontab -l | grep checkcputemp.sh | wc -l)
 if [[ $is_added -eq 0 ]]; then
     crontab -l | { cat; echo "*/15 * * * * /var/www/checkcputemp.sh"; } | crontab -
@@ -186,12 +137,6 @@ is_added=$(crontab -l | grep filesizechecker.sh | wc -l)
 if [[ $is_added -eq 0 ]]; then
     crontab -l | { cat; echo "30 */1 * * * /var/www/filesizechecker.sh"; } | crontab -
 fi
-
-#InnoPlay Mobile
-sudo git clone https://github.com/AElmecker/InnoPlayMobile.git /usr/share/squeezeboxserver/HTML/InnoPlayMobile
-sudo rm -r /usr/share/squeezeboxserver/HTML/m
-sudo cp -R /usr/share/squeezeboxserver/HTML/InnoPlayMobile/m /usr/share/squeezeboxserver/HTML/m
-sudo rm -r /usr/share/squeezeboxserver/HTML/InnoPlayMobile
 
 #Imagestream 4 Loxone
 #used php extensions
@@ -253,4 +198,4 @@ sudo touch /var/www/InnoControl/log/reinstall_lms.log
 sudo chmod 777 /var/www/InnoControl/log/reinstall_lms.log
 
 #update voice rss key
-echo "c8f843969ced443ba02e6e1efde33851" > /opt/innotune/settings/voiceoutput/voicersskey.txt
+printf %s "c8f843969ced443ba02e6e1efde33851" > /opt/innotune/settings/voiceoutput/voicersskey.txt
