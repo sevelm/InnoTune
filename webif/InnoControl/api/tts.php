@@ -203,6 +203,7 @@ $array_config = file($datei); // Datei in ein Array einlesen
 
 $key = $array_config[0];
 $q = "22khz_16bit_stereo"; // Andere Einstellungen siehe VoiceRSS Doku
+$c = "mp3";
 
 $gain = ($_GET["gain"]);
 $lang = ($_GET["lang"]);
@@ -251,7 +252,7 @@ if (empty($pids)) {
 
     // Parameter VoiceRSS
     $encodedwords = urlencode($words);
-    $inlay = "key=$key&hl=$lang&src=$encodedwords&f=$q&r=$speed"; // Variablen Key, Sprache, Text und Qualität definieren
+    $inlay = "key=$key&hl=$lang&src=$encodedwords&f=$q&r=$speed&c=$c"; // Variablen Key, Sprache, Text und Qualität definieren
     echo "Parameter VoiceRSS: <b>" . $inlay . "</b><br>";
 
     // Speicherort der MP3 Datei
