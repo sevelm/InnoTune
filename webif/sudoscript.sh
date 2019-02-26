@@ -15,6 +15,8 @@ case "$1" in
      restore_settings) unzip -o /var/www/upload_download/settings.zip -d /opt/innotune/settings
                                  sudo chmod -R 777 /opt/innotune/settings;;
      update) /var/www/update.sh;;
+     fullupdate) /var/www/update/full.sh;;
+     latestupdate) /var/www/update/latest.sh;;
      updateKernel) /var/www/kernel/update.sh;;
      updateBeta) /var/www/update.sh
                  /var/www/beta/update.sh;;
@@ -84,6 +86,8 @@ case "$1" in
      installknx) /var/www/knxinstaller.sh;;
      setknxcmd) /var/www/knxeditcmd.sh "1" "$2" "$3";;
      deleteknxcmd) /var/www/knxeditcmd.sh "0" "$2" "$3";;
+     deleteGeneratedTTS) sudo rm -r /media/Soundfiles/tts/*
+                         sudo mpc update;;
     *) echo "ERROR: invalid parameter: $1 (for $0)"; exit 1 ;;
 esac
 

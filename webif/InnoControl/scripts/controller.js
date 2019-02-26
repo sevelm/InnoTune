@@ -1577,6 +1577,47 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         });
     };
 
+    $scope.deleteGeneratedTTS = function () {
+        document.getElementById("loadingsymbol").style.display = "block";
+        $http.get('api/helper.php?deleteGeneratedTTS').success(function () {
+            document.getElementById("loadingsymbol").style.display = "none";
+        });
+    };
+
+    /*$scope.fullUpdate = function () {
+        var update = $mdDialog.confirm()
+            .title('Bist du sicher?')
+            .textContent('Es werden alle Updates erneut installiert! Der Server wird neu gestartet, dies kann mehrere Minuten dauern!.')
+            .ariaLabel('Update!')
+            .targetEvent()
+            .ok('Ok')
+            .cancel('Abbrechen');
+        $mdDialog.show(update).then(function () {
+            document.getElementById("loadingsymbol").style.display = "block";
+
+            $http.get('api/helper.php?fullupdate').success(function () {
+                location.href = "/scripts/reboot.php?update=true"
+            });
+        });
+    };
+
+    $scope.latestUpdate = function () {
+        var update = $mdDialog.confirm()
+            .title('Bist du sicher?')
+            .textContent('Es werden das letzte Update erneut installiert! Der Server wird neu gestartet, dies kann mehrere Minuten dauern!.')
+            .ariaLabel('Update!')
+            .targetEvent()
+            .ok('Ok')
+            .cancel('Abbrechen');
+        $mdDialog.show(update).then(function () {
+            document.getElementById("loadingsymbol").style.display = "block";
+
+            $http.get('api/helper.php?latestupdate').success(function () {
+                location.href = "/scripts/reboot.php?update=true"
+            });
+        });
+    };*/
+
     $scope.fixDependencies = function () {
         document.getElementById("loadingsymbol").style.display = "block";
         $http.get('api/helper.php?fixDependencies').success(function () {

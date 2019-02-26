@@ -540,6 +540,14 @@ if (isset($_GET['update'])) {
     exec("sudo /var/www/sudoscript.sh update", $output, $return_var);
 }
 
+if (isset($_GET['fullupdate'])) {
+    exec("sudo /var/www/sudoscript.sh fullupdate", $output, $return_var);
+}
+
+if (isset($_GET['latestupdate'])) {
+    exec("sudo /var/www/sudoscript.sh latestupdate", $output, $return_var);
+}
+
 if (isset($_GET['updateKernel'])) {
     exec("sudo /var/www/sudoscript.sh updateKernel", $output, $return_var);
 }
@@ -729,5 +737,9 @@ if (isset($_GET['checkknx'])) {
 
 if (isset($_GET['installknx'])) {
     shell_exec("sudo /var/www/sudoscript.sh installknx");
+}
+
+if (isset($_GET['deleteGeneratedTTS'])) {
+    shell_exec("sudo /var/www/sudoscript.sh deleteGeneratedTTS");
 }
 ?>
