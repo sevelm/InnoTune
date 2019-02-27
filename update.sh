@@ -190,7 +190,7 @@ grep -q -F "3 3 * * * sudo shutdown -r now" /var/spool/cron/crontabs/root || ech
 
 # install additional packages for raspberry_pi
 rasp=$(cat /etc/os-release | grep Raspbian | wc -l)
-if [ $rasp -ge 1 ]; then
+if [ $rasp -ge 1 ]; then
   sudo apt-get install -y libportaudio2
 fi
 
@@ -233,4 +233,4 @@ sudo touch /var/www/InnoControl/log/reinstall_lms.log
 sudo chmod 777 /var/www/InnoControl/log/reinstall_lms.log
 
 #update voice
-printf %s "c8f843969ced443ba02e6e1efde33851" > /opt/innotune/settings/voiceoutput/voicersskey.txt
+printf %s "a269cdea933c4994a8ce81916d748ef8" > /opt/innotune/settings/voiceoutput/voicersskey.txt
