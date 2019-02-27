@@ -21,7 +21,7 @@
         InnoTune nutzt den Dienst <b>VoiceRss.</b> Um diesen Dienst nutzen zu können braucht man einen API-Key.<br> <a
                 href="http://www.voicerss.org/personel/" target="_blank"> Hier anmelden</a>, Schlüssel kopierern und
         einfach in das Feld
-        einfügen. <br><br> InnoTune Key: <b>c8f843969ced443ba02e6e1efde33851</b>
+        einfügen. <br><br> InnoTune Key: <b>a269cdea933c4994a8ce81916d748ef8</b>
         <br><br>
         <md-input-container class="md-block mdl-cell">
             <label id="voicersskeylabel" for="voicerssinput" style="font-size: larger">VoiceRss-Key:</label>
