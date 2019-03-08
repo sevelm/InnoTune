@@ -39,33 +39,46 @@ fi
 if [ "$PID1" != "0" ] || [ "$PID2" != "0" ]; then
       kill $PID1 $PID2
       echo -e "0\n""0\n" > /opt/innotune/settings/status_line-in/line-in$modus$card_out.txt
-      amixer -c $card_out set MuteIfLineIn_$card_out 100%
-      amixer -c $card_out set MuteIfLineInli_$card_out 100%
-      amixer -c $card_out set MuteIfLineInre_$card_out 100%
+
+	  if [ "$modus" = "li" ]; then
+	  	amixer -c $card_out set MuteIfLineInli_$card_out 100%
+	  elif [ "$modus" = "re" ]; then
+	  	amixer -c $card_out set MuteIfLineInre_$card_out 100%
+	  else
+  		amixer -c $card_out set MuteIfLineIn_$card_out 100%
+      	amixer -c $card_out set MuteIfLineInli_$card_out 100%
+      	amixer -c $card_out set MuteIfLineInre_$card_out 100%
+	  fi
 fi
 
 
 # Line-In wiedergeben
 if [[ $card_in ]]; then
-	amixer -c $card_out set MuteIfLineIn_$card_out 1%
-	amixer -c $card_out set MuteIfLineInli_$card_out 1%
-	amixer -c $card_out set MuteIfLineInre_$card_out 1%
         if [ "$zone2" == "2" ]; then
-		modus=$4;
-		if [ "$modus" = "li" ]; then
-                	newPID1=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineInli$card_out > /dev/null 2>&1 & echo $!)
+			modus=$4;
+			if [ "$modus" = "li" ]; then
+				amixer -c $card_out set MuteIfLineInli_$card_out 1%
+	        	newPID1=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineInli$card_out > /dev/null 2>&1 & echo $!)
 	        	echo -e "$newPID1\n""$newPID2\n""$card_in\n" > /opt/innotune/settings/status_line-in/line-inli$card_out.txt
-		elif [ "$modus" == "re" ]; then
-                	newPID1=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineInre$card_out > /dev/null 2>&1 & echo $!)
-			echo -e "$newPID1\n""$newPID2\n""$card_in\n" > /opt/innotune/settings/status_line-in/line-inre$card_out.txt
-		else
-            		newPID1=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineInli$card_out > /dev/null 2>&1 & echo $!)
-            		newPID2=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineInre$card_out > /dev/null 2>&1 & echo $!)
-			echo -e "$newPID1\n""$newPID2\n""$card_in\n" > /opt/innotune/settings/status_line-in/line-in$card_out.txt
-		fi
+			elif [ "$modus" == "re" ]; then
+				amixer -c $card_out set MuteIfLineInre_$card_out 1%
+	        	newPID1=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineInre$card_out > /dev/null 2>&1 & echo $!)
+				echo -e "$newPID1\n""$newPID2\n""$card_in\n" > /opt/innotune/settings/status_line-in/line-inre$card_out.txt
+			else
+				amixer -c $card_out set MuteIfLineInli_$card_out 1%
+				amixer -c $card_out set MuteIfLineInre_$card_out 1%
+
+	    		newPID1=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineInli$card_out > /dev/null 2>&1 & echo $!)
+	    		newPID2=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineInre$card_out > /dev/null 2>&1 & echo $!)
+				echo -e "$newPID1\n""$newPID2\n""$card_in\n" > /opt/innotune/settings/status_line-in/line-in$card_out.txt
+			fi
         else
-		newPID1=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineIn$card_out  > /dev/null 2>&1 & echo $!)
-		echo -e "$newPID1\n""$newPID2\n""$card_in\n" > /opt/innotune/settings/status_line-in/line-in$card_out.txt
+			amixer -c $card_out set MuteIfLineIn_$card_out 1%
+			amixer -c $card_out set MuteIfLineInli_$card_out 1%
+			amixer -c $card_out set MuteIfLineInre_$card_out 1%
+
+			newPID1=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineIn$card_out  > /dev/null 2>&1 & echo $!)
+			echo -e "$newPID1\n""$newPID2\n""$card_in\n" > /opt/innotune/settings/status_line-in/line-in$card_out.txt
         fi
 fi
 
