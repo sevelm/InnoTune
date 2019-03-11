@@ -1,21 +1,21 @@
 
-/* gcc -o ttsvolplay ttsvolplay.c -lasound -lmpdclient 
+/* gcc -o ttsvolplay ttsvolplay.c -lasound -lmpdclient
                                ./ttsvolplay 1
 #                                                             |
 #   Anfangszahl zum lesen der Setting-Daten >-----------------
 #
 # Funktion:
 # 1. Einlesen der Settings von /opt/innotune/settings/voiceoutput/voiceoutputvol.txt
-# 2. MPD Lautst�rke setzen 
+# 2. MPD Lautst�rke setzen
 # 3. Master Lautst�rkenregler f�r Airplay&Squeezebox&... setzen
-# 3. MPD Clear Playlist, Load Playlist, MPD Play 
+# 3. MPD Clear Playlist, Load Playlist, MPD Play
 # 4. MPD fertig gespielt (nicht mehr Status Play), dann
 # 5. Master Lautst�rkenregler f�r Airplay&Squeezebox&... 100%
 #
 # Um die Lautst�rke bei gesplitteten Verst�rkern seperat zu regelen kann dies mit einem ; (Semicolon) gemacht werden.
 # dazu wird einfach der Wert <li>;<re> angegeben. (z.B. 0;50 heisst rechts 50% und links stumm geschalten)
 #
-# Anwendung: 
+# Anwendung:
 # Die Master-Lautst�rke anderer Quellen reduzieren w�hrend Haust�rgong, Sprachdurchsage, .... vom MPD
 #
 */
@@ -46,14 +46,14 @@ long SetAlsaVolume (int volume, char* devicePrefix, char* hwPrefix, int nr)
 	snd_mixer_open(&handle, 0);
 	snd_mixer_attach(handle, hw);
 	snd_mixer_selem_register(handle, NULL, NULL);
-	snd_mixer_load(handle); 
+	snd_mixer_load(handle);
 	snd_mixer_selem_id_alloca(&sid);
 	snd_mixer_selem_id_set_index(sid, 0);
-	snd_mixer_selem_id_set_name(sid, device);    
-	snd_mixer_elem_t* elem = snd_mixer_find_selem(handle, sid);           
+	snd_mixer_selem_id_set_name(sid, device);
+	snd_mixer_elem_t* elem = snd_mixer_find_selem(handle, sid);
 	if (elem != NULL && handle != NULL){
-		snd_mixer_selem_get_playback_volume_range(elem, &min, &max);    
-		snd_mixer_selem_set_playback_volume_all(elem, volume * max / 100);      
+		snd_mixer_selem_get_playback_volume_range(elem, &min, &max);
+		snd_mixer_selem_set_playback_volume_all(elem, volume * max / 100);
 	}
 	snd_mixer_close(handle);
 	return result;
@@ -71,9 +71,9 @@ long* ReadtxtInt (int position, char* pfad)
 	char out[1024];
 	char *li;
 	char *re;
-	if((fp = fopen (pfad , "r"))==NULL)  {    
+	if((fp = fopen (pfad , "r"))==NULL)  {
 		printf("Datei konnte nicht ge�ffent werden \n");
-	} else {     
+	} else {
 		for(i=0;i<(position-1);i++){
 			fgets(&out[i],1024,fp);
 		}
@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
 
 	//  TTS Lautstärke setzen
 
-	for (nr = 0; nr < 10; nr++) {		
+	for (nr = 0; nr < 10; nr++) {
 		//  MPD Lautstärkenregler - PlayerXX
 		result = SetAlsaVolume (VOL_MPD[nr], "mpd_", "hw:", nr);
 		//  MPD Lautstärkenregler - PlayerXX links
@@ -175,13 +175,13 @@ int main(int argc, char *argv[])
 		SOFT_VOL_DOWN = SOFT_VOL_DOWN - 1;
 		for (nr = 0; nr <= 10; nr++) {
 
-			if (VOL_MPD[nr] != 0) {		
+			if (VOL_MPD[nr] != 0) {
 				result = SetAlsaVolume (SOFT_VOL_DOWN, "MuteIfMPD_", "hw:", nr);
 			}
-			if (VOL_MPD_LI[nr] != 0) {		
+			if (VOL_MPD_LI[nr] != 0) {
 				result = SetAlsaVolume (SOFT_VOL_DOWN, "MuteIfMPDli_", "hw:", nr);
 			}
-			if (VOL_MPD_RE[nr] != 0) {		
+			if (VOL_MPD_RE[nr] != 0) {
 				result = SetAlsaVolume (SOFT_VOL_DOWN, "MuteIfMPDre_", "hw:", nr);
 			}
 		}
@@ -214,11 +214,11 @@ int main(int argc, char *argv[])
 
                 mpd_run_add(conn, PATHTTS);
 
-	int COUNTER01 = 1;    
+	int COUNTER01 = 1;
 	while ( COUNTER01 == 1 )
 	{
 	                mpd_run_play(conn);
-		sleep(1);   
+		sleep(1);
 		struct mpd_status *status = NULL;
 		struct mpd_connection *conn = NULL;
 		conn = mpd_connection_new("localhost", 6600, 0);
@@ -226,56 +226,61 @@ int main(int argc, char *argv[])
 		enum mpd_state playstate = mpd_status_get_state(status);
 		if (playstate == MPD_STATE_PLAY){
 			COUNTER01 = 0;
-		}   
+		}
 		COUNT = COUNT + 1;
 		if (COUNT > 8 ) {
-			goto mpd_kein_play;  
-		}  
+			goto mpd_kein_play;
+		}
 	}
 
 
-	int COUNTER02 = 1;   
+	int COUNTER02 = 1;
 	while ( COUNTER02 == 1 )
 	{
-		sleep(1);   
+		sleep(1);
 		struct mpd_status *status = NULL;
-		struct mpd_connection *conn = NULL;        
+		struct mpd_connection *conn = NULL;
 		conn = mpd_connection_new("localhost", 6600, 0);
 		status = mpd_run_status(conn);
 		enum mpd_state playstate = mpd_status_get_state(status);
 		if (playstate != MPD_STATE_PLAY){
-			COUNTER02 = 0;            
+			COUNTER02 = 0;
 		}
 		mpd_connection_free(conn);
 	}
 	mpd_connection_free(conn);
 
 
-	// 
 	//
 	//
-	// 
+	//
+	//
 	//#################   MPD Ende   #################
 
-	mpd_kein_play:               
+	mpd_kein_play:
 
 	do {
 		SQ_AIR_VOLUME = SQ_AIR_VOLUME + 1;
 
 		for (nr = 1; nr <= 10; nr++) {
 			//  Master Lautst�rkenregler f�r Airplay & Squeezebox & ... 100% - PlayerXX
-			if (VOL_MPD[nr] != 0) {		
+			if (VOL_MPD[nr] != 0) {
 				result = SetAlsaVolume (SQ_AIR_VOLUME, "MuteIfMPD_", "hw:", nr);
 			}
-			if (VOL_MPD_LI[nr] != 0) {		
+			if (VOL_MPD_LI[nr] != 0) {
 				result = SetAlsaVolume (SQ_AIR_VOLUME, "MuteIfMPDli_", "hw:", nr);
 			}
-			if (VOL_MPD_RE[nr] != 0) {		
+			if (VOL_MPD_RE[nr] != 0) {
 				result = SetAlsaVolume (SQ_AIR_VOLUME, "MuteIfMPDre_", "hw:", nr);
 			}
 		}
 		usleep(10000);
 	} while (SQ_AIR_VOLUME < 100);
-	return 0;
+	FILE *f = fopen("/opt/innotune/settings/voiceoutput/current_tts.txt", "w");
+        if (f != NULL) {
+            fprintf(f, "0");
+            fclose(f);
+        }
+        return 0;
 
 }

@@ -55,6 +55,7 @@ case "$1" in
                /etc/init.d/lighttpd restart;;
      sendmail) /var/www/sendmail.sh "$2" "$3" > /var/www/return_values/sendmail.txt;;
      ttsvolplay) /var/www/src/ttsvolplay "$2";;
+     killtts) sudo killall ttsvolplay;;
      usbmount) sudo sed -i 's/^\(ENABLED\).*/\1'="$2"'/'  /etc/usbmount/usbmount.conf;;
      networkmount) echo $(/var/www/mountnetwork.sh "$2" "$3" "$4" "$5" "$6");;
      removenetworkmount) /var/www/unmountnetwork.sh "$2" "$3" "$4" "$5";;

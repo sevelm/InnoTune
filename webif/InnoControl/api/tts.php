@@ -1,9 +1,17 @@
 ﻿<?php
+$mt = microtime(true);
 if (isset($_GET["noqueue"])) {
-    $process = shell_exec("ps cax | grep ttsvolplay | cut -d ' ' -f 1");
-    if (!empty($process)) {
-        die("ttsvolplay running... new request not added to queue");
+    $current = file_get_contents("/opt/innotune/settings/voiceoutput/current_tts.txt");
+    if ($current == "1") {
+        $process = shell_exec("ps cax | grep ttsvolplay | cut -d ' ' -f 1");
+        echo "running tts processes: $process<br>";
+        if (!empty($process)) {
+            echo exec("sudo /var/www/sudoscript.sh killtts", $out, $returnval);
+            echo "Killall return value: $returnval<br>";
+        }
+        echo "<br>";
     }
+    file_put_contents("/opt/innotune/settings/voiceoutput/current_tts.txt", "1");
 }
 
 for ($i = 1; $i < 10; $i++) {
@@ -243,7 +251,7 @@ if (empty($pids)) {
             $words = "Es ist" . $Stunde . "Uhr und" . $Minute . "Minuten.";
         }
     }
-    echo "Text to Speech Input: <b>" . $words . "</b><br>";
+    echo "<br>Text to Speech Input: <b>" . $words . "</b><br>";
 
     //Umlaute konvertieren
     $umlaute = Array("/ä/", "/ö/", "/ü/", "/Ä/", "/Ö/", "/Ü/", "/ß/");
@@ -308,4 +316,6 @@ if (empty($pids)) {
 } else {
     echo "Fehler!";
 }
+$mt = microtime(true) - $mt;
+echo "<br><br>execution time: $mt ms"
 ?>
