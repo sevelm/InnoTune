@@ -88,10 +88,20 @@
             class="md-block mdl-cell mdl-cell--9-col md-no-underline" style="color: #545454">
             <md-option value="0" ng-selected="true">Ein/Aus</md-option>
             <md-option value="1">Wert</md-option>
+            <md-option value="2">Dimmer</md-option>
+        </md-select>
+
+        <h6 class="mdl-cell mdl-cell--3-col" ng-if="knxcmd.type == 2">Dimmer-Typ:</h6>
+        <md-select ng-if="knxcmd.type == 2" placeholder="{{knxcmd.dimmertype}}"
+            ng-model="knxcmd.dimmertype" ng-change="knxcmd.changed=true"
+            class="md-block mdl-cell mdl-cell--9-col md-no-underline" style="color: #545454">
+            <md-option value="1">Radio Ein/Weiter/Aus</md-option>
+            <md-option value="2">Lautstärke lauter/leiser</md-option>
         </md-select>
 
         <h6 class="mdl-cell mdl-cell--3-col" ng-if="knxcmd.type == 0">Befehl Ein:</h6>
         <h6 class="mdl-cell mdl-cell--3-col" ng-if="knxcmd.type == 1">Befehl:</h6>
+        <h6 class="mdl-cell mdl-cell--3-col" ng-if="knxcmd.type == 2">Mac-Adresse (Zone):</h6>
         <md-input-container class="md-block mdl-cell mdl-cell--9-col">
             <textarea aria-label="name" name="name" ng-model="knxcmd.cmd"
                 ng-change="knxcmd.changed=true"></textarea>
@@ -121,7 +131,12 @@
     <div class="mdl-card__title">
         <h2 class="mdl-card__title-text">Befehlweiterleitung</h2>
     </div>
-    <div class="mdl-card__supporting-text mdl-grid" ng-init="getKnxCmds()">
+    <div class="mdl-card__supporting-text mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+            Achtung!<br>
+            Wenn die Gruppenadresse einer bestehenden Befehlsweiterleitung geändert wird, bleibt der alte Eintrag vorhanden.<br>
+            Dieser Eintrag sollte danach manuell gelöscht werden.
+        </div>
         <div class="mdl-cell mdl-cell--2-col">
             <b>Gruppe</b>
         </div>
@@ -129,7 +144,7 @@
             <b>Typ</b>
         </div>
         <div class="mdl-cell mdl-cell--7-col">
-            <b>Befehl</b>
+            <b>Befehl bzw. Mac-Adresse (für KNX-Dimmer)</b>
         </div>
         <div class="mdl-cell mdl-cell--2-col"></div>
         <div ng-repeat="savedcmd in knxcmds"
@@ -143,12 +158,24 @@
                 <span ng-if="savedcmd.type == 1">
                     Wert
                 </span>
+                <span ng-if="savedcmd.type == 2">
+                    Dimmer<br>
+                    <span ng-if="savedcmd.dimmertype == 1">
+                        Ein/Aus
+                    </span>
+                    <span ng-if="savedcmd.dimmertype == 2">
+                        Lautstärke
+                    </span>
+                </span>
             </div>
             <div class="mdl-cell mdl-cell--7-col" ng-if="savedcmd.type == 0">
                 {{savedcmd.cmd}}<br>
                 {{savedcmd.cmdoff}}
             </div>
             <div class="mdl-cell mdl-cell--7-col" ng-if="savedcmd.type == 1">{{savedcmd.cmd}}</div>
+            <div class="mdl-cell mdl-cell--7-col" ng-if="savedcmd.type == 2">
+                {{savedcmd.cmd}}
+            </div>
             <div class="mdl-cell mdl-cell--1-col">
                 <button ng-click="editKnxCmd(savedcmd)"
                     class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
@@ -164,5 +191,108 @@
                 </button>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell--top mdl-cell mdl-cell--12-col" ng-init="getKnxRadios()">
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Radiosender für Dimmer</h2>
+    </div>
+    <div class="mdl-card__supporting-text mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+            Hier können Sie die Liste der Radiosender bearbeiten, die für den KNX-Dimmer verwendet werden.<br>
+            Alle Dimmer verwenden diese Liste, also ist es nicht möglich für einzelne Dimmer andere Sender zu benutzen.
+        </div>
+        <div class="mdl-cell mdl-cell--2-col">
+            <b>Name</b>
+        </div>
+        <div class="mdl-cell mdl-cell--8-col">
+            <b>URL</b>
+        </div>
+        <div class="mdl-cell mdl-cell--2-col"></div>
+
+        <div ng-repeat="radio in knxradios"
+            class="mdl-cell mdl-cell--12-col mdl-grid"
+            style="padding: 0; margin: 0">
+            <div class="mdl-cell mdl-cell--2-col" ng-if="radio.edit == 0">
+                {{radio.name}}
+            </div>
+            <div class="mdl-cell mdl-cell--2-col" ng-if="radio.edit == 1">
+                <md-input-container class="md-block mdl-cell mdl-cell--12-col">
+                    <input aria-label="name" name="name" ng-model="radio.editname">
+                </md-input-container>
+            </div>
+            <div class="mdl-cell mdl-cell--8-col" ng-if="radio.edit == 0">
+                {{radio.url}}
+            </div>
+            <div class="mdl-cell mdl-cell--8-col" ng-if="radio.edit == 1">
+                <md-input-container class="md-block mdl-cell mdl-cell--12-col">
+                    <input aria-label="url" name="url" ng-model="radio.editurl">
+                </md-input-container>
+            </div>
+            <div class="mdl-cell mdl-cell--1-col" ng-if="radio.edit == 0">
+                <button ng-click="radio.editname = radio.name; radio.editurl = radio.url;radio.edit = 1"
+                    class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                    style="color:#000">
+                    <i class="material-icons">edit</i>
+                </button>
+            </div>
+            <div class="mdl-cell mdl-cell--1-col" ng-if="radio.edit == 1">
+                <button ng-click="saveKnxRadio(radio)"
+                    class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                    style="color:#000">
+                    <i class="material-icons">save</i>
+                </button>
+            </div>
+            <div class="mdl-cell mdl-cell--1-col" ng-if="radio.edit == 0">
+                <button ng-click="deleteKnxRadio(radio)"
+                    class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                    style="color:indianred">
+                    <i class="material-icons">delete</i>
+                </button>
+            </div>
+            <div class="mdl-cell mdl-cell--1-col" ng-if="radio.edit == 1">
+                <button ng-click="radio.edit = 0"
+                    class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                    style="color:#000">
+                    <i class="material-icons">cancel</i>
+                </button>
+            </div>
+        </div>
+        <div class="mdl-cell mdl-cell--12-col">
+            <b>Neuen Radiosender hinzufügen:</b>
+        </div>
+        <div class="mdl-cell mdl-cell--12-col mdl-grid"
+            style="padding: 0; margin: 0">
+            <div class="mdl-cell mdl-cell--2-col">
+                <md-input-container class="md-block mdl-cell mdl-cell--12-col">
+                    <input aria-label="name" name="name" ng-model="radioAdd.name">
+                </md-input-container>
+            </div>
+            <div class="mdl-cell mdl-cell--8-col">
+                <md-input-container class="md-block mdl-cell mdl-cell--12-col">
+                    <input aria-label="url" name="url" ng-model="radioAdd.url">
+                </md-input-container>
+            </div>
+            <div class="mdl-cell mdl-cell--1-col">
+                <button ng-click="addKnxRadio()"
+                    class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                    style="color:#000">
+                    <i class="material-icons">save</i>
+                </button>
+            </div>
+            <div class="mdl-cell mdl-cell--1-col">
+                <button ng-click="radioAdd.name = ''; radioAdd.url = ''"
+                    class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                    style="color:#000">
+                    <i class="material-icons">cancel</i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <button ng-click="resetKnxRadios()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+            Sender zurücksetzen
+        </button>
     </div>
 </div>

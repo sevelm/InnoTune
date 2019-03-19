@@ -42,11 +42,17 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.pastatus = {installed: 'unknown', running: 'unknown'};
 
     $scope.knxcmds = [];
+    $scope.knxradios = [];
+    $scope.radioAdd = {
+        name: '',
+        url: ''
+    };
     $scope.knxcmd = {
         group: '',
         type: 0,
         cmd: '',
         cmdoff: '',
+        dimmertype: 1,
         changed: false
     };
     $scope.knx = {changed: false};
@@ -62,19 +68,44 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
 
     $scope.saveKnxCmd = function() {
-        if ($scope.knxcmd.type === '1') {
+        if ($scope.knxcmd.type === '1' || $scope.knxcmd.type === '2') {
             $scope.knxcmd.cmdoff = '';
         }
+        var ampId = '';
+        var geteilt = '';
+        $scope.devices.forEach(function(device) {
+            if (device.mac !== undefined) {
+                if (device.mac == $scope.knxcmd.cmd) {
+                    ampId = device.id;
+                    geteilt = 0;
+                    console.log(ampId + ', ' + geteilt);
+                }
+            } else if (device.macL !== undefined) {
+                if (device.macL == $scope.knxcmd.cmd) {
+                    ampId = device.id;
+                    geteilt = 1;
+                    console.log(ampId + ', ' + geteilt);
+                } else if (device.macR == $scope.knxcmd.cmd) {
+                    ampId = device.id;
+                    geteilt = 2;
+                    console.log(ampId + ', ' + geteilt);
+                }
+            }
+        });
         $http.get('api/helper.php?setknxcmd&group=' + $scope.knxcmd.group +
                     '&type=' + $scope.knxcmd.type +
                     '&cmd=' + encodeURIComponent($scope.knxcmd.cmd) +
-                    '&cmdoff=' + encodeURIComponent($scope.knxcmd.cmdoff))
+                    '&cmdoff=' + encodeURIComponent($scope.knxcmd.cmdoff) +
+                    '&dimmertype=' + $scope.knxcmd.dimmertype +
+                    '&amp=' + ampId +
+                    '&geteilt=' + geteilt)
               .success(function () {
                   $scope.knxcmd = {
                       group: '',
                       type: 0,
                       cmd: '',
                       cmdoff: '',
+                      dimmertype: 1,
                       changed: false
                   };
                   $scope.getKnxCmds();
@@ -87,6 +118,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             type: 0,
             cmd: '',
             cmdoff: '',
+            dimmertype: 1,
             changed: false
         };
     };
@@ -97,6 +129,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             type: cmd.type,
             cmd: cmd.cmd,
             cmdoff: cmd.cmdoff,
+            dimmertype: cmd.dimmertype,
             changed: false
         };
     };
@@ -115,6 +148,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                 $scope.knx.address = data[0];
                 $scope.knx.running = data[1];
                 $scope.knx.current = data[2];
+                $scope.getKnxCmds();
               });
     };
 
@@ -126,12 +160,23 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                   lines.forEach(function (element) {
                     if (element.includes("|")) {
                       var data = element.split("|");
-                      $scope.knxcmds.push({
-                          group: data[0],
-                          type: data[1],
-                          cmd: data[2],
-                          cmdoff: data[3]
-                        });
+                      if (data[1] !== '2') {
+                          $scope.knxcmds.push({
+                              group: data[0],
+                              type: data[1],
+                              cmd: data[2],
+                              cmdoff: data[3],
+                              dimmertype: 1
+                            });
+                      } else {
+                          $scope.knxcmds.push({
+                              group: data[0],
+                              type: data[1],
+                              cmd: data[3],
+                              cmdoff: '',
+                              dimmertype: data[2]
+                            });
+                      }
                     }
                   });
               });
@@ -169,6 +214,65 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
               .success(function () {
                   location.href = "/scripts/reboot.php?update=true"
               });
+    };
+
+    $scope.getKnxRadios = function() {
+        $http.get('api/helper.php?getknxradios')
+              .success(function (csv) {
+                  var lines = csv.split('\n');
+                  $scope.knxradios = [];
+                  lines.forEach(function (element) {
+                    if (element.includes("|")) {
+                      var data = element.split("|");
+                      $scope.knxradios.push({
+                          id: data[1],
+                          name: data[2],
+                          url: data[3],
+                          edit: 0,
+                          editname: data[2],
+                          editurl: data[3]
+                        });
+                    }
+                  });
+              });
+    };
+
+    $scope.deleteKnxRadio = function(radio) {
+        $http.get('api/helper.php?deleteknxradio&id=' + radio.id)
+              .success(function () {
+                  $scope.getKnxRadios();
+              });
+    };
+
+    $scope.saveKnxRadio = function(radio) {
+        radio.name = radio.editname;
+        radio.url = radio.editurl;
+        radio.edit = 0;
+        $http.get('api/helper.php?saveknxradio' +
+                '&id=' + radio.id +
+                '&name=' + encodeURIComponent(radio.name) +
+                '&url=' + encodeURIComponent(radio.url))
+            .success(function () {
+
+            });
+    };
+
+    $scope.addKnxRadio = function() {
+        $http.get('api/helper.php?addknxradio' +
+                '&name=' + encodeURIComponent($scope.radioAdd.name) +
+                '&url=' + encodeURIComponent($scope.radioAdd.url))
+            .success(function () {
+                $scope.radioAdd.name = '';
+                $scope.radioAdd.url = '';
+                $scope.getKnxRadios();
+            });
+    };
+
+    $scope.resetKnxRadios = function() {
+        $http.get('api/helper.php?resetknxradios')
+            .success(function () {
+                $scope.getKnxRadios();
+            });
     };
 
     $scope.setCollapseRL = function() {
@@ -1584,7 +1688,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         });
     };
 
-    /*$scope.fullUpdate = function () {
+    $scope.fullUpdate = function () {
         var update = $mdDialog.confirm()
             .title('Bist du sicher?')
             .textContent('Es werden alle Updates erneut installiert! Der Server wird neu gestartet, dies kann mehrere Minuten dauern!.')
@@ -1616,7 +1720,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                 location.href = "/scripts/reboot.php?update=true"
             });
         });
-    };*/
+    };
 
     $scope.fixDependencies = function () {
         document.getElementById("loadingsymbol").style.display = "block";

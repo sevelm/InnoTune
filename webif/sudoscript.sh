@@ -87,6 +87,10 @@ case "$1" in
      installknx) /var/www/knxinstaller.sh;;
      setknxcmd) /var/www/knxeditcmd.sh "1" "$2" "$3";;
      deleteknxcmd) /var/www/knxeditcmd.sh "0" "$2" "$3";;
+     deleteknxradio) /var/www/knxeditradio.sh "0" "$2";;
+     saveknxradio) /var/www/knxeditradio.sh "1" "$2" "$3";;
+     addknxradio) /var/www/knxeditradio.sh "2" "$2";;
+     resetknxradios) cp /opt/innotune/settings/knxdefaultradios.txt /opt/innotune/settings/knxradios.txt;;
      deleteGeneratedTTS) sudo rm -r /media/Soundfiles/tts/*
                          sudo mpc update;;
     *) echo "ERROR: invalid parameter: $1 (for $0)"; exit 1 ;;

@@ -240,3 +240,16 @@ sudo chmod 777 /opt/innotune/settings/voiceoutput/current_tts.txt
 printf %s "0" > /opt/innotune/settings/voiceoutput/current_tts.txt
 
 sudo apt-get install -y tcpdump
+
+# knx dimmer
+cp /opt/innotune/update/cache/InnoTune/knxdefaultradios.txt /opt/innotune/settings/knxdefaultradios.txt
+sudo chmod 777 /opt/innotune/settings/knxdefaultradios.txt
+
+sudo touch /opt/innotune/settings/knxradios.txt
+sudo chmod 777 /opt/innotune/settings/knxradios.txt
+
+if [[ ! -f /opt/innotune/settings/knxcurrentradio.txt ]]; then
+    sudo touch /opt/innotune/settings/knxcurrentradio.txt
+    sudo chmod 777 /opt/innotune/settings/knxcurrentradio.txt
+    printf %s "1" > /opt/innotune/settings/knxcurrentradio.txt
+fi

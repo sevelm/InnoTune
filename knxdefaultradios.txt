@@ -1,0 +1,6 @@
+|1|FM4|http://opml.radiotime.com/Tune.ashx?id=s8235&formats=aac,ogg,mp3&partnerId=16&serial=c3bb5e931f100520654200af77e20e7a
+|2|Ö3|http://opml.radiotime.com/Tune.ashx?id=s8007&formats=aac,ogg,mp3&partnerId=16&serial=977e69e221e1df668964da983ff434f5
+|3|Kronehit|http://opml.radiotime.com/Tune.ashx?id=s15532&formats=aac,ogg,mp3&partnerId=16&serial=977e69e221e1df668964da983ff434f5
+|4|LifeRadio|http://opml.radiotime.com/Tune.ashx?id=s15592&amp;formats=aac,ogg,mp3&amp;partnerId=16&amp;serial=25b150044ee7378d9f139f40d700c530
+|5|Radio OÖ|http://opml.radiotime.com/Tune.ashx?id=s16660&amp;formats=aac,ogg,mp3&amp;partnerId=16&amp;serial=91f32276a9fba16d226ac025845bfb17
+|6|LoungeFM|http://opml.radiotime.com/Tune.ashx?id=s68932&amp;formats=aac,ogg,mp3&amp;partnerId=16&amp;serial=feda8a0f8cbb688b78d7e0d60864c902

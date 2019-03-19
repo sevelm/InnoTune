@@ -11,7 +11,7 @@
         <h2 class="mdl-card__title-text">MPD Interface</h2>
     </div>
     <div class="mdl-card__supporting-text">
-        <iframe src="phpmpd/index.php" width="100%" height=350" style="width:100%;height:500px;" frameborder="0"
+        <iframe src="phpmpd/index.php" width="100%" height="350" style="width:100%;height:500px;" frameborder="0"
                 scrolling="yes"></iframe>
     </div>
     <div class="mdl-card__actions mdl-card--border">

@@ -718,7 +718,14 @@ if (isset($_GET['setknxcmd'])) {
   $type = $_GET['type'];
   $cmd = $_GET['cmd'];
   $cmdoff = $_GET['cmdoff'];
-  echo shell_exec("sudo /var/www/sudoscript.sh setknxcmd \"$group\" \"$group|$type|$cmd|$cmdoff\"");
+  $dimmertype = $_GET['dimmertype'];
+  if ("$type" == "2") {
+      $amp = $_GET['amp'];
+      $geteilt = $_GET['geteilt'];
+      echo shell_exec("sudo /var/www/sudoscript.sh setknxcmd \"$group\" \"$group|$type|$dimmertype|$cmd|$amp|$geteilt\"");
+  } else {
+      echo shell_exec("sudo /var/www/sudoscript.sh setknxcmd \"$group\" \"$group|$type|$cmd|$cmdoff\"");
+  }
 }
 
 if (isset($_GET['deleteknxcmd'])) {
@@ -737,6 +744,32 @@ if (isset($_GET['checkknx'])) {
 
 if (isset($_GET['installknx'])) {
     shell_exec("sudo /var/www/sudoscript.sh installknx");
+}
+
+if (isset($_GET['getknxradios'])) {
+    echo file_get_contents("/opt/innotune/settings/knxradios.txt");
+}
+
+if (isset($_GET['deleteknxradio'])) {
+    $id = $_GET['id'];
+    shell_exec("sudo /var/www/sudoscript.sh deleteknxradio \"$id\"");
+}
+
+if (isset($_GET['saveknxradio'])) {
+    $id = $_GET['id'];
+    $name = $_GET['name'];
+    $url = $_GET['url'];
+    shell_exec("sudo /var/www/sudoscript.sh saveknxradio \"$id\" \"|$id|$name|$url\"");
+}
+
+if (isset($_GET['addknxradio'])) {
+    $name = $_GET['name'];
+    $url = $_GET['url'];
+    shell_exec("sudo /var/www/sudoscript.sh addknxradio \"$name|$url\"");
+}
+
+if (isset($_GET['resetknxradios'])) {
+    shell_exec("sudo /var/www/sudoscript.sh resetknxradios");
 }
 
 if (isset($_GET['deleteGeneratedTTS'])) {

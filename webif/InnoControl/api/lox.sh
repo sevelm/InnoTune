@@ -11,10 +11,11 @@ album=$(printf "$1 album ?\nexit\n" | nc $server $port | cut -d ' ' -f 3)
 artist=$(printf "$1 artist ?\nexit\n" | nc $server $port | cut -d ' ' -f 3)
 #currtitle=$(printf "$1 current_title ?\nexit\n" | nc $server $port | cut -d ' ' -f 3)
 
-#encoded chars: :   & | ! ? , / Ä Ö Ü ä ö ü [ ] ... ß
+#encoded chars: :   & ' | ! ? , / Ä Ö Ü ä ö ü [ ] ... ß
 echo "$title;$connected;$artist;$mode" | sed -e 's/%3A/:/g' \
                                    -e 's/%20/ /g' \
                                    -e 's/%26/\&/g' \
+                                   -e "s/%27/'/g" \
                                    -e 's/%7C/|/g' \
                                    -e 's/%21/!/g' \
                                    -e 's/%3F/?/g' \
