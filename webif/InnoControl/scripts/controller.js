@@ -1678,7 +1678,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             .cancel('Abbrechen');
         $mdDialog.show(update).then(function () {
             document.getElementById("loadingsymbol").style.display = "block";
-
+            $scope.updatestatus = '0% - starting update';
             $http.get('api/helper.php?update').success(function () {
                 location.href = "/scripts/reboot.php?update=true"
             });
@@ -1702,7 +1702,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             .cancel('Abbrechen');
         $mdDialog.show(update).then(function () {
             document.getElementById("loadingsymbol").style.display = "block";
-
+            $scope.updatestatus = '0% - starting update';
             $http.get('api/helper.php?fullupdate').success(function () {
                 location.href = "/scripts/reboot.php?update=true"
             });
@@ -1719,7 +1719,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             .cancel('Abbrechen');
         $mdDialog.show(update).then(function () {
             document.getElementById("loadingsymbol").style.display = "block";
-
+            $scope.updatestatus = '0% - starting update';
             $http.get('api/helper.php?latestupdate').success(function () {
                 location.href = "/scripts/reboot.php?update=true"
             });
