@@ -20,7 +20,7 @@ case "$1" in
      updateKernel) /var/www/kernel/update.sh;;
      updateBeta) /var/www/update.sh
                  /var/www/beta/update.sh;;
-     updaterunning) out=$(ps ax | grep "/var/www/update/"  | grep -v grep | wc -l)
+     updaterunning) out=$(ps ax | grep "/update"  | grep -v grep | wc -l)
                     echo "$out";;
      fixDependencies) sudo /var/www/checkpackages.sh
                       sudo apt-get -y install shairport-sync
