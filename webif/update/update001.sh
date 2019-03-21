@@ -1,5 +1,6 @@
 #!/bin/bash
 echo "running update001"
+echo "50% - adding new updates" > /opt/innotune/settings/updatestatus.txt
 
 #Set apt repository to xenial (important for odroid updates)
 sudo cp /opt/innotune/update/cache/InnoTune/sources.list /etc/apt/sources.list
@@ -138,6 +139,8 @@ if [[ $is_added -eq 0 ]]; then
     crontab -l | { cat; echo "30 */1 * * * /var/www/filesizechecker.sh"; } | crontab -
 fi
 
+echo "70% - adding new updates" > /opt/innotune/settings/updatestatus.txt
+
 #Imagestream 4 Loxone
 #used php extensions
 sudo apt-get install -y php5.6-gd
@@ -202,6 +205,7 @@ printf %s "a269cdea933c4994a8ce81916d748ef8" > /opt/innotune/settings/voiceoutpu
 
 sudo apt-get install -y tcpdump
 
+echo "80% - adding new updates" > /opt/innotune/settings/updatestatus.txt
 
 # knx dimmer
 cp /opt/innotune/update/cache/InnoTune/knxdefaultradios.txt /opt/innotune/settings/knxdefaultradios.txt
