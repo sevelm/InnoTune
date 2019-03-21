@@ -75,7 +75,7 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
             margin-bottom: 40px;
             z-index: 900;
         }
-        
+
         /*noinspection CssUnusedSymbol*/
         .modal {
             position: fixed;
@@ -190,6 +190,9 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
     <div layout="row" layout-sm="column" layout-align="space-around">
         <md-progress-circular md-mode="indeterminate" md-diameter="70" style="margin-top: 20%"></md-progress-circular>
     </div>
+    <div layout="row" layout-sm="column" layout-align="space-around">
+        {{updatestatus}}
+    </div>
 </div>
 <!-- Frameworks, etc.-->
 <script src="js/material.min.js"></script>
@@ -202,7 +205,7 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
 <script src="js/angular-material.min.js"></script>
 <!-- Eigene Scripts-->
 <script src="scripts/app.js?version=1.0.2"></script>
-<script src="scripts/controller.js?version=1.6.1"></script>
+<script src="scripts/controller.js?version=1.6.2"></script>
 <script src="scripts/routes.js?version=1.0.3"></script>
 </body>
 </html>
