@@ -706,7 +706,8 @@ if (isset($_GET['getknx'])) {
 
 if (isset($_GET['setknx'])) {
   $address = $_GET['address'];
-  echo shell_exec("sudo /var/www/sudoscript.sh setknx \"$address\"");
+  $mode = $_GET['mode'];
+  echo shell_exec("sudo /var/www/sudoscript.sh setknx \"$address\" \"$mode\"");
 }
 
 if (isset($_GET['getknxcmds'])) {
@@ -719,6 +720,15 @@ if (isset($_GET['setknxcmd'])) {
   $cmd = $_GET['cmd'];
   $cmdoff = $_GET['cmdoff'];
   $dimmertype = $_GET['dimmertype'];
+
+  if (strpos($cmd, "00:00:00:") !== 0) {
+      $cmd = str_replace(" ", "+", $cmd);
+  }
+
+  if (strpos($cmdoff, "00:00:00:") !== 0) {
+      $cmdoff = str_replace(" ", "+", $cmdoff);
+  }
+
   if ("$type" == "2") {
       $amp = $_GET['amp'];
       $geteilt = $_GET['geteilt'];

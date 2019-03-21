@@ -39,6 +39,22 @@
             </md-input-container>
             <span ng-show="knxAddressForm.name.$error.pattern" style="color:indianred">ungültige KNX-Adresse!</span>
         </ng-form>
+
+        <h6 class="mdl-cell mdl-cell--3-col">Verbindung:</h6>
+        <md-select placeholder="{{knx.type}}"
+            ng-model="knx.type" ng-change="knx.changed=true"
+            class="md-block mdl-cell mdl-cell--9-col md-no-underline" style="color: #545454">
+            <md-option value="1">KNX USB-Interface</md-option>
+            <md-option value="2">KNX over Ethernet (KNX IP)</md-option>
+        </md-select>
+
+        <h6 class="mdl-cell mdl-cell--12-col" ng-if="knx.interfaces == 0">
+            Kein KNX USB-Interface angeschlossen.
+        </h6>
+        <h6 class="mdl-cell mdl-cell--12-col" ng-if="knx.interfaces > 0">
+            KNX USB-Interface erkannt.
+        </h6>
+
         <h6 class="mdl-cell mdl-cell--12-col">
             Gestartet:
             <span ng-if="knx.running == 1"> Ja</span>
@@ -50,7 +66,6 @@
             <span ng-if="knx.current == 2">
                 Nur KNX-Tool<br>
                 Überprüfen Sie die KNX-Adresse.<br>
-                Ist ein USB-Interface angeschlossen?
             </span>
             <span ng-if="knx.current == 1"> Nur KNXD, bitte erneut starten</span>
             <span ng-if="knx.current == 0"> Nein</span>

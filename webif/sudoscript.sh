@@ -79,11 +79,18 @@ case "$1" in
      getknx) settings=$(cat /opt/innotune/settings/knx.txt)
              running=$(cat /opt/innotune/settings/knxrun.txt)
              current=$(ps cax | grep knx | wc -l)
-             echo "$settings;$running;$current";;
+             interfaces=$(lsusb -v | grep -E '\<(Bus|iProduct)' 2>/dev/null | grep KNX | wc -l)
+             echo "$settings;$running;$current;$interfaces";;
      runknx) /var/www/knxrun.sh "$2" &> /dev/null;;
-     setknx) echo "$2" > /opt/innotune/settings/knx.txt
+     setknx) echo "$3;$2" > /opt/innotune/settings/knx.txt
              #edit knx address in /etc/knxd.conf
-             sed -i "/^KNXD_OPTS/c\KNXD_OPTS=\"-e $2 -E 1.1.245:1 -c -DTRS -b usb\"" /etc/knxd.conf;;
+             if [ "$3" -eq "1" ]; then
+                 #KNXD_OPTS="-e $2 -E 1.1.245:1 -c -DTRS -b usb"
+                 sed -i "/^KNXD_OPTS/c\KNXD_OPTS=\"-e $2 -E 1.1.245:1 -c -DTRS -b usb\"" /etc/knxd.conf
+             else
+                 #KNXD_OPTS="-e $2 -E 0.0.2:8 -u /tmp/eib -b ip:"
+                 sed -i "/^KNXD_OPTS/c\KNXD_OPTS=\"-e $2 -E 1.1.245:1 -u /tmp/eib -b ip:\"" /etc/knxd.conf
+             fi;;
      installknx) /var/www/knxinstaller.sh;;
      setknxcmd) /var/www/knxeditcmd.sh "1" "$2" "$3";;
      deleteknxcmd) /var/www/knxeditcmd.sh "0" "$2" "$3";;

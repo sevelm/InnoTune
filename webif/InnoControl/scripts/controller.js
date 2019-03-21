@@ -55,13 +55,14 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         dimmertype: 1,
         changed: false
     };
-    $scope.knx = {changed: false};
+    $scope.knx = {type: 1, changed: false};
     $scope.knxinstalled = false;
     $scope.knxAddressPattern = /^(?:[0-9]{1,3}\.){2}[0-9]{1,3}$/;
     $scope.knxGroupPattern = /^(?:[0-9]{1,3}\/){2}[0-9]{1,3}$/;
 
     $scope.saveKnxSettings = function() {
-        $http.get('api/helper.php?setknx&address=' + $scope.knx.address)
+        $http.get('api/helper.php?setknx&address=' + $scope.knx.address +
+                    '&mode=' + $scope.knx.type)
               .success(function () {
                   $scope.knx.changed = false;
               });
@@ -145,9 +146,11 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         $http.get('api/helper.php?getknx')
               .success(function (csv) {
                 var data = csv.split(';');
-                $scope.knx.address = data[0];
-                $scope.knx.running = data[1];
-                $scope.knx.current = data[2];
+                $scope.knx.type = data[0];
+                $scope.knx.address = data[1];
+                $scope.knx.running = data[2];
+                $scope.knx.current = data[3];
+                $scope.knx.interfaces = data[4];
                 $scope.getKnxCmds();
               });
     };
