@@ -1,17 +1,3 @@
-<style>
-    /*noinspection CssUnusedSymbol*/
-    .modal {
-        position: fixed;
-        display: none;
-        z-index: 1000;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        background: rgba(255, 255, 255, .8) 50% 50% no-repeat;
-    }
-</style>
-
 <div ng-init="getVoiceRssKey()" class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--8-col mdl-cell--top">
     <div class="mdl-card__title">
         <h2 class="mdl-card__title-text">Sprachausgabe</h2>

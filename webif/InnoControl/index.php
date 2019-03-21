@@ -75,6 +75,18 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
             margin-bottom: 40px;
             z-index: 900;
         }
+        
+        /*noinspection CssUnusedSymbol*/
+        .modal {
+            position: fixed;
+            display: none;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba(255, 255, 255, .8) 50% 50% no-repeat;
+        }
     </style>
 </head>
 <body id="InnoController" ng-controller="InnoController">
