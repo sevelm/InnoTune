@@ -45,8 +45,11 @@
               ng-click="rebootAndValidate()">
           Reboot
       </button>
-      <button ng-click='update()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-          Update
+      <button ng-click='latestUpdate()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+          Letztes Update
+      </button>
+      <button ng-click='fullUpdate()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+          Alle Updates
       </button>
     </div>
   </div>
