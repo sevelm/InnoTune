@@ -1,17 +1,3 @@
-<style>
-    /*noinspection CssUnusedSymbol*/
-    .modal {
-        position: fixed;
-        display: none;
-        z-index: 1000;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        background: rgba(255, 255, 255, .8) 50% 50% no-repeat;
-    }
-</style>
-
 <div class="mdl-cell--top mdl-cell mdl-cell--6-col">
   <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell--top mdl-cell mdl-cell--12-col">
     <div class="mdl-card__title">
@@ -45,8 +31,11 @@
               ng-click="rebootAndValidate()">
           Reboot
       </button>
-      <button ng-click='update()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-          Update
+      <button ng-click='latestUpdate()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+          Letztes Update
+      </button>
+      <button ng-click='fullUpdate()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+          Alle Updates
       </button>
     </div>
   </div>

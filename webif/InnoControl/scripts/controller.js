@@ -59,6 +59,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.knxinstalled = false;
     $scope.knxAddressPattern = /^(?:[0-9]{1,3}\.){2}[0-9]{1,3}$/;
     $scope.knxGroupPattern = /^(?:[0-9]{1,3}\/){2}[0-9]{1,3}$/;
+    $scope.updatestatus = '';
 
     $scope.saveKnxSettings = function() {
         $http.get('api/helper.php?setknx&address=' + $scope.knx.address +
@@ -1677,7 +1678,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             .cancel('Abbrechen');
         $mdDialog.show(update).then(function () {
             document.getElementById("loadingsymbol").style.display = "block";
-
+            $scope.updatestatus = '0% - starting update';
             $http.get('api/helper.php?update').success(function () {
                 location.href = "/scripts/reboot.php?update=true"
             });
@@ -1701,7 +1702,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             .cancel('Abbrechen');
         $mdDialog.show(update).then(function () {
             document.getElementById("loadingsymbol").style.display = "block";
-
+            $scope.updatestatus = '0% - starting update';
             $http.get('api/helper.php?fullupdate').success(function () {
                 location.href = "/scripts/reboot.php?update=true"
             });
@@ -1718,10 +1719,23 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             .cancel('Abbrechen');
         $mdDialog.show(update).then(function () {
             document.getElementById("loadingsymbol").style.display = "block";
-
+            $scope.updatestatus = '0% - starting update';
             $http.get('api/helper.php?latestupdate').success(function () {
                 location.href = "/scripts/reboot.php?update=true"
             });
+        });
+    };
+
+    $scope.getUpdateRunning = function() {
+        $http.get('api/helper.php?updaterunning').success(function (data) {
+            if (data === "\n" || data === "0\n") {
+                document.getElementById("loadingsymbol").style.display = "none";
+            } else {
+                document.getElementById("loadingsymbol").style.display = "block";
+                $http.get('api/helper.php?updatestatus').success(function (status) {
+                    $scope.updatestatus = status;
+                });
+            }
         });
     };
 
@@ -1925,8 +1939,11 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     //Interval für System Info
     $scope.getUpdateValidation();
     $scope.getShairplayInstance();
+    $scope.getUpdateRunning();
     // 4 sec
     $interval($scope.getSysInfo, 4000);
+    // 10 sec
+    $interval($scope.getUpdateRunning, 10000);
     // 10 sec
     $interval($scope.getShairplayInstance, 10000);
     // 30 sec

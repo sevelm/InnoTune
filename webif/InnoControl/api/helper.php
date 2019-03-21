@@ -785,4 +785,12 @@ if (isset($_GET['resetknxradios'])) {
 if (isset($_GET['deleteGeneratedTTS'])) {
     shell_exec("sudo /var/www/sudoscript.sh deleteGeneratedTTS");
 }
+
+if (isset($_GET['updatestatus'])) {
+    echo file_get_contents("/opt/innotune/settings/updatestatus.txt");
+}
+
+if (isset($_GET['updaterunning'])) {
+    echo shell_exec("sudo /var/www/sudoscript.sh updaterunning");
+}
 ?>
