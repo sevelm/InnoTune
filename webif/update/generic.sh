@@ -20,6 +20,10 @@ killall aplay
 killall librespot
 killall playmonitor
 
+# fix dpkg errors if there are any
+sudo dpkg --configure -a
+sudo apt-get -f -y install
+
 #update packages
 sudo apt-get -y update
 echo "20% - updated packages" > /opt/innotune/settings/updatestatus.txt

@@ -8,6 +8,10 @@
 #
 cd /root/
 
+# fix dpkg errors if there are any
+sudo dpkg --configure -a
+sudo apt-get -f -y install
+
 # first, install build tools and dependencies
 sudo apt-get -y install git-core build-essential
 
