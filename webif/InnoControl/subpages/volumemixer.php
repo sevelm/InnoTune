@@ -43,7 +43,7 @@ $needsConfig = intval(shell_exec("cat /etc/asound.conf | grep plug:equal | wc -l
             </div>
 
             <div ng-if="selectedDevice">
-                <div ng-if="selectedDevice.betrieb!='deaktiviert' && selectedDevice.betrieb!=='gekoppelt'">
+                <div ng-if="!selectedDevice.offline && selectedDevice.betrieb!='deaktiviert' && selectedDevice.betrieb!=='gekoppelt'">
                     <div id="mpd_vol" class="mdl-grid">
                         <h6 class="mdl-cell mdl-cell--3-col">Player Zentral (MPD)</h6>
                         <md-slider-container class="mdl-cell mdl-cell--9-col">
@@ -103,7 +103,7 @@ $needsConfig = intval(shell_exec("cat /etc/asound.conf | grep plug:equal | wc -l
                 </div>
 
                 <!-- Slider deaktivieren wenn der betrieb auch deaktiviert oder gekoppelt ist -->
-                <div ng-if="selectedDevice.betrieb=='deaktiviert' || selectedDevice.betrieb=='gekoppelt'">
+                <div ng-if="selectedDevice.offline || selectedDevice.betrieb=='deaktiviert' || selectedDevice.betrieb=='gekoppelt'">
                     <div id="mpd_vol" class="mdl-grid">
                         <h6 class="mdl-cell mdl-cell--3-col">Player Zentral (MPD)</h6>
                         <md-slider-container class="mdl-cell mdl-cell--9-col">
