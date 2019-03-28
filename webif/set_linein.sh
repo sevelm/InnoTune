@@ -26,10 +26,10 @@ elif [ $USB_DEV == 2 ]; then
      if [ "$modus" = "li" ]; then
         PID1=$(cat /opt/innotune/settings/status_line-in/line-inli$card_out.txt | head -n1 | tail -n1)               #Abfrage ob Line bereits ausgegeben wird
         PID2=$(cat /opt/innotune/settings/status_line-in/line-inli$card_out.txt | head -n2 | tail -n1)               #Abfrage ob Line bereits ausgegeben wird
-elif [ "$modus" = "re" ]; then
+	elif [ "$modus" = "re" ]; then
         PID1=$(cat /opt/innotune/settings/status_line-in/line-inre$card_out.txt | head -n1 | tail -n1)               #Abfrage ob Line bereits ausgegeben wird
         PID2=$(cat /opt/innotune/settings/status_line-in/line-inre$card_out.txt | head -n2 | tail -n1)               #Abfrage ob Line bereits ausgegeben wird
-else
+	else
      	PID1=$(cat /opt/innotune/settings/status_line-in/line-in$card_out.txt | head -n1 | tail -n1)               #Abfrage ob Line bereits ausgegeben wird
         PID2=$(cat /opt/innotune/settings/status_line-in/line-in$card_out.txt | head -n2 | tail -n1)               #Abfrage ob Line bereits ausgegeben wird
 	fi
@@ -41,13 +41,13 @@ if [ "$PID1" != "0" ] || [ "$PID2" != "0" ]; then
       echo -e "0\n""0\n" > /opt/innotune/settings/status_line-in/line-in$modus$card_out.txt
 
 	  if [ "$modus" = "li" ]; then
-	  	amixer -c $card_out set MuteIfLineInli_$card_out 100%
+	  	amixer -c sndc$card_out set MuteIfLineInli_$card_out 100%
 	  elif [ "$modus" = "re" ]; then
-	  	amixer -c $card_out set MuteIfLineInre_$card_out 100%
+	  	amixer -c sndc$card_out set MuteIfLineInre_$card_out 100%
 	  else
-  		amixer -c $card_out set MuteIfLineIn_$card_out 100%
-      	amixer -c $card_out set MuteIfLineInli_$card_out 100%
-      	amixer -c $card_out set MuteIfLineInre_$card_out 100%
+  		amixer -c sndc$card_out set MuteIfLineIn_$card_out 100%
+      	amixer -c sndc$card_out set MuteIfLineInli_$card_out 100%
+      	amixer -c sndc$card_out set MuteIfLineInre_$card_out 100%
 	  fi
 fi
 
@@ -57,25 +57,25 @@ if [[ $card_in ]]; then
         if [ "$zone2" == "2" ]; then
 			modus=$4;
 			if [ "$modus" = "li" ]; then
-				amixer -c $card_out set MuteIfLineInli_$card_out 1%
+				amixer -c sndc$card_out set MuteIfLineInli_$card_out 1%
 	        	newPID1=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineInli$card_out > /dev/null 2>&1 & echo $!)
 	        	echo -e "$newPID1\n""$newPID2\n""$card_in\n" > /opt/innotune/settings/status_line-in/line-inli$card_out.txt
 			elif [ "$modus" == "re" ]; then
-				amixer -c $card_out set MuteIfLineInre_$card_out 1%
+				amixer -c sndc$card_out set MuteIfLineInre_$card_out 1%
 	        	newPID1=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineInre$card_out > /dev/null 2>&1 & echo $!)
 				echo -e "$newPID1\n""$newPID2\n""$card_in\n" > /opt/innotune/settings/status_line-in/line-inre$card_out.txt
 			else
-				amixer -c $card_out set MuteIfLineInli_$card_out 1%
-				amixer -c $card_out set MuteIfLineInre_$card_out 1%
+				amixer -c sndc$card_out set MuteIfLineInli_$card_out 1%
+				amixer -c sndc$card_out set MuteIfLineInre_$card_out 1%
 
 	    		newPID1=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineInli$card_out > /dev/null 2>&1 & echo $!)
 	    		newPID2=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineInre$card_out > /dev/null 2>&1 & echo $!)
 				echo -e "$newPID1\n""$newPID2\n""$card_in\n" > /opt/innotune/settings/status_line-in/line-in$card_out.txt
 			fi
         else
-			amixer -c $card_out set MuteIfLineIn_$card_out 1%
-			amixer -c $card_out set MuteIfLineInli_$card_out 1%
-			amixer -c $card_out set MuteIfLineInre_$card_out 1%
+			amixer -c sndc$card_out set MuteIfLineIn_$card_out 1%
+			amixer -c sndc$card_out set MuteIfLineInli_$card_out 1%
+			amixer -c sndc$card_out set MuteIfLineInre_$card_out 1%
 
 			newPID1=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineIn$card_out  > /dev/null 2>&1 & echo $!)
 			echo -e "$newPID1\n""$newPID2\n""$card_in\n" > /opt/innotune/settings/status_line-in/line-in$card_out.txt

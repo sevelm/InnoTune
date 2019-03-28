@@ -491,6 +491,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         for (var i = 0; i < $scope.LineInSelection.length; i++) {
             if ($scope.LineInSelection[i].toString().indexOf("li") >= 0 || $scope.LineInSelection[i].toString().indexOf("re") >= 0) {
                 var idOUT = $scope.formatId($scope.LineInSelection[i].toString().match(/\d+/)[0]);
+                var lire = $scope.LineInSelection[i].toString().slice(-2);
                 $http.get('api/helper.php?setlinein&card_in=' + idIN + '&card_out=' + idOUT + '&mode='+lire);
             } else {
                 idOUT = $scope.formatId($scope.LineInSelection[i]);
@@ -867,7 +868,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             .ok('Ok')
             .cancel('Abbrechen');
         $mdDialog.show(confirm).then(function () {
-            $http.get('api/helper.php?reset_logs')
+            $http.get('api/helper.php?reset_usb_mapping')
                 .success(function (data) {
                     location.href = "scripts/reboot.php";
                 });
@@ -1187,16 +1188,14 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                     .success(function (mapdata) {
                         var mapped = mapdata.split(";");
                         $scope.devicestmp = [];
-                        var reqcount = 1;
-                        var maxreq = 0;
                         for (var i = 0; i < arr.length; i++) {
                             (function (e) {
                                 const tmp_id = (i + 1);
-                                if (arr[i] == 1) {
-                                    maxreq++;
-                                    $http.get('api/helper.php?getdevice&dev=' + $scope.formatId(tmp_id))
-                                        .success(function (data) {
-                                            var dev = data.split(";");
+                                var offline = arr[i] != 1;
+                                $http.get('api/helper.php?getdevice&dev=' + $scope.formatId(tmp_id))
+                                    .success(function (data) {
+                                        var dev = data.split(";");
+                                        if ((offline && dev[0] != 0) || (!offline)) {
                                             if (dev[0] == 1) {
                                                 $betrieb = "normalbetrieb";
                                                 $airplayString = 0;
@@ -1215,7 +1214,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
 
                                                 $scope.devicestmp.push({
                                                     id: tmp_id,
-                                                    offline: false,
+                                                    offline: offline,
                                                     betrieb: $betrieb,
                                                     name: dev[1],
                                                     mac: dev[4],
@@ -1260,7 +1259,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
 
                                                 $scope.devicestmp.push({
                                                     id: tmp_id,
-                                                    offline: false,
+                                                    offline: offline,
                                                     betrieb: $betrieb,
                                                     nameL: dev[2],
                                                     nameR: dev[3],
@@ -1280,7 +1279,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                                 $betrieb = "gekoppelt";
                                                 $scope.devicestmp.push({
                                                     id: tmp_id,
-                                                    offline: false,
+                                                    offline: offline,
                                                     betrieb: $betrieb,
                                                     linktoDevice: parseInt(dev[0]) - 10,
                                                     vol: {},
@@ -1291,7 +1290,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                                 $betrieb = "deaktiviert";
                                                 $scope.devicestmp.push({
                                                     id: tmp_id,
-                                                    offline: false,
+                                                    offline: offline,
                                                     betrieb: $betrieb,
                                                     vol: {},
                                                     eq: {},
@@ -1308,133 +1307,16 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                             if ($scope.devicestmp !== $scope.devices) {
                                                 $scope.devices = $scope.devicestmp;
                                             }
-                                            $scope.createDeviceTree(reqcount, maxreq);
-                                            reqcount++;
-                                        });
-                                } else {
-                                    maxreq++;
-                                    $http.get('api/helper.php?getdevice&dev=' + $scope.formatId(tmp_id))
-                                        .success(function (data) {
-                                            var dev = data.split(";");
-                                            if (dev[0] != 0) {
-                                                if (dev[0] == 1) {
-                                                    $betrieb = "normalbetrieb";
-                                                    $airplayString = 0;
-                                                    if (dev[7].startsWith("AP")) {
-                                                        $airplayString = 1;
-                                                    } else {
-                                                        $airplayString = 0;
-                                                    }
-
-                                                    $spotifyString = 0;
-                                                    if (dev[10].startsWith("SP")) {
-                                                        $spotifyString = 1;
-                                                    } else {
-                                                        $spotifyString = 0;
-                                                    }
-
-                                                    $scope.devicestmp.push({
-                                                        id: tmp_id,
-                                                        offline: true,
-                                                        betrieb: $betrieb,
-                                                        name: dev[1],
-                                                        mac: dev[4],
-                                                        airplay: $airplayString,
-                                                        spotify: $spotifyString,
-                                                        vol: {},
-                                                        eq: {},
-                                                        path: dev[14],
-                                                        oac: parseInt(dev[15]),
-                                                        display: null
-                                                    });
-                                                } else if (dev[0] == 2) {
-                                                    $betrieb = "geteilterbetrieb";
-                                                    $airplayStringL = 0;
-                                                    if (dev[8].startsWith("AP")) {
-                                                        $airplayStringL = 1;
-                                                    } else {
-                                                        $airplayStringL = 0;
-                                                    }
-
-                                                    $airplayStringR = 0;
-                                                    if (dev[9].startsWith("AP")) {
-                                                        $airplayStringR = 1;
-                                                    } else {
-                                                        $airplayStringR = 0;
-                                                    }
-
-                                                    $spotifyStringL = 0;
-                                                    if (dev[11].startsWith("SP")) {
-                                                        $spotifyStringL = 1;
-                                                    } else {
-                                                        $spotifyStringL = 0;
-                                                    }
-
-                                                    $spotifyStringR = 0;
-                                                    if (dev[12].startsWith("SP")) {
-                                                        $spotifyStringR = 1;
-                                                    } else {
-                                                        $spotifyStringR = 0;
-                                                    }
-
-                                                    $scope.devicestmp.push({
-                                                        id: tmp_id,
-                                                        offline: true,
-                                                        betrieb: $betrieb,
-                                                        nameL: dev[2],
-                                                        nameR: dev[3],
-                                                        macL: dev[5],
-                                                        macR: dev[6],
-                                                        airplayL: $airplayStringL,
-                                                        airplayR: $airplayStringR,
-                                                        spotifyL: $spotifyStringL,
-                                                        spotifyR: $spotifyStringR,
-                                                        vol: {},
-                                                        eq: {},
-                                                        path: dev[14],
-                                                        oac: parseInt(dev[15]),
-                                                        display: null
-                                                    });
-                                                } else if (parseInt(dev[0]) > 10 && parseInt(dev[0]) <= 20) {
-                                                    $betrieb = "gekoppelt";
-                                                    $scope.devicestmp.push({
-                                                        id: tmp_id,
-                                                        offline: true,
-                                                        betrieb: $betrieb,
-                                                        linktoDevice: parseInt(dev[0]) - 10,
-                                                        vol: {},
-                                                        eq: {},
-                                                        display: null
-                                                    });
-                                                } else {
-                                                    $betrieb = "deaktiviert";
-                                                    $scope.devicestmp.push({
-                                                        id: tmp_id,
-                                                        offline: true,
-                                                        betrieb: $betrieb,
-                                                        vol: {},
-                                                        eq: {},
-                                                        path: dev[14],
-                                                        oac: 1,
-                                                        display: null
-                                                    });
-                                                }
-
-                                                $scope.devicestmp.sort(function (a, b) {
-                                                    return a.id > b.id;
-                                                });
-
-                                                if ($scope.devicestmp !== $scope.devices) {
-                                                    $scope.devices = $scope.devicestmp;
-                                                }
-                                                $scope.createDeviceTree(reqcount, maxreq);
-                                                reqcount++;
-                                            }
-                                        });
-                                }
+                                        }
+                                    });
                             })(i);
                         }
-                    $scope.sortDevices();
+
+                    setTimeout(function afterXSeconds() {
+                        console.log('waited 100 ms');
+                        $scope.sortDevices();
+                        $scope.createDeviceTree();
+                    }, 100);
                     });
             });
 
@@ -1457,81 +1339,79 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         }
     };
 
-    $scope.createDeviceTree = function (count, length) {
-        if (count == length) {
-            var devicetree = {p1: null, p2: null, p3: null, p4: null};
-            $scope.devices.filter(function (elem, index, self) {
-                return self[index].id == self.indexOf(elem).id;
-            });
-            for (var i = 0; i < $scope.devices.length; i++) {
-                var fullpath = $scope.devices[i].path;
-                var shortpath = fullpath.substring(fullpath.lastIndexOf("/1-1.") + 5, fullpath.length).slice(0, -6);
-                var ports = shortpath.split('.');
-                var leaf = null;
-                for (var y = 0; y < ports.length; y++) {
-                    switch (ports[y]) {
-                        case "1":
-                            if (leaf == null) {
-                                if (devicetree.p1 == null) {
-                                    $scope.devices[i].display = "InnoServer, Port: 1";
-                                    devicetree.p1 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
-                                } else {
-                                    leaf = devicetree.p1;
-                                }
-                            }
-                            break;
-                        case "2":
-                            if (leaf == null) {
-                                if (devicetree.p2 == null) {
-                                    $scope.devices[i].display = "InnoServer, Port: 2";
-                                    devicetree.p2 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
-                                } else {
-                                    leaf = devicetree.p2;
-                                }
+    $scope.createDeviceTree = function () {
+        var devicetree = {p1: null, p2: null, p3: null, p4: null};
+        $scope.devices.filter(function (elem, index, self) {
+            return self[index].id == self.indexOf(elem).id;
+        });
+        for (var i = 0; i < $scope.devices.length; i++) {
+            var fullpath = $scope.devices[i].path;
+            var shortpath = fullpath.substring(fullpath.lastIndexOf("/1-1.") + 5, fullpath.length).slice(0, -6);
+            var ports = shortpath.split('.');
+            var leaf = null;
+            for (var y = 0; y < ports.length; y++) {
+                switch (ports[y]) {
+                    case "1":
+                        if (leaf == null) {
+                            if (devicetree.p1 == null) {
+                                $scope.devices[i].display = "InnoServer, Port: 1";
+                                devicetree.p1 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
                             } else {
-                                if (leaf.p2 == null) {
-                                    $scope.devices[i].display = "InnoAmp " + $scope.formatId(leaf.dev.id) + ", Port: 2";
-                                    leaf.p2 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
-                                } else {
-                                    leaf = leaf.p2;
-                                }
+                                leaf = devicetree.p1;
                             }
-                            break;
-                        case "3":
-                            if (leaf == null) {
-                                if (devicetree.p3 == null) {
-                                    $scope.devices[i].display = "InnoServer, Port: 3";
-                                    devicetree.p3 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
-                                } else {
-                                    leaf = devicetree.p3;
-                                }
+                        }
+                        break;
+                    case "2":
+                        if (leaf == null) {
+                            if (devicetree.p2 == null) {
+                                $scope.devices[i].display = "InnoServer, Port: 2";
+                                devicetree.p2 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
                             } else {
-                                if (leaf.p3 == null) {
-                                    $scope.devices[i].display = "InnoAmp " + $scope.formatId(leaf.dev.id) + ", Port: 3";
-                                    leaf.p3 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
-                                } else {
-                                    leaf = leaf.p3;
-                                }
+                                leaf = devicetree.p2;
                             }
-                            break;
-                        case "4":
-                            if (leaf == null) {
-                                if (devicetree.p4 == null) {
-                                    $scope.devices[i].display = "InnoServer, Port: 4";
-                                    devicetree.p4 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
-                                } else {
-                                    leaf = devicetree.p4;
-                                }
+                        } else {
+                            if (leaf.p2 == null) {
+                                $scope.devices[i].display = "InnoAmp " + $scope.formatId(leaf.dev.id) + ", Port: 2";
+                                leaf.p2 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
                             } else {
-                                if (leaf.p4 == null) {
-                                    $scope.devices[i].display = "InnoAmp " + $scope.formatId(leaf.dev.id) + ", Port: 4";
-                                    leaf.p4 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
-                                } else {
-                                    leaf = leaf.p4;
-                                }
+                                leaf = leaf.p2;
                             }
-                            break;
-                    }
+                        }
+                        break;
+                    case "3":
+                        if (leaf == null) {
+                            if (devicetree.p3 == null) {
+                                $scope.devices[i].display = "InnoServer, Port: 3";
+                                devicetree.p3 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
+                            } else {
+                                leaf = devicetree.p3;
+                            }
+                        } else {
+                            if (leaf.p3 == null) {
+                                $scope.devices[i].display = "InnoAmp " + $scope.formatId(leaf.dev.id) + ", Port: 3";
+                                leaf.p3 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
+                            } else {
+                                leaf = leaf.p3;
+                            }
+                        }
+                        break;
+                    case "4":
+                        if (leaf == null) {
+                            if (devicetree.p4 == null) {
+                                $scope.devices[i].display = "InnoServer, Port: 4";
+                                devicetree.p4 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
+                            } else {
+                                leaf = devicetree.p4;
+                            }
+                        } else {
+                            if (leaf.p4 == null) {
+                                $scope.devices[i].display = "InnoAmp " + $scope.formatId(leaf.dev.id) + ", Port: 4";
+                                leaf.p4 = {dev: $scope.devices[i], p2: null, p3: null, p4: null};
+                            } else {
+                                leaf = leaf.p4;
+                            }
+                        }
+                        break;
                 }
             }
         }
