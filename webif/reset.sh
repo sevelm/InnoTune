@@ -17,6 +17,8 @@ then
 
     echo "0\n0" > /opt/innotune/settings/changedconf.txt
 
+    /var/www/reset_udevrule.sh
+
     OUTPUT="usb";
 fi
 

@@ -12,8 +12,9 @@ case "$1" in
      store_settings) cd /opt/innotune/settings/
                               /var/www/get_lms_players.sh
                               zip -r /var/www/upload_download/settings.zip ./;;
-     restore_settings) unzip -o /var/www/upload_download/settings.zip -d /opt/innotune/settings
-                                 sudo chmod -R 777 /opt/innotune/settings;;
+     restore_settings) unzip -o /var/www/upload_download/settings.zip -d /opt/innotune/settings \
+                       -x mapping.txt mapping_current.txt update_cnt.txt updatestatus.txt 80-usb-audio-id.rules 90-usb-audio-log-remove.rules
+                       sudo chmod -R 777 /opt/innotune/settings;;
      update) /var/www/update.sh;;
      fullupdate) /var/www/update/full.sh;;
      latestupdate) /var/www/update/latest.sh;;
