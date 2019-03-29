@@ -4,10 +4,6 @@
 # Config
 ##########################################################
 
-# set_vol)  # removes leading zeros from card out (Amp 08 and 09 wont work otherwise)
-#           card=$(echo $2 | sed 's/^0*//')
-#          amixer -c "$card" set "$3"_"$2" "$4"%; amixer -c "$card" set "$3"li_"$2" "$4"%; amixer -c "$card" set "$3"re_"$2" "$4"%;;
-
 case "$1" in
      store_settings) cd /opt/innotune/settings/
                               /var/www/get_lms_players.sh
@@ -38,7 +34,7 @@ case "$1" in
      show_vol_equal) /var/www/show_vol_equal.sh "$2" "$3" ;;
      showsoundcard) /var/www/show_soundcard.sh "$2";;
      resetudev) /var/www/reset_udevrule.sh;;
-     set_vol) amixer -c sndc"$2" set "$3"_"$2" "$4"%; amixer -c sndc"$2" set "$3"li_"$2" "$4"%; amixer -c sndc"$2" set "$3"re_"$2" "$4"%;;
+     set_vol) /var/www/set_vol.sh "$2" "$3" "$4";;
      show_eq) /var/www/show_eq_settings.sh "$2";;
      set_eq) /var/www/set_eq_settings.sh "$2" "$3" "$4";;
      mpdvolplay) killall mpdvolplay
