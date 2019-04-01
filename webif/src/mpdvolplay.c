@@ -45,7 +45,11 @@ long SetAlsaVolume (int volume, char* devicePrefix, char* hwPrefix, int nr)
 	sprintf(hw, "%ssndc%02d", hwPrefix, nr);
 
 	snd_mixer_open(&handle, 0);
-	snd_mixer_attach(handle, hw);
+	result = snd_mixer_attach(handle, hw);
+	if (result != 0) {
+	sprintf(hw, "%s%d", hwPrefix, nr);
+		result = snd_mixer_attach(handle, hw);
+	}
 	snd_mixer_selem_register(handle, NULL, NULL);
 	snd_mixer_load(handle);
 	snd_mixer_selem_id_alloca(&sid);
@@ -154,7 +158,7 @@ int main(int argc, char *argv[])
 	FILE *fp;
 	int i;
 	if((fp = fopen ("/opt/innotune/settings/mpdvolplay.txt" , "r"))==NULL)  {
-		printf("Datei konnte nicht ge�ffent werden \n");
+		printf("Datei konnte nicht geöffent werden \n");
 	} else {
 		for(i=0;i<(START_NR-1);i++){
 			fgets(&MPD_TITLE[i],1024,fp);
@@ -171,10 +175,13 @@ int main(int argc, char *argv[])
 	for (nr = 0; nr < 10; nr++) {
 		//  MPD Lautstärkenregler - PlayerXX
 		result = SetAlsaVolume (VOL_MPD[nr], "mpd_", "hw:", nr+1);
+		printf("Result: %li, nr: %i\n", result, nr);
 		//  MPD Lautstärkenregler - PlayerXX links
 		result = SetAlsaVolume (VOL_MPD_LI[nr], "mpdli_", "hw:", nr+1);
+		printf("Result: %li, nr-li: %i\n", result, nr);
 		//  MPD Lautstärkenregler - PlayerXX rechts
 		result = SetAlsaVolume (VOL_MPD_RE[nr], "mpdre_", "hw:", nr+1);
+		printf("Result: %li, nr-re: %i\n", result, nr);
 	}
 
 

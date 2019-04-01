@@ -45,7 +45,11 @@ long SetAlsaVolume (int volume, char* devicePrefix, char* hwPrefix, int nr)
 	sprintf(hw, "%ssndc%02d", hwPrefix, nr);
 
 	snd_mixer_open(&handle, 0);
-	snd_mixer_attach(handle, hw);
+	result = snd_mixer_attach(handle, hw);
+	if (result != 0) {
+	sprintf(hw, "%s%d", hwPrefix, nr);
+		result = snd_mixer_attach(handle, hw);
+	}
 	snd_mixer_selem_register(handle, NULL, NULL);
 	snd_mixer_load(handle);
 	snd_mixer_selem_id_alloca(&sid);
