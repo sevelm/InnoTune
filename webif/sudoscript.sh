@@ -21,6 +21,7 @@ case "$1" in
                     echo "$out";;
      fixDependencies) sudo /var/www/checkpackages.sh
                       sudo apt-get -y install shairport-sync
+                      sudo dpkg --configure -a
                       sudo apt-get -f -y install
                       sudo systemctl stop shairport-sync
                       sudo systemctl disable shairport-sync;;
