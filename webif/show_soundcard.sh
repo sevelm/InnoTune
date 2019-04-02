@@ -22,9 +22,9 @@ then
           hnm=$(tail -1 /opt/innotune/settings/mapping.txt | cut -d ";" -f1 | cut -c 5-)
           hnmc=$(tail -1 /opt/innotune/settings/mapping_current.txt | cut -d ";" -f1 | cut -c 5-)
           if [[ "$hnmc" -gt "$hnm" ]]; then
-            cn=$(($hnmc+1))
+            cn=$((10#$hnmc+1))
           else
-            cn=$(($hnm+1))
+            cn=$((10#$hnm+1))
           fi
           if [[ "$cn" -ne "10" ]]; then
             cn="0$cn"
@@ -51,13 +51,13 @@ do
   if [[ "$(cat /proc/asound/card$i/id | cut -c 5- | cut -c 1)" = "C" ]]; then
     if [[ -f /opt/innotune/settings/mapping.txt ]]; then
       hnm=$(tail -1 /opt/innotune/settings/mapping.txt | cut -d ";" -f1 | cut -c 5-)
-      hnm=$(($hnm+1))
+      hnm=$((10#$hnm+1))
       hnmc=$(tail -1 /opt/innotune/settings/mapping_current.txt | cut -d ";" -f1 | cut -c 5-)
-      hnmc=$(($hnmc+1))
+      hnmc=$((10#$hnmc+1))
       if [[ "$hnmc" -gt "$hnm" ]]; then
-        cn=$(($hnmc))
+        cn=$((10#$hnmc))
       else
-        cn=$(($hnm))
+        cn=$((10#$hnm))
       fi
       if [[ "$cn" -ne "10" ]]; then
         cn="0$cn"
@@ -79,17 +79,17 @@ do
 done
 
 ######################### CARD10 ###############################################
-i=$(($i+1))
+i=$((10#$i+1))
 if [[ "$(cat /proc/asound/card10/id | cut -c 5- | cut -c 1)" = "C" ]]; then
   if [[ -f /opt/innotune/settings/mapping.txt ]]; then
     hnm=$(tail -1 /opt/innotune/settings/mapping.txt | cut -d ";" -f1 | cut -c 5-)
-    hnm=$(($hnm+1))
+    hnm=$((10#$hnm+1))
     hnmc=$(tail -1 /opt/innotune/settings/mapping_current.txt | cut -d ";" -f1 | cut -c 5-)
-    hnmc=$(($hnmc+1))
+    hnmc=$((10#$hnmc+1))
     if [[ "$hnmc" -gt "$hnm" ]]; then
-      cn=$(($hnmc))
+      cn=$((10#$hnmc))
     else
-      cn=$(($hnm))
+      cn=$((10#$hnm))
     fi
     if [[ "$cn" -ne "10" ]]; then
       cn="0$cn"

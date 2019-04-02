@@ -6,17 +6,17 @@
 #
 # Funktion:
 # 1. Einlesen der Settings von /opt/innotune/settings/voiceoutput/voiceoutputvol.txt
-# 2. MPD Lautst�rke setzen
-# 3. Master Lautst�rkenregler f�r Airplay&Squeezebox&... setzen
+# 2. MPD Lautstaerke setzen
+# 3. Master Lautstärkenregler fuer Airplay&Squeezebox&... setzen
 # 3. MPD Clear Playlist, Load Playlist, MPD Play
 # 4. MPD fertig gespielt (nicht mehr Status Play), dann
-# 5. Master Lautst�rkenregler f�r Airplay&Squeezebox&... 100%
+# 5. Master Lautstärkenregler fuer Airplay&Squeezebox&... 100%
 #
-# Um die Lautst�rke bei gesplitteten Verst�rkern seperat zu regelen kann dies mit einem ; (Semicolon) gemacht werden.
+# Um die Lautstärke bei gesplitteten Verstärkern seperat zu regelen kann dies mit einem ; (Semicolon) gemacht werden.
 # dazu wird einfach der Wert <li>;<re> angegeben. (z.B. 0;50 heisst rechts 50% und links stumm geschalten)
 #
 # Anwendung:
-# Die Master-Lautst�rke anderer Quellen reduzieren w�hrend Haust�rgong, Sprachdurchsage, .... vom MPD
+# Die Master-Lautstärke anderer Quellen reduzieren während Haustürgong, Sprachdurchsage, .... vom MPD
 #
 */
 
@@ -41,10 +41,15 @@ long SetAlsaVolume (int volume, char* devicePrefix, char* hwPrefix, int nr)
 	char hw[16];
 
 	sprintf(device, "%s%02d", devicePrefix, nr);
-	sprintf(hw, "%s%02d", hwPrefix, nr);
+	//sndc prefix for soudncard name
+	sprintf(hw, "%ssndc%02d", hwPrefix, nr);
 
 	snd_mixer_open(&handle, 0);
-	snd_mixer_attach(handle, hw);
+	result = snd_mixer_attach(handle, hw);
+	if (result != 0) {
+	sprintf(hw, "%s%d", hwPrefix, nr);
+		result = snd_mixer_attach(handle, hw);
+	}
 	snd_mixer_selem_register(handle, NULL, NULL);
 	snd_mixer_load(handle);
 	snd_mixer_selem_id_alloca(&sid);
@@ -72,7 +77,7 @@ long* ReadtxtInt (int position, char* pfad)
 	char *li;
 	char *re;
 	if((fp = fopen (pfad , "r"))==NULL)  {
-		printf("Datei konnte nicht ge�ffent werden \n");
+		printf("Datei konnte nicht geöffent werden \n");
 	} else {
 		for(i=0;i<(position-1);i++){
 			fgets(&out[i],1024,fp);
@@ -95,10 +100,10 @@ long* ReadtxtInt (int position, char* pfad)
 	return result;
 }
 
-// Funktion um von einem char das \n zu �berschreiben
+// Funktion um von einem char das \n zu überschreiben
 void chomp(char *str) {
 	size_t p=strlen(str);
-	/* '\n' mit '\0' �berschreiben */
+	/* '\n' mit '\0' überschreiben */
 	str[p-1]='\0';
 }
 
@@ -137,7 +142,7 @@ int main(int argc, char *argv[])
 	free(read);
 
 	for (nr = 0; nr < 10; nr++) {
-		//  Einlesen der Lautst�rke von PlayerXX
+		//  Einlesen der Lautstärke von PlayerXX
 		read = ReadtxtInt ((1+nr), "/opt/innotune/settings/voiceoutput/voiceoutputvol.txt");
 		if (max(read) >= 0) {
 			VOL_MPD[nr] = max(read);
@@ -263,7 +268,7 @@ int main(int argc, char *argv[])
 		SQ_AIR_VOLUME = SQ_AIR_VOLUME + 1;
 
 		for (nr = 1; nr <= 10; nr++) {
-			//  Master Lautst�rkenregler f�r Airplay & Squeezebox & ... 100% - PlayerXX
+			//  Master Lautstärkenregler für Airplay & Squeezebox & ... 100% - PlayerXX
 			if (VOL_MPD[nr] != 0) {
 				result = SetAlsaVolume (SQ_AIR_VOLUME, "MuteIfMPD_", "hw:", nr);
 			}
@@ -281,6 +286,5 @@ int main(int argc, char *argv[])
             fprintf(f, "0");
             fclose(f);
         }
-        return 0;
-
+    return 0;
 }

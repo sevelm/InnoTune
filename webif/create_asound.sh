@@ -6,6 +6,9 @@
 
 ##########################################################
 
+/var/www/show_soundcard.sh 0
+/var/www/create_udevrule.sh
+
 USB_DEV01=$(cat /opt/innotune/settings/settings_player/dev01.txt | head -n1  | tail -n1)
 USB_DEV02=$(cat /opt/innotune/settings/settings_player/dev02.txt | head -n1  | tail -n1)
 USB_DEV03=$(cat /opt/innotune/settings/settings_player/dev03.txt | head -n1  | tail -n1)

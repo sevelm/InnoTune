@@ -118,7 +118,7 @@ if ($pos1 == 1) {
             <h2>Wählen sie ein Gerät aus!</h2>
         </div>
 
-        <div ng-if="selectedDevice">
+        <div ng-if="selectedDevice && !selectedDevice.offline">
             <div class="mdl-grid">
                 <?php /*
                         if($tinkerboard){
@@ -130,7 +130,7 @@ if ($pos1 == 1) {
                 <ul class="demo-list-control mdl-list mdl-cell--4-col md-no-underline" style="padding: 0;margin: 0">
                     <span ng-repeat="opt in devices | orderBy : 'id'">
                         <!-- Normalbetrieb -->
-                        <li class="mdl-list__item" ng-if="opt.betrieb=='normalbetrieb'">
+                        <li class="mdl-list__item" ng-if="!opt.offline && opt.betrieb=='normalbetrieb'">
                             <span class="mdl-list__item-primary-content">
                                 <span>
                                     {{opt.name +"&nbsp"}}
@@ -159,7 +159,7 @@ if ($pos1 == 1) {
 
 
                         <!--Geteilter Betrieb -->
-                        <li class="mdl-list__item" ng-if="opt.betrieb=='geteilterbetrieb'">
+                        <li class="mdl-list__item" ng-if="!opt.offline && opt.betrieb=='geteilterbetrieb'">
                             <span class="mdl-list__item-primary-content">
                                 <span>
                                    {{opt.nameL +"&nbsp"}}
@@ -186,7 +186,7 @@ if ($pos1 == 1) {
                                 </label>
                             </span>
                         </li>
-                        <li class="mdl-list__item" ng-if="opt.betrieb=='geteilterbetrieb'">
+                        <li class="mdl-list__item" ng-if="!opt.offline && opt.betrieb=='geteilterbetrieb'">
                             <span class="mdl-list__item-primary-content">
                                 <span>
                                    {{opt.nameR +"&nbsp"}}
@@ -226,6 +226,13 @@ if ($pos1 == 1) {
                     style="height: 100%; float: right; right: 30%">
                 <i class="material-icons md-48 md-inactive" style="font-size: 60px">stop</i>
             </button>
+        </div>
+
+        <div ng-if="selectedDevice && selectedDevice.offline">
+            <p>
+                Das von Ihnen ausgewählte Gerät ist leider offline.<br>
+                Bitte wählen Sie ein anderes Gerät aus.
+            </p>
         </div>
     </div>
 </div>

@@ -206,7 +206,8 @@ nr = 1;
                        char regler_re[256];
                         if (nr < 10) {
                         sprintf(regler, "MuteIfAirplay_0%d", nr);
-                        sprintf(hw, "hw:0%d", nr);
+                        //added sndc prefix
+                        sprintf(hw, "hw:sndc0%d", nr);
                         sprintf(regler_li, "MuteIfAirplayli_0%d", nr);
                         sprintf(regler_re, "MuteIfAirplayre_0%d", nr);
                         }
