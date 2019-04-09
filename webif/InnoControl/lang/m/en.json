@@ -1,0 +1,58 @@
+{
+  "sources": "Sources",
+  "radio": "Radios",
+  "history": "History",
+  "favorites": "Favorites",
+  "apps": "Apps",
+  "browser": "Media-Browser",
+  "media": "Media",
+
+  "zones": "Zones",
+  "current_playlist": "Current Playlist",
+  "volume": "Volume",
+  "sync": "Sync",
+
+  "settings": "Settings",
+  "master_volume": "Master-Volume",
+  "equalizer": "Equalizer",
+  "general": "General",
+  "disconnect": "Disconnect",
+
+  "back": "Back",
+  "close": "Close",
+
+  "playlist": "Playlist",
+  "link": "Link",
+  "unlink": "Unlink",
+  "predef_groups": "predefined Groups",
+  "party_mode": "Party Mode (Link all)",
+
+  "innotune_version": "InnoTune-Version",
+  "current_version": "Current: ",
+  "current_error": "Current: not available!",
+  "newest_version": "Latest: ",
+  "newest_error": "Latest: not available!",
+  "update": "Update",
+  "server": "Server",
+  "more_info": "More Info",
+  "innotune_web": "InnoTune-Website",
+  "iconpack": "Icon pack by Icons8",
+  "hostname": "Hostname: ",
+  "port": "Port: ",
+
+  "update_title": "InnoServer Update",
+  "update_text": "Do you really want to update your system?",
+  "update_cancel": "Cancel",
+  "update_start": "Update",
+  "update_status": "Updating...",
+  "update_reboot": "Server-Reboot...",
+  "update_error_title": "Update failed",
+  "update_error_text": "An unexpected error occurred!",
+  "update_error_button": "Close",
+
+  "master_vol_text": "Select a zone to change the master volume.",
+  "equalizer_text": "Select a zone to change the equalizer settings.",
+
+  "history_empty": "No radios in history",
+  "search_placeholder": "Enter text..."
+}
