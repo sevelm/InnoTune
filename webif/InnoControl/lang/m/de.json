@@ -1,0 +1,58 @@
+{
+  "sources": "Quellen",
+  "radio": "Webradio",
+  "history": "Verlauf",
+  "favorites": "Favoriten",
+  "apps": "Apps",
+  "browser": "Medien-Browser",
+  "media": "Medien",
+
+  "zones": "Zonen",
+  "current_playlist": "aktuelle Wiedergabeliste",
+  "volume": "Laustärke",
+  "sync": "Synchronisieren",
+
+  "settings": "Einstellungen",
+  "master_volume": "Masterlautstärke",
+  "equalizer": "Equalizer",
+  "general": "Allgemein",
+  "disconnect": "Verbindung trennen",
+
+  "back": "Zurück",
+  "close": "Schließen",
+
+  "playlist": "Wiedergabeliste",
+  "link": "Koppeln",
+  "unlink": "Entkoppeln",
+  "predef_groups": "voreingestellte Gruppen",
+  "party_mode": "Party Modus (Alle Koppeln)",
+
+  "innotune_version": "InnoTune-Version",
+  "current_version": "Aktuell: ",
+  "current_error": "Aktuell: Nicht abrufbar!",
+  "newest_version": "Neueste: ",
+  "newest_error": "Neueste: Nicht abrufbar!",
+  "update": "Update",
+  "server": "Server",
+  "more_info": "Weitere Informationen",
+  "innotune_web": "InnoTune-Website",
+  "iconpack": "Icon pack by Icons8",
+  "hostname": "Hostname",
+  "port": "Port",
+
+  "update_title": "InnoServer Update",
+  "update_text": "Wollen Sie das System wirklich updaten?",
+  "update_cancel": "Abbrechen",
+  "update_start": "Updaten",
+  "update_status": "Updating...",
+  "update_reboot": "Server-Reboot...",
+  "update_error_title": "Update fehlgeschlagen",
+  "update_error_text": "Es ist ein unerwarteter Fehler aufgetreten!",
+  "update_error_button": "Verstanden",
+
+  "master_vol_text": "Wählen Sie eine Zone um die Master-Lautstärke zu regulieren.",
+  "equalizer_text": "Wählen Sie eine Zone um den Equalizer zu regulieren.",
+
+  "history_empty": "Kein Radios im Verlauf",
+  "search_placeholder": "Suchtext eingeben..."
+}
