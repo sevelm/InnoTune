@@ -68,8 +68,7 @@
     <div class="mdl-card__title">
         <h2 class="mdl-card__title-text">Soundkarten-Stummschaltung</h2>
     </div>
-    <!-- ng-if="systemCoding >= 2" -->
-    <div class="mdl-card__supporting-text mdl-grid">
+    <div class="mdl-card__supporting-text mdl-grid" ng-if="systemCoding >= 2">
         <div ng-repeat="device in devices" class="mdl-cell--12-col mdl-grid">
             <h6 class="mdl-cell--12-col"><b>Usb Gerät {{device.id}} (
                 <span ng-if="device.betrieb=='normalbetrieb'">{{device.name}}</span>
@@ -115,10 +114,10 @@
             </div>
         </div>
     </div>
-    <div class="mdl-card__supporting-text mdl-grid" ng-if="systemCoding < 0">
+    <div class="mdl-card__supporting-text mdl-grid" ng-if="systemCoding < 2">
         <p>InnoServer und InnoRack V1 verfügen nicht über die Option zur manuellen Stummschaltung.</p>
     </div>
-    <div class="mdl-card__actions mdl-card--border">
+    <div class="mdl-card__actions mdl-card--border" ng-if="systemCoding >= 2">
         <button ng-click="getAllMuteStates()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
             Aktualisieren
         </button>
