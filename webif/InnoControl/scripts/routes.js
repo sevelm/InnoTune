@@ -114,6 +114,16 @@ app.config(function ($routeProvider) {
                 }
             }
         })
+        .when("/gpio", {
+            templateUrl: "subpages/gpio.php",
+            resolve: {
+                return: function () {
+                    resetColor();
+                    document.getElementById("gpioanchor").style.backgroundColor = "#263238";
+                    document.getElementById("location").innerHTML = "GPIO";
+                }
+            }
+        })
         .otherwise({
             templateUrl: "subpages/home.php",
             resolve: {

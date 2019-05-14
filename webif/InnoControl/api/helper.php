@@ -793,4 +793,39 @@ if (isset($_GET['updatestatus'])) {
 if (isset($_GET['updaterunning'])) {
     echo shell_exec("sudo /var/www/sudoscript.sh updaterunning");
 }
+
+if (isset($_GET['readSystemCoding'])) {
+    echo file_get_contents("/opt/innotune/settings/gpio/coding");
+}
+
+if (isset($_GET['readFanOptions'])) {
+    echo file_get_contents("/opt/innotune/settings/gpio/fan_options");
+}
+
+if (isset($_GET['setFanOperation'])) {
+    $op = $_GET['op'];
+    shell_exec("sudo /var/www/sudoscript.sh fanoperation $op");
+}
+
+if (isset($_GET['setFanState'])) {
+    $state = $_GET['state'];
+    shell_exec("sudo /var/www/sudoscript.sh fanstate $state");
+}
+
+if (isset($_GET['getMuteState'])) {
+    $id = $_GET['id'];
+    echo file_get_contents("/opt/innotune/settings/gpio/mute/state$id");
+}
+
+if (isset($_GET['setMuteOperation'])) {
+    $id = $_GET['id'];
+    $op = $_GET['op'];
+    shell_exec("sudo /var/www/sudoscript.sh muteoperation $id $op");
+}
+
+if (isset($_GET['setMuteState'])) {
+    $id = $_GET['id'];
+    $state = $_GET['state'];
+    shell_exec("sudo /var/www/sudoscript.sh mutestate $id $state");
+}
 ?>

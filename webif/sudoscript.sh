@@ -102,6 +102,22 @@ case "$1" in
      resetknxradios) cp /opt/innotune/settings/knxdefaultradios.txt /opt/innotune/settings/knxradios.txt;;
      deleteGeneratedTTS) sudo rm -r /media/Soundfiles/tts/*
                          sudo mpc update;;
+     fanoperation) options=$(cat /opt/innotune/settings/gpio/fan_options)
+                   IFS=';' read -ra data <<< "$options"
+                   printf "$2;${data[1]};${data[2]}" > /opt/innotune/settings/gpio/fan_options
+                   /var/www/fanreg.sh;;
+     fanstate) options=$(cat /opt/innotune/settings/gpio/fan_options)
+                   IFS=';' read -ra data <<< "$options"
+                   printf "${data[0]};${data[1]};$2" > /opt/innotune/settings/gpio/fan_options
+                   /var/www/fanreg.sh;;
+     muteoperation) options=$(cat "/opt/innotune/settings/gpio/mute/state$2")
+                    IFS=';' read -ra data <<< "$options"
+                    printf "$3;${data[1]}" > "/opt/innotune/settings/gpio/mute/state$2"
+                    /var/www/mutereg.sh "$2";;
+     mutestate) options=$(cat "/opt/innotune/settings/gpio/mute/state$2")
+                IFS=';' read -ra data <<< "$options"
+                printf "${data[0]};$3" > "/opt/innotune/settings/gpio/mute/state$2"
+                /var/www/mutereg.sh "$2";;
     *) echo "ERROR: invalid parameter: $1 (for $0)"; exit 1 ;;
 esac
 
