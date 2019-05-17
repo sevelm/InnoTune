@@ -120,7 +120,7 @@ app.config(function ($routeProvider) {
                 return: function () {
                     resetColor();
                     document.getElementById("gpioanchor").style.backgroundColor = "#263238";
-                    document.getElementById("location").innerHTML = "GPIO";
+                    document.getElementById("location").innerHTML = "Handbetrieb";
                 }
             }
         })

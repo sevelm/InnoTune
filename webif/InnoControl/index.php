@@ -172,7 +172,7 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
             </a>
             <a id="gpioanchor" name="routeanchors" class="mdl-navigation__link" href="#gpio"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
-                role="presentation">system_update_alt</i>GPIO</a>
+                role="presentation">touch_app</i>Handbetrieb</a>
             <div class="mdl-layout-spacer"></div>
             <a id="settingsanchor" name="routeanchors" class="mdl-navigation__link" href="#settings"><i
                         class="mdl-color-text--blue-grey-400 material-icons"
@@ -209,6 +209,6 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
 <!-- Eigene Scripts-->
 <script src="scripts/app.js?version=1.0.2"></script>
 <script src="scripts/controller.js?version=1.8"></script>
-<script src="scripts/routes.js?version=1.0.4"></script>
+<script src="scripts/routes.js?version=1.0.5"></script>
 </body>
 </html>

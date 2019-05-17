@@ -39,9 +39,9 @@
 #define	FAN_PIN 26
 
 //temp to start fan 70 degrees celcius
-#define TEMP_ON 70000
+#define TEMP_ON 65000
 //temp to stop fan 65 degrees celcius
-#define TEMP_OFF 65000
+#define TEMP_OFF 60000
 // 5 sec delay
 #define DELAY_MS 5000
 
@@ -49,13 +49,15 @@
 #define MODE_RELAIS 0
 #define MODE_PWM 1
 
-int setOutputFan(int temp) {
+int setOutputFan(int temp, int currentState) {
     if (temp >= TEMP_ON) {
         digitalWrite(FAN_PIN, HIGH);
         return 1;
     } else if (temp <= TEMP_OFF) {
         digitalWrite(FAN_PIN, LOW);
         return 0;
+    } else {
+        return currentState;
     }
 }
 
@@ -123,7 +125,8 @@ int main (void) {
                         currentPinMode = MODE_RELAIS;
                         printf("Mode: OUTPUT\n");
                     }
-                    currentState = setOutputFan(temp);
+
+                    currentState = setOutputFan(temp, currentState);
                 } else if (coding >= 2) {
                     //coding 2 or higher equals InnoRack V2
                     if (currentPinMode != MODE_PWM) {

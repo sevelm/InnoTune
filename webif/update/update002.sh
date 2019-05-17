@@ -26,6 +26,11 @@ done
 
 sudo chmod -R 777 /opt/innotune/settings
 
+# kill programs so we can override the old ones
+killall fanreg
+killall mutecard
+killall readCoding
+
 #copy gpio files to the right place
 sudo cp /var/www/src/gpio/fanreg /var/www/src/fanreg
 sudo cp /var/www/src/gpio/mutecard /var/www/src/mutecard
