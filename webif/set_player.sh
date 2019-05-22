@@ -2,6 +2,8 @@
 
 if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
   #/var/www/checkpackages.sh > /dev/null 2>&1 &
+  /var/www/src/readCoding > /dev/null 2>&1 &
+  /var/www/fanreg.sh > /dev/null 2>&1 &
   /var/www/checklogports.sh > /dev/null 2>&1 &
   /var/www/validateupdate.sh > /dev/null 2>&1 &
   killall playmonitor
@@ -39,6 +41,8 @@ if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
   	MODE=$(cat /opt/innotune/settings/settings_player/dev"$i".txt | head -n1 | tail -n1)
 
       if [ "$MODE" == "1" ] ||  [ "$MODE" == "2" ]; then
+          /var/www/mutereg.sh "$i" > /dev/null 2>&1 &
+
           PLAYER=$(cat /opt/innotune/settings/settings_player/dev"$i".txt | head -n2  | tail -n1)
           PLAYERli=$(cat /opt/innotune/settings/settings_player/dev"$i".txt | head -n3  | tail -n1)
           PLAYERre=$(cat /opt/innotune/settings/settings_player/dev"$i".txt | head -n4  | tail -n1)

@@ -102,137 +102,183 @@ if ($pos1 == 1) {
     </div>
 </div>
 
-<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--top mdl-cell--8-col">
-    <div class="mdl-card__title">
-        <?php if ($tinkerboard) {
-            echo "<h2 ng-if=\"selectedDevice.id==1\" class=\"mdl-card__title-text\">HDMI-Audio</h2>" .
-                "<h2 ng-if=\"selectedDevice.id!=1&&selectedDevice!=null\" class=\"mdl-card__title-text\">InnoAmp {{formatId(selectedDevice.id-1)}}</h2>" .
-                "<h2 ng-if=\"selectedDevice==null\" class=\"mdl-card__title-text\">Soundkarte auswählen..</h2>";
-        } else {
-            echo "<h2 class=\"mdl-card__title-text\" ng-if=\"selectedDevice!=null\">InnoAmp {{formatId(selectedDevice.id)}}</h2>" .
-                "<h2 ng-if=\"selectedDevice==null\" class=\"mdl-card__title-text\">Soundkarte auswählen..</h2>";
-        } ?>
-    </div>
-    <div class="mdl-card__supporting-text">
-        <div ng-if="!selectedDevice" class="mdl-grid">
-            <h2>Wählen sie ein Gerät aus!</h2>
+<div class="mdl-grid mdl-cell mdl-cell--top mdl-cell--8-col">
+    <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--top mdl-cell--12-col">
+        <div class="mdl-card__title">
+            <?php if ($tinkerboard) {
+                echo "<h2 ng-if=\"selectedDevice.id==1\" class=\"mdl-card__title-text\">HDMI-Audio</h2>" .
+                    "<h2 ng-if=\"selectedDevice.id!=1&&selectedDevice!=null\" class=\"mdl-card__title-text\">InnoAmp {{formatId(selectedDevice.id-1)}}</h2>" .
+                    "<h2 ng-if=\"selectedDevice==null\" class=\"mdl-card__title-text\">Soundkarte auswählen..</h2>";
+            } else {
+                echo "<h2 class=\"mdl-card__title-text\" ng-if=\"selectedDevice!=null\">InnoAmp {{formatId(selectedDevice.id)}}</h2>" .
+                    "<h2 ng-if=\"selectedDevice==null\" class=\"mdl-card__title-text\">Soundkarte auswählen..</h2>";
+            } ?>
         </div>
-
-        <div ng-if="selectedDevice && !selectedDevice.offline">
-            <div class="mdl-grid">
-                <?php /*
-                        if($tinkerboard){
-                            echo "<md-option ng-if=\"opt.id!=1\" ng-value=\"opt.id\" ng-repeat=\"opt in devices\">InnoAmp {{formatId(opt.id-1)}}</md-option>";
-                        } else{
-                            echo "<md-option ng-value=\"opt.id\" ng-repeat=\"opt in devices\">InnoAmp {{formatId(opt.id)}}</md-option>";
-                        }*/ ?>
-                <h5 class="mdl-cell mdl-cell--4-col" style="padding-top: 10px">Wiedergabe auf Gerät:</h5>
-                <ul class="demo-list-control mdl-list mdl-cell--4-col md-no-underline" style="padding: 0;margin: 0">
-                    <span ng-repeat="opt in devices | orderBy : 'id'">
-                        <!-- Normalbetrieb -->
-                        <li class="mdl-list__item" ng-if="!opt.offline && opt.betrieb=='normalbetrieb'">
-                            <span class="mdl-list__item-primary-content">
-                                <span>
-                                    {{opt.name +"&nbsp"}}
-                                </span>
-                                <span ng-if="opt.lineinStatus.trim()==formatId(selectedDevice.id).trim()"
-                                      style="color: greenyellow;">(Play)</span>
-                            </span>
-                            <span ng-if="opt.betrieb=='normalbetrieb'" class="mdl-list__item-secondary-action">
-                                <label class="input-checkbox" for="checkbox{{opt.id}}">
-                                    <input id="checkbox{{opt.id}}" class="mdl-checkbox__input"
-                                           type="checkbox"
-                                           name="selectedDevices[]"
-                                           value="{{opt.id}}"
-                                           ng-click="toggleSelection(opt.id)">
-                                    <svg width="18" height="18">
-                                          <path class="checked"
-                                                d="M16,0H2C0.9,0,0,0.9,0,2v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V2C18,0.9,17.1,0,16,0z M7,14L2,9l1.4-1.4L7,11.2l7.6-7.6L16,5L7,14z"/>
-                                          <path class="indeterminate"
-                                                d="M16,0H2C0.9,0,0,0.9,0,2v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V2C18,0.9,17.1,0,16,0z M14,10H4V8h10V10z"/>
-                                          <path class="unchecked"
-                                                d="M16,2v14H2V2H16 M16,0H2C0.9,0,0,0.9,0,2v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V2C18,0.9,17.1,0,16,0z"/>
-                                    </svg>
-                                </label>
-                            </span>
-                        </li>
-
-
-                        <!--Geteilter Betrieb -->
-                        <li class="mdl-list__item" ng-if="!opt.offline && opt.betrieb=='geteilterbetrieb'">
-                            <span class="mdl-list__item-primary-content">
-                                <span>
-                                   {{opt.nameL +"&nbsp"}}
-                                </span>
-                                <span ng-if="opt.lineinStatusli.trim()==formatId(selectedDevice.id).trim()"
-                                      style="color: greenyellow;">(Play)</span>
-                            </span>
-                            <span ng-if="opt.betrieb=='geteilterbetrieb'" class="mdl-list__item-secondary-action"
-                                  style="float: right">
-                                <label class="input-checkbox" for="checkbox{{opt.id}}li">
-                                    <input id="checkbox{{opt.id}}li" class="mdl-checkbox__input"
-                                           type="checkbox"
-                                           name="selectedDevices[]"
-                                           value="{{opt.id}}li"
-                                           ng-click="toggleSelection(opt.id+'li')">
-                                    <svg width="18" height="18">
-                                          <path class="checked"
-                                                d="M16,0H2C0.9,0,0,0.9,0,2v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V2C18,0.9,17.1,0,16,0z M7,14L2,9l1.4-1.4L7,11.2l7.6-7.6L16,5L7,14z"/>
-                                          <path class="indeterminate"
-                                                d="M16,0H2C0.9,0,0,0.9,0,2v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V2C18,0.9,17.1,0,16,0z M14,10H4V8h10V10z"/>
-                                          <path class="unchecked"
-                                                d="M16,2v14H2V2H16 M16,0H2C0.9,0,0,0.9,0,2v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V2C18,0.9,17.1,0,16,0z"/>
-                                    </svg>
-                                </label>
-                            </span>
-                        </li>
-                        <li class="mdl-list__item" ng-if="!opt.offline && opt.betrieb=='geteilterbetrieb'">
-                            <span class="mdl-list__item-primary-content">
-                                <span>
-                                   {{opt.nameR +"&nbsp"}}
-                                </span>
-                                <span ng-if="opt.lineinStatusre.trim()==formatId(selectedDevice.id).trim()"
-                                      style="color: greenyellow;">(Play)</span>
-                            </span>
-                            <span ng-if="opt.betrieb=='geteilterbetrieb'" class="mdl-list__item-secondary-action"
-                                  style="float: right">
-                                <label class="input-checkbox" for="checkbox{{opt.id}}re">
-                                    <input id="checkbox{{opt.id}}re" class="mdl-checkbox__input"
-                                           type="checkbox"
-                                           name="selectedDevices[]"
-                                           value="{{opt.id}}re"
-                                           ng-click="toggleSelection(opt.id+'re')">
-                                    <svg width="18" height="18">
-                                          <path class="checked"
-                                                d="M16,0H2C0.9,0,0,0.9,0,2v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V2C18,0.9,17.1,0,16,0z M7,14L2,9l1.4-1.4L7,11.2l7.6-7.6L16,5L7,14z"/>
-                                          <path class="indeterminate"
-                                                d="M16,0H2C0.9,0,0,0.9,0,2v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V2C18,0.9,17.1,0,16,0z M14,10H4V8h10V10z"/>
-                                          <path class="unchecked"
-                                                d="M16,2v14H2V2H16 M16,0H2C0.9,0,0,0.9,0,2v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V2C18,0.9,17.1,0,16,0z"/>
-                                    </svg>
-                                </label>
-                            </span>
-                        </li>
-                    </span>
-                </ul>
+        <div class="mdl-card__supporting-text">
+            <div ng-if="!selectedDevice" class="mdl-grid">
+                <h2>Wählen sie ein Gerät aus!</h2>
             </div>
-            <hr>
-            <button ng-click="playlinein(selectedDevice.id)" ng-disabled="LineInSelection.length==0"
-                    class="mdl-button mdl-js-button mdl-js-ripple-effect" style="height: 100%; left: 30%;">
-                <i class="material-icons md-48" style="font-size: 60px">play_arrow</i>
-            </button>
-            <button ng-click="stoplinein()" ng-disabled="LineInSelection.length==0"
-                    class="mdl-button mdl-js-button mdl-js-ripple-effect"
-                    style="height: 100%; float: right; right: 30%">
-                <i class="material-icons md-48 md-inactive" style="font-size: 60px">stop</i>
-            </button>
-        </div>
 
-        <div ng-if="selectedDevice && selectedDevice.offline">
-            <p>
-                Das von Ihnen ausgewählte Gerät ist leider offline.<br>
-                Bitte wählen Sie ein anderes Gerät aus.
-            </p>
+            <div ng-if="selectedDevice && !selectedDevice.offline && selectedDevice.betrieb!='deaktiviert'">
+                <div class="mdl-grid">
+                    <?php /*
+                            if($tinkerboard){
+                                echo "<md-option ng-if=\"opt.id!=1\" ng-value=\"opt.id\" ng-repeat=\"opt in devices\">InnoAmp {{formatId(opt.id-1)}}</md-option>";
+                            } else{
+                                echo "<md-option ng-value=\"opt.id\" ng-repeat=\"opt in devices\">InnoAmp {{formatId(opt.id)}}</md-option>";
+                            }*/ ?>
+                    <h5 class="mdl-cell mdl-cell--4-col" style="padding-top: 10px">Wiedergabe auf Gerät:</h5>
+                    <ul class="demo-list-control mdl-list mdl-cell--4-col md-no-underline" style="padding: 0;margin: 0">
+                        <span ng-repeat="opt in devices | orderBy : 'id'">
+                            <!-- Normalbetrieb -->
+                            <li class="mdl-list__item" ng-if="!opt.offline && opt.betrieb=='normalbetrieb'">
+                                <span class="mdl-list__item-primary-content">
+                                    <span>
+                                        {{opt.name +"&nbsp"}}
+                                    </span>
+                                    <span ng-if="opt.lineinStatus.trim()==formatId(selectedDevice.id).trim()"
+                                          style="color: greenyellow;">(Play)</span>
+                                </span>
+                                <span ng-if="opt.betrieb=='normalbetrieb'" class="mdl-list__item-secondary-action">
+                                    <label class="input-checkbox" for="checkbox{{opt.id}}">
+                                        <input id="checkbox{{opt.id}}" class="mdl-checkbox__input"
+                                               type="checkbox"
+                                               name="selectedDevices[]"
+                                               value="{{opt.id}}"
+                                               ng-click="toggleSelection(opt.id)">
+                                        <svg width="18" height="18">
+                                              <path class="checked"
+                                                    d="M16,0H2C0.9,0,0,0.9,0,2v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V2C18,0.9,17.1,0,16,0z M7,14L2,9l1.4-1.4L7,11.2l7.6-7.6L16,5L7,14z"/>
+                                              <path class="indeterminate"
+                                                    d="M16,0H2C0.9,0,0,0.9,0,2v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V2C18,0.9,17.1,0,16,0z M14,10H4V8h10V10z"/>
+                                              <path class="unchecked"
+                                                    d="M16,2v14H2V2H16 M16,0H2C0.9,0,0,0.9,0,2v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V2C18,0.9,17.1,0,16,0z"/>
+                                        </svg>
+                                    </label>
+                                </span>
+                            </li>
+
+
+                            <!--Geteilter Betrieb -->
+                            <li class="mdl-list__item" ng-if="!opt.offline && opt.betrieb=='geteilterbetrieb'">
+                                <span class="mdl-list__item-primary-content">
+                                    <span>
+                                       {{opt.nameL +"&nbsp"}}
+                                    </span>
+                                    <span ng-if="opt.lineinStatusli.trim()==formatId(selectedDevice.id).trim()"
+                                          style="color: greenyellow;">(Play)</span>
+                                </span>
+                                <span ng-if="opt.betrieb=='geteilterbetrieb'" class="mdl-list__item-secondary-action"
+                                      style="float: right">
+                                    <label class="input-checkbox" for="checkbox{{opt.id}}li">
+                                        <input id="checkbox{{opt.id}}li" class="mdl-checkbox__input"
+                                               type="checkbox"
+                                               name="selectedDevices[]"
+                                               value="{{opt.id}}li"
+                                               ng-click="toggleSelection(opt.id+'li')">
+                                        <svg width="18" height="18">
+                                              <path class="checked"
+                                                    d="M16,0H2C0.9,0,0,0.9,0,2v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V2C18,0.9,17.1,0,16,0z M7,14L2,9l1.4-1.4L7,11.2l7.6-7.6L16,5L7,14z"/>
+                                              <path class="indeterminate"
+                                                    d="M16,0H2C0.9,0,0,0.9,0,2v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V2C18,0.9,17.1,0,16,0z M14,10H4V8h10V10z"/>
+                                              <path class="unchecked"
+                                                    d="M16,2v14H2V2H16 M16,0H2C0.9,0,0,0.9,0,2v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V2C18,0.9,17.1,0,16,0z"/>
+                                        </svg>
+                                    </label>
+                                </span>
+                            </li>
+                            <li class="mdl-list__item" ng-if="!opt.offline && opt.betrieb=='geteilterbetrieb'">
+                                <span class="mdl-list__item-primary-content">
+                                    <span>
+                                       {{opt.nameR +"&nbsp"}}
+                                    </span>
+                                    <span ng-if="opt.lineinStatusre.trim()==formatId(selectedDevice.id).trim()"
+                                          style="color: greenyellow;">(Play)</span>
+                                </span>
+                                <span ng-if="opt.betrieb=='geteilterbetrieb'" class="mdl-list__item-secondary-action"
+                                      style="float: right">
+                                    <label class="input-checkbox" for="checkbox{{opt.id}}re">
+                                        <input id="checkbox{{opt.id}}re" class="mdl-checkbox__input"
+                                               type="checkbox"
+                                               name="selectedDevices[]"
+                                               value="{{opt.id}}re"
+                                               ng-click="toggleSelection(opt.id+'re')">
+                                        <svg width="18" height="18">
+                                              <path class="checked"
+                                                    d="M16,0H2C0.9,0,0,0.9,0,2v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V2C18,0.9,17.1,0,16,0z M7,14L2,9l1.4-1.4L7,11.2l7.6-7.6L16,5L7,14z"/>
+                                              <path class="indeterminate"
+                                                    d="M16,0H2C0.9,0,0,0.9,0,2v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V2C18,0.9,17.1,0,16,0z M14,10H4V8h10V10z"/>
+                                              <path class="unchecked"
+                                                    d="M16,2v14H2V2H16 M16,0H2C0.9,0,0,0.9,0,2v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V2C18,0.9,17.1,0,16,0z"/>
+                                        </svg>
+                                    </label>
+                                </span>
+                            </li>
+                        </span>
+                    </ul>
+                </div>
+                <hr>
+                <button ng-click="playlinein(selectedDevice.id)" ng-disabled="LineInSelection.length==0"
+                        class="mdl-button mdl-js-button mdl-js-ripple-effect" style="height: 100%; left: 30%;">
+                    <i class="material-icons md-48" style="font-size: 60px">play_arrow</i>
+                </button>
+                <button ng-click="stoplinein()" ng-disabled="LineInSelection.length==0"
+                        class="mdl-button mdl-js-button mdl-js-ripple-effect"
+                        style="height: 100%; float: right; right: 30%">
+                    <i class="material-icons md-48 md-inactive" style="font-size: 60px">stop</i>
+                </button>
+            </div>
+
+            <div ng-if="selectedDevice && selectedDevice.offline">
+                <p>
+                    Das von Ihnen ausgewählte Gerät ist leider offline.<br>
+                    Bitte wählen Sie ein anderes Gerät aus.
+                </p>
+            </div>
+
+            <div ng-if="selectedDevice && selectedDevice.betrieb=='deaktiviert'">
+                <p>
+                    Das von Ihnen ausgewählte Gerät ist deaktiviert.<br>
+                    Bitte wählen Sie ein anderes Gerät aus.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--top mdl-cell--12-col">
+        <div class="mdl-card__title">
+            Lautstärke
+        </div>
+        <div class="mdl-card__supporting-text">
+            <div class="mdl-grid" ng-repeat="opt in devices | orderBy : 'id'"
+                 style="padding: 0">
+                <div class="mdl-cell mdl-cell--12-col">
+                    <b>
+                        InnoAmp {{opt.id}}
+                        <span ng-if="opt.offline"> (Offline)</span>
+                        <span ng-if="opt.betrieb=='deaktiviert'"> (Deaktiviert)</span>
+                    </b>
+                </div>
+                <div class="mdl-cell mdl-cell--12-col">
+                    <div class="mdl-grid" style="padding: 0">
+                        <md-slider-container class="mdl-cell mdl-cell--12-col"
+                            style="margin: 0" ng-if="!opt.offline && opt.betrieb!='deaktiviert'">
+                            <md-slider flex="" ng-change="changeLineInVol(opt)"
+                                       md-discrete="" min="0" max="10" step="1"
+                                       ng-model="opt.vol.linein"
+                                       id="red-slider" aria-label="linein"
+                                       ng-disabled="opt.offline || opt.betrieb=='deaktiviert'">
+                            </md-slider>
+                            <md-input-container>
+                                <input flex="" type="number" ng-change="changeLineInVol(opt)"
+                                       ng-model="opt.vol.linein"
+                                       aria-controls="red-slider" aria-label="linein"
+                                       ng-disabled="opt.offline || opt.betrieb=='deaktiviert'">
+                            </md-input-container>
+                        </md-slider-container>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

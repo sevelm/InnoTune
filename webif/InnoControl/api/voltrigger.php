@@ -32,5 +32,24 @@ if($_GET['mode'] == 'trigger') {
   if(isset($pid)) {
     exec("kill " . $pid);
   }
+} else if ($_GET['mode'] == 'reset') {
+    //stop voltrigger
+    $file = fopen("/opt/innotune/settings/voltriggerstate_" . str_replace(" ", "_", $_GET['name']) . ".txt", "r");
+    $i = 0;
+    while ($file && (($line = fgets($file)) !== false) && $i < 2) {
+      if($i == 1) {
+        $pid = $line;
+      }
+      $i = $i + 1;
+    }
+    fclose($file);
+    if(isset($pid)) {
+      exec("kill " . $pid);
+    }
+
+    //reset flag
+    $file = fopen("/opt/innotune/settings/voltriggerstate_" . str_replace(" ", "_", $_GET['name']) . ".txt", "w");
+    fwrite($file, "d\n");
+    fclose($file);
 }
 ?>

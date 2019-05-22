@@ -17,6 +17,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.playlists = [];
     $scope.playlists.vol_dev = [];
     $scope.devices = [];
+    $scope.deviceOnlineCount = 0;
     $scope.devicestmp = [];
     $scope.uploadfile = undefined;
     $scope.sysinfo = {};
@@ -60,6 +61,129 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.knxAddressPattern = /^(?:[0-9]{1,3}\.){2}[0-9]{1,3}$/;
     $scope.knxGroupPattern = /^(?:[0-9]{1,3}\/){2}[0-9]{1,3}$/;
     $scope.updatestatus = '';
+
+    $scope.systemCoding = -2;
+    $scope.systemType = 'Konnte nicht ausgelesen werden.';
+    $scope.fanOptions = {
+        typeValue: -1,
+        type: '',
+        stateValue: -1,
+        state: '',
+        manualOperation: 0,
+        newStateValue: -1
+    };
+
+    $scope.readSystemStates = function() {
+        $http.get('api/helper.php?readSystemCoding')
+              .success(function (data) {
+                  if (data !== '') {
+                      $scope.systemCoding = parseInt(data);
+                      if ($scope.systemCoding === 0) {
+                          $scope.systemType = 'InnoServer';
+                      } else if ($scope.systemCoding === 1) {
+                          $scope.systemType = 'InnoRack V1';
+                      } else if ($scope.systemCoding >= 2) {
+                          $scope.systemType = 'InnoRack V2';
+                      }
+                  } else {
+                      $scope.systemCoding = -2;
+                      $scope.systemType = 'Konnte nicht ausgelesen werden.';
+                  }
+                  $scope.readFanOptions();
+              });
+    };
+
+    $scope.readFanOptions = function() {
+        $http.get('api/helper.php?readFanOptions')
+              .success(function (csv) {
+                  if (csv !== '') {
+                      var data = csv.split(';');
+                      if (data.length !== 0) {
+                          $scope.fanOptions.manualOperation = parseInt(data[0]);
+                          $scope.fanOptions.typeValue = parseInt(data[1]);
+                          $scope.fanOptions.stateValue = parseInt(data[2]);
+                          $scope.fanOptions.newStateValue = $scope.fanOptions.stateValue;
+
+                          if ($scope.fanOptions.typeValue === 0) {
+                              $scope.fanOptions.type = 'Relais';
+                              if ($scope.fanOptions.stateValue === 0) {
+                                  $scope.fanOptions.state = 'Lüfter ausgeschaltet';
+                              } else {
+                                  $scope.fanOptions.state = 'Lüfter eingeschaltet';
+                              }
+                          } else {
+                              $scope.fanOptions.type = 'PWM';
+                              $scope.fanOptions.state = 'Lüfter läuft auf ' + ($scope.fanOptions.stateValue * 10) + ' %';
+                          }
+                      }
+                  } else {
+                      $scope.fanOptions = {
+                          typeValue: -1,
+                          type: '',
+                          stateValue: -1,
+                          state: '',
+                          manualOperation: 0,
+                          newStateValue: -1
+                      };
+                  }
+              });
+    };
+
+    $scope.setFanOperation = function() {
+        console.log('fan operation');
+        $http.get('api/helper.php?setFanOperation&op=' + $scope.fanOptions.manualOperation)
+              .success(function () {
+                  $scope.fanOptions.newStateValue = $scope.fanOptions.stateValue;
+              });
+    };
+
+    $scope.setFanState = function() {
+        console.log('fan state');
+        $http.get('api/helper.php?setFanState&state=' + $scope.fanOptions.newStateValue)
+              .success(function () {
+                  $scope.readFanOptions();
+              });
+    };
+
+    $scope.getAllMuteStates = function() {
+        for (var i = 0; i < $scope.devices.length; i++) {
+            var device = $scope.devices[i];
+            if (device.betrieb != 'deaktiviert'
+                    && device.betrieb != 'nichtverbunden') {
+                $scope.getMuteState(device);
+            }
+        }
+    };
+
+    $scope.getMuteState = function(device) {
+        console.log('get mute');
+        $http.get('api/helper.php?getMuteState&id=' + $scope.formatId(device.id))
+              .success(function (csv) {
+                  var data = csv.split(';');
+                  for (var i = 0; i < $scope.devices.length; i++) {
+                      if ($scope.devices[i].id == device.id) {
+                          $scope.devices[i].manualOperation = parseInt(data[0]);
+                          $scope.devices[i].isMuted = parseInt(data[1]);
+                      }
+                  }
+              });
+    };
+
+    $scope.setMuteOperation = function(device) {
+        console.log('mute operation');
+        $http.get('api/helper.php?setMuteOperation&id=' + $scope.formatId(device.id)
+                    + '&op=' + device.manualOperation)
+              .success(function () {
+              });
+    };
+
+    $scope.setMuteState = function(device) {
+        console.log('mute state');
+        $http.get('api/helper.php?setMuteState&id=' + $scope.formatId(device.id)
+                    + '&state=' + device.isMuted)
+              .success(function () {
+              });
+    };
 
     $scope.saveKnxSettings = function() {
         $http.get('api/helper.php?setknx&address=' + $scope.knx.address +
@@ -750,6 +874,35 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         }
       }
     };
+
+    $scope.getAllVol = function () {
+        for (var i = 0; i < $scope.devices.length; i++) {
+            $scope.getVolHttp($scope.devices[i].id);
+        }
+    };
+
+    $scope.getVolHttp = function (id) {
+        $http.get('api/helper.php?vol&dev=' + $scope.formatId(id))
+            .success(function (data) {
+                var arr = data.split(";");
+                if (data != 0) {
+                    for (var i = 0; i < $scope.devices.length; i++) {
+                        if ($scope.devices[i].id == id) {
+                            $scope.devices[i].vol.mpd = parseInt(arr[0]) / 10;
+                            $scope.devices[i].vol.squeezebox = parseInt(arr[1]) / 10;
+                            $scope.devices[i].vol.airplay = parseInt(arr[2]) / 10;
+                            $scope.devices[i].vol.linein = parseInt(arr[3]) / 10;
+                        }
+                    }
+                }
+            });
+    }
+
+    $scope.changeLineInVol = function (device) {
+        var id = $scope.formatId(device.id);
+        var value = device.vol.linein * 10;
+        $http.get('api/helper.php?vol_set&dev=' + id + '&player=LineIn&value=' + value);
+    };
     /**
      * Changes the Volume in the devices variable and sends it to the server.
      * @param {string} player chooses the player to change volume.
@@ -1224,7 +1377,9 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                                     eq: {},
                                                     path: dev[14],
                                                     oac: parseInt(dev[15]),
-                                                    display: null
+                                                    display: null,
+                                                    manualOperation: 0,
+                                                    isMuted: 0
                                                 });
                                             } else if (dev[0] == 2) {
                                                 $betrieb = "geteilterbetrieb";
@@ -1273,7 +1428,9 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                                     eq: {},
                                                     path: dev[14],
                                                     oac: parseInt(dev[15]),
-                                                    display: null
+                                                    display: null,
+                                                    manualOperation: 0,
+                                                    isMuted: 0
                                                 });
                                             } else if (parseInt(dev[0]) > 10 && parseInt(dev[0]) <= 20) {
                                                 $betrieb = "gekoppelt";
@@ -1284,7 +1441,9 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                                     linktoDevice: parseInt(dev[0]) - 10,
                                                     vol: {},
                                                     eq: {},
-                                                    display: null
+                                                    display: null,
+                                                    manualOperation: 0,
+                                                    isMuted: 0
                                                 });
                                             } else {
                                                 $betrieb = "deaktiviert";
@@ -1296,7 +1455,9 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                                     eq: {},
                                                     path: dev[14],
                                                     oac: 1,
-                                                    display: null
+                                                    display: null,
+                                                    manualOperation: 0,
+                                                    isMuted: 0
                                                 });
                                             }
 
@@ -1316,6 +1477,9 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                         console.log('waited 100 ms');
                         $scope.sortDevices();
                         $scope.createDeviceTree();
+                        $scope.getDeviceOnlineCount();
+                        $scope.getAllMuteStates();
+                        $scope.getAllVol();
                     }, 100);
                     });
             });
@@ -1329,6 +1493,16 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
 
             });
 
+    };
+
+    $scope.getDeviceOnlineCount = function() {
+        var count = 0;
+        for (var i = 0; i < $scope.devices.length; i++) {
+            if (!$scope.devices[i].offline) {
+                count++;
+            }
+        }
+        $scope.deviceOnlineCount = count;
     };
 
     $scope.sortDevices = function() {
@@ -1825,8 +1999,11 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.getUpdateValidation();
     $scope.getShairplayInstance();
     $scope.getUpdateRunning();
+    $scope.readSystemStates();
     // 4 sec
     $interval($scope.getSysInfo, 4000);
+    // 5 sec
+    $interval($scope.readSystemStates, 5000);
     // 10 sec
     $interval($scope.getUpdateRunning, 10000);
     // 10 sec
