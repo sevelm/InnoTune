@@ -200,9 +200,9 @@ if ($pos1 == 1) {
     </div>
     <div class="mdl-card__supporting-text">
         <?php if ($tinkerboard) {
-            echo "<span class=\"mdl-badge\" data-badge=\"{{devices.length-1}}\">InnoAmp's erkannt </span>";
+            echo "<span class=\"mdl-badge\" data-badge=\"{{deviceOnlineCount-1}}\">InnoAmp's erkannt </span>";
         } else {
-            echo "<span class=\"mdl-badge\" data-badge=\"{{devices.length}}\">InnoAmp's erkannt </span>";
+            echo "<span class=\"mdl-badge\" data-badge=\"{{deviceOnlineCount}}\">InnoAmp's erkannt </span>";
         } ?>
 
         <ul class="device-list mdl-list">

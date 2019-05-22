@@ -17,6 +17,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.playlists = [];
     $scope.playlists.vol_dev = [];
     $scope.devices = [];
+    $scope.deviceOnlineCount = 0;
     $scope.devicestmp = [];
     $scope.uploadfile = undefined;
     $scope.sysinfo = {};
@@ -1476,6 +1477,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                         console.log('waited 100 ms');
                         $scope.sortDevices();
                         $scope.createDeviceTree();
+                        $scope.getDeviceOnlineCount();
                         $scope.getAllMuteStates();
                         $scope.getAllVol();
                     }, 100);
@@ -1491,6 +1493,16 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
 
             });
 
+    };
+
+    $scope.getDeviceOnlineCount = function() {
+        var count = 0;
+        for (var i = 0; i < $scope.devices.length; i++) {
+            if (!$scope.devices[i].offline) {
+                count++;
+            }
+        }
+        $scope.deviceOnlineCount = count;
     };
 
     $scope.sortDevices = function() {
