@@ -7,10 +7,12 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.macPattern = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
     $scope.mntDir = /^[a-zA-Z0-9_-]*$/;
     $scope.urlPattern = /^[^\\]*$/;
-    $scope.passwordPattern = /^[a-zA-Z0-9!"§%/()=ß?'*]*$/;
+    $scope.passwordPattern = /^[a-zA-Z0-9!"§%\/()=ß?'*]*$/;
     $scope.admin = "admin";
     $scope.network = {};
-    $scope.settings = {};
+    $scope.settings = {
+        password: ''
+    };
     $scope.rssvoice = {};
     $scope.rssvoice.languages = ["de-de","en-us","fr-fr","it-it","pl-pl"];
     $scope.rssvoice.vol_dev = [];
@@ -1093,7 +1095,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             });
         $http.get('api/helper.php?wifi')
             .success(function (data) {
-                $scope.network.wifilist = data.split(";");
+                $scope.network.wifilist = Array.from(new Set(data.split(";")));
             });
     };
 
@@ -1108,11 +1110,46 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             });
     };
     $scope.setWebinterfaceSettings = function () {
-        $http.get('api/helper.php?web_settings_set&password=' + $scope.settings.password + '&port=' + $scope.settings.port);
-        $http.post('index.php')
-            .success(function () {
-                location.href = "/login.php";
-            });
+        var errorState = 0;
+        if ($scope.settings.password === undefined || $scope.settings.password.trim().length === 0) {
+            errorState = 1;
+        }
+        if ($scope.settings.port === undefined || $scope.settings.port < 80 || $scope.settings.port > 65535) {
+            errorState = errorState + 2;
+        }
+
+
+        if (errorState === 0) {
+            $http.get('api/helper.php?web_settings_set&password=' + $scope.settings.password.trim() + '&port=' + $scope.settings.port);
+            $http.post('index.php')
+                .success(function () {
+                    location.href = "/login.php";
+                });
+        } else if (errorState === 1) {
+            console.log('Passwort kann nicht gesetzt werden');
+            var confirm = $mdDialog.confirm()
+                .title('Neues Passwort ungültig!')
+                .textContent('Das neue Passwort enthält Zeichen die nicht gültig sind. Bitte geben Sie ein anderes ein.')
+                .targetEvent()
+                .ok('Verstanden')
+            $mdDialog.show(confirm);
+        } else if (errorState === 2) {
+            console.log('Port kann nicht gesetzt werden');
+            var confirm = $mdDialog.confirm()
+                .title('Neuer Port ungültig!')
+                .textContent('Der Port muss zwischen 80 und 65535 liegen!')
+                .targetEvent()
+                .ok('Verstanden')
+            $mdDialog.show(confirm);
+        } else if (errorState === 3) {
+            console.log('Passwort und Port können nicht gesetzt werden');
+            var confirm = $mdDialog.confirm()
+                .title('Neues Passwort ungültig!')
+                .textContent('Der Port muss zwischen 80 und 65535 liegen und das neue Passwort enthält Zeichen die nicht gültig sind. Bitte geben Sie ein anderes ein.')
+                .targetEvent()
+                .ok('Verstanden')
+            $mdDialog.show(confirm);
+        }
     };
 
     $scope.selectPlaylist = function (id) {
