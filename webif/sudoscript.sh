@@ -19,7 +19,8 @@ case "$1" in
                  /var/www/beta/update.sh;;
      updaterunning) upfile=$(ps ax | grep "update.sh" | grep -v grep | wc -l)
                     upfolder=$(ps ax | grep "/update/" | grep -v grep | wc -l)
-                    out=$(($upfile + $upfolder))
+                    knx=$(ps ax | grep "knxinstaller.sh" | grep -v grep | wc -l)
+                    out=$(($upfile + $upfolder + $knx))
                     echo "$out";;
      fixDependencies) sudo /var/www/checkpackages.sh
                       sudo apt-get -y install shairport-sync
