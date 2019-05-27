@@ -124,7 +124,7 @@ if (isset($_GET['stop_usbmount'])) {
                     <md-select placeholder="{{network.ssid}}" ng-model="network.ssid"
                                ng-change=""
                                class="mdl-cell md-no-underline" style="color: #545454">
-                        <md-option ng-repeat="wifiname in network.wifilist" value="{{wifiname}}">{{wifiname}}</md-option>
+                        <md-option ng-repeat="wifiname in network.wifilist track by $index" value="{{wifiname}}">{{wifiname}}</md-option>
                     </md-select>
                 </div>
                 <div class="mdl-grid">
@@ -172,32 +172,43 @@ if (isset($_GET['stop_usbmount'])) {
             <h2 class="mdl-card__title-text">Webinterface</h2>
         </div>
         <div class="mdl-card__supporting-text">
-            <div class="mdl-grid">
-                <p class="mdl-cell ">Benutzername</p>
-                <md-input-container class="md-block mdl-cell settingsW">
-                    <input style="color:gray" ng-model="admin" readonly aria-label="username">
-                </md-input-container>
-            </div>
-
-            <div class="mdl-grid">
-                <p class="mdl-cell ">Passwort</p>
-                <md-input-container class="md-block mdl-cell settingsW">
-                    <input name="password" ng-model="settings.password" type="text" aria-label="password"
-                        ng-pattern="passwordPattern" aria-controls="password-help" aria-describedby="password-help">
-                </md-input-container>
-                <div>
-                  <i class="material-icons">info</i>
-                  <md-tooltip md-direction="bottom">
-                    Erlaubte Zeichen: a-z A-Z ß 0-9 ! &quot; § % / ( ) = ? * '
-                  </md-tooltip>
+            <ng-form name="webForm">
+                <div class="mdl-grid">
+                    <p class="mdl-cell ">Benutzername</p>
+                    <md-input-container class="md-block mdl-cell settingsW">
+                        <input style="color:gray" ng-model="admin" readonly aria-label="username">
+                    </md-input-container>
                 </div>
-            </div>
-            <div class="mdl-grid">
-                <p class="mdl-cell ">Port Webinterface</p>
-                <md-input-container class="md-block mdl-cell settingsW">
-                    <input name="port" ng-model="settings.port" type="number" aria-label="port">
-                </md-input-container>
-            </div>
+
+                <div class="mdl-grid">
+                    <p class="mdl-cell ">Passwort</p>
+                    <md-input-container class="md-block mdl-cell settingsW">
+                        <input name="password" required ng-model="settings.password" type="text" aria-label="password"
+                            ng-pattern="webForm.password.$dirty && passwordPattern" aria-controls="password-help" aria-describedby="password-help">
+                    </md-input-container>
+                    <div>
+                      <i class="material-icons">info</i>
+                      <md-tooltip md-direction="bottom" style="font-size: 1em">
+                        Erlaubte Zeichen: a-z A-Z ß 0-9 ! &quot; § % / ( ) = ? * ' (Keine Leerzeichen!)
+                      </md-tooltip>
+                    </div>
+                </div>
+                <div class="mdl-grid">
+                    <span ng-show="webForm.password.$dirty && webForm.password.$invalid" style="color:red">Passwort ungültig!</span>
+                </div>
+                <div class="mdl-grid">
+                    <p class="mdl-cell ">Port Webinterface</p>
+                    <md-input-container class="md-block mdl-cell settingsW">
+                        <input name="port" required ng-model="settings.port" type="number" aria-label="port">
+                    </md-input-container>
+                    <div>
+                      <i class="material-icons">info</i>
+                      <md-tooltip md-direction="bottom" style="font-size: 1em">
+                        Erlaubte Portnummern: 80 bis 65535
+                      </md-tooltip>
+                    </div>
+                </div>
+            </ng-form>
         </div>
         <div class="mdl-card__actions mdl-card--border">
             <button ng-click="setWebinterfaceSettings()"
