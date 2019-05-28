@@ -110,37 +110,89 @@
             <tr>
                 <td><b>Wiedergabe der Playlist mit ID01:</b></td>
                 <td style="padding:0 50px 0 50px;"></td>
-                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/mpdvol.php?playlist_id=1&play=1</td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/mpdvol.php?id=1&play=1</td>
             </tr>
             <tr>
                 <td><b>Wiedergabe der Playlist mit ID02:</b></td>
                 <td></td>
-                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/mpdvol.php?playlist_id=2&play=1</td>
-            </tr>
-            <tr>
-                <td><b>Wiedergabe Repeate (Bsp. für Alarm):</b></td>
-                <td></td>
-                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/mpdvol.php?repeate=1</td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/mpdvol.php?id=2&play=1</td>
             </tr>
             <tr>
                 <td><b>Wiedergabe Stoppen:</b></td>
                 <td></td>
-                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/mpdvol.php?stop=1</td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/mpdvol.php?stop=1</td>
             </tr>
             <tr>
-                <td><b>Hintergrundlaustärke auf 50%:</b></td>
+                <td><b>Wiedergabe Repeat (Bsp. für Alarm):</b></td>
                 <td></td>
-                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/mpdvol.php?vol_sqair=50</td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/mpdvol.php?repeat=1</td>
             </tr>
             <tr>
-                <td><b>Lautstärke der Playlist mit ID01 der Zone01 auf 50%:</b></td>
+                <td><b>Playlist 01: Hintergrundlaustärke auf 50%:</b></td>
                 <td></td>
-                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/mpdvol.php?playlist_id=1&vol_play01=50</td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/mpdvol.php?id=1&vb=50</td>
             </tr>
             <tr>
-                <td><b>Lautstärke der Playlist mit ID01 der Zone02 links auf 50% rechts auf mute (0%):</b></td>
+                <td><b>Playlist 01: Lautstärke der Zone01 auf 50%:</b></td>
                 <td></td>
-                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/phpcontrol/mpdvol.php?playlist_id=1&vol_play02=50/0</td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/mpdvol.php?id=1&v01=50</td>
+            </tr>
+            <tr>
+                <td><b>Playlist 01: Lautstärke der Zone02 links auf 50% rechts auf mute (0%):</b></td>
+                <td></td>
+                <td><?php echo $_SERVER['SERVER_ADDR'] ?>/api/mpdvol.php?id=1&v02=50&lr02&vr02=0</td>
+            </tr>
+        </table>
+        <table style="margin-top: 20px">
+            <tr>
+                <td><b>Parameterliste:</b></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>play</b></td>
+                <td></td>
+                <td>Abspielen einer Playlist</td>
+            </tr>
+            <tr>
+                <td><b>stop</b></td>
+                <td></td>
+                <td>Stoppen einer Playlist</td>
+            </tr>
+            <tr>
+                <td><b>repeat</b></td>
+                <td></td>
+                <td>Wiederholen einer Playlist</td>
+            </tr>
+            <tr>
+                <td><b>id</b></td>
+                <td></td>
+                <td>ID der Playlist (Format: 1-10)</td>
+            </tr>
+            <tr>
+                <td><b>title</b></td>
+                <td></td>
+                <td>Playlisttitel setzen</td>
+            </tr>
+            <tr>
+                <td><b>vb</b></td>
+                <td></td>
+                <td>Hintergrundlautstärke (0-100)</td>
+            </tr>
+            <tr>
+                <td><b>vx</b></td>
+                <td></td>
+                <td>Lautstärke Zone x (x = 01-10) bei Angabe von Parameter lrx ist Lautstärke für linken Kanal von Zone x</td>
+            </tr>
+            <tr>
+                <td><b>lrx</b></td>
+                <td></td>
+                <td>Angabe Zone x ist im geteilten Betrieb</td>
+            </tr>
+            <tr>
+                <td><b>vrx</b></td>
+                <td></td>
+                <td>Lautstärke rechter Kanal Zone x (x = 01-10)</td>
             </tr>
         </table>
     </div>
