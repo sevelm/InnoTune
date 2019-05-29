@@ -6,33 +6,33 @@ $STOP = ($_GET["stop"]);
 $REPEAT = ($_GET["repeat"]);
 $PLAYLIST_ID = ($_GET["playlist_id"]);
 $PLAYL_TITLE = ($_GET["playlist_title"]);
-$VOL_SQAIR = trim ($_GET["vol_sqair"]);
-$VOL_PLAY01 = trim ($_GET["vol_play01"]);
-$VOL_PLAY02 = trim ($_GET["vol_play02"]);
-$VOL_PLAY03 = trim ($_GET["vol_play03"]);
-$VOL_PLAY04 = trim ($_GET["vol_play04"]);
-$VOL_PLAY05 = trim ($_GET["vol_play05"]);
-$VOL_PLAY06 = trim ($_GET["vol_play06"]);
-$VOL_PLAY07 = trim ($_GET["vol_play07"]);
-$VOL_PLAY08 = trim ($_GET["vol_play08"]);
-$VOL_PLAY09 = trim ($_GET["vol_play09"]);
-$VOL_PLAY10 = trim ($_GET["vol_play10"]);
+$VOL_SQAIR = ($_GET["vol_sqair"]);
+$VOL_PLAY01 = ($_GET["vol_play01"]);
+$VOL_PLAY02 = ($_GET["vol_play02"]);
+$VOL_PLAY03 = ($_GET["vol_play03"]);
+$VOL_PLAY04 = ($_GET["vol_play04"]);
+$VOL_PLAY05 = ($_GET["vol_play05"]);
+$VOL_PLAY06 = ($_GET["vol_play06"]);
+$VOL_PLAY07 = ($_GET["vol_play07"]);
+$VOL_PLAY08 = ($_GET["vol_play08"]);
+$VOL_PLAY09 = ($_GET["vol_play09"]);
+$VOL_PLAY10 = ($_GET["vol_play10"]);
 
 
-       if ($STOP != "") {    
+       if ($STOP != "") {
        exec("sudo /var/www/sudoscript.sh mpdstop",$output,$return_var);
        }
-          
-       if ($REPEAT != "") {    
+
+       if ($REPEAT != "") {
        exec("sudo /var/www/sudoscript.sh mpdrepeat",$output,$return_var);
        }
-      
- 
 
-     if ($PLAYLIST_ID != "") {   
 
-           $WRITE_NR = ($PLAYLIST_ID * 12) - 12 ; //Anfangsnummer für den Bereich in den geschrieben werden soll
-     
+
+     if ($PLAYLIST_ID != "") {
+
+           $WRITE_NR = ($PLAYLIST_ID * 12) - 12 ; //Anfangsnummer fï¿½r den Bereich in den geschrieben werden soll
+
            $array = file("/opt/innotune/settings/mpdvolplay.txt"); // Datei in ein Array einlesen
            if ($PLAYL_TITLE != ""){
            array_splice($array, $WRITE_NR, 1, "$PLAYL_TITLE"."\n");
@@ -72,10 +72,10 @@ $VOL_PLAY10 = trim ($_GET["vol_play10"]);
              }
            $string = implode("", $array);
            file_put_contents("/opt/innotune/settings/mpdvolplay.txt", $string);
- 
-           if ($PLAY != "") {    
+
+           if ($PLAY != "") {
            exec("sudo /var/www/sudoscript.sh mpdvolplay $PLAYLIST_ID",$output,$return_var);
              }
        }
-   
+
 ?>
