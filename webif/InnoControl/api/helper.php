@@ -99,6 +99,10 @@ if(isset($_GET['testwlan'])) {
   echo exec("sudo /var/www/sudoscript.sh testwlan \"$SSID\" \"$PSK\"");
 }
 
+if (isset($_GET['testwlanip'])) {
+    echo exec("cat /opt/wlantest.txt | grep 'bound to ' | cut -d ' ' -f3");
+}
+
 if (isset($_GET['setnet'])) {
     $DHCP = $_GET['dhcp'];
     $IP = $_GET['ip'];
