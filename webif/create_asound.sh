@@ -6,6 +6,8 @@
 
 ##########################################################
 
+echo "creating asound" > /opt/innotune/settings/updatestatus.txt
+
 /var/www/show_soundcard.sh 0
 /var/www/create_udevrule.sh
 
@@ -102,6 +104,8 @@ if [ $USB_DEV10 == 2 ]; then
 sed -e s/XXX/10/g /var/www/create_asound/asound_geteilt_XXX.conf  >> /var/www/create_asound/asound.conf
 fi
 
+echo "restarting alsa, init softvol" > /opt/innotune/settings/updatestatus.txt
+
 cp /var/www/create_asound/asound.conf /etc/asound.conf
 
 sudo alsa force-reload
@@ -129,5 +133,7 @@ done
 
 sleep 1
 killall aplay
+
+echo "config finished" > /opt/innotune/settings/updatestatus.txt
 
 exit 0

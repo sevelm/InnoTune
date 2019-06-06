@@ -20,7 +20,8 @@ case "$1" in
      updaterunning) upfile=$(ps ax | grep "update.sh" | grep -v grep | wc -l)
                     upfolder=$(ps ax | grep "/update/" | grep -v grep | wc -l)
                     knx=$(ps ax | grep "knxinstaller.sh" | grep -v grep | wc -l)
-                    out=$(($upfile + $upfolder + $knx))
+                    casound=$(ps ax | grep "create_asound.sh" | grep -v grep | wc -l)
+                    out=$(($upfile + $upfolder + $knx + $casound))
                     echo "$out";;
      fixDependencies) sudo /var/www/checkpackages.sh
                       sudo apt-get -y install shairport-sync
