@@ -104,4 +104,30 @@ fi
 
 cp /var/www/create_asound/asound.conf /etc/asound.conf
 
+sudo alsa force-reload
+
+sleep 1
+
+for i in $(seq -f "%02g" 1 10)
+do
+    aplay -B 1 -D plug:airplay"$i" > /dev/null 2>&1 & echo $!                          ### Softvol-Regler erstellen
+    aplay -B 1 -D plug:airplayli"$i" > /dev/null 2>&1 & echo $!                        ### Softvol-Regler erstellen
+    aplay -B 1 -D plug:airplayre"$i" > /dev/null 2>&1 & echo $!                        ### Softvol-Regler erstellen
+
+    aplay -B 1 -D plug:airplay_"$i" > /dev/null 2>&1 & echo $!                         ### Softvol-Regler erstellen
+    aplay -B 1 -D plug:airplayli_"$i" > /dev/null 2>&1 & echo $!                       ### Softvol-Regler erstellen
+    aplay -B 1 -D plug:airplayre_"$i" > /dev/null 2>&1 & echo $!                       ### Softvol-Regler erstellen
+
+    aplay -B 1 -D plug:LineIn"$i" > /dev/null 2>&1 & echo $!                           ### Softvol-Regler erstellen
+    aplay -B 1 -D plug:LineInli"$i" > /dev/null 2>&1 & echo $!                         ### Softvol-Regler erstellen
+    aplay -B 1 -D plug:LineInre"$i" > /dev/null 2>&1 & echo $!                         ### Softvol-Regler erstellen
+
+    aplay -B 1 -D plug:LineIn_"$i" > /dev/null 2>&1 & echo $!                          ### Softvol-Regler erstellen
+    aplay -B 1 -D plug:LineInli_"$i" > /dev/null 2>&1 & echo $!                        ### Softvol-Regler erstellen
+    aplay -B 1 -D plug:LineInre_"$i" > /dev/null 2>&1 & echo $!                        ### Softvol-Regler erstellen
+done
+
+sleep 1
+killall aplay
+
 exit 0
