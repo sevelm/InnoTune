@@ -4,6 +4,8 @@ PSK=$(cat /opt/innotune/settings/test_wpa.conf | grep 'psk="' | cut -d '"' -f2)
 sed -i "s/ssid=\"$SSID\"/ssid=\"$1\"/g" /opt/innotune/settings/test_wpa.conf
 sed -i "s/psk=\"$PSK\"/psk=\"$2\"/g" /opt/innotune/settings/test_wpa.conf
 
+echo "" > /opt/wlantest.txt
+
 killall dhclient
 killall wpa_supplicant
 

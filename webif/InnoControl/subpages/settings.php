@@ -151,6 +151,10 @@ if (isset($_GET['stop_usbmount'])) {
                       </h6>
                       </div>
                 </div>
+                <div class="mdl-grid" ng-if="network.wlan == '1'">
+                    Bei bestehender Wlan-Verbindung sollte kein Wlan-Test durchgeführt werden. Dies kann
+                    zu Komplikationen führen, sodass der Server nur mehr über die Backup-Adresse erreichbar ist.
+                </div>
               <?php } ?>
             </ng-form>
         </div>
@@ -162,7 +166,7 @@ if (isset($_GET['stop_usbmount'])) {
             <?php
             if (!(exec("cat /etc/os-release | grep Raspbian | wc -l") == 0 &&
                 exec("uname -r | grep rockchip | wc -l") == 0)) {?>
-              <button ng-click="testWlan()" ng-disabled="network.test == -1"
+              <button ng-click="testWlan()" ng-disabled="network.test == -1 || network.wlan == '1'"
                       class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
                   Wlan-Test
               </button>
