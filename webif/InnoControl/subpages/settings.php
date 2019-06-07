@@ -117,10 +117,13 @@ if (isset($_GET['stop_usbmount'])) {
                     </md-input-container>
                 </div>
                 <div class="mdl-grid">
+                    <p class="mdl-cell">Test-IP</p>
+                    <md-input-container class="md-block mdl-cell settingsN">
+                        <input id="wlanip" style="color:gray" ng-model="network.ipwlan" readonly aria-label="ipwlan">
+                    </md-input-container>
+                </div>
+                <div class="mdl-grid">
                     <p class="mdl-cell">SSID</p>
-                    <!--<md-input-container class="md-block mdl-cell settingsN">
-                        <input ng-model="network.ssid" aria-label="ssid">
-                    </md-input-container>-->
                     <md-select placeholder="{{network.ssid}}" ng-model="network.ssid"
                                ng-change=""
                                class="mdl-cell md-no-underline" style="color: #545454">
@@ -140,9 +143,13 @@ if (isset($_GET['stop_usbmount'])) {
                   <h6 ng-if="network.test == 0">
                     Wlan-Test fehlgeschlagen
                   </h6>
-                  <h6 ng-if="network.test == -1">
-                    Test läuft...
-                  </h6>
+                  <div class="mdl-grid" style="margin: 0" ng-if="network.test == -1">
+                      <md-progress-circular class="mdl-cell mdl-cell--2-col"
+                        md-mode="indeterminate" md-diameter="30"></md-progress-circular>
+                      <h6 class="mdl-cell mdl-cell--10-col">
+                        Test läuft... (Dauer ca. 1 Minute)
+                      </h6>
+                      </div>
                 </div>
               <?php } ?>
             </ng-form>
@@ -155,7 +162,7 @@ if (isset($_GET['stop_usbmount'])) {
             <?php
             if (!(exec("cat /etc/os-release | grep Raspbian | wc -l") == 0 &&
                 exec("uname -r | grep rockchip | wc -l") == 0)) {?>
-              <button ng-click="testWlan()"
+              <button ng-click="testWlan()" ng-disabled="network.test == -1"
                       class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
                   Wlan-Test
               </button>
@@ -254,4 +261,17 @@ if (isset($_GET['stop_usbmount'])) {
             </button>
         </div>
     </div>
+</div>
+
+<div class="mdl-grid mdl-cell--6-col no-spacing">
+    <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--top mdl-cell--12-col">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Ifconfig</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <?php echo str_replace("\n", "<br>", shell_exec("ifconfig")); ?>
+        </div>
+    </div>
+</div>
+<div class="mdl-grid mdl-cell--6-col no-spacing">
 </div>

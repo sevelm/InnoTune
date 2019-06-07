@@ -717,7 +717,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
 
     $scope.testWlan = function () {
         $scope.network.test = "-1";
-        $scope.network.opwlan = "";
+        $scope.network.ipwlan = "";
         $http.get('api/helper.php?testwlan' +
                   '&ssid=' + $scope.network.ssid +
                   '&psk=' + $scope.network.psk)
@@ -1103,10 +1103,6 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             .success(function (data) {
                 $scope.network.wifilist = Array.from(new Set(data.split(";")));
             });
-        $http.get('api/helper.php?testwlanip')
-          .success(function (dataIp) {
-              $scope.network.ipwlan = dataIp;
-          });
     };
 
     $scope.getWebinterfaceSettings = function () {
