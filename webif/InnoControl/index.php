@@ -61,6 +61,7 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
     <link rel="stylesheet" href="css/material.min.css" type="text/css">
     <link rel="stylesheet" href="css/styles.min.css" type="text/css">
     <link rel="stylesheet" href="css/angular-material.min.css" type="text/css">
+    <link rel="stylesheet" href="css/ie_only_main.css" type="text/css">
     <style>
         input:-webkit-autofill {
             -webkit-box-shadow: 0 0 0 1000px white inset !important;
@@ -181,7 +182,9 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
     </div>
     <main class="mdl-layout__content mdl-color--grey-100">
 
-
+        <div class="iewarning" style="display: none">
+            Bitte verwenden Sie Google Chrome/Mozilla Firefox um den vollen Funktionsumfang zu nutzen.
+        </div>
         <div ng-view id="content" class="mdl-grid">
             <!-- Here goes content through routing mechanism-->
         </div>
@@ -208,7 +211,7 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
 <script src="js/angular-material.min.js"></script>
 <!-- Eigene Scripts-->
 <script src="scripts/app.js?version=1.0.2"></script>
-<script src="scripts/controller.js?version=1.8.2"></script>
+<script src="scripts/controller.js?version=1.8.3"></script>
 <script src="scripts/routes.js?version=1.0.5"></script>
 </body>
 </html>

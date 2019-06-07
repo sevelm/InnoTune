@@ -40,6 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
     <link rel="stylesheet" href="css/material.min.css" type="text/css">
     <link rel="stylesheet" href="css/ie_only.css">
+    <link rel="stylesheet" href="css/ie_only_main.css">
     <script defer src="js/material.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <meta name="theme-color" content="#40c4ff">
@@ -59,13 +60,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body style="background-color: #333333; height: 100%; min-height:100%; position: relative">
 <header>
+    <div class="iewarning" style="display: none">Bitte verwenden Sie Google Chrome/Mozilla Firefox um den vollen Funktionsumfang zu nutzen.</div>
     <img style="margin: 1%; height: 20%; width: 20%;px" src="images/innotuneweiss.png">
 </header>
 <div class="mdl-grid">
     <div class="mdl-cell"></div>
     <div class="mdl-cell">
         <div style="margin: 0 auto; align-items: center" class="demo-card-wide mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
+            <div class="mdl-card__title login-card-title">
                 <img style="width: 50%" class="unselectable" src="images/loginlogo.png">
                 <h2 class="mdl-card__title-text unselectable" style="font-size: 28px;">InnoControl</h2>
             </div>
@@ -88,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
                 <div class="mdl-card__actions mdl-card--border">
-                    <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                    <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent login-form"
                            type="submit" value="Anmelden" style="width: 100%">
                 </div>
             </form>

@@ -48,13 +48,21 @@
             document.getElementById("text").appendChild(node);
             document.getElementById("spinner").style.visibility = "hidden";
 
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', "/api/helper.php?reboot", true);
-            xhr.send();
+            if (getParameterByName("reload") === null) {
+                window.history.pushState('reboot.php', 'InnoControl - Rebooting',
+                    document.location + '&reload=true');
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', "/api/helper.php?reboot", true);
+                xhr.send();
+            }
         } else if (getParameterByName("update") == "true") {
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', "/api/helper.php?reboot", true);
-            xhr.send();
+            if (getParameterByName("reload") === null) {
+                window.history.pushState('reboot.php', 'InnoControl - Rebooting',
+                    document.location + '&reload=true');
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', "/api/helper.php?reboot", true);
+                xhr.send();
+            }
 
             setInterval(function () {
                 $.ajax({
@@ -76,10 +84,13 @@
                 newIp = "http://" + getParameterByName("ip");
             }
 
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', "/api/helper.php?reboot", true);
-            xhr.send();
-
+            if (getParameterByName("reload") === null) {
+                window.history.pushState('reboot.php', 'InnoControl - Rebooting',
+                    document.location + '?reload=true');
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', "/api/helper.php?reboot", true);
+                xhr.send();
+            }
             setInterval(function () {
                 $.ajax({
                     url: newIp + '/index.php',
@@ -113,7 +124,3 @@
 <script src="../js/jquery-3.1.0.min.js"></script>
 </body>
 </html>
-
-
-
-

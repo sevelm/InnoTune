@@ -20,10 +20,10 @@ if [[ $DHCP ]]; then #select DHCP or STATIC mode
 auto lo
 iface lo inet loopback
 
-auto eth0
+allow-hotplug eth0
 iface eth0 inet dhcp
 
-auto wlan0
+allow-hotplug wlan0
 iface wlan0 inet dhcp
      wpa-conf /opt/innotune/settings/wpa_supplicant.conf
 
@@ -33,7 +33,7 @@ EOT
 auto lo
 iface lo inet loopback
 
-auto eth0
+allow-hotplug eth0
 iface eth0 inet dhcp
 
 EOT
@@ -44,10 +44,10 @@ else
 auto lo
 iface lo inet loopback
 
-auto eth0
+allow-hotplug eth0
 iface eth0 inet dhcp
 
-auto wlan0
+allow-hotplug wlan0
 iface wlan0 inet static
      wpa-conf /opt/innotune/settings/wpa_supplicant.conf
      address $NEW_IP
@@ -60,7 +60,7 @@ EOT
  auto lo
  iface lo inet loopback
 
- auto eth0
+ allow-hotplug eth0
  iface eth0 inet static
       address $NEW_IP
       netmask $NEW_SUBNET

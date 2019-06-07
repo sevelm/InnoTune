@@ -2,6 +2,7 @@
 
 if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
   #/var/www/checkpackages.sh > /dev/null 2>&1 &
+  /var/www/net_backup.sh > /dev/null 2>&1 &
   /var/www/src/readCoding > /dev/null 2>&1 &
   /var/www/fanreg.sh > /dev/null 2>&1 &
   /var/www/checklogports.sh > /dev/null 2>&1 &
@@ -98,33 +99,11 @@ if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
               echo 0 > /opt/innotune/settings/status_line-in/line-inre"$i".txt                    ### Line-In (mono rechts) ablöschen
               echo 0 > /opt/innotune/settings/status_line-in/line-inli"$i".txt                    ### Line-In (mono links) ablöschen
 
-
-              #aplay -f cd -D dmixer"$i" /dev/zero > /dev/null 2>&1 & echo $!                     ### Grundstille erzeugen
               amixer -c "$i" set PCM 100%       > /dev/null 2>&1                                  ### Lautstärke Setzen
-              #amixer -c sndc"$i" set PCM 100%       > /dev/null 2>&1                                  ### Lautstärke Setzen
+
               /var/www/sudoscript.sh set_vol "$i" MuteIfMPD 100       > /dev/null 2>&1            ### MPD Lautstärke setzen
               /var/www/sudoscript.sh set_vol "$i" MuteIfAirplay 100   > /dev/null 2>&1            ### (Sh)Airplay Lautstärke setzen
               /var/www/sudoscript.sh set_vol "$i" MuteIfLineIn 100    > /dev/null 2>&1            ### Line-In Lautstärke setzen
-
-              #aplay -B 1 -D plug:mpd"$i" > /dev/null 2>&1 & echo $!                              ### Softvol-Regler erstellen
-              #aplay -B 1 -D plug:mpdli"$i" > /dev/null 2>&1 & echo $!                            ### Softvol-Regler erstellen
-              #aplay -B 1 -D plug:mpdre"$i" > /dev/null 2>&1 & echo $!                            ### Softvol-Regler erstellen
-              #aplay -B 1 -D plug:squeeze_"$i" > /dev/null 2>&1 & echo $!                         ### Softvol-Regler erstellen
-              #aplay -B 1 -D plug:squeezeli_"$i" > /dev/null 2>&1 & echo $!                       ### Softvol-Regler erstellen
-              #aplay -B 1 -D plug:squeezere_"$i" > /dev/null 2>&1 & echo $!                       ### Softvol-Regler erstellen
-              #aplay -B 1 -D plug:airplay"$i" > /dev/null 2>&1 & echo $!                          ### Softvol-Regler erstellen
-              #aplay -B 1 -D plug:airplayli"$i" > /dev/null 2>&1 & echo $!                        ### Softvol-Regler erstellen
-              #aplay -B 1 -D plug:airplayre"$i" > /dev/null 2>&1 & echo $!                        ### Softvol-Regler erstellen
-              #aplay -B 1 -D plug:airplay_"$i" > /dev/null 2>&1 & echo $!                         ### Softvol-Regler erstellen
-              #aplay -B 1 -D plug:airplayli_"$i" > /dev/null 2>&1 & echo $!                       ### Softvol-Regler erstellen
-              #aplay -B 1 -D plug:airplayre_"$i" > /dev/null 2>&1 & echo $!                       ### Softvol-Regler erstellen
-              #aplay -B 1 -D plug:LineIn"$i" > /dev/null 2>&1 & echo $!                           ### Softvol-Regler erstellen
-              #aplay -B 1 -D plug:LineInli"$i" > /dev/null 2>&1 & echo $!                         ### Softvol-Regler erstellen
-              #aplay -B 1 -D plug:LineInre"$i" > /dev/null 2>&1 & echo $!                         ### Softvol-Regler erstellen
-              #aplay -B 1 -D plug:LineIn_"$i" > /dev/null 2>&1 & echo $!                          ### Softvol-Regler erstellen
-              #aplay -B 1 -D plug:LineInli_"$i" > /dev/null 2>&1 & echo $!                        ### Softvol-Regler erstellen
-              #aplay -B 1 -D plug:LineInre_"$i" > /dev/null 2>&1 & echo $!                        ### Softvol-Regler erstellen
-              killall aplay
           fi
   	fi
   done
@@ -229,12 +208,10 @@ else
               echo 0 > /opt/innotune/settings/status_line-in/line-in"$i".txt                      ### Line-In ablöschen
 
               amixer -c "$i" set PCM 100%       > /dev/null 2>&1                                  ### Lautstärke Setzen
-              #amixer -c sndc"$i" set PCM 100%       > /dev/null 2>&1
+
               /var/www/sudoscript.sh set_vol "$i" MuteIfMPD 100       > /dev/null 2>&1            ### MPD Lautstärke setzen
               /var/www/sudoscript.sh set_vol "$i" MuteIfAirplay 100   > /dev/null 2>&1            ### (Sh)Airplay Lautstärke setzen
               /var/www/sudoscript.sh set_vol "$i" MuteIfLineIn 100    > /dev/null 2>&1            ### Line-In Lautstärke setzen
-
-              #killall aplay
           fi
   	fi
   done

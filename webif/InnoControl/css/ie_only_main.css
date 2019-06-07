@@ -1,0 +1,9 @@
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .iewarning {
+        display: block !important;
+        color: white;
+        padding: 1%;
+        background-color: orange;
+        text-align: center;
+    }
+}
