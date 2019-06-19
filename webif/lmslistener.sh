@@ -1,6 +1,5 @@
 #!/bin/bash
 while read line ; do
-  echo "receviced: $line"
   IFS=' ' read -ra array <<< "$line"
   if [[ "${array[1]}" = "playlist" ]]; then
     if [[ "${array[2]}" = "open" ]] || [[ "${array[2]}" = "play" ]] || [[ "${array[2]}" = "add" ]] ||
@@ -15,6 +14,10 @@ while read line ; do
         mac=${data//%3A/:}
         printf "$mac playlist clear\nexit\n" | nc localhost 9090
       fi
+      pretty=${line//%3A/:}
+      pretty=${pretty//%2F//}
+      datetime=$(date '+%d-%m-%Y %H:%M:%S')
+      echo "$datetime $pretty" >> /var/www/InnoControl/log/lmswa.log
     fi
   fi
 done
