@@ -79,7 +79,7 @@
         <h6 class="mdl-cell mdl-cell--3-col">Gruppen-Adresse:<br>(z.B.: 1/6/6)</h6>
         <ng-form name="knxGroupForm" class="md-block mdl-cell mdl-cell--9-col">
             <md-input-container class="md-block mdl-cell mdl-cell--12-col">
-                <input aria-label="name" name="name" ng-model="knxcmd.group"
+                <input aria-label="name" name="name" ng-model="knxcmd.group" ng-required=""
                     ng-pattern="knxGroupPattern" ng-change="knxcmd.changed=true">
             </md-input-container>
             <span ng-show="knxGroupForm.name.$error.pattern" style="color:indianred">ungültige Gruppen-Adresse!</span>
@@ -193,6 +193,11 @@
                 </button>
             </div>
         </div>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <button ng-click="deleteKnxEmptyAddr()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+            Alle Befehle mit leerer Gruppe löschen
+        </button>
     </div>
 </div>
 

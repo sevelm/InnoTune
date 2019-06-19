@@ -98,6 +98,7 @@ case "$1" in
              fi;;
      installknx) /var/www/knxinstaller.sh;;
      setknxcmd) /var/www/knxeditcmd.sh "1" "$2" "$3";;
+     deleteknxemptyaddr) sed -i "/^|/d" /opt/innotune/settings/knxcmd.txt;;
      deleteknxcmd) /var/www/knxeditcmd.sh "0" "$2" "$3";;
      deleteknxradio) /var/www/knxeditradio.sh "0" "$2";;
      saveknxradio) /var/www/knxeditradio.sh "1" "$2" "$3";;
