@@ -99,6 +99,13 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             })
     }
 
+    $scope.resetWaLog = function() {
+        $http.get('api/helper.php?lmswalogreset')
+            .success(function (data) {
+
+            })
+    };
+
     $scope.readSystemStates = function() {
         $http.get('api/helper.php?readSystemCoding')
               .success(function (data) {

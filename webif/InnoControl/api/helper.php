@@ -842,6 +842,14 @@ if (isset($_GET['lmswastate'])) {
     echo file_get_contents("/opt/innotune/settings/lmswa.txt");
 }
 
+if (isset($_GET['lmswalog'])) {
+    echo str_replace("\n", "<br>", file_get_contents("/var/www/InnoControl/log/lmswa.log"));
+}
+
+if (isset($_GET['lmswalogreset'])) {
+    file_put_contents("/var/www/InnoControl/log/lmswa.log", "");
+}
+
 if (isset($_GET['sbnetio'])) {
     $zone = $_GET['zone'];
     $response = shell_exec("printf \"$zone path ?\nexit\n\" | nc -q 120 localhost 9090 | cut -f3 -d ' '");

@@ -93,6 +93,14 @@
               ng-click="setCollapseRL()" ng-if="collapseRL == true">
         Weniger Anzeigen
       </button>
+      <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+         href="/log/lmswa.log">
+          Workaround-Log
+      </a>
+      <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+            ng-click="resetWaLog()">
+          Reset Workaround-Log
+      </button>
     </div>
   </div>
 
