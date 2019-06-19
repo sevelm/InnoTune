@@ -832,4 +832,24 @@ if (isset($_GET['setMuteState'])) {
     $state = $_GET['state'];
     shell_exec("sudo /var/www/sudoscript.sh mutestate $id $state");
 }
+
+if (isset($_GET['lmswa'])) {
+    $switch = $_GET['lmswa'];
+    shell_exec("sudo /var/www/sudoscript.sh lmswa $switch");
+}
+
+if (isset($_GET['lmswastate'])) {
+    echo file_get_contents("/opt/innotune/settings/lmswa.txt");
+}
+
+if (isset($_GET['sbnetio'])) {
+    $zone = $_GET['zone'];
+    $response = shell_exec("printf \"$zone path ?\nexit\n\" | nc -q 120 localhost 9090 | cut -f3 -d ' '");
+    echo "Response: $response";
+    if (strcmp("$response", "http%3A%2F%2F21293.live.streamtheworld.com%2FWEB11_MP3_SC%3F\n") == 0
+        || strcmp("$response", "http%3A%2F%2Fstream.radiocorp.nl%2Fweb11_mp3\n") == 0) {
+        echo "<br>clearing playlist";
+        shell_exec("printf \"$zone playlist clear\nexit\n\" | nc -q 120 localhost 9090");
+    }
+}
 ?>

@@ -3,7 +3,9 @@
 if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
   #/var/www/checkpackages.sh > /dev/null 2>&1 &
   /var/www/net_backup.sh > /dev/null 2>&1 &
+  killall readCoding
   /var/www/src/readCoding > /dev/null 2>&1 &
+  killall fanreg.sh
   /var/www/fanreg.sh > /dev/null 2>&1 &
   /var/www/checklogports.sh > /dev/null 2>&1 &
   /var/www/validateupdate.sh > /dev/null 2>&1 &
@@ -215,5 +217,12 @@ else
           fi
   	fi
   done
+fi
+
+LMSWA=$(cat /opt/innotune/settings/lmswa.txt | head -n1 | tail -n1)
+if [ $LMSWA == "1" ]; then
+    echo "test"
+    sleep 5
+    printf "listen\n" | nc -q 87000 localhost 9090 | /var/www/lmslistener.sh > /dev/null 2>&1 &
 fi
 exit 0

@@ -121,6 +121,13 @@ case "$1" in
                 IFS=';' read -ra data <<< "$options"
                 printf "${data[0]};$3" > "/opt/innotune/settings/gpio/mute/state$2"
                 /var/www/mutereg.sh "$2";;
+    lmswa)
+      killall lmslistener.sh
+      printf "$2" > /opt/innotune/settings/lmswa.txt
+      if [ "$2" -eq "1" ]; then
+          printf "listen\n" | nc -q 87000 localhost 9090 | /var/www/lmslistener.sh > /dev/null 2>&1 &
+      fi
+    ;;
     *) echo "ERROR: invalid parameter: $1 (for $0)"; exit 1 ;;
 esac
 
