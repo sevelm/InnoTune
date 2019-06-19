@@ -74,6 +74,30 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         manualOperation: 0,
         newStateValue: -1
     };
+    $scope.lmswastate = false;
+
+    $scope.getLmsWaState = function() {
+        $http.get('api/helper.php?lmswastate')
+            .success(function (data) {
+                if (data !== '') {
+                    $scope.lmswastate = parseInt(data) == 1;
+                } else {
+                    $scope.lmswastate = false;
+                }
+            })
+    };
+
+    $scope.switchLmsWaState = function() {
+        $scope.lmswastate = !$scope.lmswastate;
+        var val = 0;
+        if ($scope.lmswastate) {
+            val = 1;
+        }
+        $http.get('api/helper.php?lmswa=' + val)
+            .success(function (data) {
+                $scope.getLmsWaState();
+            })
+    }
 
     $scope.readSystemStates = function() {
         $http.get('api/helper.php?readSystemCoding')

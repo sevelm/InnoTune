@@ -40,7 +40,8 @@
     </div>
   </div>
 
-  <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+  <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col"
+    ng-init="getLmsWaState()">
     <div class="mdl-card__title">
       <h2 class="mdl-card__title-text">Logitech Media Server</h2>
     </div>
@@ -59,6 +60,11 @@
         echo 'offline';
       }
       ?>
+      <h5>Workaround Random Play</h5>
+      <md-switch ng-change="switchLmsWaState()" ng-model="lmswastate" ng-true-value="true" ng-false-value="false"
+                 aria-label="Switch 1">
+
+      </md-switch>
       <h5>Reinstallations-Log</h5>
       <div ng-if="collapseRL == false">
         <?php echo str_replace("\n", "<br>", shell_exec("head -5 /var/www/InnoControl/log/reinstall_lms.log")); ?>

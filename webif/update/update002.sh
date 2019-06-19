@@ -43,6 +43,9 @@ sudo chmod -R 777 /var/www
 
 sudo cp /opt/innotune/update/cache/InnoTune/dhclient.conf /etc/dhcp/dhclient.conf
 
+sudo touch /opt/innotune/settings/lmswa.txt
+sudo chmod 777 /opt/innotune/settings/lmswa.txt
+
 # set new update count and reference to newer update file
 sudo echo "2" > /opt/innotune/settings/update_cnt.txt
 echo "100% - finished update" > /opt/innotune/settings/updatestatus.txt
