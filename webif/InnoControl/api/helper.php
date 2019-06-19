@@ -747,6 +747,10 @@ if (isset($_GET['deleteknxcmd'])) {
   echo shell_exec("sudo /var/www/sudoscript.sh deleteknxcmd \"$group\"");
 }
 
+if (isset($_GET['deleteknxemptyaddr'])) {
+  shell_exec("sudo /var/www/sudoscript.sh deleteknxemptyaddr");
+}
+
 if (isset($_GET['checkknx'])) {
     $installed = shell_exec("dpkg -s knxd | grep Status");
     if (strpos($installed, "Status: install ok installed") !== false) {

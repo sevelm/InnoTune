@@ -227,48 +227,51 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
 
     $scope.saveKnxCmd = function() {
-        if ($scope.knxcmd.type === '1' || $scope.knxcmd.type === '2') {
-            $scope.knxcmd.cmdoff = '';
-        }
-        var ampId = '';
-        var geteilt = '';
-        $scope.devices.forEach(function(device) {
-            if (device.mac !== undefined) {
-                if (device.mac == $scope.knxcmd.cmd) {
-                    ampId = device.id;
-                    geteilt = 0;
-                    console.log(ampId + ', ' + geteilt);
-                }
-            } else if (device.macL !== undefined) {
-                if (device.macL == $scope.knxcmd.cmd) {
-                    ampId = device.id;
-                    geteilt = 1;
-                    console.log(ampId + ', ' + geteilt);
-                } else if (device.macR == $scope.knxcmd.cmd) {
-                    ampId = device.id;
-                    geteilt = 2;
-                    console.log(ampId + ', ' + geteilt);
-                }
+        if ($scope.knxcmd.group !== undefined && $scope.knxcmd.group !== null &&
+            $scope.knxcmd.group !== '') {
+            if ($scope.knxcmd.type === '1' || $scope.knxcmd.type === '2') {
+                $scope.knxcmd.cmdoff = '';
             }
-        });
-        $http.get('api/helper.php?setknxcmd&group=' + $scope.knxcmd.group +
-                    '&type=' + $scope.knxcmd.type +
-                    '&cmd=' + encodeURIComponent($scope.knxcmd.cmd) +
-                    '&cmdoff=' + encodeURIComponent($scope.knxcmd.cmdoff) +
-                    '&dimmertype=' + $scope.knxcmd.dimmertype +
-                    '&amp=' + ampId +
-                    '&geteilt=' + geteilt)
-              .success(function () {
-                  $scope.knxcmd = {
-                      group: '',
-                      type: 0,
-                      cmd: '',
-                      cmdoff: '',
-                      dimmertype: 1,
-                      changed: false
-                  };
-                  $scope.getKnxCmds();
-              });
+            var ampId = '';
+            var geteilt = '';
+            $scope.devices.forEach(function(device) {
+                if (device.mac !== undefined) {
+                    if (device.mac == $scope.knxcmd.cmd) {
+                        ampId = device.id;
+                        geteilt = 0;
+                        console.log(ampId + ', ' + geteilt);
+                    }
+                } else if (device.macL !== undefined) {
+                    if (device.macL == $scope.knxcmd.cmd) {
+                        ampId = device.id;
+                        geteilt = 1;
+                        console.log(ampId + ', ' + geteilt);
+                    } else if (device.macR == $scope.knxcmd.cmd) {
+                        ampId = device.id;
+                        geteilt = 2;
+                        console.log(ampId + ', ' + geteilt);
+                    }
+                }
+            });
+            $http.get('api/helper.php?setknxcmd&group=' + $scope.knxcmd.group +
+                        '&type=' + $scope.knxcmd.type +
+                        '&cmd=' + encodeURIComponent($scope.knxcmd.cmd) +
+                        '&cmdoff=' + encodeURIComponent($scope.knxcmd.cmdoff) +
+                        '&dimmertype=' + $scope.knxcmd.dimmertype +
+                        '&amp=' + ampId +
+                        '&geteilt=' + geteilt)
+                  .success(function () {
+                      $scope.knxcmd = {
+                          group: '',
+                          type: 0,
+                          cmd: '',
+                          cmdoff: '',
+                          dimmertype: 1,
+                          changed: false
+                      };
+                      $scope.getKnxCmds();
+                  });
+        }
     };
 
     $scope.resetKnxCmd = function() {
@@ -295,6 +298,13 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
 
     $scope.deleteKnxCmd = function(cmd) {
         $http.get('api/helper.php?deleteknxcmd&group=' + cmd.group)
+              .success(function () {
+                $scope.getKnxCmds();
+              });
+    };
+
+    $scope.deleteKnxEmptyAddr = function () {
+        $http.get('api/helper.php?deleteknxemptyaddr')
               .success(function () {
                 $scope.getKnxCmds();
               });
