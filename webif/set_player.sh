@@ -2,10 +2,11 @@
 
 if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
   #/var/www/checkpackages.sh > /dev/null 2>&1 &
-  /var/www/net_backup.sh > /dev/null 2>&1 &
+  killall net_backup
+  killall mutecard
   killall readCoding
   /var/www/src/readCoding > /dev/null 2>&1 &
-  killall fanreg.sh
+  killall fanreg
   /var/www/fanreg.sh > /dev/null 2>&1 &
   /var/www/checklogports.sh > /dev/null 2>&1 &
   /var/www/validateupdate.sh > /dev/null 2>&1 &
@@ -118,6 +119,8 @@ if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
   mpc clear
   mpc add Soundfiles/Toene/1punkt5stille.mp3
   mpc play
+
+  /var/www/net_backup.sh > /dev/null 2>&1 &
 
 else
 
