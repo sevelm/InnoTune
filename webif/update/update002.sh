@@ -49,6 +49,8 @@ sudo chmod 777 /opt/innotune/settings/lmswa.txt
 sudo touch /var/www/InnoControl/log/lmswa.log
 sudo chmod 777 /var/www/InnoControl/log/lmswa.log
 
+ln -s /var/log /var/www/InnoControl/log/syslogs
+
 # set new update count and reference to newer update file
 sudo echo "2" > /opt/innotune/settings/update_cnt.txt
 echo "100% - finished update" > /opt/innotune/settings/updatestatus.txt
