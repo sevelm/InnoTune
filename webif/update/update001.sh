@@ -83,11 +83,6 @@ sudo apt-get -y install shairport-sync --force-yes
 sudo systemctl stop shairport-sync
 sudo systemctl disable shairport-sync
 
-#Spotify Connect
-sudo rm /root/librespot-linux-armhf-raspberry_pi.zip
-sudo apt-get -y install build-essential portaudio19-dev
-sudo cp /opt/innotune/update/cache/InnoTune/librespot /root/librespot
-
 #process info files
 sudo touch /opt/innotune/settings/p_shairplay
 sudo touch /opt/innotune/settings/p_squeeze
