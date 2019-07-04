@@ -37,6 +37,11 @@ sudo chmod -R 777 /opt/innotune/settings
 cp -R /opt/innotune/update/cache/InnoTune/webif/* /var/www
 sudo chmod -R 777 /var/www
 
+#Spotify Connect
+sudo rm /root/librespot-linux-armhf-raspberry_pi.zip
+sudo apt-get -y install build-essential portaudio19-dev
+sudo cp /opt/innotune/update/cache/InnoTune/librespot /root/librespot
+
 echo "30% - copied files" > /opt/innotune/settings/updatestatus.txt
 
 #InnoPlay Mobile
