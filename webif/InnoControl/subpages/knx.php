@@ -201,6 +201,149 @@
     </div>
 </div>
 
+<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell--top mdl-cell mdl-cell--12-col">
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Rückmeldungen</h2>
+    </div>
+    <div class="mdl-card__supporting-text mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+            Hier können Sie die Gruppenadressen eintragen, welche bei einer Veränderung des Status/der
+            Lautstärke einer Zone, die eine Rückmeldung erhalten sollen.
+        </div>
+
+        <div class="mdl-cell mdl-cell--3-col">
+            <b>Name</b>
+        </div>
+        <div class="mdl-cell mdl-cell--3-col">
+            <b>Mac</b>
+        </div>
+        <div class="mdl-cell mdl-cell--2-col">
+            <b>Gruppe Status</b>
+        </div>
+        <div class="mdl-cell mdl-cell--2-col">
+            <b>Gruppe Lautstärke</b>
+        </div>
+        <div class="mdl-cell mdl-cell--4-col">
+        </div>
+
+        <div ng-repeat="dev in devices"
+            class="mdl-cell mdl-cell--12-col mdl-grid"
+            style="padding: 0; margin: 0">
+            <div ng-if="dev.betrieb=='normalbetrieb'"
+                class="mdl-cell mdl-cell--12-col mdl-grid"
+                style="padding: 0; margin: 0">
+                <div class="mdl-cell mdl-cell--3-col">
+                    {{dev.name}}
+                </div>
+                <div class="mdl-cell mdl-cell--3-col">
+                    {{dev.mac}}
+                </div>
+                <div class="mdl-cell mdl-cell--2-col">
+                    <md-input-container class="md-block mdl-cell mdl-cell--12-col"
+                    style="padding: 0; margin: 0">
+                        <input aria-label="status" name="status" ng-model="dev.knx.gpstatus">
+                    </md-input-container>
+                </div>
+                <div class="mdl-cell mdl-cell--2-col">
+                    <md-input-container class="md-block mdl-cell mdl-cell--12-col"
+                    style="padding: 0; margin: 0">
+                        <input aria-label="volume" name="volume" ng-model="dev.knx.gpvolume">
+                    </md-input-container>
+                </div>
+                <div class="mdl-cell mdl-cell--1-col">
+                    <button ng-click="saveKnxCallback(dev.mac, dev.knx.gpstatus, dev.knx.gpvolume)"
+                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                        style="color:#000">
+                        <i class="material-icons">save</i>
+                    </button>
+                </div>
+                <div class="mdl-cell mdl-cell--1-col">
+                    <button ng-click="clearKnxCallback(dev.mac); dev.knx.gpstatus=''; dev.knx.gpvolume='';"
+                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                        style="color:#000">
+                        <i class="material-icons">clear</i>
+                    </button>
+                </div>
+            </div>
+            <div ng-if="dev.betrieb=='geteilterbetrieb'"
+                class="mdl-cell mdl-cell--12-col mdl-grid"
+                style="padding: 0; margin: 0">
+                <div class="mdl-cell mdl-cell--12-col mdl-grid"
+                    style="padding: 0; margin: 0">
+                    <div class="mdl-cell mdl-cell--3-col">
+                        {{dev.nameL}}
+                    </div>
+                    <div class="mdl-cell mdl-cell--3-col">
+                        {{dev.macL}}
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col">
+                        <md-input-container class="md-block mdl-cell mdl-cell--12-col"
+                        style="padding: 0; margin: 0">
+                            <input aria-label="status" name="status" ng-model="dev.knx.gpstatusL">
+                        </md-input-container>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col">
+                        <md-input-container class="md-block mdl-cell mdl-cell--12-col"
+                        style="padding: 0; margin: 0">
+                            <input aria-label="volume" name="volume" ng-model="dev.knx.gpvolumeL">
+                        </md-input-container>
+                    </div>
+                    <div class="mdl-cell mdl-cell--1-col">
+                        <button ng-click="saveKnxCallback(dev.macL, dev.knx.gpstatusL, dev.knx.gpvolumeL)"
+                            class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                            style="color:#000">
+                            <i class="material-icons">save</i>
+                        </button>
+                    </div>
+                    <div class="mdl-cell mdl-cell--1-col">
+                        <button ng-click="clearKnxCallback(dev.macL); dev.knx.gpstatusL=''; dev.knx.gpvolumeL='';"
+                            class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                            style="color:#000">
+                            <i class="material-icons">clear</i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mdl-cell mdl-cell--12-col mdl-grid"
+                    style="padding: 0; margin: 0">
+                    <div class="mdl-cell mdl-cell--3-col">
+                        {{dev.nameR}}
+                    </div>
+                    <div class="mdl-cell mdl-cell--3-col">
+                        {{dev.macR}}
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col">
+                        <md-input-container class="md-block mdl-cell mdl-cell--12-col"
+                        style="padding: 0; margin: 0">
+                            <input aria-label="status" name="status" ng-model="dev.knx.gpstatusR">
+                        </md-input-container>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col">
+                        <md-input-container class="md-block mdl-cell mdl-cell--12-col"
+                        style="padding: 0; margin: 0">
+                            <input aria-label="volume" name="volume" ng-model="dev.knx.gpvolumeR">
+                        </md-input-container>
+                    </div>
+                    <div class="mdl-cell mdl-cell--1-col">
+                        <button ng-click="saveKnxCallback(dev.macR, dev.knx.gpstatusR, dev.knx.gpvolumeR)"
+                            class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                            style="color:#000">
+                            <i class="material-icons">save</i>
+                        </button>
+                    </div>
+                    <div class="mdl-cell mdl-cell--1-col">
+                        <button ng-click="clearKnxCallback(dev.macR); dev.knx.gpstatusR=''; dev.knx.gpvolumeR='';"
+                            class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                            style="color:#000">
+                            <i class="material-icons">clear</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell--top mdl-cell mdl-cell--12-col" ng-init="getKnxRadios()">
     <div class="mdl-card__title">
         <h2 class="mdl-card__title-text">Radiosender für Dimmer</h2>

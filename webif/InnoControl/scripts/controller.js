@@ -218,6 +218,49 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
               });
     };
 
+    $scope.getKnxCallbacks = function() {
+        $http.get('api/helper.php?getKnxCallbacks')
+            .success(function (csv) {
+                var lines = csv.split('\n');
+                lines.forEach(function (element) {
+                    if (element.includes("|")) {
+                        var data = element.split("|");
+                        for(var i = 0; i < $scope.devices.length; i++) {
+                            if ($scope.devices[i].betrieb == 'normalbetrieb') {
+                                if (data[0] == $scope.devices[i].mac) {
+                                    $scope.devices[i].knx.gpstatus = data[1];
+                                    $scope.devices[i].knx.gpvolume = data[2];
+                                }
+                            } else if ($scope.devices[i].betrieb == 'geteilterbetrieb') {
+                                if (data[0] == $scope.devices[i].macL) {
+                                    $scope.devices[i].knx.gpstatusL = data[1];
+                                    $scope.devices[i].knx.gpvolumeL = data[2];
+                                } else if (data[0] == $scope.devices[i].macR) {
+                                    $scope.devices[i].knx.gpstatusR = data[1];
+                                    $scope.devices[i].knx.gpvolumeR = data[2];
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+    };
+
+    $scope.saveKnxCallback = function(mac, status, volume) {
+        $http.get('api/helper.php?saveKnxCallback&mac=' + mac +
+                    '&status=' + status + '&volume=' + volume)
+            .success(function () {
+                $scope.getKnxCallbacks();
+            });
+    };
+
+    $scope.clearKnxCallback = function(mac) {
+        $http.get('api/helper.php?clearKnxCallback&mac=' + mac)
+            .success(function () {
+                $scope.getKnxCallbacks();
+            });
+    };
+
     $scope.saveKnxSettings = function() {
         $http.get('api/helper.php?setknx&address=' + $scope.knx.address +
                     '&mode=' + $scope.knx.type)
@@ -1463,7 +1506,11 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                                     oac: parseInt(dev[15]),
                                                     display: null,
                                                     manualOperation: 0,
-                                                    isMuted: 0
+                                                    isMuted: 0,
+                                                    knx: {
+                                                        gpstatus: null,
+                                                        gpvolume: null
+                                                    }
                                                 });
                                             } else if (dev[0] == 2) {
                                                 $betrieb = "geteilterbetrieb";
@@ -1514,7 +1561,13 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                                     oac: parseInt(dev[15]),
                                                     display: null,
                                                     manualOperation: 0,
-                                                    isMuted: 0
+                                                    isMuted: 0,
+                                                    knx: {
+                                                        gpstatusL: null,
+                                                        gpvolumeL: null,
+                                                        gpstatusR: null,
+                                                        gpvolumeR: null
+                                                    }
                                                 });
                                             } else if (parseInt(dev[0]) > 10 && parseInt(dev[0]) <= 20) {
                                                 $betrieb = "gekoppelt";
@@ -1527,7 +1580,11 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                                     eq: {},
                                                     display: null,
                                                     manualOperation: 0,
-                                                    isMuted: 0
+                                                    isMuted: 0,
+                                                    knx: {
+                                                        gpstatus: null,
+                                                        gpvolume: null
+                                                    }
                                                 });
                                             } else {
                                                 $betrieb = "deaktiviert";
@@ -1541,7 +1598,11 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                                     oac: 1,
                                                     display: null,
                                                     manualOperation: 0,
-                                                    isMuted: 0
+                                                    isMuted: 0,
+                                                    knx: {
+                                                        gpstatus: null,
+                                                        gpvolume: null
+                                                    }
                                                 });
                                             }
 
@@ -1564,6 +1625,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                         $scope.getDeviceOnlineCount();
                         $scope.getAllMuteStates();
                         $scope.getAllVol();
+                        $scope.getKnxCallbacks();
                     }, 100);
                     });
             });

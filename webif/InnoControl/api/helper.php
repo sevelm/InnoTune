@@ -700,6 +700,22 @@ if (isset($_GET['checklogports'])) {
   echo shell_exec("sudo /var/www/sudoscript.sh checklogports");
 }
 
+if (isset($_GET['getKnxCallbacks'])) {
+    echo file_get_contents("/opt/innotune/settings/knxcallbacks");
+}
+
+if (isset($_GET['saveKnxCallback'])) {
+    $mac = $_GET['mac'];
+    $status = $_GET['status'];
+    $volume = $_GET['volume'];
+    shell_exec("sudo /var/www/sudoscript.sh saveKnxCallback \"$mac\" \"$status\" \"$volume\"");
+}
+
+if (isset($_GET['clearKnxCallback'])) {
+    $mac = $_GET['mac'];
+    shell_exec("sudo /var/www/sudoscript.sh clearKnxCallback \"$mac\"");
+}
+
 if (isset($_GET['startknx'])) {
   echo shell_exec("sudo /var/www/sudoscript.sh runknx " . $_GET['startknx']);
 }

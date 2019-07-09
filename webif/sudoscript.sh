@@ -91,10 +91,10 @@ case "$1" in
              #edit knx address in /etc/knxd.conf
              if [ "$3" -eq "1" ]; then
                  #KNXD_OPTS="-e $2 -E 1.1.245:1 -c -DTRS -b usb"
-                 sed -i "/^KNXD_OPTS/c\KNXD_OPTS=\"-e $2 -E 1.1.245:1 -c -DTRS -b usb\"" /etc/knxd.conf
+                 sed -i "/^KNXD_OPTS/c\KNXD_OPTS=\"-e $2 -E 1.1.245:5 -c -DTRS -b usb\"" /etc/knxd.conf
              else
-                 #KNXD_OPTS="-e $2 -E 0.0.2:8 -u /tmp/eib -b ip:"
-                 sed -i "/^KNXD_OPTS/c\KNXD_OPTS=\"-e $2 -E 1.1.245:1 -u /tmp/eib -b ip:\"" /etc/knxd.conf
+                 #KNXD_OPTS="-e $2 -E 1.1.245:5 -b ip:"
+                 sed -i "/^KNXD_OPTS/c\KNXD_OPTS=\"-e $2 -E 1.1.245:5 -b ip:\"" /etc/knxd.conf
              fi;;
      installknx) /var/www/knxinstaller.sh;;
      setknxcmd) /var/www/knxeditcmd.sh "1" "$2" "$3";;
@@ -104,6 +104,9 @@ case "$1" in
      saveknxradio) /var/www/knxeditradio.sh "1" "$2" "$3";;
      addknxradio) /var/www/knxeditradio.sh "2" "$2";;
      resetknxradios) cp /opt/innotune/settings/knxdefaultradios.txt /opt/innotune/settings/knxradios.txt;;
+     saveKnxCallback) sed -i "/$2/d" /opt/innotune/settings/knxcallbacks
+                      echo "$2|$3|$4" >> /opt/innotune/settings/knxcallbacks;;
+     clearKnxCallback) sed -i "/$2/d" /opt/innotune/settings/knxcallbacks;;
      deleteGeneratedTTS) sudo rm -r /media/Soundfiles/tts/*
                          sudo mpc update;;
      fanoperation) options=$(cat /opt/innotune/settings/gpio/fan_options)
