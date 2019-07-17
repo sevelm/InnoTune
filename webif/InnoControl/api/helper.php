@@ -769,7 +769,7 @@ if (isset($_GET['deleteknxemptyaddr'])) {
 
 if (isset($_GET['checkknx'])) {
     $installed = shell_exec("dpkg -s knxd | grep Status");
-    if (strpos($installed, "Status: install ok installed") !== false) {
+    if (strpos($installed, "Status: install ok") !== false) {
         echo "1";
     } else {
         echo "0";
