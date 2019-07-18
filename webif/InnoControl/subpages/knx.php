@@ -1,3 +1,4 @@
+<p class="mdl-cell--12-col" style="margin:0; padding:0" ng-init="getKnxVersion()">{{knxversion}}</p>
 <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell--top mdl-cell mdl-cell--12-col"
     ng-init="checkKnx()" ng-if="!knxinstalled">
     <div class="mdl-card__title">
@@ -10,6 +11,20 @@
     <div class="mdl-card__actions mdl-card--border">
         <button ng-click="installKnx()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
             Installieren
+        </button>
+    </div>
+</div>
+<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell--top mdl-cell mdl-cell--12-col"
+    ng-if="knxinstalled && knxversion != '0.12.15-1\n'">
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">KNXD-Update</h2>
+    </div>
+    <div class="mdl-card__supporting-text mdl-grid">
+        Um die Rückmeldungen-Funktion zu verwenden müssen Sie KNXD aktualisieren.
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <button ng-click="installKnx()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+            Update
         </button>
     </div>
 </div>
@@ -339,6 +354,10 @@
                         </button>
                     </div>
                 </div>
+            </div>
+            <div ng-if="dev.betrieb=='deaktiviert'" class="mdl-cell mdl-cell--12-col">
+                InnoAmp {{dev.id}} ist deaktiviert.<br>
+                Der Amp muss konfiguriert werden, damit dieser hier verwendet werden kann.
             </div>
         </div>
     </div>

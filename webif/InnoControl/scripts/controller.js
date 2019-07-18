@@ -60,6 +60,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
     $scope.knx = {type: 1, changed: false};
     $scope.knxinstalled = false;
+    $scope.knxversion = "";
     $scope.knxAddressPattern = /^(?:[0-9]{1,3}\.){2}[0-9]{1,3}$/;
     $scope.knxGroupPattern = /^(?:[0-9]{1,3}\/){2}[0-9]{1,3}$/;
     $scope.updatestatus = '';
@@ -419,6 +420,13 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                   } else {
                       $scope.knxinstalled = false;
                   }
+              });
+    };
+
+    $scope.getKnxVersion = function() {
+        $http.get('api/helper.php?knxversion')
+              .success(function (data) {
+                  $scope.knxversion = data;
               });
     };
 

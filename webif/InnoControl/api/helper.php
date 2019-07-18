@@ -776,6 +776,10 @@ if (isset($_GET['checkknx'])) {
     }
 }
 
+if (isset($_GET['knxversion'])) {
+    echo shell_exec("dpkg -s knxd | grep Version | cut -d ' ' -f2");
+}
+
 if (isset($_GET['installknx'])) {
     shell_exec("sudo /var/www/sudoscript.sh installknx");
 }

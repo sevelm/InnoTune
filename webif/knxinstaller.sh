@@ -8,8 +8,17 @@ sudo chmod -R 777 /root/knxd_0.12*
 
 #install knxd
 echo "30% - installing knxd" > /opt/innotune/settings/updatestatus.txt
+
+#if old knx is installed save knxd.conf file
+sudo mv /etc/knxd.conf /root/savedknxd.conf
+
+#dependencies
+sudo apt-get install libev4
+
 cd /root/
 sudo dpkg -i knxd_0.12*.deb knxd-tools_0.12*.deb
+
+sudo cp /root/savedknxd.conf /etc/knxd.conf
 
 echo "95% - knx installed, creating knx settings files" > /opt/innotune/settings/updatestatus.txt
 #knx rules
