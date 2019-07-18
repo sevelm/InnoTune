@@ -15,7 +15,7 @@
     </div>
 </div>
 <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell--top mdl-cell mdl-cell--12-col"
-    ng-if="knxinstalled && knxversion != '0.12.15-1\n'">
+    ng-if="knxinstalled && knxversion != '0.12.15-1'">
     <div class="mdl-card__title">
         <h2 class="mdl-card__title-text">KNXD-Update</h2>
     </div>
@@ -63,14 +63,21 @@
             <span ng-if="knx.running == 0"> Nein</span>
         </h6>
         <h6 class="mdl-cell mdl-cell--12-col">
-            Läuft:
-            <span ng-if="knx.current > 2"> Ja</span>
-            <span ng-if="knx.current == 2">
-                Nur KNX-Tool<br>
-                Überprüfen Sie die KNX-Adresse.<br>
-            </span>
-            <span ng-if="knx.current == 1"> Nur KNXD, bitte erneut starten</span>
-            <span ng-if="knx.current == 0"> Nein</span>
+            KNXD:
+            <span ng-if="knxprocess.knxd >= 1"> Running - OK</span>
+            <span ng-if="knxprocess.knxd < 1"> Not Running</span>
+        </h6>
+        <h6 class="mdl-cell mdl-cell--12-col">
+            Listener:
+            <span ng-if="knxprocess.listener > 1"> Running - Too Many Processes</span>
+            <span ng-if="knxprocess.listener == 1"> Running - OK</span>
+            <span ng-if="knxprocess.listener < 1"> Not Running</span>
+        </h6>
+        <h6 class="mdl-cell mdl-cell--12-col">
+            Callback:
+            <span ng-if="knxprocess.callback > 1"> Running - Too Many Processes</span>
+            <span ng-if="knxprocess.callback == 1"> Running - OK</span>
+            <span ng-if="knxprocess.callback < 1"> Not Running</span>
         </h6>
     </div>
     <div class="mdl-card__actions mdl-card--border">

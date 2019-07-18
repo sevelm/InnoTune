@@ -46,6 +46,11 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
 
     $scope.knxcmds = [];
     $scope.knxradios = [];
+    $scope.knxprocess = {
+        knxd: 0,
+        listener: 0,
+        callback: 0
+    }
     $scope.radioAdd = {
         name: '',
         url: ''
@@ -365,6 +370,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                 $scope.knx.interfaces = data[4];
                 $scope.getKnxCmds();
               });
+      $scope.getKnxProcess();
     };
 
     $scope.getKnxCmds = function() {
@@ -420,6 +426,16 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                   } else {
                       $scope.knxinstalled = false;
                   }
+              });
+    };
+
+    $scope.getKnxProcess = function() {
+        $http.get('api/helper.php?getknxprocess')
+              .success(function (data) {
+                  var array = data.replace("\n", "").split(";");
+                  $scope.knxprocess.knxd = array[0];
+                  $scope.knxprocess.listener = array[1];
+                  $scope.knxprocess.callback = array[2];
               });
     };
 

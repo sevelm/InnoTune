@@ -724,6 +724,12 @@ if (isset($_GET['getknx'])) {
   echo shell_exec("sudo /var/www/sudoscript.sh getknx");
 }
 
+if (isset($_GET['getknxprocess'])) {
+    echo shell_exec("ps cax | grep knxd | wc -l") . ";"
+    . shell_exec("ps cax | grep knxlistener.sh | wc -l") . ";"
+    . shell_exec("ps cax | grep knxcallback.sh | wc -l");
+}
+
 if (isset($_GET['setknx'])) {
   $address = $_GET['address'];
   $mode = $_GET['mode'];
@@ -777,7 +783,7 @@ if (isset($_GET['checkknx'])) {
 }
 
 if (isset($_GET['knxversion'])) {
-    echo shell_exec("dpkg -s knxd | grep Version | cut -d ' ' -f2");
+    echo explode("\n", shell_exec("dpkg -s knxd | grep Version | cut -d ' ' -f2"))[0];
 }
 
 if (isset($_GET['installknx'])) {
