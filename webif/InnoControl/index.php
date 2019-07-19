@@ -200,6 +200,11 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
         {{updatestatus}}
     </div>
 </div>
+<div id="loadingsymbol2" class="modal">
+    <div layout="row" layout-sm="column" layout-align="space-around">
+        <md-progress-circular md-mode="indeterminate" md-diameter="70" style="margin-top: 20%"></md-progress-circular>
+    </div>
+</div>
 <!-- Frameworks, etc.-->
 <script src="js/material.min.js"></script>
 <script src="js/jquery-3.1.0.min.js"></script>

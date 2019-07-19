@@ -683,13 +683,19 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
 
     $scope.stop_lms = function () {
-        $http.get('subpages/home.php?stop_lms');
-        location.reload();
+        document.getElementById("loadingsymbol2").style.display = "block";
+        $http.get('api/helper.php?stop_lms');
+        setTimeout(function() {
+            location.reload();
+        }, 5000);
     };
 
     $scope.start_lms = function () {
-        $http.get('subpages/home.php?start_lms');
-        location.reload();
+        document.getElementById("loadingsymbol2").style.display = "block";
+        $http.get('api/helper.php?start_lms');
+        setTimeout(function() {
+            location.reload();
+        }, 5000);
     };
 
 

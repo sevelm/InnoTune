@@ -1,4 +1,5 @@
 <?php
+// Deprecated (Functions are in helper.php now)
 if (isset($_GET['stop_lms'])) {
     exec("sudo /var/www/sudoscript.sh stop_lms");
 }

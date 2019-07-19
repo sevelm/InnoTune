@@ -22,6 +22,13 @@ if (isset($_GET['reset_lms'])) {
     echo exec("sudo /var/www/sudoscript.sh reset_lms");
 }
 
+if (isset($_GET['stop_lms'])) {
+    exec("sudo /var/www/sudoscript.sh stop_lms");
+}
+if (isset($_GET['start_lms'])) {
+    exec("sudo /var/www/sudoscript.sh start_lms");
+}
+
 if (isset($_GET['check_lms'])) {
   $datei = "/opt/innotune/settings/logitechmediaserver.txt"; // Name der Datei
   $array_lms = file($datei); // Datei in ein Array einlesen

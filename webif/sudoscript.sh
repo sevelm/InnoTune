@@ -49,10 +49,19 @@ case "$1" in
               mpc repeat off;;
      mpdrepeat) mpc repeat on;;
      reboot) reboot;;
-     reset_lms) /etc/init.d/logitechmediaserver stop & update-rc.d logitechmediaserver remove  & killall squeezeboxserver
+     reset_lms) update-rc.d logitechmediaserver remove
+                /etc/init.d/logitechmediaserver stop
+                kill $(ps cax | grep squeezeboxserve | awk '{print $1}')
                 rm /var/lib/squeezeboxserver/prefs/server.prefs;;
-     stop_lms) /etc/init.d/logitechmediaserver stop & update-rc.d logitechmediaserver remove  & killall squeezeboxserver;;
-     start_lms) /etc/init.d/logitechmediaserver start;;
+     stop_lms) update-rc.d logitechmediaserver remove
+               /etc/init.d/logitechmediaserver stop
+               kill $(ps cax | grep squeezeboxserve | awk '{print $1}');;
+     start_lms) /etc/init.d/logitechmediaserver start
+                killall knxcallback.sh
+                run=$(cat /opt/innotune/settings/knxrun.txt)
+                if [[ "$run" -eq 1 ]]; then
+                    bash -c 'sleep 15; printf "listen\n" | nc -q 87000 localhost 9090 | /var/www/knxcallback.sh 2>&1 /dev/null &' &
+                fi;;
      start_sendudp) /etc/init.d/sendUDP start & update-rc.d sendUDP defaults;;
      stop_sendudp) /etc/init.d/sendUDP stop & update-rc.d sendUDP remove;;
      password) echo admin:"$(cat /opt/innotune/settings/web_settings.txt | head -n1  | tail -n1)">/opt/innotune/settings/password.txt
