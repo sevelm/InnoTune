@@ -22,6 +22,13 @@ if (isset($_GET['reset_lms'])) {
     echo exec("sudo /var/www/sudoscript.sh reset_lms");
 }
 
+if (isset($_GET['stop_lms'])) {
+    exec("sudo /var/www/sudoscript.sh stop_lms");
+}
+if (isset($_GET['start_lms'])) {
+    exec("sudo /var/www/sudoscript.sh start_lms");
+}
+
 if (isset($_GET['check_lms'])) {
   $datei = "/opt/innotune/settings/logitechmediaserver.txt"; // Name der Datei
   $array_lms = file($datei); // Datei in ein Array einlesen
@@ -544,6 +551,10 @@ if (isset($_GET['update'])) {
     exec("sudo /var/www/sudoscript.sh update", $output, $return_var);
 }
 
+if (isset($_GET['updateLms'])) {
+    exec("sudo /var/www/sudoscript.sh updateLms", $output, $return_var);
+}
+
 if (isset($_GET['fullupdate'])) {
     exec("sudo /var/www/sudoscript.sh fullupdate", $output, $return_var);
 }
@@ -700,12 +711,34 @@ if (isset($_GET['checklogports'])) {
   echo shell_exec("sudo /var/www/sudoscript.sh checklogports");
 }
 
+if (isset($_GET['getKnxCallbacks'])) {
+    echo file_get_contents("/opt/innotune/settings/knxcallbacks");
+}
+
+if (isset($_GET['saveKnxCallback'])) {
+    $mac = $_GET['mac'];
+    $status = $_GET['status'];
+    $volume = $_GET['volume'];
+    shell_exec("sudo /var/www/sudoscript.sh saveKnxCallback \"$mac\" \"$status\" \"$volume\"");
+}
+
+if (isset($_GET['clearKnxCallback'])) {
+    $mac = $_GET['mac'];
+    shell_exec("sudo /var/www/sudoscript.sh clearKnxCallback \"$mac\"");
+}
+
 if (isset($_GET['startknx'])) {
   echo shell_exec("sudo /var/www/sudoscript.sh runknx " . $_GET['startknx']);
 }
 
 if (isset($_GET['getknx'])) {
   echo shell_exec("sudo /var/www/sudoscript.sh getknx");
+}
+
+if (isset($_GET['getknxprocess'])) {
+    echo shell_exec("ps cax | grep knxd | wc -l") . ";"
+    . shell_exec("ps cax | grep knxlistener.sh | wc -l") . ";"
+    . shell_exec("ps cax | grep knxcallback.sh | wc -l");
 }
 
 if (isset($_GET['setknx'])) {
@@ -753,11 +786,15 @@ if (isset($_GET['deleteknxemptyaddr'])) {
 
 if (isset($_GET['checkknx'])) {
     $installed = shell_exec("dpkg -s knxd | grep Status");
-    if (strpos($installed, "Status: install ok installed") !== false) {
+    if (strpos($installed, "Status: install ok") !== false) {
         echo "1";
     } else {
         echo "0";
     }
+}
+
+if (isset($_GET['knxversion'])) {
+    echo explode("\n", shell_exec("dpkg -s knxd | grep Version | cut -d ' ' -f2"))[0];
 }
 
 if (isset($_GET['installknx'])) {

@@ -46,6 +46,11 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
 
     $scope.knxcmds = [];
     $scope.knxradios = [];
+    $scope.knxprocess = {
+        knxd: 0,
+        listener: 0,
+        callback: 0
+    }
     $scope.radioAdd = {
         name: '',
         url: ''
@@ -60,6 +65,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
     $scope.knx = {type: 1, changed: false};
     $scope.knxinstalled = false;
+    $scope.knxversion = "";
     $scope.knxAddressPattern = /^(?:[0-9]{1,3}\.){2}[0-9]{1,3}$/;
     $scope.knxGroupPattern = /^(?:[0-9]{1,3}\/){2}[0-9]{1,3}$/;
     $scope.updatestatus = '';
@@ -218,6 +224,49 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
               });
     };
 
+    $scope.getKnxCallbacks = function() {
+        $http.get('api/helper.php?getKnxCallbacks')
+            .success(function (csv) {
+                var lines = csv.split('\n');
+                lines.forEach(function (element) {
+                    if (element.includes("|")) {
+                        var data = element.split("|");
+                        for(var i = 0; i < $scope.devices.length; i++) {
+                            if ($scope.devices[i].betrieb == 'normalbetrieb') {
+                                if (data[0] == $scope.devices[i].mac) {
+                                    $scope.devices[i].knx.gpstatus = data[1];
+                                    $scope.devices[i].knx.gpvolume = data[2];
+                                }
+                            } else if ($scope.devices[i].betrieb == 'geteilterbetrieb') {
+                                if (data[0] == $scope.devices[i].macL) {
+                                    $scope.devices[i].knx.gpstatusL = data[1];
+                                    $scope.devices[i].knx.gpvolumeL = data[2];
+                                } else if (data[0] == $scope.devices[i].macR) {
+                                    $scope.devices[i].knx.gpstatusR = data[1];
+                                    $scope.devices[i].knx.gpvolumeR = data[2];
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+    };
+
+    $scope.saveKnxCallback = function(mac, status, volume) {
+        $http.get('api/helper.php?saveKnxCallback&mac=' + mac +
+                    '&status=' + status + '&volume=' + volume)
+            .success(function () {
+                $scope.getKnxCallbacks();
+            });
+    };
+
+    $scope.clearKnxCallback = function(mac) {
+        $http.get('api/helper.php?clearKnxCallback&mac=' + mac)
+            .success(function () {
+                $scope.getKnxCallbacks();
+            });
+    };
+
     $scope.saveKnxSettings = function() {
         $http.get('api/helper.php?setknx&address=' + $scope.knx.address +
                     '&mode=' + $scope.knx.type)
@@ -321,6 +370,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                 $scope.knx.interfaces = data[4];
                 $scope.getKnxCmds();
               });
+      $scope.getKnxProcess();
     };
 
     $scope.getKnxCmds = function() {
@@ -376,6 +426,23 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                   } else {
                       $scope.knxinstalled = false;
                   }
+              });
+    };
+
+    $scope.getKnxProcess = function() {
+        $http.get('api/helper.php?getknxprocess')
+              .success(function (data) {
+                  var array = data.replace("\n", "").split(";");
+                  $scope.knxprocess.knxd = array[0];
+                  $scope.knxprocess.listener = array[1];
+                  $scope.knxprocess.callback = array[2];
+              });
+    };
+
+    $scope.getKnxVersion = function() {
+        $http.get('api/helper.php?knxversion')
+              .success(function (data) {
+                  $scope.knxversion = data;
               });
     };
 
@@ -616,13 +683,19 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
 
     $scope.stop_lms = function () {
-        $http.get('subpages/home.php?stop_lms');
-        location.reload();
+        document.getElementById("loadingsymbol2").style.display = "block";
+        $http.get('api/helper.php?stop_lms');
+        setTimeout(function() {
+            location.reload();
+        }, 5000);
     };
 
     $scope.start_lms = function () {
-        $http.get('subpages/home.php?start_lms');
-        location.reload();
+        document.getElementById("loadingsymbol2").style.display = "block";
+        $http.get('api/helper.php?start_lms');
+        setTimeout(function() {
+            location.reload();
+        }, 5000);
     };
 
 
@@ -1463,7 +1536,11 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                                     oac: parseInt(dev[15]),
                                                     display: null,
                                                     manualOperation: 0,
-                                                    isMuted: 0
+                                                    isMuted: 0,
+                                                    knx: {
+                                                        gpstatus: null,
+                                                        gpvolume: null
+                                                    }
                                                 });
                                             } else if (dev[0] == 2) {
                                                 $betrieb = "geteilterbetrieb";
@@ -1514,7 +1591,13 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                                     oac: parseInt(dev[15]),
                                                     display: null,
                                                     manualOperation: 0,
-                                                    isMuted: 0
+                                                    isMuted: 0,
+                                                    knx: {
+                                                        gpstatusL: null,
+                                                        gpvolumeL: null,
+                                                        gpstatusR: null,
+                                                        gpvolumeR: null
+                                                    }
                                                 });
                                             } else if (parseInt(dev[0]) > 10 && parseInt(dev[0]) <= 20) {
                                                 $betrieb = "gekoppelt";
@@ -1527,7 +1610,11 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                                     eq: {},
                                                     display: null,
                                                     manualOperation: 0,
-                                                    isMuted: 0
+                                                    isMuted: 0,
+                                                    knx: {
+                                                        gpstatus: null,
+                                                        gpvolume: null
+                                                    }
                                                 });
                                             } else {
                                                 $betrieb = "deaktiviert";
@@ -1541,7 +1628,11 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                                     oac: 1,
                                                     display: null,
                                                     manualOperation: 0,
-                                                    isMuted: 0
+                                                    isMuted: 0,
+                                                    knx: {
+                                                        gpstatus: null,
+                                                        gpvolume: null
+                                                    }
                                                 });
                                             }
 
@@ -1564,6 +1655,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                         $scope.getDeviceOnlineCount();
                         $scope.getAllMuteStates();
                         $scope.getAllVol();
+                        $scope.getKnxCallbacks();
                     }, 100);
                     });
             });
@@ -1823,6 +1915,23 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             document.getElementById("loadingsymbol").style.display = "block";
             $scope.updatestatus = '0% - starting update';
             $http.get('api/helper.php?update').success(function () {
+                location.href = "/scripts/reboot.php?update=true"
+            });
+        });
+    };
+
+    $scope.updateLms = function () {
+        var update = $mdDialog.confirm()
+            .title('Bist du sicher?')
+            .textContent('Update auf neue Version! Der Server wird neu gestartet, dies kann mehrere Minuten dauern!.')
+            .ariaLabel('Update!')
+            .targetEvent()
+            .ok('Ok')
+            .cancel('Abbrechen');
+        $mdDialog.show(update).then(function () {
+            document.getElementById("loadingsymbol").style.display = "block";
+            $scope.updatestatus = '';
+            $http.get('api/helper.php?updateLms').success(function () {
                 location.href = "/scripts/reboot.php?update=true"
             });
         });

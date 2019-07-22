@@ -36,7 +36,7 @@ if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
   fi
 
   KNX=$(cat /opt/innotune/settings/knxrun.txt)
-  sudo /var/www/knxrun.sh $KNX
+  sudo /var/www/knxrun.sh $KNX "upstart"
 
   for i in $(seq -f "%02g" 1 10)
   do

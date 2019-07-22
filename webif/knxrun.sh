@@ -12,11 +12,18 @@ if [[ "$var" -eq 1 ]]; then
   echo "1" > /opt/innotune/settings/knxrun.txt
   killall knxtool
   killall knxlistener.sh
+  killall knxcallback.sh
   systemctl restart knxd
+
   knxtool groupsocketlisten local: | /var/www/knxlistener.sh 2>&1 /dev/null &
+  if [ "$#" -gt 1 ]; then
+    sleep 15
+  fi
+  printf "listen\n" | nc -q 87000 localhost 9090 | /var/www/knxcallback.sh 2>&1 /dev/null &
 else
   echo "0" > /opt/innotune/settings/knxrun.txt
   killall knxtool
   killall knxlistener.sh
+  killall knxcallback.sh
   systemctl stop knxd
 fi

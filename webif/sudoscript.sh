@@ -17,6 +17,7 @@ case "$1" in
      updateKernel) /var/www/kernel/update.sh;;
      updateBeta) /var/www/update.sh
                  /var/www/beta/update.sh;;
+     updateLms) sudo dpkg -i /var/lib/squeezeboxserver/cache/updates/logitechmediaserver_7.9.1_arm.deb;;
      updaterunning) upfile=$(ps ax | grep "update.sh" | grep -v grep | wc -l)
                     upfolder=$(ps ax | grep "/update/" | grep -v grep | wc -l)
                     knx=$(ps ax | grep "knxinstaller.sh" | grep -v grep | wc -l)
@@ -49,10 +50,19 @@ case "$1" in
               mpc repeat off;;
      mpdrepeat) mpc repeat on;;
      reboot) reboot;;
-     reset_lms) /etc/init.d/logitechmediaserver stop & update-rc.d logitechmediaserver remove  & killall squeezeboxserver
+     reset_lms) update-rc.d logitechmediaserver remove
+                /etc/init.d/logitechmediaserver stop
+                kill $(ps cax | grep squeezeboxserve | awk '{print $1}')
                 rm /var/lib/squeezeboxserver/prefs/server.prefs;;
-     stop_lms) /etc/init.d/logitechmediaserver stop & update-rc.d logitechmediaserver remove  & killall squeezeboxserver;;
-     start_lms) /etc/init.d/logitechmediaserver start;;
+     stop_lms) update-rc.d logitechmediaserver remove
+               /etc/init.d/logitechmediaserver stop
+               kill $(ps cax | grep squeezeboxserve | awk '{print $1}');;
+     start_lms) /etc/init.d/logitechmediaserver start
+                killall knxcallback.sh
+                run=$(cat /opt/innotune/settings/knxrun.txt)
+                if [[ "$run" -eq 1 ]]; then
+                    bash -c 'sleep 15; printf "listen\n" | nc -q 87000 localhost 9090 | /var/www/knxcallback.sh 2>&1 /dev/null &' &
+                fi;;
      start_sendudp) /etc/init.d/sendUDP start & update-rc.d sendUDP defaults;;
      stop_sendudp) /etc/init.d/sendUDP stop & update-rc.d sendUDP remove;;
      password) echo admin:"$(cat /opt/innotune/settings/web_settings.txt | head -n1  | tail -n1)">/opt/innotune/settings/password.txt
@@ -91,10 +101,10 @@ case "$1" in
              #edit knx address in /etc/knxd.conf
              if [ "$3" -eq "1" ]; then
                  #KNXD_OPTS="-e $2 -E 1.1.245:1 -c -DTRS -b usb"
-                 sed -i "/^KNXD_OPTS/c\KNXD_OPTS=\"-e $2 -E 1.1.245:1 -c -DTRS -b usb\"" /etc/knxd.conf
+                 sed -i "/^KNXD_OPTS/c\KNXD_OPTS=\"-e $2 -E 1.1.245:5 -c -DTRS -b usb\"" /etc/knxd.conf
              else
-                 #KNXD_OPTS="-e $2 -E 0.0.2:8 -u /tmp/eib -b ip:"
-                 sed -i "/^KNXD_OPTS/c\KNXD_OPTS=\"-e $2 -E 1.1.245:1 -u /tmp/eib -b ip:\"" /etc/knxd.conf
+                 #KNXD_OPTS="-e $2 -E 1.1.245:5 -b ip:"
+                 sed -i "/^KNXD_OPTS/c\KNXD_OPTS=\"-e $2 -E 1.1.245:5 -b ip:\"" /etc/knxd.conf
              fi;;
      installknx) /var/www/knxinstaller.sh;;
      setknxcmd) /var/www/knxeditcmd.sh "1" "$2" "$3";;
@@ -104,6 +114,9 @@ case "$1" in
      saveknxradio) /var/www/knxeditradio.sh "1" "$2" "$3";;
      addknxradio) /var/www/knxeditradio.sh "2" "$2";;
      resetknxradios) cp /opt/innotune/settings/knxdefaultradios.txt /opt/innotune/settings/knxradios.txt;;
+     saveKnxCallback) sed -i "/$2/d" /opt/innotune/settings/knxcallbacks
+                      echo "$2|$3|$4" >> /opt/innotune/settings/knxcallbacks;;
+     clearKnxCallback) sed -i "/$2/d" /opt/innotune/settings/knxcallbacks;;
      deleteGeneratedTTS) sudo rm -r /media/Soundfiles/tts/*
                          sudo mpc update;;
      fanoperation) options=$(cat /opt/innotune/settings/gpio/fan_options)

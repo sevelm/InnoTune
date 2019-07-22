@@ -1,3 +1,4 @@
+<p class="mdl-cell--12-col" style="margin:0; padding:0" ng-init="getKnxVersion()">{{knxversion}}</p>
 <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell--top mdl-cell mdl-cell--12-col"
     ng-init="checkKnx()" ng-if="!knxinstalled">
     <div class="mdl-card__title">
@@ -10,6 +11,20 @@
     <div class="mdl-card__actions mdl-card--border">
         <button ng-click="installKnx()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
             Installieren
+        </button>
+    </div>
+</div>
+<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell--top mdl-cell mdl-cell--12-col"
+    ng-if="knxinstalled && knxversion != '0.12.15-1'">
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">KNXD-Update</h2>
+    </div>
+    <div class="mdl-card__supporting-text mdl-grid">
+        Um die Rückmeldungen-Funktion zu verwenden müssen Sie KNXD aktualisieren.
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <button ng-click="installKnx()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+            Update
         </button>
     </div>
 </div>
@@ -48,14 +63,21 @@
             <span ng-if="knx.running == 0"> Nein</span>
         </h6>
         <h6 class="mdl-cell mdl-cell--12-col">
-            Läuft:
-            <span ng-if="knx.current > 2"> Ja</span>
-            <span ng-if="knx.current == 2">
-                Nur KNX-Tool<br>
-                Überprüfen Sie die KNX-Adresse.<br>
-            </span>
-            <span ng-if="knx.current == 1"> Nur KNXD, bitte erneut starten</span>
-            <span ng-if="knx.current == 0"> Nein</span>
+            KNXD:
+            <span ng-if="knxprocess.knxd >= 1"> Running - OK</span>
+            <span ng-if="knxprocess.knxd < 1"> Not Running</span>
+        </h6>
+        <h6 class="mdl-cell mdl-cell--12-col">
+            Listener:
+            <span ng-if="knxprocess.listener > 1"> Running - Too Many Processes</span>
+            <span ng-if="knxprocess.listener == 1"> Running - OK</span>
+            <span ng-if="knxprocess.listener < 1"> Not Running</span>
+        </h6>
+        <h6 class="mdl-cell mdl-cell--12-col">
+            Callback:
+            <span ng-if="knxprocess.callback > 1"> Running - Too Many Processes</span>
+            <span ng-if="knxprocess.callback == 1"> Running - OK</span>
+            <span ng-if="knxprocess.callback < 1"> Not Running</span>
         </h6>
     </div>
     <div class="mdl-card__actions mdl-card--border">
@@ -198,6 +220,153 @@
         <button ng-click="deleteKnxEmptyAddr()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
             Alle Befehle mit leerer Gruppe löschen
         </button>
+    </div>
+</div>
+
+<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell--top mdl-cell mdl-cell--12-col">
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Rückmeldungen</h2>
+    </div>
+    <div class="mdl-card__supporting-text mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+            Hier können Sie die Gruppenadressen eintragen, welche bei einer Veränderung des Status/der
+            Lautstärke einer Zone, die eine Rückmeldung erhalten sollen.
+        </div>
+
+        <div class="mdl-cell mdl-cell--3-col">
+            <b>Name</b>
+        </div>
+        <div class="mdl-cell mdl-cell--3-col">
+            <b>Mac</b>
+        </div>
+        <div class="mdl-cell mdl-cell--2-col">
+            <b>Gruppe Status</b>
+        </div>
+        <div class="mdl-cell mdl-cell--2-col">
+            <b>Gruppe Lautstärke</b>
+        </div>
+        <div class="mdl-cell mdl-cell--4-col">
+        </div>
+
+        <div ng-repeat="dev in devices"
+            class="mdl-cell mdl-cell--12-col mdl-grid"
+            style="padding: 0; margin: 0">
+            <div ng-if="dev.betrieb=='normalbetrieb'"
+                class="mdl-cell mdl-cell--12-col mdl-grid"
+                style="padding: 0; margin: 0">
+                <div class="mdl-cell mdl-cell--3-col">
+                    {{dev.name}}
+                </div>
+                <div class="mdl-cell mdl-cell--3-col">
+                    {{dev.mac}}
+                </div>
+                <div class="mdl-cell mdl-cell--2-col">
+                    <md-input-container class="md-block mdl-cell mdl-cell--12-col"
+                    style="padding: 0; margin: 0">
+                        <input aria-label="status" name="status" ng-model="dev.knx.gpstatus">
+                    </md-input-container>
+                </div>
+                <div class="mdl-cell mdl-cell--2-col">
+                    <md-input-container class="md-block mdl-cell mdl-cell--12-col"
+                    style="padding: 0; margin: 0">
+                        <input aria-label="volume" name="volume" ng-model="dev.knx.gpvolume">
+                    </md-input-container>
+                </div>
+                <div class="mdl-cell mdl-cell--1-col">
+                    <button ng-click="saveKnxCallback(dev.mac, dev.knx.gpstatus, dev.knx.gpvolume)"
+                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                        style="color:#000">
+                        <i class="material-icons">save</i>
+                    </button>
+                </div>
+                <div class="mdl-cell mdl-cell--1-col">
+                    <button ng-click="clearKnxCallback(dev.mac); dev.knx.gpstatus=''; dev.knx.gpvolume='';"
+                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                        style="color:#000">
+                        <i class="material-icons">clear</i>
+                    </button>
+                </div>
+            </div>
+            <div ng-if="dev.betrieb=='geteilterbetrieb'"
+                class="mdl-cell mdl-cell--12-col mdl-grid"
+                style="padding: 0; margin: 0">
+                <div class="mdl-cell mdl-cell--12-col mdl-grid"
+                    style="padding: 0; margin: 0">
+                    <div class="mdl-cell mdl-cell--3-col">
+                        {{dev.nameL}}
+                    </div>
+                    <div class="mdl-cell mdl-cell--3-col">
+                        {{dev.macL}}
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col">
+                        <md-input-container class="md-block mdl-cell mdl-cell--12-col"
+                        style="padding: 0; margin: 0">
+                            <input aria-label="status" name="status" ng-model="dev.knx.gpstatusL">
+                        </md-input-container>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col">
+                        <md-input-container class="md-block mdl-cell mdl-cell--12-col"
+                        style="padding: 0; margin: 0">
+                            <input aria-label="volume" name="volume" ng-model="dev.knx.gpvolumeL">
+                        </md-input-container>
+                    </div>
+                    <div class="mdl-cell mdl-cell--1-col">
+                        <button ng-click="saveKnxCallback(dev.macL, dev.knx.gpstatusL, dev.knx.gpvolumeL)"
+                            class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                            style="color:#000">
+                            <i class="material-icons">save</i>
+                        </button>
+                    </div>
+                    <div class="mdl-cell mdl-cell--1-col">
+                        <button ng-click="clearKnxCallback(dev.macL); dev.knx.gpstatusL=''; dev.knx.gpvolumeL='';"
+                            class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                            style="color:#000">
+                            <i class="material-icons">clear</i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mdl-cell mdl-cell--12-col mdl-grid"
+                    style="padding: 0; margin: 0">
+                    <div class="mdl-cell mdl-cell--3-col">
+                        {{dev.nameR}}
+                    </div>
+                    <div class="mdl-cell mdl-cell--3-col">
+                        {{dev.macR}}
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col">
+                        <md-input-container class="md-block mdl-cell mdl-cell--12-col"
+                        style="padding: 0; margin: 0">
+                            <input aria-label="status" name="status" ng-model="dev.knx.gpstatusR">
+                        </md-input-container>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col">
+                        <md-input-container class="md-block mdl-cell mdl-cell--12-col"
+                        style="padding: 0; margin: 0">
+                            <input aria-label="volume" name="volume" ng-model="dev.knx.gpvolumeR">
+                        </md-input-container>
+                    </div>
+                    <div class="mdl-cell mdl-cell--1-col">
+                        <button ng-click="saveKnxCallback(dev.macR, dev.knx.gpstatusR, dev.knx.gpvolumeR)"
+                            class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                            style="color:#000">
+                            <i class="material-icons">save</i>
+                        </button>
+                    </div>
+                    <div class="mdl-cell mdl-cell--1-col">
+                        <button ng-click="clearKnxCallback(dev.macR); dev.knx.gpstatusR=''; dev.knx.gpvolumeR='';"
+                            class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                            style="color:#000">
+                            <i class="material-icons">clear</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="dev.betrieb=='deaktiviert'" class="mdl-cell mdl-cell--12-col">
+                InnoAmp {{dev.id}} ist deaktiviert.<br>
+                Der Amp muss konfiguriert werden, damit dieser hier verwendet werden kann.
+            </div>
+        </div>
     </div>
 </div>
 
