@@ -551,6 +551,10 @@ if (isset($_GET['update'])) {
     exec("sudo /var/www/sudoscript.sh update", $output, $return_var);
 }
 
+if (isset($_GET['updateLms'])) {
+    exec("sudo /var/www/sudoscript.sh updateLms", $output, $return_var);
+}
+
 if (isset($_GET['fullupdate'])) {
     exec("sudo /var/www/sudoscript.sh fullupdate", $output, $return_var);
 }

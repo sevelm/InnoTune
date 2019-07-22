@@ -1920,6 +1920,23 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         });
     };
 
+    $scope.updateLms = function () {
+        var update = $mdDialog.confirm()
+            .title('Bist du sicher?')
+            .textContent('Update auf neue Version! Der Server wird neu gestartet, dies kann mehrere Minuten dauern!.')
+            .ariaLabel('Update!')
+            .targetEvent()
+            .ok('Ok')
+            .cancel('Abbrechen');
+        $mdDialog.show(update).then(function () {
+            document.getElementById("loadingsymbol").style.display = "block";
+            $scope.updatestatus = '';
+            $http.get('api/helper.php?updateLms').success(function () {
+                location.href = "/scripts/reboot.php?update=true"
+            });
+        });
+    };
+
     $scope.deleteGeneratedTTS = function () {
         document.getElementById("loadingsymbol").style.display = "block";
         $http.get('api/helper.php?deleteGeneratedTTS').success(function () {

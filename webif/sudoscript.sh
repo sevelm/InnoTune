@@ -17,6 +17,7 @@ case "$1" in
      updateKernel) /var/www/kernel/update.sh;;
      updateBeta) /var/www/update.sh
                  /var/www/beta/update.sh;;
+     updateLms) sudo dpkg -i /var/lib/squeezeboxserver/cache/updates/logitechmediaserver_7.9.1_arm.deb;;
      updaterunning) upfile=$(ps ax | grep "update.sh" | grep -v grep | wc -l)
                     upfolder=$(ps ax | grep "/update/" | grep -v grep | wc -l)
                     knx=$(ps ax | grep "knxinstaller.sh" | grep -v grep | wc -l)
