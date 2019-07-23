@@ -85,7 +85,7 @@ if (isset($_GET["id"])) {
                             $DEBUG_STRING = $DEBUG_STRING . "INFO: Zonenlautstärke 0$x (Links): $VOL%<br>";
                         } else {
                             $DEBUG_STRING = $DEBUG_STRING . "ERROR: Zonenlautstärke 0$x (Links) nicht im Bereich von 0 bis 100.<br>";
-                            $data = explode("/", $array[($WRITE_NR + (1 + $x))]);
+                            $data = explode("/", $array[($WRITE_NR + $x)]);
                             if (is_numeric(trim($data[0]))) {
                                 $VOL = intval(trim($data[0]));
                             } else {
@@ -94,7 +94,7 @@ if (isset($_GET["id"])) {
                         }
                     } else {
                         $DEBUG_STRING = $DEBUG_STRING . "WARNUNG: Zonenlautstärke 0$x (Links) nicht gesetzt oder nicht numerisch.<br>";
-                        $data = explode("/", $array[($WRITE_NR + (1 + $x))]);
+                        $data = explode("/", $array[($WRITE_NR + $x)]);
                         if (is_numeric(trim($data[0]))) {
                             $VOL = intval(trim($data[0]));
                         } else {
@@ -109,7 +109,7 @@ if (isset($_GET["id"])) {
                             $DEBUG_STRING = $DEBUG_STRING . "INFO: Zonenlautstärke 0$x (Rechts): $VOL_R%<br>";
                         } else {
                             $DEBUG_STRING = $DEBUG_STRING . "ERROR: Zonenlautstärke 0$x (Rechts) nicht im Bereich von 0 bis 100.<br>";
-                            $data = explode("/", $array[($WRITE_NR + (1 + $x))]);
+                            $data = explode("/", $array[($WRITE_NR + $x)]);
                             if (is_numeric(trim($data[1]))) {
                                 $VOL_R = intval(trim($data[1]));
                             } else {
@@ -118,7 +118,7 @@ if (isset($_GET["id"])) {
                         }
                     } else {
                         $DEBUG_STRING = $DEBUG_STRING . "WARNUNG: Zonenlautstärke 0$x (Rechts) nicht gesetzt oder nicht numerisch.<br>";
-                        $data = explode("/", $array[($WRITE_NR + (1 + $x))]);
+                        $data = explode("/", $array[($WRITE_NR + $x)]);
                         if (is_numeric(trim($data[1]))) {
                             $VOL_R = intval(trim($data[1]));
                         } else {
