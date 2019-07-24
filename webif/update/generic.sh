@@ -21,8 +21,8 @@ killall librespot
 killall playmonitor
 
 # fix dpkg errors if there are any
-sudo dpkg --configure -a
-sudo apt-get -f -y install
+sudo DEBIAN_FRONTEND=noninteractive dpkg --configure -a --force-confdef --force-confold
+sudo DEBIAN_FRONTEND=noninteractive apt-get -f -y install -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"
 
 #update packages
 sudo apt-get -y update
