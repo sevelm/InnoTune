@@ -138,8 +138,8 @@ echo "70% - adding new updates" > /opt/innotune/settings/updatestatus.txt
 
 #Imagestream 4 Loxone
 #used php extensions
-sudo apt-get install -y php5.6-gd
-sudo apt-get install -y php5.6-curl
+sudo apt-get install -y php5.6-gd -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"
+sudo apt-get install -y php5.6-curl -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"
 
 #LMS Wizard fix (completes form automatically, if wizard pops up)
 sudo cp /opt/innotune/update/cache/InnoTune/wizard.html /usr/share/squeezeboxserver/HTML/EN/settings/server/wizard.html
