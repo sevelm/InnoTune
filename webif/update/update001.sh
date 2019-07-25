@@ -138,8 +138,8 @@ echo "70% - adding new updates" > /opt/innotune/settings/updatestatus.txt
 
 #Imagestream 4 Loxone
 #used php extensions
-sudo apt-get install -y php5.6-gd
-sudo apt-get install -y php5.6-curl
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" php5.6-gd
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" php5.6-curl
 
 #LMS Wizard fix (completes form automatically, if wizard pops up)
 sudo cp /opt/innotune/update/cache/InnoTune/wizard.html /usr/share/squeezeboxserver/HTML/EN/settings/server/wizard.html
@@ -158,7 +158,7 @@ if [ $rasp -ge 1 ]; then
 fi
 
 # fix unmet dependencies/broken packages
-sudo apt-get -f -y install
+sudo DEBIAN_FRONTEND=noninteractive apt-get -f -y install -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"
 
 # Overwrite current Version number with new
 cd /opt/innotune/update/cache
