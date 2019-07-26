@@ -37,8 +37,8 @@
   "more_info": "Weitere Informationen",
   "innotune_web": "InnoTune-Website",
   "iconpack": "Icon pack by Icons8",
-  "hostname": "Hostname",
-  "port": "Port",
+  "hostname": "Hostname: ",
+  "port": "Port: ",
 
   "update_title": "InnoServer Update",
   "update_text": "Wollen Sie das System wirklich updaten?",
