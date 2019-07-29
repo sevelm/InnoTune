@@ -54,5 +54,7 @@
   "equalizer_text": "Wählen Sie eine Zone um den Equalizer zu regulieren.",
 
   "history_empty": "Kein Radios im Verlauf",
-  "search_placeholder": "Suchtext eingeben..."
+  "search_placeholder": "Suchtext eingeben...",
+  "error_con_title": "Verbindung zum Server wurde unterbrochen!",
+  "error_con": "Sie werden automatisch verbunden, sobald der Server wieder erreichbar ist."
 }
