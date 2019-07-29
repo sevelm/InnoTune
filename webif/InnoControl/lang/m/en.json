@@ -54,5 +54,7 @@
   "equalizer_text": "Select a zone to change the equalizer settings.",
 
   "history_empty": "No radios in history",
-  "search_placeholder": "Enter text..."
+  "search_placeholder": "Enter text...",
+  "error_con_title": "Connection lost!",
+  "error_con": "You will be reconnected automatically."
 }
