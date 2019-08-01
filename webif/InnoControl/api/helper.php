@@ -757,21 +757,22 @@ if (isset($_GET['setknxcmd'])) {
   $cmd = $_GET['cmd'];
   $cmdoff = $_GET['cmdoff'];
   $dimmertype = $_GET['dimmertype'];
+  $amp = $_GET['amp'];
+  $geteilt = $_GET['geteilt'];
+  $next = $_GET['next'];
 
-  if (strpos($cmd, "00:00:00:") !== 0) {
+  if (strpos($cmd, "00:00:00:") !== 0 && strpos($cmd, "voltrigger") !== 0) {
       $cmd = str_replace(" ", "+", $cmd);
   }
 
-  if (strpos($cmdoff, "00:00:00:") !== 0) {
+  if (strpos($cmdoff, "00:00:00:") !== 0 && strpos($cmd, "voltrigger") !== 0) {
       $cmdoff = str_replace(" ", "+", $cmdoff);
   }
 
   if ("$type" == "2") {
-      $amp = $_GET['amp'];
-      $geteilt = $_GET['geteilt'];
       echo shell_exec("sudo /var/www/sudoscript.sh setknxcmd \"$group\" \"$group|$type|$dimmertype|$cmd|$amp|$geteilt\"");
   } else {
-      echo shell_exec("sudo /var/www/sudoscript.sh setknxcmd \"$group\" \"$group|$type|$cmd|$cmdoff\"");
+      echo shell_exec("sudo /var/www/sudoscript.sh setknxcmd \"$group\" \"$group|$type|$cmd|$cmdoff|$next|$amp|$geteilt\"");
   }
 }
 
