@@ -61,7 +61,8 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         cmd: '',
         cmdoff: '',
         dimmertype: 1,
-        changed: false
+        changed: false,
+        next: false
     };
     $scope.knx = {type: 1, changed: false};
     $scope.knxinstalled = false;
@@ -285,17 +286,17 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             var geteilt = '';
             $scope.devices.forEach(function(device) {
                 if (device.mac !== undefined) {
-                    if (device.mac == $scope.knxcmd.cmd) {
+                    if ($scope.knxcmd.cmd.includes(device.mac)) {
                         ampId = device.id;
                         geteilt = 0;
                         console.log(ampId + ', ' + geteilt);
                     }
                 } else if (device.macL !== undefined) {
-                    if (device.macL == $scope.knxcmd.cmd) {
+                    if ($scope.knxcmd.cmd.includes(device.macL)) {
                         ampId = device.id;
                         geteilt = 1;
                         console.log(ampId + ', ' + geteilt);
-                    } else if (device.macR == $scope.knxcmd.cmd) {
+                    } else if ($scope.knxcmd.cmd.includes(device.macR)) {
                         ampId = device.id;
                         geteilt = 2;
                         console.log(ampId + ', ' + geteilt);
@@ -308,7 +309,8 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                         '&cmdoff=' + encodeURIComponent($scope.knxcmd.cmdoff) +
                         '&dimmertype=' + $scope.knxcmd.dimmertype +
                         '&amp=' + ampId +
-                        '&geteilt=' + geteilt)
+                        '&geteilt=' + geteilt +
+                        '&next=' + $scope.knxcmd.next)
                   .success(function () {
                       $scope.knxcmd = {
                           group: '',
@@ -316,7 +318,8 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                           cmd: '',
                           cmdoff: '',
                           dimmertype: 1,
-                          changed: false
+                          changed: false,
+                          next: false
                       };
                       $scope.getKnxCmds();
                   });
@@ -330,7 +333,8 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             cmd: '',
             cmdoff: '',
             dimmertype: 1,
-            changed: false
+            changed: false,
+            next: false
         };
     };
 
@@ -341,7 +345,8 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
             cmd: cmd.cmd,
             cmdoff: cmd.cmdoff,
             dimmertype: cmd.dimmertype,
-            changed: false
+            changed: false,
+            next: cmd.next
         };
     };
 
@@ -382,12 +387,17 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                     if (element.includes("|")) {
                       var data = element.split("|");
                       if (data[1] !== '2') {
+                          var next = false;
+                          if (data.length >= 5) {
+                              next = data[4] == 'true';
+                          }
                           $scope.knxcmds.push({
                               group: data[0],
                               type: data[1],
                               cmd: data[2],
                               cmdoff: data[3],
-                              dimmertype: 1
+                              dimmertype: 1,
+                              next: next
                             });
                       } else {
                           $scope.knxcmds.push({
@@ -395,7 +405,8 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                               type: data[1],
                               cmd: data[3],
                               cmdoff: '',
-                              dimmertype: data[2]
+                              dimmertype: data[2],
+                              next: false
                             });
                       }
                     }

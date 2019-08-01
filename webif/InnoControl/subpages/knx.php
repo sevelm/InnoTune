@@ -135,6 +135,11 @@
             Verwenden Sie bitte &lt;v&gt; als Platzhalter für den Wert.
         </h6>
 
+        <md-checkbox ng-model="knxcmd.next" class="mdl-cell mdl-cell--12-col"
+            ng-if="knxcmd.type == 0" ng-change="knxcmd.changed=true">
+            Erneutes Einschalten zum Umschalten des Senders verwenden?
+        </md-checkbox>
+
         <h6 class="mdl-cell mdl-cell--3-col" ng-if="knxcmd.type == 0">Befehl Aus:</h6>
         <md-input-container class="md-block mdl-cell mdl-cell--9-col" ng-if="knxcmd.type == 0">
             <textarea aria-label="name" name="name" ng-model="knxcmd.cmdoff"
