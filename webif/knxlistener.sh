@@ -216,7 +216,7 @@ while read line ; do
             else
                 # 0 = stop, 1 = volume down, 9 = volume up
                 # stores PID from voltrigger script to stop it at request
-                if [ "$dec" -ge "2" ]; then
+                if [ "$dec" -ge "9" ]; then
                     echo "value: $dec, start vol up trigger"
                     vtpid=$(/var/www/InnoControl/api/voltrigger.sh "${data[3]}" "u" > /dev/null 2>&1 & echo $!)
                     echo "pid: $vtpid /opt/innotune/settings/knx_vol_${data[3]}.txt"
