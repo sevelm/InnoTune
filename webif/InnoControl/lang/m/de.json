@@ -56,5 +56,12 @@
   "history_empty": "Kein Radios im Verlauf",
   "search_placeholder": "Suchtext eingeben...",
   "error_con_title": "Verbindung zum Server wurde unterbrochen!",
-  "error_con": "Sie werden automatisch verbunden, sobald der Server wieder erreichbar ist."
+  "error_con": "Sie werden automatisch verbunden, sobald der Server wieder erreichbar ist.",
+
+  "volreg": "Lautstärkenregelung",
+  "input": "Eingang",
+  "output": "Ausgang",
+  "select_amp": "Amp auswählen",
+  "select_input": "Eingang auswählen",
+  "linein": "Line-In"
 }
