@@ -56,5 +56,12 @@
   "history_empty": "No radios in history",
   "search_placeholder": "Enter text...",
   "error_con_title": "Connection lost!",
-  "error_con": "You will be reconnected automatically."
+  "error_con": "You will be reconnected automatically.",
+
+  "volreg": "Volume-Control",
+  "input": "Input",
+  "output": "Output",
+  "select_amp": "Select Amp",
+  "select_input": "Select Input",
+  "linein": "Line-In"
 }
