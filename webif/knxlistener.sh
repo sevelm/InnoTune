@@ -1,25 +1,47 @@
 #!/bin/bash
+function sigterm_listener()
+{
+    sd=$(date)
+    echo "[$sd] knxlistener terminated" >> /var/log/knxlistener
+    exit
+}
+
+function sigint_listener()
+{
+    sd=$(date)
+    echo "[$sd] knxlistener exited" >> /var/log/knxlistener
+    exit
+}
+
+trap sigterm_listener TERM
+trap sigint_listener INT
+
+echo "-----------------------------------" >> /var/log/knxlistener
+sd=$(date)
+echo "[$sd] started knxlistener" >> /var/log/knxlistener
 while read line ; do
-    echo "receviced: $line"
+    sd=$(date)
+    start=$(($(date +%s%N)/1000000))
     IFS=' ' read -ra array <<< "$line"
     item="${array[4]}"
     addr="${item%?}"
-    query=$(cat /opt/innotune/settings/knxcmd.txt | grep "$addr|")
+    query=$(grep "$addr|" /opt/innotune/settings/knxcmd.txt)
     if [ ! -z "$query" ]; then
+        echo "[$sd] receviced: $line" >> /var/log/knxlistener
         IFS='|' read -ra data <<< "$query"
         if [ "${data[1]}" -eq "0" ]; then
             hexval="${array[5]}"
             dec=$((16#$hexval))
             if [[ "$dec" -eq "1" ]]; then
-                echo "cmd: ${data[2]}, with hex: $hexval,dec : $dec"
+                echo "[$sd] cmd: ${data[2]}, with hex: $hexval,dec : $dec" >> /var/log/knxlistener
 
                 if [[ "${data[2]}" == 00:00:00:* ]]; then
-                    echo "tcp"
+                    echo "[$sd] tcp" >> /var/log/knxlistener
                     # if play next is active check if currently playing
                     if [[ "${data[4]}" = "true" ]]; then
                         IFS=' ' read -ra macdata <<< "${data[2]}"
                         mode=$(printf "${macdata[0]} mode ?\nexit\n" | nc localhost 9090 | cut -d ' ' -f 3)
-                        echo "mode: $mode"
+                        echo "[$sd] mode: $mode" >> /var/log/knxlistener
 
                         #format amp id
                         amp="${data[5]}"
@@ -49,7 +71,7 @@ while read line ; do
                         # checks if LMS is already playing something
                         # if playing: play next radio, else start last selected radio
                         if [ "$mode" == "play" ]; then
-                            echo "play next radio"
+                            echo "[$sd] play next radio" >> /var/log/knxlistener
                             nextquery=$(tail /opt/innotune/settings/knxradios.txt -n1)
                             IFS='|' read -ra nextdata <<< "$nextquery"
                             if [ "$cr" -ge "${nextdata[1]}" ]; then
@@ -58,7 +80,7 @@ while read line ; do
                                 cr=$(($cr+1))
                             fi
                         else
-                            echo "play last selected radio"
+                            echo "[$sd] play last selected radio" >> /var/log/knxlistener
                             nextquery=$(tail /opt/innotune/settings/knxradios.txt -n1)
                             IFS='|' read -ra nextdata <<< "$nextquery"
                             if [ "$cr" -gt "${nextdata[1]}" ]; then
@@ -68,7 +90,7 @@ while read line ; do
                         printf "$cr" > "/opt/innotune/settings/knxcurrentradio$kxrfile.txt"
                         radioquery=$(cat /opt/innotune/settings/knxradios.txt | grep "|$cr|")
                         IFS='|' read -ra radiodata <<< "$radioquery"
-                        echo "cr: $cr, ${radiodata[1]}"
+                        echo "[$sd] cr: $cr, ${radiodata[1]}" >> /var/log/knxlistener
 
                         #encode text for curl command
                         txt=$(echo "${radiodata[2]}" | sed -e 's/:/%3A/g' \
@@ -100,14 +122,14 @@ while read line ; do
                     direction="${cmddata[2]}"
 
                     vtpid=$(/var/www/InnoControl/api/voltrigger.sh "$mac" "$direction" > /dev/null 2>&1 & echo $!)
-                    echo "pid: $vtpid /opt/innotune/settings/knx_vol_$mac.txt"
+                    echo "[$sd] pid: $vtpid /opt/innotune/settings/knx_vol_$mac.txt" >> /var/log/knxlistener
                     printf "$vtpid" > "/opt/innotune/settings/knx_vol_$mac.txt"
                 else
-                    echo "http"
+                    echo "[$sd] http" >> /var/log/knxlistener
                     curl "${data[2]}" 2>&1 /dev/null &
                 fi
             else
-                echo "cmd: ${data[3]}, with hex: $hexval,dec : $dec"
+                echo "[$sd] cmd: ${data[3]}, with hex: $hexval,dec : $dec" >> /var/log/knxlistener
                 if [[ "${data[3]}" == 00:00:00:* ]]; then
                     printf "${data[3]}\nexit\n" | nc localhost 9090 2>&1 /dev/null &
                 elif [[ "${data[3]}" == voltrigger* ]]; then
@@ -126,7 +148,7 @@ while read line ; do
             dec=$(/var/www/knxhexconverter.sh "$hexval")
             c="${data[2]}"
             cmd="${c/<v>/$dec}"
-            echo "cmd: $cmd, with hex: $hexval, dec: $dec"
+            echo "[$sd] cmd: $cmd, with hex: $hexval, dec: $dec" >> /var/log/knxlistener
             if [[ "$cmd" == 00:00:00:* ]]; then
                 printf "$cmd\nexit\n" | nc localhost 9090 2>&1 /dev/null &
             else
@@ -138,7 +160,7 @@ while read line ; do
 
             if [ "${data[2]}" -eq "1" ]; then
                 mode=$(printf "${data[3]} mode ?\nexit\n" | nc localhost 9090 | cut -d ' ' -f 3)
-                echo "mode: $mode, with hex: $hexval, dec: $dec"
+                echo "[$sd] mode: $mode, with hex: $hexval, dec: $dec" >> /var/log/knxlistener
                 if [ "$dec" -eq "1" ]; then
                     #format amp id
                     amp="${data[4]}"
@@ -168,7 +190,7 @@ while read line ; do
                     # checks if LMS is already playing something
                     # if playing: play next radio, else start last selected radio
                     if [ "$mode" == "play" ]; then
-                        echo "play next radio"
+                        echo "[$sd] play next radio" >> /var/log/knxlistener
                         nextquery=$(tail /opt/innotune/settings/knxradios.txt -n1)
                         IFS='|' read -ra nextdata <<< "$nextquery"
                         if [ "$cr" -ge "${nextdata[1]}" ]; then
@@ -177,7 +199,7 @@ while read line ; do
                             cr=$(($cr+1))
                         fi
                     else
-                        echo "play last selected radio"
+                        echo "[$sd] play last selected radio" >> /var/log/knxlistener
                         nextquery=$(tail /opt/innotune/settings/knxradios.txt -n1)
                         IFS='|' read -ra nextdata <<< "$nextquery"
                         if [ "$cr" -gt "${nextdata[1]}" ]; then
@@ -187,7 +209,7 @@ while read line ; do
                     printf "$cr" > "/opt/innotune/settings/knxcurrentradio$kxrfile.txt"
                     radioquery=$(cat /opt/innotune/settings/knxradios.txt | grep "|$cr|")
                     IFS='|' read -ra radiodata <<< "$radioquery"
-                    echo "cr: $cr, ${radiodata[1]}"
+                    echo "[$sd] cr: $cr, ${radiodata[1]}" >> /var/log/knxlistener
 
                     #encode text for curl command
                     txt=$(echo "${radiodata[2]}" | sed -e 's/:/%3A/g' \
@@ -210,28 +232,32 @@ while read line ; do
                     curl "localhost/api/tts.php?text=$txt&speed=-3&vol_$amp=$vol&vol_all=0&vol_back=0&noqueue" 2>&1 /dev/null &
                     printf "${data[3]} playlist play ${radiodata[3]}\nexit\n" | nc localhost 9090 2>&1 /dev/null &
                 else
-                    echo "stop radio"
+                    echo "[$sd] stop radio" >> /var/log/knxlistener
                     printf "${data[3]} power 0\nexit\n" | nc localhost 9090 2>&1 /dev/null &
                 fi
             else
                 # 0 = stop, 1 = volume down, 9 = volume up
                 # stores PID from voltrigger script to stop it at request
                 if [ "$dec" -ge "9" ]; then
-                    echo "value: $dec, start vol up trigger"
+                    echo "[$sd] value: $dec, start vol up trigger" >> /var/log/knxlistener
                     vtpid=$(/var/www/InnoControl/api/voltrigger.sh "${data[3]}" "u" > /dev/null 2>&1 & echo $!)
-                    echo "pid: $vtpid /opt/innotune/settings/knx_vol_${data[3]}.txt"
+                    echo "[$sd] pid: $vtpid /opt/innotune/settings/knx_vol_${data[3]}.txt"
                     printf "$vtpid" > "/opt/innotune/settings/knx_vol_${data[3]}.txt"
                 elif [ "$dec" -eq "1" ]; then
-                    echo "value: $dec, start vol down trigger"
+                    echo "[$sd] value: $dec, start vol down trigger" >> /var/log/knxlistener
                     vtpid=$(/var/www/InnoControl/api/voltrigger.sh "${data[3]}" "d" > /dev/null 2>&1 & echo $!)
-                    echo "pid: $vtpid /opt/innotune/settings/knx_vol_${data[3]}.txt"
+                    echo "[$sd] pid: $vtpid /opt/innotune/settings/knx_vol_${data[3]}.txt" >> /var/log/knxlistener
                     printf "$vtpid" > "/opt/innotune/settings/knx_vol_${data[3]}.txt"
                 else
-                    echo "value: $dec, stop vol trigger"
+                    echo "[$sd] value: $dec, stop vol trigger" >> /var/log/knxlistener
                     vtpid=$(cat "/opt/innotune/settings/knx_vol_${data[3]}.txt")
                     kill "$vtpid"
                 fi
             fi
         fi
+        echo "[$sd] time: $((($(date +%s%N)/1000000)-$start))ms" >> /var/log/knxlistener
     fi
 done
+
+sd=$(date)
+echo "[$sd] knxlistener exited" >> /var/log/knxlistener

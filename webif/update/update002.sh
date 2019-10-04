@@ -54,6 +54,14 @@ ln -s /var/log /var/www/InnoControl/log/syslogs
 touch /opt/innotune/settings/knxcallbacks
 chmod 777 /opt/innotune/settings/knxcallbacks
 
+touch /var/log/knxlistener
+chmod 777 /var/log/knxlistener
+touch /var/log/knxcallback
+chmod 777 /var/log/knxcallback
+
+sudo cp /opt/innotune/update/cache/InnoTune/logrotate.conf /etc/logrotate.conf
+sudo cp /opt/innotune/update/cache/InnoTune/journald.conf /etc/systemd/journald.conf
+
 # set new update count and reference to newer update file
 sudo echo "2" > /opt/innotune/settings/update_cnt.txt
 echo "100% - finished update" > /opt/innotune/settings/updatestatus.txt

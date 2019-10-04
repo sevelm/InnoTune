@@ -902,4 +902,37 @@ if (isset($_GET['sbnetio'])) {
         shell_exec("printf \"$zone playlist clear\nexit\n\" | nc -q 120 localhost 9090");
     }
 }
+
+if (isset($_GET['knxjournal_latest'])) {
+    echo str_replace("\n", "<br>", shell_exec("sudo /var/www/sudoscript.sh knxjournal_latest"));
+}
+
+if (isset($_GET['knxjournal_since'])) {
+    $since = $_GET['since'];
+    echo str_replace("\n", "<br>", shell_exec("sudo /var/www/sudoscript.sh knxjournal_since \"$since\""));
+}
+
+if (isset($_GET['journal_size'])) {
+    echo str_replace("\n", "<br>", shell_exec("sudo /var/www/sudoscript.sh journal_size"));
+}
+
+if (isset($_GET['journal_vacuum'])) {
+    $vacuum = $_GET['vacuum'];
+    echo str_replace("\n", "<br>", shell_exec("sudo /var/www/sudoscript.sh journal_vacuum \"$vacuum\""));
+}
+
+if (isset($_GET['journal_boots'])) {
+    echo str_replace("\n", "<br>", shell_exec("sudo /var/www/sudoscript.sh journal_boots"));
+}
+
+if (isset($_GET['journal_info'])) {
+    echo "<b>Journal-Size:</b><br>";
+    echo str_replace("\n", "<br>", shell_exec("sudo /var/www/sudoscript.sh journal_size"));
+
+    echo "<br><br><b>Boot-List:</b><br>";
+    echo str_replace("\n", "<br>", shell_exec("sudo /var/www/sudoscript.sh journal_boots"));
+
+    echo "<br><br><b>KNXD-Log Today</b><br>";
+    echo str_replace("\n", "<br>", shell_exec("sudo /var/www/sudoscript.sh knxjournal_since \"today\""));
+}
 ?>
