@@ -146,7 +146,12 @@ case "$1" in
     knxjournal_latest) journalctl -uknxd -n 15;;
     knxjournal_since) journalctl -uknxd --since="$2";;
     journal_size) journalctl --disk-usage;;
-    journal_vacuum) journalctl --vacuum-size="$2";;
+    journal_vacuum)
+                echo "before: "
+                journalctl --disk-usage
+                journalctl --vacuum-size="$2"
+                echo "after: "
+                journalctl --disk-usage;;
     journal_boots) journalctl --list-boots;;
     *) echo "ERROR: invalid parameter: $1 (for $0)"; exit 1 ;;
 esac
