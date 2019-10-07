@@ -102,10 +102,10 @@ case "$1" in
              #edit knx address in /etc/knxd.conf
              if [ "$3" -eq "1" ]; then
                  #KNXD_OPTS="-e $2 -E 1.1.245:1 -c -DTRS -b usb"
-                 sed -i "/^KNXD_OPTS/c\KNXD_OPTS=\"-e $2 -E 1.1.245:5 -c -DTRS -b usb\"" /etc/knxd.conf
+                 sed -i "/^KNXD_OPTS/c\KNXD_OPTS=\"-e $2 -E 1.1.245:5 -c -f9 -DTRS -b usb\"" /etc/knxd.conf
              else
                  #KNXD_OPTS="-e $2 -E 1.1.245:5 -b ip:"
-                 sed -i "/^KNXD_OPTS/c\KNXD_OPTS=\"-e $2 -E 1.1.245:5 -b ip:\"" /etc/knxd.conf
+                 sed -i "/^KNXD_OPTS/c\KNXD_OPTS=\"-e $2 -E 1.1.245:5 -f9 -b ip:\"" /etc/knxd.conf
              fi;;
      installknx) /var/www/knxinstaller.sh;;
      setknxcmd) /var/www/knxeditcmd.sh "1" "$2" "$3";;
@@ -143,6 +143,16 @@ case "$1" in
           printf "listen\n" | nc -q 87000 localhost 9090 | /var/www/lmslistener.sh > /dev/null 2>&1 &
       fi
     ;;
+    knxjournal_latest) journalctl -uknxd -n 15;;
+    knxjournal_since) journalctl -uknxd --since="$2";;
+    journal_size) journalctl --disk-usage;;
+    journal_vacuum)
+                echo "before: "
+                journalctl --disk-usage
+                journalctl --vacuum-size="$2"
+                echo "after: "
+                journalctl --disk-usage;;
+    journal_boots) journalctl --list-boots;;
     *) echo "ERROR: invalid parameter: $1 (for $0)"; exit 1 ;;
 esac
 
