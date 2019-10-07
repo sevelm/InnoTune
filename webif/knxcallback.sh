@@ -63,7 +63,10 @@ while read line ; do
         callback=$(grep "$mac" /opt/innotune/settings/knxcallbacks)
         echo "[$sd] ${array[1]} $callback" >> /var/log/knxcallback
         if [[ -n "$callback" ]]; then
-            vol=$(printf "%x\n" "${array[4]}")
+            #scale 0-100 to 0-256
+            vol_dec=$(echo "${array[4]}*255/100" | bc)
+            #convert dec to hex
+            vol=$(printf "%x\n" "$vol_dec")
             IFS='|' read -ra cba <<< "$callback"
             echo "[$sd] knxtool write ip: ${cba[2]} $vol" >> /var/log/knxcallback
             knxtool write ip: "${cba[2]}" "$vol"
