@@ -26,7 +26,7 @@ while read line ; do
         data="${array[0]}"
         mac=${data//%3A/:}
         callback=$(grep "$mac" /opt/innotune/settings/knxcallbacks)
-        echo "[$sd] ${array[1]} $callback" >> /var/log/knxcallback
+        echo "[$sd] ${array[1]} ${array[2]} $callback" >> /var/log/knxcallback
         if [[ -n "$callback" ]]; then
             IFS='|' read -ra cba <<< "$callback"
             echo "[$sd] knxtool on ip: ${cba[1]} ($line)" >> /var/log/knxcallback
@@ -36,7 +36,7 @@ while read line ; do
         data="${array[0]}"
         mac=${data//%3A/:}
         callback=$(grep "$mac" /opt/innotune/settings/knxcallbacks)
-        echo "[$sd] ${array[1]} $callback" >> /var/log/knxcallback
+        echo "[$sd] ${array[1]} ${array[2]} $callback" >> /var/log/knxcallback
         if [[ -n "$callback" ]]; then
             IFS='|' read -ra cba <<< "$callback"
             echo "[$sd] knxtool off ip: ${cba[1]} ($line)" >> /var/log/knxcallback
@@ -46,7 +46,7 @@ while read line ; do
         data="${array[0]}"
         mac=${data//%3A/:}
         callback=$(grep "$mac" /opt/innotune/settings/knxcallbacks)
-        echo "[$sd] ${array[1]} $callback" >> /var/log/knxcallback
+        echo "[$sd] ${array[1]} pause $callback" >> /var/log/knxcallback
         if [[ -n "$callback" ]]; then
             IFS='|' read -ra cba <<< "$callback"
             if [[ "${array[3]}" = "1" ]]; then
