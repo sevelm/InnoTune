@@ -7,7 +7,7 @@
  */
 
 // Verfügbare Version einlesen
-$datei = "https://raw.githubusercontent.com/JHoerbst/InnoTune/master/version.txt"; // Name der Datei
+$datei = "https://raw.githubusercontent.com/sevelm/InnoTune/master/version.txt"; // Name der Datei
 $version_server = file($datei); // Datei in ein Array einlesen
 
 //Aktuelle Version einlesen
@@ -18,7 +18,7 @@ $kernel_datei = "/var/www/kernel/version.txt";
 $kernel = file($kernel_datei);
 $kernel_local = exec("uname -r");
 
-$beta_datei = "https://raw.githubusercontent.com/JHoerbst/InnoTune/master/webif/beta/version.txt";
+$beta_datei = "https://raw.githubusercontent.com/sevelm/InnoTune/master/webif/beta/version.txt";
 $beta = file($beta_datei);
 ?>
 
@@ -193,7 +193,7 @@ $beta = file($beta_datei);
                 <h5 style="margin-top: 0">Changelog:</h5>
                 <ul>
                 <?php
-                    echo shell_exec("cd /opt/innotune/update/cache/InnoTune ; git log --date=short --pretty=format:'<li> <a href=\"http://github.com/JHoerbst/InnoTune/commit/%H\"> view commit &bull;</a> %x09%ad: %s</li> ' | head -n 5");
+                    echo shell_exec("cd /opt/innotune/update/cache/InnoTune ; git log --date=short --pretty=format:'<li> <a href=\"http://github.com/sevelm/InnoTune/commit/%H\"> view commit &bull;</a> %x09%ad: %s</li> ' | head -n 5");
                 ?>
                 </ul>
           </div>
