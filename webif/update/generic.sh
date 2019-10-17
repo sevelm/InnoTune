@@ -45,7 +45,7 @@ sudo cp /opt/innotune/update/cache/InnoTune/librespot /root/librespot
 echo "30% - copied files" > /opt/innotune/settings/updatestatus.txt
 
 #InnoPlay Mobile
-sudo git clone https://github.com/AElmecker/InnoPlayMobile.git /usr/share/squeezeboxserver/HTML/InnoPlayMobile
+sudo git clone https://github.com/sevelm/InnoPlayMobile.git /usr/share/squeezeboxserver/HTML/InnoPlayMobile
 sudo rm -r /usr/share/squeezeboxserver/HTML/m
 sudo cp -R /usr/share/squeezeboxserver/HTML/InnoPlayMobile/m /usr/share/squeezeboxserver/HTML/m
 sudo rm -r /usr/share/squeezeboxserver/HTML/InnoPlayMobile
