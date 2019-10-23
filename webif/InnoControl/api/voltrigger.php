@@ -1,6 +1,6 @@
 <?php
 if($_GET['mode'] == 'trigger') {
-  $file = fopen("/opt/innotune/settings/voltriggerstate_" . str_replace(" ", "_", $_GET['name']) . ".txt", "r");
+  $file = fopen("/opt/innotune/settings/voltriggerstate_" . str_replace(str_split('\\/:*?"<>|[]() \''), "_", $_GET['name']) . ".txt", "r");
   if ($file && (($line = fgets($file)) !== false)) {
     echo $line;
     if(trim($line) == 'u') {
@@ -16,11 +16,11 @@ if($_GET['mode'] == 'trigger') {
 
   $pid = exec("./voltrigger.sh " . $_GET['mac'] . " " . $status . " > /dev/null 2>&1 & echo $!");
   echo $pid;
-  $file = fopen("/opt/innotune/settings/voltriggerstate_" . str_replace(" ", "_", $_GET['name']) . ".txt", "w");
+  $file = fopen("/opt/innotune/settings/voltriggerstate_" . str_replace(str_split('\\/:*?"<>|[]() \''), "_", $_GET['name']) . ".txt", "w");
   fwrite($file, $status . "\n" . $pid);
   fclose($file);
 } else if ($_GET['mode'] == 'stop') {
-  $file = fopen("/opt/innotune/settings/voltriggerstate_" . str_replace(" ", "_", $_GET['name']) . ".txt", "r");
+  $file = fopen("/opt/innotune/settings/voltriggerstate_" . str_replace(str_split('\\/:*?"<>|[]() \''), "_", $_GET['name']) . ".txt", "r");
   $i = 0;
   while ($file && (($line = fgets($file)) !== false) && $i < 2) {
     if($i == 1) {
@@ -34,7 +34,7 @@ if($_GET['mode'] == 'trigger') {
   }
 } else if ($_GET['mode'] == 'reset') {
     //stop voltrigger
-    $file = fopen("/opt/innotune/settings/voltriggerstate_" . str_replace(" ", "_", $_GET['name']) . ".txt", "r");
+    $file = fopen("/opt/innotune/settings/voltriggerstate_" . str_replace(str_split('\\/:*?"<>|[]() \''), "_", $_GET['name']) . ".txt", "r");
     $i = 0;
     while ($file && (($line = fgets($file)) !== false) && $i < 2) {
       if($i == 1) {
@@ -48,7 +48,7 @@ if($_GET['mode'] == 'trigger') {
     }
 
     //reset flag
-    $file = fopen("/opt/innotune/settings/voltriggerstate_" . str_replace(" ", "_", $_GET['name']) . ".txt", "w");
+    $file = fopen("/opt/innotune/settings/voltriggerstate_" . str_replace(str_split('\\/:*?"<>|[]() \''), "_", $_GET['name']) . ".txt", "w");
     fwrite($file, "d\n");
     fclose($file);
 }
