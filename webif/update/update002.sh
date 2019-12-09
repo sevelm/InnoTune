@@ -71,6 +71,11 @@ rm -R /root/build/
 sudo cp /opt/innotune/update/cache/InnoTune/importantUpdate.txt /opt/innotune/settings/importantUpdate.txt
 chmod 777 /opt/innotune/settings/importantUpdate.txt
 
+is_added=$(crontab -l | grep checkImportantUpdates.sh | wc -l)
+if [[ $is_added -eq 0 ]]; then
+    crontab -l | { cat; echo "30 3 * * * sudo /var/www/update/checkImportantUpdates.sh"; } | crontab -
+fi
+
 # set new update count and reference to newer update file
 sudo echo "2" > /opt/innotune/settings/update_cnt.txt
 echo "100% - finished update" > /opt/innotune/settings/updatestatus.txt
