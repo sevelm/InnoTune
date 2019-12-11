@@ -68,12 +68,23 @@ sudo rm -R /var/log.hdd/journal
 sudo rm -R /var/log.hdd/*.gz
 rm -R /root/build/
 
+#would save about 0.5 GB
+#sudo apt-get remove -y chromium-browser
+#sudo apt-get remove -y thunderbird
+#sudo apt-get remove -y libreoffice-core
+#sudo apt-get remove -y libreoffice-common
+
 sudo cp /opt/innotune/update/cache/InnoTune/importantUpdate.txt /opt/innotune/settings/importantUpdate.txt
 chmod 777 /opt/innotune/settings/importantUpdate.txt
 
 is_added=$(crontab -l | grep checkImportantUpdates.sh | wc -l)
 if [[ $is_added -eq 0 ]]; then
     crontab -l | { cat; echo "30 3 * * * sudo /var/www/update/checkImportantUpdates.sh"; } | crontab -
+fi
+
+is_added=$(crontab -l | grep check_linein.sh | wc -l)
+if [[ $is_added -eq 0 ]]; then
+    crontab -l | { cat; echo "*/30 * * * * /var/www/check_linein.sh"; } | crontab -
 fi
 
 # set new update count and reference to newer update file
