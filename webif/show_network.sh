@@ -17,12 +17,18 @@ if [[ $WLAN -eq 1 ]]; then
 	SUBNET=$( ifconfig wlan0 | grep "Bcast:" | tr -s ' ' | cut -d: -f4)
 else
 	IP=$(ip route show | grep 'src' | grep 'eth0' | awk '{print $9}' | tail -n1)
+	if [ $IP = "172.30.250.250" ]; then
+		IP=$(ip route show | grep 'src' | grep 'eth0' | awk '{print $9}' | head -n1)
+	fi
 	SUBNET=$( ifconfig eth0 | grep "Bcast:" | tr -s ' ' | cut -d: -f4)
 fi
 GATE=$(ip route show | grep 'default' | awk '{print $3}' | tail -n1)
 if [ $GATE = "wlan0" ]; then
 	GATE=$(ip route show | grep 'default' | awk '{print $3}' | head -n1)
 	IP=$(ip route show | grep 'src' | grep 'eth0' | awk '{print $9}' | tail -n1)
+	if [ $IP = "172.30.250.250" ]; then
+		IP=$(ip route show | grep 'src' | grep 'eth0' | awk '{print $9}' | head -n1)
+	fi
 	SUBNET=$( ifconfig eth0 | grep "Bcast:" | tr -s ' ' | cut -d: -f4)
 	WFAILED="true"
 	echo "0" > /opt/innotune/settings/wlan.txt
