@@ -14,7 +14,7 @@ echo "30% - installing knxd" > /opt/innotune/settings/updatestatus.txt
 sudo mv /etc/knxd.conf /root/savedknxd.conf
 
 #dependencies
-sudo apt-get install libev4
+sudo apt-get -y install libev4
 
 cd /root/
 sudo dpkg -i knxd_0.14*.deb knxd-tools_0.14*.deb
