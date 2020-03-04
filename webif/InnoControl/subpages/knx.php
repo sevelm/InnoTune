@@ -15,7 +15,7 @@
     </div>
 </div>
 <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell--top mdl-cell mdl-cell--12-col"
-    ng-if="knxinstalled && knxversion != '0.12.15-1'">
+    ng-if="knxinstalled && knxversion != '0.12.15-1' && knxversion != '0.14.29-5'">
     <div class="mdl-card__title">
         <h2 class="mdl-card__title-text">KNXD-Update</h2>
     </div>
