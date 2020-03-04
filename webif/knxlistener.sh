@@ -189,8 +189,10 @@ while read line ; do
                     fi
                     # checks if LMS is already playing something
                     # if playing: play next radio, else start last selected radio
+                    playing="0"
                     if [ "$mode" == "play" ]; then
                         echo "[$sd] play next radio" >> /var/log/knxlistener
+                        playing="1"
                         nextquery=$(tail /opt/innotune/settings/knxradios.txt -n1)
                         IFS='|' read -ra nextdata <<< "$nextquery"
                         if [ "$cr" -ge "${nextdata[1]}" ]; then
@@ -211,25 +213,27 @@ while read line ; do
                     IFS='|' read -ra radiodata <<< "$radioquery"
                     echo "[$sd] cr: $cr, ${radiodata[1]}" >> /var/log/knxlistener
 
-                    #encode text for curl command
-                    txt=$(echo "${radiodata[2]}" | sed -e 's/:/%3A/g' \
-                                                       -e 's/ /%20/g' \
-                                                       -e 's/\&/%26/g' \
-                                                       -e "s/'/%27/g" \
-                                                       -e 's/!/%21/g' \
-                                                       -e 's/?/%3F/g' \
-                                                       -e 's/,/%2C/g' \
-                                                       -e 's/\//%2F/g' \
-                                                       -e 's/Ä/%C3%84/g' \
-                                                       -e 's/Ö/%C3%96/g' \
-                                                       -e 's/Ü/%C3%9C/g' \
-                                                       -e 's/ä/%C3%A4/g' \
-                                                       -e 's/ö/%C3%B6/g' \
-                                                       -e 's/ü/%C3%BC/g' \
-                                                       -e 's/ß/%C3%9F/g')
+                    if [[ $playing == "1" ]]; then
+                        #encode text for curl command
+                        txt=$(echo "${radiodata[2]}" | sed -e 's/:/%3A/g' \
+                                                           -e 's/ /%20/g' \
+                                                           -e 's/\&/%26/g' \
+                                                           -e "s/'/%27/g" \
+                                                           -e 's/!/%21/g' \
+                                                           -e 's/?/%3F/g' \
+                                                           -e 's/,/%2C/g' \
+                                                           -e 's/\//%2F/g' \
+                                                           -e 's/Ä/%C3%84/g' \
+                                                           -e 's/Ö/%C3%96/g' \
+                                                           -e 's/Ü/%C3%9C/g' \
+                                                           -e 's/ä/%C3%A4/g' \
+                                                           -e 's/ö/%C3%B6/g' \
+                                                           -e 's/ü/%C3%BC/g' \
+                                                           -e 's/ß/%C3%9F/g')
 
-                    # send curl request for TTS and nc request for LMS command
-                    curl "localhost/api/tts.php?text=$txt&speed=-3&vol_$amp=$vol&vol_all=0&vol_back=0&noqueue" 2>&1 /dev/null &
+                        # send curl request for TTS and nc request for LMS command
+                        curl "localhost/api/tts.php?text=$txt&speed=-3&vol_$amp=$vol&vol_all=0&vol_back=0&noqueue" 2>&1 /dev/null &
+                    fi
                     printf "${data[3]} playlist play ${radiodata[3]}\nexit\n" | nc localhost 9090 2>&1 /dev/null &
                 else
                     echo "[$sd] stop radio" >> /var/log/knxlistener
