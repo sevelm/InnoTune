@@ -86,7 +86,7 @@
 
             if (getParameterByName("reload") === null) {
                 window.history.pushState('reboot.php', 'InnoControl - Rebooting',
-                    document.location + '?reload=true');
+                    document.location + '&reload=true');
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', "/api/helper.php?reboot", true);
                 xhr.send();
