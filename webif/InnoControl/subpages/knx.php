@@ -28,6 +28,20 @@
         </button>
     </div>
 </div>
+<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell--top mdl-cell mdl-cell--12-col"
+    ng-if="knxinstalled && knxversion != '0.14.29-5'">
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">KNXD-Update</h2>
+    </div>
+    <div class="mdl-card__supporting-text mdl-grid">
+        KNXD aktualisieren, um ABB USB/S1.1 und ähnliche zu unterstützen.
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <button ng-click="installKnx()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+            Update
+        </button>
+    </div>
+</div>
 <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell--top mdl-cell mdl-cell--6-col" ng-init="getKnxSettings()">
     <div class="mdl-card__title">
         <h2 class="mdl-card__title-text">KNXD-Einstellung</h2>
