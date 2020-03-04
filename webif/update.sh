@@ -8,7 +8,10 @@
 
 echo "0% - starting update" > /opt/innotune/settings/updatestatus.txt
 rm -r /opt/innotune/update/*   ### Update-Ordner leeren
-apt-get install git
+# fix dpkg errors if there are any
+sudo DEBIAN_FRONTEND=noninteractive dpkg --configure -a --force-confdef --force-confold
+sudo DEBIAN_FRONTEND=noninteractive apt-get -f -y install -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"
+apt-get -y install git
 mkdir /opt/innotune/update/cache
 cd /opt/innotune/update/cache
 echo "5% - cloning git repo" > /opt/innotune/settings/updatestatus.txt
