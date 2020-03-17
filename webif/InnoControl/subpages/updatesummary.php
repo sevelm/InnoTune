@@ -14,7 +14,8 @@
             </div>
             <md-button ng-if="error.status!='installed'" class="md-secondary"
                        ng-click="reinstallPackage(error)"
-                       ng-attr-id="{{ 'button' + error.package}}">
+                       ng-attr-id="{{ 'button' + error.package}}"
+                       ng-disabled='internetLost'>
               Installieren
             </md-button>
             <md-progress-circular md-mode="indeterminate" class="md-secondary" style="display: none" ng-attr-id="{{ 'spinner' + error.package}}">
@@ -31,10 +32,14 @@
               ng-click="rebootAndValidate()">
           Reboot
       </button>
-      <button ng-click='latestUpdate()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+      <button ng-click='latestUpdate()'
+              ng-disabled='internetLost'
+              class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
           Letztes Update
       </button>
-      <button ng-click='fullUpdate()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+      <button ng-click='fullUpdate()'
+              ng-disabled='internetLost'
+              class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
           Alle Updates
       </button>
     </div>
@@ -75,11 +80,13 @@
     </div>
     <div class="mdl-card__actions mdl-card--border">
         <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-                ng-click="updateLms()">
+                ng-click="updateLms()"
+                ng-disabled='internetLost'>
                 Update
         </button>
       <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-              ng-click="reinstallLms()">
+              ng-click="reinstallLms()"
+              ng-disabled='internetLost'>
               Reinstall
       </button>
       <button ng-click='resetLms()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" >

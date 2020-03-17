@@ -29,6 +29,12 @@ if (isset($_GET['start_lms'])) {
     exec("sudo /var/www/sudoscript.sh start_lms");
 }
 
+if (isset($_GET['ping'])) {
+    $response = exec("/var/www/ping_check.sh");
+    $return_var = explode("\n", $response);
+    echo $return_var[0];
+}
+
 if (isset($_GET['check_lms'])) {
   $datei = "/opt/innotune/settings/logitechmediaserver.txt"; // Name der Datei
   $array_lms = file($datei); // Datei in ein Array einlesen

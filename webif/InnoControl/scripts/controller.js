@@ -9,6 +9,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.urlPattern = /^[^\\]*$/;
     $scope.passwordPattern = /^[a-zA-Z0-9!"§%\/()=ß?'*]*$/;
     $scope.admin = "admin";
+    $scope.internetLost = false;
     $scope.network = {};
     $scope.settings = {
         password: ''
@@ -82,6 +83,17 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         newStateValue: -1
     };
     $scope.lmswastate = false;
+
+    $scope.checkInternetConnection = function() {
+        $http.get('api/helper.php?ping')
+            .success(function (data) {
+                if (data !== '') {
+                    $scope.internetLost = data != '0';
+                } else {
+                    $scope.internetLost = true;
+                }
+            })
+    };
 
     $scope.getLmsWaState = function() {
         $http.get('api/helper.php?lmswastate')
@@ -2204,6 +2216,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.getShairplayInstance();
     $scope.getUpdateRunning();
     $scope.readSystemStates();
+    $scope.checkInternetConnection();
     // 4 sec
     $interval($scope.getSysInfo, 4000);
     // 5 sec
@@ -2214,6 +2227,8 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $interval($scope.getShairplayInstance, 10000);
     // 30 sec
     $interval($scope.checkLmsStatus, 30000);
+    // 60 sec
+    $interval($scope.checkInternetConnection, 60000);
     $scope.getDevices();
     $scope.getLogPorts();
 });
