@@ -141,9 +141,6 @@ echo "70% - adding new updates" > /opt/innotune/settings/updatestatus.txt
 sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" php5.6-gd
 sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" php5.6-curl
 
-#LMS Wizard fix (completes form automatically, if wizard pops up)
-sudo cp /opt/innotune/update/cache/InnoTune/wizard.html /usr/share/squeezeboxserver/HTML/EN/settings/server/wizard.html
-
 #php.ini file with enabled curl-extension
 sudo cp /opt/innotune/update/cache/InnoTune/php.ini /etc/php/5.6/cgi/php.ini
 
