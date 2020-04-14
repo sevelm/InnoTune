@@ -67,6 +67,12 @@ if ($pos1 == 1) {
                          ng-true-value="1" ng-false-value="0" ng-change="selectedDevice.changed=true">
               </md-switch>
             </div>
+            <div class="mdl-grid" ng-if="selectedDevice.betrieb=='normalbetrieb'">
+              <h5 class="mdl-cell--6-col">Stereo-Signal zu Mono konvertieren:&nbsp;</h5>
+              <md-switch class="mdl-cell" ng-model="selectedDevice.stm" aria-label="stm"
+                         ng-true-value="1" ng-false-value="0" ng-change="setAudioConfiguration();selectedDevice.changed=true">
+              </md-switch>
+            </div>
             <hr>
             <!-- Normalbetrieb -->
             <div id="normalbetrieb" ng-if="selectedDevice.betrieb=='normalbetrieb'">

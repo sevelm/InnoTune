@@ -1494,7 +1494,8 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                 '&MAC_NORMAL=' + $scope.selectedDevice.mac +
                 '&AP_NORMAL=' + $scope.checkAirplay($scope.selectedDevice.airplay) +
                 '&SP_NORMAL=' + $scope.checkSpotify($scope.selectedDevice.spotify) +
-                '&oac=' + $scope.selectedDevice.oac);
+                '&oac=' + $scope.selectedDevice.oac +
+                '&stm=' + $scope.selectedDevice.stm);
             $scope.playerConfChanged = 1;
 
         } else if ($scope.selectedDevice.betrieb == 'geteilterbetrieb') {
@@ -1507,7 +1508,8 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                 '&APre_GETEILT=' + $scope.checkAirplay($scope.selectedDevice.airplayR) +
                 '&SPli_GETEILT=' + $scope.checkSpotify($scope.selectedDevice.spotifyL) +
                 '&SPre_GETEILT=' + $scope.checkSpotify($scope.selectedDevice.spotifyR) +
-                '&oac=' + $scope.selectedDevice.oac);
+                '&oac=' + $scope.selectedDevice.oac +
+                '&stm=0');
             $scope.playerConfChanged = 1;
         }
 
@@ -1557,6 +1559,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                                     eq: {},
                                                     path: dev[14],
                                                     oac: parseInt(dev[15]),
+                                                    stm: parseInt(dev[13]),
                                                     display: null,
                                                     manualOperation: 0,
                                                     isMuted: 0,
@@ -1612,6 +1615,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                                     eq: {},
                                                     path: dev[14],
                                                     oac: parseInt(dev[15]),
+                                                    stm: parseInt(dev[13]),
                                                     display: null,
                                                     manualOperation: 0,
                                                     isMuted: 0,
@@ -1649,6 +1653,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                                                     eq: {},
                                                     path: dev[14],
                                                     oac: 1,
+                                                    stm: 0,
                                                     display: null,
                                                     manualOperation: 0,
                                                     isMuted: 0,

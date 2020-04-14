@@ -210,7 +210,7 @@ $datei = "/opt/innotune/settings/voiceoutput/voicersskey.txt"; // Name der Datei
 $array_config = file($datei); // Datei in ein Array einlesen
 
 $key = $array_config[0];
-$q = "22khz_16bit_stereo"; // Andere Einstellungen siehe VoiceRSS Doku
+$q = "44khz_16bit_stereo"; // Andere Einstellungen siehe VoiceRSS Doku
 $c = "mp3";
 
 $gain = ($_GET["gain"]);
