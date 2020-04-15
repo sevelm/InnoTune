@@ -43,6 +43,15 @@
           Alle Updates
       </button>
     </div>
+    <div class="mdl-card__menu">
+        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">info</i>
+            <md-tooltip md-direction="bottom">
+                Zeigt Pakete an die nicht oder fehlerhaft installiert wurden.<br>
+                Hier können Sie diese erneut installieren bzw. das letzte Update erneut durchführen.
+            </md-tooltip>
+        </button>
+    </div>
   </div>
 
   <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col"
@@ -112,6 +121,15 @@
             ng-click="resetWaLog()">
           Reset Workaround-Log
       </button>
+    </div>
+    <div class="mdl-card__menu">
+        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">info</i>
+            <md-tooltip md-direction="bottom">
+                Zeigt den Status des Logitech Media Servers.<br>
+                Dieser kann hier Upgedated, neu installiert oder zurückgesetzt werden.
+            </md-tooltip>
+        </button>
     </div>
   </div>
 

@@ -94,6 +94,24 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
             background-color: indianred;
             text-align: center;
         }
+        md-tooltip {
+            border-radius: 4px;
+            background-color: darkgrey;
+        }
+        md-tooltip .md-content {
+            font-family: Roboto, 'Helvetica Neue', sans-serif;
+            font-size: 10pt;
+            height: auto;
+            line-height: 12pt;
+            padding: 8px;
+        }
+        md-tooltip ._md-content {
+            font-family: Roboto, 'Helvetica Neue', sans-serif;
+            font-size: 10pt;
+            height: auto;
+            line-height: 12pt;
+            padding: 8px;
+        }
     </style>
 </head>
 <body id="InnoController" ng-controller="InnoController">

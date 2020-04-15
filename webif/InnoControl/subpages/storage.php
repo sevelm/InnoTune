@@ -100,6 +100,17 @@
             Pfad im LMS: <b>Eigene Musik -> Musikordner -> Mountpoint</b>
         </div>
     </div>
+
+    <div class="mdl-card__menu">
+        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">info</i>
+            <md-tooltip md-direction="bottom">
+                Der Netztwerkspeicher ermöglicht Audio-Dateien die auf z.B. Synology NAS liegen<br>
+                im Logitech Media Server abzuspielen.<br><br>
+                Weitere Infos zur Einbindung finden Sie in unserer Online-Dokumentation.
+            </md-tooltip>
+        </button>
+    </div>
 </div>
 <!-- Usb-Mount Einstellungen -->
 <div ng-init="showUSBSwitch()"
@@ -133,6 +144,17 @@
                 Pfad im LMS: <b>Eigene Musik -> Musikordner -> usbX</b>
             </div>
         </div>
+    </div>
+
+    <div class="mdl-card__menu">
+        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">info</i>
+            <md-tooltip md-direction="bottom">
+                Wenn Sie Ihre Audio-Dateien von einem USB-Stick aus im Logitech Media Server abzuspielen<br>
+                möchten, sollten Sie diese automatisch mounten.<br>
+                Damit wird der USB-Stick sofort eingebunden.
+            </md-tooltip>
+        </button>
     </div>
 </div>
 
@@ -177,6 +199,14 @@
               class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
           <i class="material-icons">delete</i>
           <md-tooltip md-direction="bottom">Löschen</md-tooltip>
+      </button>
+      <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+          <i class="material-icons">info</i>
+          <md-tooltip md-direction="bottom">
+              Hier können Sie Ihre iTunes Library die auf einer NAS liegt<br>
+              in den Logitech Media Server einbinden.<br>
+              Das Tutorial finden Sie in unserer Online-Dokumentation.
+          </md-tooltip>
       </button>
   </div>
 </div>

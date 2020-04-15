@@ -105,6 +105,15 @@
             Stop
         </button>
     </div>
+    <div class="mdl-card__menu">
+        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">info</i>
+            <md-tooltip md-direction="bottom">
+                Zeigt die allgemeinen Einstellungen von KNX und den Status der<br>
+                einzelnen KNX-Dienste.
+            </md-tooltip>
+        </button>
+    </div>
 </div>
 
 <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell--top mdl-cell mdl-cell--6-col">

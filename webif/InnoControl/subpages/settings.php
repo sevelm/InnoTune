@@ -172,6 +172,16 @@ if (isset($_GET['stop_usbmount'])) {
               </button>
             <?php } ?>
         </div>
+        <div class="mdl-card__menu">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                <i class="material-icons">info</i>
+                <md-tooltip md-direction="bottom">
+                    der Server unterstützt DHCP und statische IP-Adressen.<br>
+                    Wenn der Server von einer Loxone oder anderem Netzwerkgerät aus angesprochen wird,<br>
+                    sollte eine statische IP verwendet werden.<br>
+                </md-tooltip>
+            </button>
+        </div>
     </div>
 </div>
 
@@ -227,6 +237,14 @@ if (isset($_GET['stop_usbmount'])) {
                 Speichern
             </button>
         </div>
+        <div class="mdl-card__menu">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                <i class="material-icons">info</i>
+                <md-tooltip md-direction="bottom">
+                    Hier können Sie den Login des Webinterface ändern.
+                </md-tooltip>
+            </button>
+        </div>
     </div>
     <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--top mdl-cell--12-col">
         <div class="mdl-card__title">
@@ -264,6 +282,14 @@ if (isset($_GET['stop_usbmount'])) {
                 Zurücksetzen
             </button>
         </div>
+        <div class="mdl-card__menu">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                <i class="material-icons">info</i>
+                <md-tooltip md-direction="bottom">
+                    Hier können einzelne Komponenten des Servers auf Werkseinstellungen zurückgesetzt werden.
+                </md-tooltip>
+            </button>
+        </div>
     </div>
 </div>
 
@@ -274,6 +300,14 @@ if (isset($_GET['stop_usbmount'])) {
         </div>
         <div class="mdl-card__supporting-text">
             <?php echo str_replace("\n", "<br>", shell_exec("ifconfig")); ?>
+        </div>
+        <div class="mdl-card__menu">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                <i class="material-icons">info</i>
+                <md-tooltip md-direction="bottom">
+                    Zeigt die Netwerk-Interfaces des Servers.
+                </md-tooltip>
+            </button>
         </div>
     </div>
 </div>

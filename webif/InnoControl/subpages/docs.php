@@ -123,6 +123,16 @@ $kernel_local = exec("uname -r");
               Sichern
           </a>
       </div>
+      <div class="mdl-card__menu">
+          <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+              <i class="material-icons">info</i>
+              <md-tooltip md-direction="bottom">
+                  Hier können Sie ein Backup der Einstellungen speichern, damit diese zu<br>
+                  einem späteren Zeitpunkt wieder importiert werden können.<br><br>
+                  Des Weiteren benötigen Sie das Backup für den Loxone-Integrator.
+              </md-tooltip>
+          </button>
+      </div>
   </div>
   <div ng-init="isfileuploaded()" class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">
       <div class="mdl-card__title">
@@ -147,7 +157,15 @@ $kernel_local = exec("uname -r");
 
               </form>
           </div>
-
+      </div>
+      <div class="mdl-card__menu">
+          <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+              <i class="material-icons">info</i>
+              <md-tooltip md-direction="bottom">
+                  Hier können Sie ein gespeichertes Backup wieder in den Server einspielen.<br>
+                  Danach muss die Audio-Konfiguration neu erzeugt und ein Reboot durchgeführt werden.
+              </md-tooltip>
+          </button>
       </div>
   </div>
 </div>
@@ -171,6 +189,15 @@ $kernel_local = exec("uname -r");
               </p>
           </div>
       </div>
+    </div>
+    <div class="mdl-card__menu">
+        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">info</i>
+            <md-tooltip md-direction="bottom">
+                Hier sehen Sie die Logs des Servers.<br>
+                Weitere Infos finden Sie auch unter "Meldungen".
+            </md-tooltip>
+        </button>
     </div>
     <div class="mdl-card__actions mdl-card--border">
         <a href="/api/helper.php?logfile"
@@ -204,6 +231,14 @@ $kernel_local = exec("uname -r");
                 </ul>
           </div>
       </div>
+    </div>
+    <div class="mdl-card__menu">
+        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">info</i>
+            <md-tooltip md-direction="bottom">
+                Zeigt die Änderungen der letzten Updates.
+            </md-tooltip>
+        </button>
     </div>
 </div>
 
