@@ -54,11 +54,20 @@ case "$1" in
      reset_lms) update-rc.d logitechmediaserver remove
                 /etc/init.d/logitechmediaserver stop
                 kill $(ps cax | grep squeezeboxserve | awk '{print $1}')
+                rm /opt/server.prefs
                 rm /var/lib/squeezeboxserver/prefs/server.prefs;;
      stop_lms) update-rc.d logitechmediaserver remove
                /etc/init.d/logitechmediaserver stop
-               kill $(ps cax | grep squeezeboxserve | awk '{print $1}');;
-     start_lms) /etc/init.d/logitechmediaserver start
+               kill $(ps cax | grep squeezeboxserve | awk '{print $1}')
+               echo "saving server.prefs"
+               cp /var/lib/squeezeboxserver/prefs/server.prefs /opt/server.prefs
+               sync;;
+     start_lms) if [[ -f "/opt/server.prefs" ]]; then
+                    echo "copying server.prefs"
+                    cp /opt/server.prefs /var/lib/squeezeboxserver/prefs/server.prefs
+                    sync
+                fi
+                /etc/init.d/logitechmediaserver start
                 killall knxcallback.sh
                 run=$(cat /opt/innotune/settings/knxrun.txt)
                 if [[ "$run" -eq 1 ]]; then

@@ -87,6 +87,15 @@ if [[ $is_added -eq 0 ]]; then
     crontab -l | { cat; echo "*/30 * * * * /var/www/check_linein.sh"; } | crontab -
 fi
 
+is_added=$(crontab -l | grep hutdown_hook.sh | wc -l)
+if [[ $is_added -eq 0 ]]; then
+    crontab -l | { cat; echo "0 */4 * * * sudo /var/www/shutdown_hook.sh"; } | crontab -
+fi
+
+cp /opt/innotune/update/cache/InnoTune/custom_shutdown.service
+chmod 777 /opt/innotune/update/cache/InnoTune/custom_shutdown.service
+systemctl enable custom_shutdown.service
+
 # set new update count and reference to newer update file
 sudo echo "2" > /opt/innotune/settings/update_cnt.txt
 echo "100% - finished update" > /opt/innotune/settings/updatestatus.txt

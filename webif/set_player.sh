@@ -26,6 +26,11 @@ if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
   ###Logitech Media Server
   LMS=$(cat /opt/innotune/settings/logitechmediaserver.txt | head -n1 | tail -n1)
   if [ $LMS == "1" ]; then
+     if [[ -f "/opt/server.prefs" ]]; then
+        echo "copying server.prefs"
+        cp /opt/server.prefs /var/lib/squeezeboxserver/prefs/server.prefs
+        sync
+     fi
      /etc/init.d/logitechmediaserver restart
      IPLMS="-s $(ip route show | grep 'src' | grep 'eth0' | awk '{print $9}')"
      START_PORT=10000
