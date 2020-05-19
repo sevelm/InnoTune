@@ -40,6 +40,11 @@ if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
      START_PORT=11000
   fi
 
+  VPN=$(cat /opt/innotune/settings/vpn.txt | head -n1 | tail -n1)
+  if [ $VPN == "1" ]; then
+      sudo vpnc-connect
+  fi
+
   KNX=$(cat /opt/innotune/settings/knxrun.txt)
   sudo /var/www/knxrun.sh $KNX "upstart"
 

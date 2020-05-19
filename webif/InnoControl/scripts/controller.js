@@ -84,6 +84,39 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
     $scope.lmswastate = false;
 
+    $scope.vpncState = 'Inaktiv';
+
+    $scope.checkVPNConnection = function() {
+        $http.get('api/helper.php?vpn_running')
+            .success(function (data) {
+                if (data !== '') {
+                    data = data.replace("\n", "");
+                    console.log('data: |' + data + '|');
+                    if (data == '0') {
+                        $scope.vpncState = 'Inaktiv';
+                    } else {
+                        $scope.vpncState = 'Aktiv';
+                    }
+                } else {
+                    $scope.vpncState = 'Status kann nicht abgerufen werden!';
+                }
+            })
+    };
+
+    $scope.startVPNConnection = function() {
+        $http.get('api/helper.php?vpn_connect')
+            .success(function (data) {
+                setTimeout(function() { $scope.checkVPNConnection(); }, 2000);
+            })
+    };
+
+    $scope.stopVPNConnection = function() {
+        $http.get('api/helper.php?vpn_disconnect')
+            .success(function (data) {
+                setTimeout(function() { $scope.checkVPNConnection(); }, 2000);
+            })
+    };
+
     $scope.checkInternetConnection = function() {
         $http.get('api/helper.php?ping')
             .success(function (data) {
@@ -2234,6 +2267,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $interval($scope.checkLmsStatus, 30000);
     // 60 sec
     $interval($scope.checkInternetConnection, 60000);
+    $interval($scope.checkVPNConnection, 60000);
     $scope.getDevices();
     $scope.getLogPorts();
 });

@@ -949,4 +949,17 @@ if (isset($_GET['journal_info'])) {
     echo "<br><br><b>KNXD-Log Today</b><br>";
     echo str_replace("\n", "<br>", shell_exec("sudo /var/www/sudoscript.sh knxjournal_since \"today\""));
 }
+
+if (isset($_GET['vpn_running'])) {
+    echo shell_exec("ps cax | grep vpn | wc -l");
+}
+
+if (isset($_GET['vpn_connect'])) {
+    echo "test";
+    echo shell_exec("sudo /var/www/sudoscript.sh vpn_connect");
+}
+
+if (isset($_GET['vpn_disconnect'])) {
+    echo shell_exec("sudo /var/www/sudoscript.sh vpn_disconnect");
+}
 ?>

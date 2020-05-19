@@ -32,6 +32,13 @@ if [ $GATE = "wlan0" ]; then
 	SUBNET=$( ifconfig eth0 | grep "Bcast:" | tr -s ' ' | cut -d: -f4)
 	WFAILED="true"
 	echo "0" > /opt/innotune/settings/wlan.txt
+elif [ $GATE = "tun0" ]; then
+	GATE=$(ip route show | grep 'via' | awk '{print $3}' | head -n1)
+	IP=$(ip route show | grep 'src' | grep 'eth0' | awk '{print $9}' | tail -n1)
+	if [ $IP = "172.30.250.250" ]; then
+		IP=$(ip route show | grep 'src' | grep 'eth0' | awk '{print $9}' | head -n1)
+	fi
+	SUBNET=$( ifconfig eth0 | grep "Bcast:" | tr -s ' ' | cut -d: -f4)
 fi
 MAC=$(ip addr show eth0 | grep 'link/ether' | tr -s ' ' | cut -d ' ' -f3)
 MACWLAN=$(ip addr show wlan0 | grep 'link/ether' | tr -s ' ' | cut -d ' ' -f3)

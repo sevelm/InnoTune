@@ -92,9 +92,15 @@ if [[ $is_added -eq 0 ]]; then
     crontab -l | { cat; echo "0 */4 * * * sudo /var/www/shutdown_hook.sh"; } | crontab -
 fi
 
-cp /opt/innotune/update/cache/InnoTune/custom_shutdown.service
-chmod 777 /opt/innotune/update/cache/InnoTune/custom_shutdown.service
+cp /opt/innotune/update/cache/InnoTune/custom_shutdown.service /etc/systemd/system/custom_shutdown.service
+chmod 777 /etc/systemd/system/custom_shutdown.service
 systemctl enable custom_shutdown.service
+
+sudo apt-get -y install vpnc
+cp /opt/innotune/update/cache/InnoTune/vpnc.conf /etc/vpnc.conf
+chmod 777 /etc/vpnc.conf
+sudo echo "0" > /opt/innotune/settings/vpn.txt
+chmod 777 /opt/innotune/settings/vpn.txt
 
 # set new update count and reference to newer update file
 sudo echo "2" > /opt/innotune/settings/update_cnt.txt

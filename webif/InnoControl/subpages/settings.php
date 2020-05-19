@@ -291,6 +291,25 @@ if (isset($_GET['stop_usbmount'])) {
             </button>
         </div>
     </div>
+    <!--<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--top mdl-cell--12-col" ng-init="checkVPNConnection()">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Fernwartungszugang</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            Hiermit können Sie uns einen externen Zugriff auf Ihren Server gewähren.<br>
+            Status: {{vpncState}}
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <button ng-click="startVPNConnection()"
+                    class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                Start
+            </button>
+            <button ng-click="stopVPNConnection()"
+                    class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                Stop
+            </button>
+        </div>
+    </div>-->
 </div>
 
 <div class="mdl-grid mdl-cell--6-col no-spacing">
@@ -311,5 +330,4 @@ if (isset($_GET['stop_usbmount'])) {
         </div>
     </div>
 </div>
-<div class="mdl-grid mdl-cell--6-col no-spacing">
-</div>
+<div class="mdl-grid mdl-cell--6-col no-spacing"></div>
