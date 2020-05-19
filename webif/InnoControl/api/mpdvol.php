@@ -22,6 +22,7 @@
     ----------------------------------------------------------------------------
 */
 
+$mt = microtime(true);
 $DEBUG_STRING = "";
 // if param stop is set, stop mpd
 if (isset($_GET["stop"])) {
@@ -243,6 +244,7 @@ if (isset($_GET["id"])) {
 }
 
 if (isset($_GET["debug"])) {
-    echo $DEBUG_STRING;
+    $mt = microtime(true) - $mt;
+    echo $DEBUG_STRING . "<br><br> Excecution Time: " . $mt . " s";
 }
 ?>

@@ -317,5 +317,5 @@ if (empty($pids)) {
     echo "Fehler!";
 }
 $mt = microtime(true) - $mt;
-echo "<br><br>execution time: $mt ms"
+echo "<br><br>execution time: $mt s"
 ?>
