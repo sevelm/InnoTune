@@ -302,8 +302,6 @@ if (empty($pids)) {
 
       //Update MPD Library
       exec("mpc update");
-      //Sleep
-      sleep(1);
 
       //Execute ttsvolplay
       // Check ob der TTS-Request zur Warteschlange hinzugefügt werden soll

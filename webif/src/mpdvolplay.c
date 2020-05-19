@@ -194,8 +194,10 @@ int main(int argc, char *argv[])
     //  Master Lautstärkenregler für Airplay & Squeezebox & ... reduzieren
 	int SOFT_VOL_DOWN = 100;
     nr = 0;
-	do {
-		SOFT_VOL_DOWN = SOFT_VOL_DOWN - 1;
+	//do {
+		SOFT_VOL_DOWN = 0;
+		//SOFT_VOL_DOWN = SOFT_VOL_DOWN - 5;
+
 		for (nr = 0; nr <= 10; nr++) {
 
 			if (VOL_MPD[nr] != 0) {
@@ -209,8 +211,8 @@ int main(int argc, char *argv[])
 			}
 
 		}
-		usleep(10000);
-	} while (SOFT_VOL_DOWN > SQ_AIR_VOLUME);
+		//usleep(10000);
+	//} while (SOFT_VOL_DOWN > SQ_AIR_VOLUME);
 
 	// #################   MPD Anfang   #################
 	//
@@ -275,7 +277,10 @@ int main(int argc, char *argv[])
 	mpd_kein_play:
 
 	do {
-		SQ_AIR_VOLUME = SQ_AIR_VOLUME + 1;
+		SQ_AIR_VOLUME = SQ_AIR_VOLUME + 10;
+		if (SQ_AIR_VOLUME > 100) {
+			SQ_AIR_VOLUME = 100;
+		}
 
 		for (nr = 0; nr <= 10; nr++) {
 			//  Master Lautstärkenregler für Airplay & Squeezebox & ... 100% - PlayerXX
