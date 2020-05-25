@@ -184,11 +184,13 @@ int main(int argc, char *argv[])
 
     //  Master Lautstärkenregler für Airplay & Squeezebox & ... reduzieren
 	int SOFT_VOL_DOWN = 100;
-    nr = 0;
-	//do {
-		//SOFT_VOL_DOWN = SOFT_VOL_DOWN - 10;
-		SOFT_VOL_DOWN = SQ_AIR_VOLUME;
-		for (nr = 0; nr <= 10; nr++) {
+	do {
+		SOFT_VOL_DOWN = SOFT_VOL_DOWN - 4;
+		if (SOFT_VOL_DOWN < 0) {
+			SOFT_VOL_DOWN = 0;
+		}
+
+		for (nr = 0; nr < 10; nr++) {
 
 			if (VOL_MPD[nr] != 0) {
 				result = SetAlsaVolume (SOFT_VOL_DOWN, "MuteIfMPD_", "hw:", nr);
@@ -200,8 +202,8 @@ int main(int argc, char *argv[])
 				result = SetAlsaVolume (SOFT_VOL_DOWN, "MuteIfMPDre_", "hw:", nr);
 			}
 		}
-		//usleep(10000);
-	//} while (SOFT_VOL_DOWN > SQ_AIR_VOLUME);
+		usleep(5000);
+	} while (SOFT_VOL_DOWN > SQ_AIR_VOLUME);
 
 	gettimeofday(&tval_after_vol, NULL);
 	timersub(&tval_after_vol, &tval_before, &tval_result);
@@ -231,34 +233,11 @@ int main(int argc, char *argv[])
 
 	mpd_run_clear(conn);
     mpd_run_add(conn, PATHTTS);
-
-	int COUNTER01 = 1;
-	while ( COUNTER01 == 1 )
-	{
-	    mpd_run_play(conn);
-		sleep(1);
-		struct mpd_status *status = NULL;
-		struct mpd_connection *conn = NULL;
-		conn = mpd_connection_new("localhost", 6600, 0);
-		status = mpd_run_status(conn);
-		enum mpd_state playstate = mpd_status_get_state(status);
-		if (playstate == MPD_STATE_PLAY){
-			COUNTER01 = 0;
-		}
-		COUNT = COUNT + 1;
-		if (COUNT > 8 ) {
-			if (conn != NULL) {
-				mpd_connection_free(conn);
-			}
-			goto mpd_kein_play;
-		}
-	}
-
+    mpd_run_play(conn);
 
 	int COUNTER02 = 1;
 	while ( COUNTER02 == 1 )
 	{
-		//sleep(1);
 		usleep(250000);
 		struct mpd_status *status = NULL;
 		struct mpd_connection *conn = NULL;
@@ -285,12 +264,12 @@ int main(int argc, char *argv[])
 	mpd_kein_play:
 
 	do {
-		SQ_AIR_VOLUME = SQ_AIR_VOLUME + 10;
+		SQ_AIR_VOLUME = SQ_AIR_VOLUME + 2;
 		if (SQ_AIR_VOLUME > 100) {
 			SQ_AIR_VOLUME = 100;
 		}
 
-		for (nr = 1; nr <= 10; nr++) {
+		for (nr = 0; nr < 10; nr++) {
 			//  Master Lautstärkenregler für Airplay & Squeezebox & ... 100% - PlayerXX
 			if (VOL_MPD[nr] != 0) {
 				result = SetAlsaVolume (SQ_AIR_VOLUME, "MuteIfMPD_", "hw:", nr);

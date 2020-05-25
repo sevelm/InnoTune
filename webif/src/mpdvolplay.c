@@ -185,18 +185,21 @@ int main(int argc, char *argv[])
 	}
 
 
-		printf("Wert von SQAIR: %li\n", SQ_AIR_VOLUME);
-		printf("Wert von MPD: %li\n", VOL_MPD[1]);
-		printf("Wert von MPDLI: %li\n", VOL_MPD_LI[1]);
-		printf("Wert von MPDRE: %li\n", VOL_MPD_RE[1]);
+	printf("Wert von SQAIR: %li\n", SQ_AIR_VOLUME);
+	printf("Wert von MPD: %li\n", VOL_MPD[1]);
+	printf("Wert von MPDLI: %li\n", VOL_MPD_LI[1]);
+	printf("Wert von MPDRE: %li\n", VOL_MPD_RE[1]);
 
 
     //  Master Lautstärkenregler für Airplay & Squeezebox & ... reduzieren
 	int SOFT_VOL_DOWN = 100;
     nr = 0;
-	//do {
-		SOFT_VOL_DOWN = 0;
-		//SOFT_VOL_DOWN = SOFT_VOL_DOWN - 5;
+	do {
+		//SOFT_VOL_DOWN = 0;
+		SOFT_VOL_DOWN = SOFT_VOL_DOWN - 2;
+		if (SOFT_VOL_DOWN < 0) {
+			SOFT_VOL_DOWN = 0;
+		}
 
 		for (nr = 0; nr <= 10; nr++) {
 
@@ -211,8 +214,8 @@ int main(int argc, char *argv[])
 			}
 
 		}
-		//usleep(10000);
-	//} while (SOFT_VOL_DOWN > SQ_AIR_VOLUME);
+		usleep(10000);
+	} while (SOFT_VOL_DOWN > SQ_AIR_VOLUME);
 
 	// #################   MPD Anfang   #################
 	//
@@ -229,32 +232,15 @@ int main(int argc, char *argv[])
 		printf("cant connect to mpd\n");
 		return 1;
 	}
+
 	mpd_run_clear(conn);
 	mpd_run_load(conn, TITLE);
-//	mpd_send_play(conn);
-	int COUNTER01 = 1;
-	while ( COUNTER01 == 1 )
-	{
-	                mpd_run_play(conn);
-		sleep(1);
-		struct mpd_status *status = NULL;
-		struct mpd_connection *conn = NULL;
-		conn = mpd_connection_new("localhost", 6600, 0);
-		status = mpd_run_status(conn);
-		enum mpd_state playstate = mpd_status_get_state(status);
-		if (playstate == MPD_STATE_PLAY){
-			COUNTER01 = 0;
-		}
-//		mpd_connection_free(conn);
-		COUNT = COUNT + 1;
-		if (COUNT > 8) {
-			goto mpd_kein_play;
-		}
-	}
+    mpd_run_play(conn);
+
 	int COUNTER02 = 1;
 	while ( COUNTER02 == 1 )
 	{
-		sleep(1);
+		usleep(250000);
 		struct mpd_status *status = NULL;
 		struct mpd_connection *conn = NULL;
 		conn = mpd_connection_new("localhost", 6600, 0);
@@ -277,7 +263,7 @@ int main(int argc, char *argv[])
 	mpd_kein_play:
 
 	do {
-		SQ_AIR_VOLUME = SQ_AIR_VOLUME + 10;
+		SQ_AIR_VOLUME = SQ_AIR_VOLUME + 2;
 		if (SQ_AIR_VOLUME > 100) {
 			SQ_AIR_VOLUME = 100;
 		}
