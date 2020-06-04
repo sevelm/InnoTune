@@ -13,4 +13,6 @@ cd /var/log.hdd
 find -type f \( -name "*.gz" \) -size +5M -delete
 find -type f \( -name "*.1" -o -name "*.2" \) -delete
 
+#find /sources/ -type f \( -name "logitechmediaserver*" \) -delete
+
 sync

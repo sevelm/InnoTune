@@ -27,6 +27,18 @@
             </button>
         </form>
     </div>
+
+    <div class="mdl-card__menu">
+        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">info</i>
+            <md-tooltip md-direction="bottom">
+                Der Zentral-Player kann Audio-Dateien die am Server gespeichert sind auf allen Zonen abspielen.<br>
+                Zusätzlich können Sie Dateien hochladen und Playlisten erstellen, die es ermöglichen per HTTP-Befehl<br>
+                abgespielt zu werden.<br>
+                Z.B.: Das Abspielen eines Haustür-Gongs.
+            </md-tooltip>
+        </button>
+    </div>
 </div>
 <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--7-col mdl-cell--top">
     <div class="mdl-card__title">

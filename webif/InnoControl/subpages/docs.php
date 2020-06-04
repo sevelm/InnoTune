@@ -9,7 +9,6 @@
 // Verfügbare Version einlesen
 $datei = "https://raw.githubusercontent.com/sevelm/InnoTune/master/version.txt"; // Name der Datei
 $version_server = file($datei); // Datei in ein Array einlesen
-
 //Aktuelle Version einlesen
 $datei = "/var/www/version.txt"; // Name der Datei
 $version_local = file($datei); // Datei in ein Array einlesen
@@ -17,9 +16,6 @@ $version_local = file($datei); // Datei in ein Array einlesen
 $kernel_datei = "/var/www/kernel/version.txt";
 $kernel = file($kernel_datei);
 $kernel_local = exec("uname -r");
-
-$beta_datei = "https://raw.githubusercontent.com/sevelm/InnoTune/master/webif/beta/version.txt";
-$beta = file($beta_datei);
 ?>
 
 <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">
@@ -58,7 +54,11 @@ $beta = file($beta_datei);
                 </div>
                 <div class="mdl-grid">
                     <h5 class="mdl-cell mdl-cell--7-col">Verfügbare Version</h5>
-                    <p><?php echo $version_server[0]; ?></p>
+                    <?php if (strcmp ("", trim($version_server[0])) == 0) { ?>
+                        <p><?php echo "Konnte nicht geladen werden!"; ?></p>
+                    <?php } else { ?>
+                        <p><?php echo $version_server[0]; ?></p>
+                    <?php } ?>
                 </div>
                 <br>
                 <?php
@@ -78,14 +78,20 @@ $beta = file($beta_datei);
     </div>
     <div class="mdl-card__actions mdl-card--border">
     <?php
-    if (strcmp(trim($version_local[0]), trim($version_server[0])) == 0) {
+    if (strcmp ("", trim($version_server[0])) == 0) {
         echo "<button disabled='' class=\"mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect\" >
             UPDATE
         </button >";
     } else {
-        echo "<button ng-click='update()' class=\"mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect\" >
-            UPDATE
-        </button >";
+        if (strcmp(trim($version_local[0]), trim($version_server[0])) == 0) {
+            echo "<button disabled='' class=\"mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect\" >
+                UPDATE
+            </button >";
+        } else {
+            echo "<button ng-disabled='internetLost' ng-click='update()' class=\"mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect\" >
+                UPDATE
+            </button >";
+        }
     }
     if (strpos($kernel_local, 'rockchip') !== false) {
       if (strcmp(trim($kernel_local), trim($kernel[0])) == 0) {
@@ -117,6 +123,16 @@ $beta = file($beta_datei);
               Sichern
           </a>
       </div>
+      <div class="mdl-card__menu">
+          <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+              <i class="material-icons">info</i>
+              <md-tooltip md-direction="bottom">
+                  Hier können Sie ein Backup der Einstellungen speichern, damit diese zu<br>
+                  einem späteren Zeitpunkt wieder importiert werden können.<br><br>
+                  Des Weiteren benötigen Sie das Backup für den Loxone-Integrator.
+              </md-tooltip>
+          </button>
+      </div>
   </div>
   <div ng-init="isfileuploaded()" class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">
       <div class="mdl-card__title">
@@ -141,7 +157,15 @@ $beta = file($beta_datei);
 
               </form>
           </div>
-
+      </div>
+      <div class="mdl-card__menu">
+          <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+              <i class="material-icons">info</i>
+              <md-tooltip md-direction="bottom">
+                  Hier können Sie ein gespeichertes Backup wieder in den Server einspielen.<br>
+                  Danach muss die Audio-Konfiguration neu erzeugt und ein Reboot durchgeführt werden.
+              </md-tooltip>
+          </button>
       </div>
   </div>
 </div>
@@ -165,6 +189,15 @@ $beta = file($beta_datei);
               </p>
           </div>
       </div>
+    </div>
+    <div class="mdl-card__menu">
+        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">info</i>
+            <md-tooltip md-direction="bottom">
+                Hier sehen Sie die Logs des Servers.<br>
+                Weitere Infos finden Sie auch unter "Meldungen".
+            </md-tooltip>
+        </button>
     </div>
     <div class="mdl-card__actions mdl-card--border">
         <a href="/api/helper.php?logfile"
@@ -198,6 +231,14 @@ $beta = file($beta_datei);
                 </ul>
           </div>
       </div>
+    </div>
+    <div class="mdl-card__menu">
+        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">info</i>
+            <md-tooltip md-direction="bottom">
+                Zeigt die Änderungen der letzten Updates.
+            </md-tooltip>
+        </button>
     </div>
 </div>
 

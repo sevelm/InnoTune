@@ -26,6 +26,11 @@ if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
   ###Logitech Media Server
   LMS=$(cat /opt/innotune/settings/logitechmediaserver.txt | head -n1 | tail -n1)
   if [ $LMS == "1" ]; then
+     if [[ -f "/opt/server.prefs" ]]; then
+        echo "copying server.prefs"
+        cp /opt/server.prefs /var/lib/squeezeboxserver/prefs/server.prefs
+        sync
+     fi
      /etc/init.d/logitechmediaserver restart
      IPLMS="-s $(ip route show | grep 'src' | grep 'eth0' | awk '{print $9}')"
      START_PORT=10000
@@ -33,6 +38,11 @@ if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
   else
      /etc/init.d/logitechmediaserver stop & update-rc.d logitechmediaserver remove
      START_PORT=11000
+  fi
+
+  VPN=$(cat /opt/innotune/settings/vpn.txt | head -n1 | tail -n1)
+  if [ $VPN == "1" ]; then
+      sudo vpnc-connect
   fi
 
   KNX=$(cat /opt/innotune/settings/knxrun.txt)

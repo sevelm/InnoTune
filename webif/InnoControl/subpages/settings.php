@@ -172,6 +172,16 @@ if (isset($_GET['stop_usbmount'])) {
               </button>
             <?php } ?>
         </div>
+        <div class="mdl-card__menu">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                <i class="material-icons">info</i>
+                <md-tooltip md-direction="bottom">
+                    der Server unterstützt DHCP und statische IP-Adressen.<br>
+                    Wenn der Server von einer Loxone oder anderem Netzwerkgerät aus angesprochen wird,<br>
+                    sollte eine statische IP verwendet werden.<br>
+                </md-tooltip>
+            </button>
+        </div>
     </div>
 </div>
 
@@ -227,6 +237,14 @@ if (isset($_GET['stop_usbmount'])) {
                 Speichern
             </button>
         </div>
+        <div class="mdl-card__menu">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                <i class="material-icons">info</i>
+                <md-tooltip md-direction="bottom">
+                    Hier können Sie den Login des Webinterface ändern.
+                </md-tooltip>
+            </button>
+        </div>
     </div>
     <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--top mdl-cell--12-col">
         <div class="mdl-card__title">
@@ -264,7 +282,34 @@ if (isset($_GET['stop_usbmount'])) {
                 Zurücksetzen
             </button>
         </div>
+        <div class="mdl-card__menu">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                <i class="material-icons">info</i>
+                <md-tooltip md-direction="bottom">
+                    Hier können einzelne Komponenten des Servers auf Werkseinstellungen zurückgesetzt werden.
+                </md-tooltip>
+            </button>
+        </div>
     </div>
+    <!--<div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--top mdl-cell--12-col" ng-init="checkVPNConnection()">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Fernwartungszugang</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            Hiermit können Sie uns einen externen Zugriff auf Ihren Server gewähren.<br>
+            Status: {{vpncState}}
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <button ng-click="startVPNConnection()"
+                    class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                Start
+            </button>
+            <button ng-click="stopVPNConnection()"
+                    class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                Stop
+            </button>
+        </div>
+    </div>-->
 </div>
 
 <div class="mdl-grid mdl-cell--6-col no-spacing">
@@ -275,7 +320,14 @@ if (isset($_GET['stop_usbmount'])) {
         <div class="mdl-card__supporting-text">
             <?php echo str_replace("\n", "<br>", shell_exec("ifconfig")); ?>
         </div>
+        <div class="mdl-card__menu">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                <i class="material-icons">info</i>
+                <md-tooltip md-direction="bottom">
+                    Zeigt die Netwerk-Interfaces des Servers.
+                </md-tooltip>
+            </button>
+        </div>
     </div>
 </div>
-<div class="mdl-grid mdl-cell--6-col no-spacing">
-</div>
+<div class="mdl-grid mdl-cell--6-col no-spacing"></div>

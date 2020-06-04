@@ -62,10 +62,49 @@ if ($pos1 == 1) {
                 </md-select>
             </div>
             <div class="mdl-grid">
-              <h5 class="mdl-cell--6-col">Audiokanal durchgehend offen halten:&nbsp;</h5>
-              <md-switch class="mdl-cell" ng-model="selectedDevice.oac" aria-label="oac"
-                         ng-true-value="1" ng-false-value="0" ng-change="selectedDevice.changed=true">
-              </md-switch>
+              <h5 class="mdl-cell--6-col" style="margin-top: 12px">
+                  Audiokanal durchgehend offen halten:&nbsp;
+              </h5>
+              <div class="mdl-cell--1-col">
+                  <md-switch class="mdl-cell" ng-model="selectedDevice.oac" aria-label="oac"
+                             ng-true-value="1" ng-false-value="0" ng-change="selectedDevice.changed=true">
+                  </md-switch>
+              </div>
+              <div class="mdl-cell--1-col" style="margin: 8px">
+                    <div id="ttoac" class="icon material-icons">info
+                        <md-tooltip for="ttoac">
+                            Wenn auf den Lautsprechern ein Rauschen vorhanden ist kann der Audiokanal geschlossen werden,<br>
+                            um dies zu verhindern.<br>
+                            Bei geschlossenem Audiokanal kann es aber zu einem Einschaltknacksen kommen.<br><br>
+                            Das Rauschen/Einschaltknacksen ist von den Gegebenheiten abhängig.<br>
+                            Hier sind Faktoren wie Lautsprechermodell, Lautsprecherkabel und Länge ausschlaggebend.<br><br>
+                            Standard: Ein
+                      </md-tooltip>
+                  </div>
+              </div>
+            </div>
+            <div class="mdl-grid" ng-if="selectedDevice.betrieb=='normalbetrieb'">
+              <h5 class="mdl-cell--6-col" style="margin-top: 12px">
+                  Stereo-Signal zu Mono konvertieren:&nbsp;
+              </h5>
+              <div class="mdl-cell--1-col">
+                  <md-switch class="mdl-cell" ng-model="selectedDevice.stm" aria-label="stm"
+                             ng-true-value="1" ng-false-value="0" ng-change="setAudioConfiguration();selectedDevice.changed=true">
+                  </md-switch>
+              </div>
+              <div class="mdl-cell--1-col" style="margin: 8px">
+                  <div id="ttstm" class="icon material-icons">info
+                      <md-tooltip for="ttstm">
+                          Mit dieser Option wird das Signal von Stereo zu Mono konvertiert und dann auf beiden Lautsprechern ausgegeben.<br><br>
+                          Z.B.: bei einem Bad (linker LS) mit Sauna (rechter LS) soll es eine Zone sein, jedoch würde die Abtrennung<br>
+                          der LS von der Saunatür den Stereo-Sound zu sehr abschwächen.<br>
+                          Hier ist es besser auf beiden die Musik Mono zu wiedergeben.<br><br>
+
+                          Bei sehr großen Räumen die eine Zone darstellen, kann diese Option auch von nutzen sein.<br><br>
+                          Standard: Aus
+                    </md-tooltip>
+                </div>
+              </div>
             </div>
             <hr>
             <!-- Normalbetrieb -->
@@ -75,6 +114,13 @@ if ($pos1 == 1) {
                     <md-input-container class="md-block mdl-cell">
                         <input aria-label="name" name="name" ng-model="selectedDevice.name" ng-change="selectedDevice.changed=true">
                     </md-input-container>
+                    <div class="mdl-cell--1-col" style="margin: 8px">
+                          <div id="ttname" class="icon material-icons">info
+                            <md-tooltip for="ttname">
+                                Dieser Name wird für die Zone in unserer App, Spotify, Airplay usw. angezeigt.
+                            </md-tooltip>
+                        </div>
+                    </div>
                 </div>
                 <div class="mdl-grid">
                     <h6 class="mdl-cell mdl-cell--2-col">Mac</h6>
@@ -84,8 +130,15 @@ if ($pos1 == 1) {
                                ng-model="selectedDevice.mac"  ng-change="selectedDevice.changed=true"
                                ng-disabled="!editMacs">
                     </md-input-container>
-                    <div class="md-block mdl-cell">
-                        <p>Mac Beispiel: 00:00:00:00:00:xx</p>
+                    <div class="mdl-cell--1-col" style="margin: 8px">
+                          <div id="ttmac" class="icon material-icons">info
+                              <md-tooltip for="ttmac">
+                                  Die Mac-Adresse dient zur eindeutigen Identifikation der Zone.<br>
+                                  Es dürfen keine Mac-Adressen doppelt vergeben werden!<br><br>
+                                  Mit der Option "Benutzerdefinierte Mac-Adresse" können Sie den Standardwert überschreiben.<br>
+                                  Beispiel: 00:00:00:00:00:XX
+                            </md-tooltip>
+                        </div>
                     </div>
                 </div>
                 <div class="mdl-grid">
@@ -99,6 +152,14 @@ if ($pos1 == 1) {
                     <md-switch aria-label="airplay" class="mdl-cell" ng-model="selectedDevice.airplay" ng-true-value="1"
                                ng-false-value="0" ng-change="selectedDevice.changed=true">
                     </md-switch>
+                    <div class="mdl-cell--1-col" style="margin: 8px">
+                          <div id="ttshair" class="icon material-icons">info
+                              <md-tooltip for="ttshair">
+                                  Hier können Sie Airplay für die Zone aktivieren.<br>
+                                  Standard: Aus
+                            </md-tooltip>
+                        </div>
+                    </div>
                     <div class="mdl-layout-spacer"></div>
                 </div>
                 <div class="mdl-grid">
@@ -106,6 +167,15 @@ if ($pos1 == 1) {
                     <md-switch aria-label="airplay" class="mdl-cell" ng-model="selectedDevice.spotify" ng-true-value="1"
                                ng-false-value="0" ng-change="selectedDevice.changed=true">
                     </md-switch>
+                    <div class="mdl-cell--1-col" style="margin: 8px">
+                          <div id="ttspot" class="icon material-icons">info
+                              <md-tooltip for="ttspot">
+                                  Hier können Sie Spotify für die Zone aktivieren.<br>
+                                  Standard: Aus<br><br>
+                                  Für Spotify wird ein Premium-Account benötigt!
+                            </md-tooltip>
+                        </div>
+                    </div>
                     <div class="mdl-layout-spacer"></div>
                 </div>
             </div>
@@ -114,29 +184,46 @@ if ($pos1 == 1) {
             <div id="normalbetrieb" ng-if="selectedDevice.betrieb=='geteilterbetrieb'">
                 <div class="mdl-grid">
                     <p class="mdl-cell mdl-cell--2-col">Name Links</p>
-                    <md-input-container class="md-block mdl-cell">
+                    <md-input-container class="md-block mdl-cell--3-col">
                         <input aria-label="nameL" name="name" ng-model="selectedDevice.nameL" ng-change="selectedDevice.changed=true">
                     </md-input-container>
                     <p class="mdl-cell mdl-cell--2-col">Name Rechts</p>
-                    <md-input-container class="md-block mdl-cell">
+                    <md-input-container class="md-block mdl-cell--3-col">
                         <input aria-label="nameR" name="name" ng-model="selectedDevice.nameR" ng-change="selectedDevice.changed=true">
                     </md-input-container>
+                    <div class="mdl-cell--1-col" style="margin: 8px">
+                          <div id="ttname2" class="icon material-icons">info
+                            <md-tooltip for="ttname2">
+                                Diese Namen werden für die jeweilige Zone in unserer App, Spotify, Airplay usw. angezeigt.
+                            </md-tooltip>
+                        </div>
+                    </div>
                 </div>
                 <div class="mdl-grid">
                     <p class="mdl-cell mdl-cell--2-col">Mac Links</p>
-                    <md-input-container class="md-block mdl-cell">
+                    <md-input-container class="md-block mdl-cell--3-col">
                         <input placeholder="00:00:00:00:00:xx" aria-label="macL" name="mac"
                                pattern="([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
                                ng-model="selectedDevice.macL" ng-change="selectedDevice.changed=true"
                                ng-disabled="!editMacs">
                     </md-input-container>
                     <p class="mdl-cell mdl-cell--2-col">Mac Rechts</p>
-                    <md-input-container class="md-block mdl-cell">
+                    <md-input-container class="md-block mdl-cell--3-col">
                         <input placeholder="00:00:00:00:00:xx" aria-label="macR" name="mac"
                                pattern="([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$"
                                ng-model="selectedDevice.macR" ng-change="selectedDevice.changed=true"
                                ng-disabled="!editMacs">
                     </md-input-container>
+                    <div class="mdl-cell--1-col" style="margin: 8px">
+                          <div id="ttmac2" class="icon material-icons">info
+                              <md-tooltip for="ttmac2">
+                                  Die Mac-Adresse dient zur eindeutigen Identifikation der Zone.<br>
+                                  Es dürfen keine Mac-Adressen doppelt vergeben werden!<br><br>
+                                  Mit der Option "Benutzerdefinierte Mac-Adresse" können Sie den Standardwert überschreiben.<br>
+                                  Beispiel: 00:00:00:00:YY:XX
+                            </md-tooltip>
+                        </div>
+                    </div>
                 </div>
                 <div class="mdl-grid">
                   <md-checkbox ng-model="editMacs"
@@ -146,23 +233,40 @@ if ($pos1 == 1) {
                 </div>
                 <div class="mdl-grid">
                     <p class="mdl-cell mdl-cell--2-col">Shairplay Links</p>
-                    <md-switch class="mdl-cell" ng-model="selectedDevice.airplayL" aria-label="airplayL"
+                    <md-switch class="mdl-cell--3-col" ng-model="selectedDevice.airplayL" aria-label="airplayL"
                                ng-true-value="1" ng-false-value="0" ng-change="selectedDevice.changed=true">
                     </md-switch>
                     <p class="mdl-cell mdl-cell--2-col">Shairplay Rechts</p>
-                    <md-switch class="mdl-cell" ng-model="selectedDevice.airplayR" aria-label="airplayR"
+                    <md-switch class="mdl-cell--3-col" ng-model="selectedDevice.airplayR" aria-label="airplayR"
                                ng-true-value="1" ng-false-value="0" ng-change="selectedDevice.changed=true">
                     </md-switch>
+                    <div class="mdl-cell--1-col" style="margin: 8px">
+                          <div id="ttshair2" class="icon material-icons">info
+                              <md-tooltip for="ttshair2">
+                                  Hier können Sie Airplay für die Zonen aktivieren.<br>
+                                  Standard: Aus
+                            </md-tooltip>
+                        </div>
+                    </div>
                 </div>
                 <div class="mdl-grid">
                     <p class="mdl-cell mdl-cell--2-col">Spotify Connect Links</p>
-                    <md-switch class="mdl-cell" ng-model="selectedDevice.spotifyL" aria-label="airplayL"
+                    <md-switch class="mdl-cell--3-col" ng-model="selectedDevice.spotifyL" aria-label="airplayL"
                                ng-true-value="1" ng-false-value="0" ng-change="selectedDevice.changed=true">
                     </md-switch>
                     <p class="mdl-cell mdl-cell--2-col">Spotify Connect Rechts</p>
-                    <md-switch class="mdl-cell" ng-model="selectedDevice.spotifyR" aria-label="airplayR"
+                    <md-switch class="mdl-cell--3-col" ng-model="selectedDevice.spotifyR" aria-label="airplayR"
                                ng-true-value="1" ng-false-value="0" ng-change="selectedDevice.changed=true">
                     </md-switch>
+                    <div class="mdl-cell--1-col" style="margin: 8px">
+                          <div id="ttspot2" class="icon material-icons">info
+                              <md-tooltip for="ttspot2">
+                                  Hier können Sie Spotify für die Zonen aktivieren.<br>
+                                  Standard: Aus<br><br>
+                                  Für Spotify wird ein Premium-Account benötigt!
+                            </md-tooltip>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

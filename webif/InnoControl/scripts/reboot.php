@@ -10,7 +10,7 @@
 <html>
 <head>
     <title>InnoControl - Rebooting</title>
-    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
+    <link rel="stylesheet" href="../css/material.cyan-light_blue.min.css">
     <link rel="icon" sizes="512x512" href="../images/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 </head>

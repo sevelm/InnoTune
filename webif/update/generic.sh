@@ -50,4 +50,7 @@ sudo rm -r /usr/share/squeezeboxserver/HTML/m
 sudo cp -R /usr/share/squeezeboxserver/HTML/InnoPlayMobile/m /usr/share/squeezeboxserver/HTML/m
 sudo rm -r /usr/share/squeezeboxserver/HTML/InnoPlayMobile
 
+#LMS Wizard fix (completes form automatically, if wizard pops up)
+sudo cp /opt/innotune/update/cache/InnoTune/wizard.html /usr/share/squeezeboxserver/HTML/EN/settings/server/wizard.html
+
 echo "35% - cloned innoplay mobile" > /opt/innotune/settings/updatestatus.txt

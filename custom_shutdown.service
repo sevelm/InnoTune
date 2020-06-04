@@ -1,0 +1,15 @@
+[Unit]
+Description=Custom Shutdown hook
+DefaultDependencies=no
+Before=shutdown.target halt.target
+# This works because it is installed in the target and will be
+#   executed before the target state is entered
+# Also consider kexec.target
+
+[Service]
+Type=oneshot
+ExecStart=/var/www/shutdown_hook.sh
+TimeoutStartSec=0
+
+[Install]
+WantedBy=halt.target shutdown.target

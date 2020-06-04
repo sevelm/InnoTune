@@ -20,13 +20,13 @@
 #
 */
 
-
 #include <alsa/asoundlib.h>
 #include <alsa/mixer.h>
 #include <mpd/client.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/time.h>
 
 // Funktion: Setze Alsa Volume
 long SetAlsaVolume (int volume, char* devicePrefix, char* hwPrefix, int nr)
@@ -119,6 +119,11 @@ long max (long *values) {
 
 int main(int argc, char *argv[])
 {
+	//test values for execution time measurement
+	struct timeval tval_before, tval_result;
+	struct timeval tval_after, tval_after_vol, tval_after_play, tval_after_stop;
+	gettimeofday(&tval_before, NULL);
+
     char* TTS_TITLE = argv[1];
 	long result;
 	long* read;
@@ -172,13 +177,20 @@ int main(int argc, char *argv[])
 		result = SetAlsaVolume (VOL_MPD_RE[nr], "mpdre_", "hw:", nr);
 	}
 
+	gettimeofday(&tval_after, NULL);
+	timersub(&tval_after, &tval_before, &tval_result);
+	printf("Time elapsed (VOL): %ld.%06ld s\n", (long int)tval_result.tv_sec, (long int)tval_result.tv_usec);
+
 
     //  Master Lautstärkenregler für Airplay & Squeezebox & ... reduzieren
 	int SOFT_VOL_DOWN = 100;
-    nr = 0;
 	do {
-		SOFT_VOL_DOWN = SOFT_VOL_DOWN - 1;
-		for (nr = 0; nr <= 10; nr++) {
+		SOFT_VOL_DOWN = SOFT_VOL_DOWN - 4;
+		if (SOFT_VOL_DOWN < 0) {
+			SOFT_VOL_DOWN = 0;
+		}
+
+		for (nr = 0; nr < 10; nr++) {
 
 			if (VOL_MPD[nr] != 0) {
 				result = SetAlsaVolume (SOFT_VOL_DOWN, "MuteIfMPD_", "hw:", nr);
@@ -190,9 +202,12 @@ int main(int argc, char *argv[])
 				result = SetAlsaVolume (SOFT_VOL_DOWN, "MuteIfMPDre_", "hw:", nr);
 			}
 		}
-		usleep(10000);
+		usleep(5000);
 	} while (SOFT_VOL_DOWN > SQ_AIR_VOLUME);
 
+	gettimeofday(&tval_after_vol, NULL);
+	timersub(&tval_after_vol, &tval_before, &tval_result);
+	printf("Time elapsed (FAD): %ld.%06ld s\n", (long int)tval_result.tv_sec, (long int)tval_result.tv_usec);
 
 	// #################   MPD Anfang   #################
 	int COUNT = 0;
@@ -215,34 +230,15 @@ int main(int argc, char *argv[])
 		printf("cant connect to mpd\n");
 		return 1;
 	}
+
 	mpd_run_clear(conn);
-
-                mpd_run_add(conn, PATHTTS);
-
-	int COUNTER01 = 1;
-	while ( COUNTER01 == 1 )
-	{
-	                mpd_run_play(conn);
-		sleep(1);
-		struct mpd_status *status = NULL;
-		struct mpd_connection *conn = NULL;
-		conn = mpd_connection_new("localhost", 6600, 0);
-		status = mpd_run_status(conn);
-		enum mpd_state playstate = mpd_status_get_state(status);
-		if (playstate == MPD_STATE_PLAY){
-			COUNTER01 = 0;
-		}
-		COUNT = COUNT + 1;
-		if (COUNT > 8 ) {
-			goto mpd_kein_play;
-		}
-	}
-
+    mpd_run_add(conn, PATHTTS);
+    mpd_run_play(conn);
 
 	int COUNTER02 = 1;
 	while ( COUNTER02 == 1 )
 	{
-		sleep(1);
+		usleep(250000);
 		struct mpd_status *status = NULL;
 		struct mpd_connection *conn = NULL;
 		conn = mpd_connection_new("localhost", 6600, 0);
@@ -255,6 +251,9 @@ int main(int argc, char *argv[])
 	}
 	mpd_connection_free(conn);
 
+	gettimeofday(&tval_after_play, NULL);
+	timersub(&tval_after_play, &tval_after_vol, &tval_result);
+	printf("Time elapsed (PLA): %ld.%06ld s\n", (long int)tval_result.tv_sec, (long int)tval_result.tv_usec);
 
 	//
 	//
@@ -265,9 +264,12 @@ int main(int argc, char *argv[])
 	mpd_kein_play:
 
 	do {
-		SQ_AIR_VOLUME = SQ_AIR_VOLUME + 1;
+		SQ_AIR_VOLUME = SQ_AIR_VOLUME + 2;
+		if (SQ_AIR_VOLUME > 100) {
+			SQ_AIR_VOLUME = 100;
+		}
 
-		for (nr = 1; nr <= 10; nr++) {
+		for (nr = 0; nr < 10; nr++) {
 			//  Master Lautstärkenregler für Airplay & Squeezebox & ... 100% - PlayerXX
 			if (VOL_MPD[nr] != 0) {
 				result = SetAlsaVolume (SQ_AIR_VOLUME, "MuteIfMPD_", "hw:", nr);
@@ -286,5 +288,11 @@ int main(int argc, char *argv[])
             fprintf(f, "0");
             fclose(f);
         }
+
+
+	gettimeofday(&tval_after_stop, NULL);
+	timersub(&tval_after_stop, &tval_after_play, &tval_result);
+	printf("Time elapsed (FAD): %ld.%06ld s\n", (long int)tval_result.tv_sec, (long int)tval_result.tv_usec);
+
     return 0;
 }

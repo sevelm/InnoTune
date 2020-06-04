@@ -55,8 +55,7 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
 
     <link rel="shortcut icon" href="images/favicon.png">
 
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="css/roboto_font" type="text/css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="css/material.min.css" type="text/css">
     <link rel="stylesheet" href="css/styles.min.css" type="text/css">
@@ -87,6 +86,31 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
             height: 100%;
             width: 100%;
             background: rgba(255, 255, 255, .8) 50% 50% no-repeat;
+        }
+        .internetError {
+            display: block !important;
+            color: white;
+            padding: 1%;
+            background-color: indianred;
+            text-align: center;
+        }
+        md-tooltip {
+            border-radius: 4px;
+            background-color: darkgrey;
+        }
+        md-tooltip .md-content {
+            font-family: Roboto, 'Helvetica Neue', sans-serif;
+            font-size: 10pt;
+            height: auto;
+            line-height: 12pt;
+            padding: 8px;
+        }
+        md-tooltip ._md-content {
+            font-family: Roboto, 'Helvetica Neue', sans-serif;
+            font-size: 10pt;
+            height: auto;
+            line-height: 12pt;
+            padding: 8px;
         }
     </style>
 </head>
@@ -185,6 +209,9 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
         <div class="iewarning" style="display: none">
             Bitte verwenden Sie Google Chrome/Mozilla Firefox um den vollen Funktionsumfang zu nutzen.
         </div>
+        <div ng-if="internetLost" class="internetError">
+            Bitte Überprüfen Sie die Internetverbindung Ihres InnoServers.
+        </div>
         <div ng-view id="content" class="mdl-grid">
             <!-- Here goes content through routing mechanism-->
         </div>
@@ -216,7 +243,7 @@ if (!isset($_SESSION["logged_in"]) && empty($_SESSION["logged_in"])) {
 <script src="js/angular-material.min.js"></script>
 <!-- Eigene Scripts-->
 <script src="scripts/app.js?version=1.0.2"></script>
-<script src="scripts/controller.js?version=1.9.2"></script>
+<script src="scripts/controller.js?version=1.9.6"></script>
 <script src="scripts/routes.js?version=1.0.5"></script>
 </body>
 </html>

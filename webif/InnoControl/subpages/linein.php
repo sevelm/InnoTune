@@ -243,6 +243,15 @@ if ($pos1 == 1) {
                 </p>
             </div>
         </div>
+        <div class="mdl-card__menu">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                <i class="material-icons">info</i>
+                <md-tooltip md-direction="bottom">
+                    Ein Line-In Eingang kann auf mehreren Zonen wiedergeben werden.<br>
+                    Mehrere Eingänge können jedoch nicht auf eine Zone wiedergeben werden.
+                </md-tooltip>
+            </button>
+        </div>
     </div>
 
     <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--top mdl-cell--12-col">

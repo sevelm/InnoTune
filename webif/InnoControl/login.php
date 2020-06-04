@@ -36,8 +36,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <title>InnoControl - Login</title>
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+    <link rel="stylesheet" href="css/material_icons">
+    <link rel="stylesheet" href="css/roboto_font" type="text/css">
     <link rel="stylesheet" href="css/material.min.css" type="text/css">
     <link rel="stylesheet" href="css/ie_only.css">
     <link rel="stylesheet" href="css/ie_only_main.css">

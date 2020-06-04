@@ -29,6 +29,12 @@ if (isset($_GET['start_lms'])) {
     exec("sudo /var/www/sudoscript.sh start_lms");
 }
 
+if (isset($_GET['ping'])) {
+    $response = exec("/var/www/ping_check.sh");
+    $return_var = explode("\n", $response);
+    echo $return_var[0];
+}
+
 if (isset($_GET['check_lms'])) {
   $datei = "/opt/innotune/settings/logitechmediaserver.txt"; // Name der Datei
   $array_lms = file($datei); // Datei in ein Array einlesen
@@ -196,7 +202,13 @@ if (isset($_GET['getdevice'])) {
 
     $datei = "/opt/innotune/settings/settings_player/dev" . $dev . ".txt"; // Name der Datei
     $usb_mode = file($datei);
-    $device = trim($usb_mode[0]) . ";" . trim($usb_mode[1]) . ";" . trim($usb_mode[2]) . ";" . trim($usb_mode[3]) . ";" . trim($usb_mode[4]) . ";" . trim($usb_mode[5]) . ";" . trim($usb_mode[6]) . ";" . trim($usb_mode[7]) . ";" . trim($usb_mode[8]) . ";" . trim($usb_mode[9]) . ";" . trim($usb_mode[10]) . ";" . trim($usb_mode[11]) . ";" . trim($usb_mode[12]) . ";" . trim($usb_mode[13]);
+    $device = trim($usb_mode[0]) . ";" . trim($usb_mode[1]) . ";" .
+        trim($usb_mode[2]) . ";" . trim($usb_mode[3]) . ";" .
+        trim($usb_mode[4]) . ";" . trim($usb_mode[5]) . ";" .
+        trim($usb_mode[6]) . ";" . trim($usb_mode[7]) . ";" .
+        trim($usb_mode[8]) . ";" . trim($usb_mode[9]) . ";" .
+        trim($usb_mode[10]) . ";" . trim($usb_mode[11]) . ";" .
+        trim($usb_mode[12]) . ";" . trim($usb_mode[13]);
     $execstring = "aplay -l | grep sndc" . $dev . " | cut -d \":\" -f1 | cut -c 6-";
     $devpath = exec("cat /opt/innotune/settings/mapping.txt | grep sndc" . $dev . " | cut -c 44- | rev | cut -c 12- | rev");
     if ($devpath == "") {
@@ -255,6 +267,7 @@ if (isset($_GET['device_set'])) {
     $SPli_GETEILT = $_GET['SPli_GETEILT'];
     $SPre_GETEILT = $_GET['SPre_GETEILT'];
     $oac = $_GET['oac'];
+    $stm = $_GET['stm'];
 
     $array = file("/opt/innotune/settings/settings_player/dev$dev.txt"); // Datei in ein Array einlesen
     array_splice($array, 1, 1, "$NAME_NORMAL" . "\n");
@@ -269,6 +282,7 @@ if (isset($_GET['device_set'])) {
     array_splice($array, 10, 1, "$SP_NORMAL" . "\n");
     array_splice($array, 11, 1, "$SPli_GETEILT" . "\n");
     array_splice($array, 12, 1, "$SPre_GETEILT" . "\n");
+    array_splice($array, 13, 1, "$stm" . "\n");
     $string = implode("", $array);
     file_put_contents("/opt/innotune/settings/settings_player/dev$dev.txt", $string);
 
@@ -934,5 +948,18 @@ if (isset($_GET['journal_info'])) {
 
     echo "<br><br><b>KNXD-Log Today</b><br>";
     echo str_replace("\n", "<br>", shell_exec("sudo /var/www/sudoscript.sh knxjournal_since \"today\""));
+}
+
+if (isset($_GET['vpn_running'])) {
+    echo shell_exec("ps cax | grep vpn | wc -l");
+}
+
+if (isset($_GET['vpn_connect'])) {
+    echo "test";
+    echo shell_exec("sudo /var/www/sudoscript.sh vpn_connect");
+}
+
+if (isset($_GET['vpn_disconnect'])) {
+    echo shell_exec("sudo /var/www/sudoscript.sh vpn_disconnect");
 }
 ?>

@@ -210,7 +210,7 @@ $datei = "/opt/innotune/settings/voiceoutput/voicersskey.txt"; // Name der Datei
 $array_config = file($datei); // Datei in ein Array einlesen
 
 $key = $array_config[0];
-$q = "22khz_16bit_stereo"; // Andere Einstellungen siehe VoiceRSS Doku
+$q = "44khz_16bit_stereo"; // Andere Einstellungen siehe VoiceRSS Doku
 $c = "mp3";
 
 $gain = ($_GET["gain"]);
@@ -302,8 +302,6 @@ if (empty($pids)) {
 
       //Update MPD Library
       exec("mpc update");
-      //Sleep
-      sleep(1);
 
       //Execute ttsvolplay
       // Check ob der TTS-Request zur Warteschlange hinzugefügt werden soll
@@ -317,5 +315,5 @@ if (empty($pids)) {
     echo "Fehler!";
 }
 $mt = microtime(true) - $mt;
-echo "<br><br>execution time: $mt ms"
+echo "<br><br>execution time: $mt s"
 ?>

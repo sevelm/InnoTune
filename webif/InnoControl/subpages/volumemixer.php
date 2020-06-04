@@ -161,6 +161,17 @@ $needsConfig = intval(shell_exec("cat /etc/asound.conf | grep plug:equal | wc -l
                 <i class="material-icons">volume_off</i>
                 <md-tooltip md-direction="bottom">Mute</md-tooltip>
             </button>
+            <button ng-if="selectedDevice"
+                    class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                <i class="material-icons">info</i>
+                <md-tooltip md-direction="bottom">
+                    Hier können Sie die Master-Lautstärke für die einzelnen Wiedergabeformate wählen.<br><br>
+                    Bei "Player Zentral" und "Line-In" gibt es nur die Master-Lautstärke, hingegen bei<br>
+                    "Squeezebox" und "Airplay & Spotify" kann in der jeweiligen App noch eine Lautstärke<br>
+                    eingestellt werden.<br><br>
+                    Bei geteiltem Betrieb teilen sich beide Zonen die gleichen Master-Lautstärken.
+                </md-tooltip>
+            </button>
         </div>
     </div>
 
@@ -263,6 +274,18 @@ $needsConfig = intval(shell_exec("cat /etc/asound.conf | grep plug:equal | wc -l
                     </md-input-container>
                 </md-slider-container>
             </div>
+        </div>
+
+        <div class="mdl-card__menu">
+            <button ng-if="selectedDevice"
+                    class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                <i class="material-icons">info</i>
+                <md-tooltip md-direction="bottom">
+                    Mit dem 3-Band Equalizer können die Frequenzen an die Raumverhältnisse angepasst werden.<br>
+                    Standard: 7<br><br>
+                    Achtung: Wenn Sie alle Frequenzen erhöhen bzw. verringern hat das Auswirkungen auf die Gesamtlautstärke!
+                </md-tooltip>
+            </button>
         </div>
     </div>
 </div>
