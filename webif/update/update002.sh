@@ -102,6 +102,15 @@ chmod 777 /etc/vpnc.conf
 sudo echo "0" > /opt/innotune/settings/vpn.txt
 chmod 777 /opt/innotune/settings/vpn.txt
 
+sudo apt-get install -y exfat-fuse exfat-utils
+
+cp /opt/innotune/update/cache/InnoTune/usbmount.conf /etc/usbmount/usbmount.conf
+cp /opt/innotune/update/cache/InnoTune/usbmount.rules /etc/udev/rules.d/usbmount.rules
+cp /opt/innotune/update/cache/InnoTune/usbmount.service /etc/systemd/system/usbmount@.service
+
+systemctl daemon-reload
+systemctl enable usbmount@.service
+
 # set new update count and reference to newer update file
 sudo echo "2" > /opt/innotune/settings/update_cnt.txt
 echo "100% - finished update" > /opt/innotune/settings/updatestatus.txt
