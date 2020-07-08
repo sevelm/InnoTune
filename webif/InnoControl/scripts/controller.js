@@ -83,8 +83,63 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         newStateValue: -1
     };
     $scope.lmswastate = false;
+    $scope.mount_info = "";
+    $scope.fdisk_info = "";
+    $scope.mount_dropdown = [];
+    $scope.mount_dropdown_selection = {};
 
     $scope.vpncState = 'Inaktiv';
+
+    $scope.unmountDrive = function() {
+        if ($scope.mount_dropdown_selection.path !== undefined &&
+            $scope.mount_dropdown_selection.path !== null &&
+            $scope.mount_dropdown_selection.path !== "") {
+                $http.get('api/helper.php?umount_drive&path=' +
+                    $scope.mount_dropdown_selection.path)
+                    .success(function () {
+                        $scope.getMountInfo();
+                    });
+            }
+    };
+
+    $scope.getMountDropDown = function() {
+        $scope.mount_dropdown = [];
+        $scope.mount_dropdown_selection = {};
+        $http.get('api/helper.php?get_mount_list_dropdown')
+            .success(function (csv) {
+                if (csv !== null && csv !== undefined) {
+                    var lines = csv.split('\n');
+                    lines.forEach(function (element) {
+                        if (element.includes(";")) {
+                            var data = element.split(";");
+                            if (data[1] !== "[EFI]") {
+                                $scope.mount_dropdown.push(
+                                    {
+                                        path: data[0],
+                                        name: data[1]
+                                    });
+                            }
+                        }
+                    });
+                }
+            });
+    }
+
+    $scope.getMountInfo = function() {
+        $http.get('api/helper.php?get_mount_list')
+            .success(function (data) {
+                if (data !== null && data !== undefined) {
+                    $scope.mount_info = data;
+                }
+            });
+        $http.get('api/helper.php?get_fdisk_list')
+            .success(function (data) {
+                if (data !== null && data !== undefined) {
+                    $scope.fdisk_info = data;
+                }
+            });
+        $scope.getMountDropDown();
+    }
 
     $scope.checkVPNConnection = function() {
         $http.get('api/helper.php?vpn_running')

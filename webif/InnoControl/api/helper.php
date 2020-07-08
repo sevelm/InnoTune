@@ -626,6 +626,27 @@ if (isset($_GET['get_usbmount'])) {
     echo shell_exec("grep --only-matching --perl-regex \"(?<=ENABLED\=).*\" /etc/usbmount/usbmount.conf");
 }
 
+if (isset($_GET['get_mount_list'])) {
+    echo shell_exec("mount -l | grep /media/usb");
+}
+
+if (isset($_GET['get_mount_list_dropdown'])) {
+    echo shell_exec("mount -l | grep /media/usb | awk '{print $1 \";\" $7}'");
+}
+
+if (isset($_GET['umount_drive'])) {
+    if (isset($_GET['path'])) {
+        $PATH = trim($_GET["path"]);
+        if ($PATH !== "" && $PATH !== "/") {
+            echo shell_exec("sudo /var/www/sudoscript.sh umount_drive \"$PATH\"");
+        }
+    }
+}
+
+if (isset($_GET['get_fdisk_list'])) {
+    echo shell_exec("sudo /var/www/sudoscript.sh get_fdisk_list");
+}
+
 if (isset($_GET['get_netmount'])) {
     echo shell_exec("cat /opt/innotune/settings/netmount.txt");
 }

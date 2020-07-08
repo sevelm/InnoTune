@@ -82,6 +82,8 @@ case "$1" in
      ttsvolplay) /var/www/src/ttsvolplay "$2";;
      killtts) sudo killall ttsvolplay;;
      usbmount) sudo sed -i 's/^\(ENABLED\).*/\1'="$2"'/'  /etc/usbmount/usbmount.conf;;
+     get_fdisk_list) sudo fdisk --list | grep /dev/;;
+     umount_drive) sudo umount "$2";;
      networkmount) echo $(/var/www/mountnetwork.sh "$2" "$3" "$4" "$5" "$6");;
      removenetworkmount) /var/www/unmountnetwork.sh "$2" "$3" "$4" "$5";;
      itunesmount) sudo /var/www/itunesmnt.sh "$2" "$3" "$4";;
