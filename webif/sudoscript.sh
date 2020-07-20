@@ -164,10 +164,23 @@ case "$1" in
                 echo "after: "
                 journalctl --disk-usage;;
     journal_boots) journalctl --list-boots;;
-    vpn_connect) sudo vpnc-connect
+    vpn_connect) sudo ipsec restart
+                 sleep 2
+                 sudo ipsec up innotune
                  echo "1" > /opt/innotune/settings/vpn.txt;;
-    vpn_disconnect) sudo vpnc-disconnect
+    vpn_disconnect) sudo ipsec down innotune
+                    sudo ipsec restart
                     echo "0" > /opt/innotune/settings/vpn.txt;;
+    vpn_state) echo $(ipsec status innotune | grep "1 up" | wc -l);;
+    vpn_secret_key) sudo sed -i "s/\"[^\"][^\"]*\"/\"$2\"/" /etc/ipsec.secrets;;
+    vpn_certs) unzip -o /var/www/upload_download/certs.zip -d /opt/
+               cp /opt/ca.crt /etc/ipsec.d/cacerts/ca.crt
+               cp /opt/innotune.crt /etc/ipsec.d/certs/innotun.crt
+               cp /opt/innotune.key /etc/ipsec.d/private/innotune.key
+               rm /opt/ca.crt
+               rm /opt/innotune.crt
+               rm /opt/innotune.key
+               rm /var/www/upload_download/certs.zip;;
     *) echo "ERROR: invalid parameter: $1 (for $0)"; exit 1 ;;
 esac
 

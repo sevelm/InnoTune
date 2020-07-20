@@ -89,6 +89,7 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     $scope.mount_dropdown_selection = {};
 
     $scope.vpncState = 'Inaktiv';
+    $scope.private_key = '';
 
     $scope.unmountDrive = function() {
         if ($scope.mount_dropdown_selection.path !== undefined &&
@@ -159,17 +160,42 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
     };
 
     $scope.startVPNConnection = function() {
+        document.getElementById("loadingsymbol").style.display = "block";
         $http.get('api/helper.php?vpn_connect')
             .success(function (data) {
-                setTimeout(function() { $scope.checkVPNConnection(); }, 2000);
+                setTimeout(function() {
+                    $scope.checkVPNConnection();
+                    document.getElementById("loadingsymbol").style.display = "none";
+                }, 2000);
             })
+            .error(function () {
+                document.getElementById("loadingsymbol").style.display = "none";
+            });
     };
 
     $scope.stopVPNConnection = function() {
+        document.getElementById("loadingsymbol").style.display = "block";
         $http.get('api/helper.php?vpn_disconnect')
             .success(function (data) {
-                setTimeout(function() { $scope.checkVPNConnection(); }, 2000);
+                setTimeout(function() {
+                    $scope.checkVPNConnection();
+                    document.getElementById("loadingsymbol").style.display = "none";
+                }, 2000);
             })
+            .error(function () {
+                document.getElementById("loadingsymbol").style.display = "none";
+            });
+    };
+
+    $scope.savePrivateKey = function() {
+        document.getElementById("loadingsymbol").style.display = "block";
+        $http.get('api/helper.php?vpn_secret_key?key=' + $scope.private_key)
+            .success(function (data) {
+                document.getElementById("loadingsymbol").style.display = "none";
+            })
+            .error(function () {
+                document.getElementById("loadingsymbol").style.display = "none";
+            });
     };
 
     $scope.checkInternetConnection = function() {
