@@ -24,7 +24,8 @@ case "$1" in
                     knx=$(ps ax | grep "knxinstaller.sh" | grep -v grep | wc -l)
                     casound=$(ps ax | grep "create_asound.sh" | grep -v grep | wc -l)
                     rmpa=$(ps ax | grep "sudoscript.sh removepa" | grep -v grep | wc -l)
-                    out=$(($upfile + $upfolder + $knx + $casound + $rmpa))
+                    uplms=$(ps ax | grep "sudoscript.sh updateLms" | grep -v grep | wc -l)
+                    out=$(($upfile + $upfolder + $knx + $casound + $rmpa + $uplms))
                     echo "$out";;
      fixDependencies) sudo /var/www/checkpackages.sh
                       sudo apt-get -y install shairport-sync
