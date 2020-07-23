@@ -96,11 +96,21 @@ cp /opt/innotune/update/cache/InnoTune/custom_shutdown.service /etc/systemd/syst
 chmod 777 /etc/systemd/system/custom_shutdown.service
 systemctl enable custom_shutdown.service
 
-sudo apt-get -y install vpnc
-cp /opt/innotune/update/cache/InnoTune/vpnc.conf /etc/vpnc.conf
-chmod 777 /etc/vpnc.conf
+#sudo apt-get -y install vpnc
 sudo echo "0" > /opt/innotune/settings/vpn.txt
 chmod 777 /opt/innotune/settings/vpn.txt
+
+sudo apt-get -y install strongswan
+cp /opt/innotune/update/cache/InnoTune/vpn/ipsec.conf /etc/ipsec.conf
+cp /opt/innotune/update/cache/InnoTune/vpn/ipsec.secrets /etc/ipsec.secrets
+
+unzip -o /opt/innotune/update/cache/InnoTune/vpn/certs.zip -d /opt/
+cp /opt/ca.crt /etc/ipsec.d/cacerts/ca.crt
+cp /opt/innotune.crt /etc/ipsec.d/certs/innotune.crt
+cp /opt/innotune.key /etc/ipsec.d/private/innotune.key
+rm /opt/ca.crt
+rm /opt/innotune.crt
+rm /opt/innotune.key
 
 sudo apt-get install -y exfat-fuse exfat-utils
 

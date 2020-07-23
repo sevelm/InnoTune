@@ -49,6 +49,9 @@
   "update_error_title": "Update failed",
   "update_error_text": "An unexpected error occurred!",
   "update_error_button": "Close",
+  "update_no_internet": "Update not available",
+  "update_no_internet_text": "The Update couldn't start because, the internet connection failed. Retry later.",
+
 
   "master_vol_text": "Select a zone to change the master volume.",
   "equalizer_text": "Select a zone to change the equalizer settings.",
@@ -57,11 +60,16 @@
   "search_placeholder": "Enter text...",
   "error_con_title": "Connection lost!",
   "error_con": "You will be reconnected automatically.",
-
-  "volreg": "Volume-Control",
+  "volreg": "Volume Control",
   "input": "Input",
   "output": "Output",
   "select_amp": "Select Amp",
   "select_input": "Select Input",
-  "linein": "Line-In"
+  "linein": "Line-In",
+  "grant_access": "Grant access: ",
+  "vpn_title": "Remote Maintenance Access (VPN)",
+  "vpn_state_conn": "State: Connected",
+  "vpn_state_disc": "State: Disconnected",
+  "vpn_state_error": "Unable to display current state!",
+  "vpn_text": "The connection will be established/disconnected. Please wait."
 }

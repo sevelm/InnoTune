@@ -48,7 +48,9 @@
   "update_reboot": "Server-Reboot...",
   "update_error_title": "Update fehlgeschlagen",
   "update_error_text": "Es ist ein unerwarteter Fehler aufgetreten!",
-  "update_error_button": "Verstanden",
+  "update_error_button": "Verstanden!",
+  "update_no_internet": "Update nicht möglich",
+  "update_no_internet_text": "Es besteht derzeit keine Internetverbindung, deshalb kann kein Update nicht durchgeführt werden.",
 
   "master_vol_text": "Wählen Sie eine Zone um die Master-Lautstärke zu regulieren.",
   "equalizer_text": "Wählen Sie eine Zone um den Equalizer zu regulieren.",
@@ -57,11 +59,16 @@
   "search_placeholder": "Suchtext eingeben...",
   "error_con_title": "Verbindung zum Server wurde unterbrochen!",
   "error_con": "Sie werden automatisch verbunden, sobald der Server wieder erreichbar ist.",
-
   "volreg": "Lautstärkenregelung",
   "input": "Eingang",
   "output": "Ausgang",
   "select_amp": "Amp auswählen",
   "select_input": "Eingang auswählen",
-  "linein": "Line-In"
+  "linein": "Line-In",
+  "grant_access": "Zugriff gewähren: ",
+  "vpn_title": "Fernwartungszugang (VPN)",
+  "vpn_state_conn": "Status: Verbunden",
+  "vpn_state_disc": "Status: Nicht verbunden",
+  "vpn_state_error": "Status konnte nicht abgerufen werden!",
+  "vpn_text": "Die Verbindung wird gerade aufgebaut/getrennt bitte warten."
 }

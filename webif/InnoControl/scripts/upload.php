@@ -30,5 +30,19 @@ if (isset($_POST['music_upload'])){
     }
     header('Location: http://'.$_SERVER['SERVER_ADDR'].'/#mpd?result='.$CONTROL_INPUT);
 }
+
+if (isset($_POST['certs_upload'])) {
+    $uploaddir = '/var/www/upload_download/';
+    $uploadfile = $uploaddir . basename($_FILES['userfile']['name']);
+    if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
+        exec("sudo /var/www/sudoscript.sh vpn_certs");
+        $CONTROL_INPUT="erfolgreich";
+    } else {
+        $CONTROL_INPUT="fehlgeschlagen!";
+        echo $uploadfile;
+    }
+    header('Location: http://'.$_SERVER['SERVER_ADDR'].'/#settings?result='.$CONTROL_INPUT);
+}
+
 echo $CONTROL_INPUT;
 ?>

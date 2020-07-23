@@ -972,15 +972,23 @@ if (isset($_GET['journal_info'])) {
 }
 
 if (isset($_GET['vpn_running'])) {
-    echo shell_exec("ps cax | grep vpn | wc -l");
+    echo shell_exec("sudo /var/www/sudoscript.sh vpn_state");
 }
 
 if (isset($_GET['vpn_connect'])) {
-    echo "test";
     echo shell_exec("sudo /var/www/sudoscript.sh vpn_connect");
 }
 
 if (isset($_GET['vpn_disconnect'])) {
     echo shell_exec("sudo /var/www/sudoscript.sh vpn_disconnect");
+}
+
+if (isset($_GET['vpn_secret_key'])) {
+    $key = $_GET['key'];
+    $key = str_replace('"', '', $key);
+    if ($key === '') {
+        $key = 'auth_key';
+    }
+    echo shell_exec("sudo /var/www/sudoscript.sh vpn_secret_key \"$key\"");
 }
 ?>
