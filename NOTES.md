@@ -2,7 +2,7 @@
 
 ## 1. Cronjobs
 
-The following list are all jobs with their time occurrence.
+The following list contains all jobs with their time occurrence.
 
 ```
 # m h  dom mon dow   command
