@@ -7,7 +7,7 @@
 ##                                                                            ##
 ## Directory:   /var/www/                                                     ##
 ## Created  :   24.08.2017 (date of initial git commit)                       ##
-## Edited   :   24.07.2020                                                    ##
+## Edited   :   27.07.2020                                                    ##
 ## Company  :   InnoTune elektrotechnik Severin Elmecker                      ##
 ## Email    :   office@innotune.at                                            ##
 ## Website  :   https://innotune.at/                                          ##
@@ -32,7 +32,7 @@
 ################################################################################
 ################################################################################
 
-##vars
+# vars
 port=9090
 server=localhost
 
