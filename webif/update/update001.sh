@@ -1,18 +1,48 @@
 #!/bin/bash
+
+################################################################################
+################################################################################
+##                                                                            ##
+##                                update001.sh                                ##
+##                                                                            ##
+## Directory:   /var/www/update/                                              ##
+## Created  :   21.03.2019                                                    ##
+## Edited   :   28.07.2020                                                    ##
+## Company  :   InnoTune elektrotechnik Severin Elmecker                      ##
+## Email    :   office@innotune.at                                            ##
+## Website  :   https://innotune.at/                                          ##
+## Git      :   https://github.com/sevelm/InnoTune/                           ##
+## Authors  :   Alexander Elmecker                                            ##
+##                                                                            ##
+################################################################################
+##                                                                            ##
+##                                Description                                 ##
+##                                                                            ##
+## This is the first update script containing package installation/removal,   ##
+## file creating/copying, permission settings, etc.                           ##
+##                                                                            ##
+##                                 References                                 ##
+## /var/www/update/full.sh                                                    ##
+## /opt/innotune/update/cache/InnoTune/update.sh                              ##
+##                                                                            ##
+################################################################################
+################################################################################
+
 echo "running update001"
 echo "50% - adding new updates" > /opt/innotune/settings/updatestatus.txt
 
-#Set apt repository to xenial (important for odroid updates)
+# set apt repository to xenial (important for odroid updates)
 sudo cp /opt/innotune/update/cache/InnoTune/sources.list /etc/apt/sources.list
 
-#remove pulseaudio (pa may cause conflicts)
+# remove pulseaudio (pa may cause conflicts)
 sudo apt-get -y purge pulseaudio
 
+# log ports state file
 sudo touch /opt/innotune/settings/logports
 sudo chmod 777 /opt/innotune/settings/logports
 echo "0" > /opt/innotune/settings/logports
 
-# ExPL Ordner
+# ExPL directory
 sudo cp -R /opt/innotune/update/cache/InnoTune/ExPL /var/lib/squeezeboxserver/cache/InstalledPlugins/Plugins/
 sudo chmod -R 755 /var/lib/squeezeboxserver/cache/InstalledPlugins/Plugins/
 sudo chown -R squeezeboxserver:nogroup /var/lib/squeezeboxserver/cache/InstalledPlugins/Plugins/
@@ -28,7 +58,7 @@ sed -i 's/^\(server.document-root\).*/\1 '=$var'/'  /etc/lighttpd/lighttpd.conf
 # Remove Lighttpd Authentication
 sed -e '/mod_auth/ s/^#*/#/' -i /etc/lighttpd/lighttpd.conf
 
-# USB-Mount:
+# USB-Mount
 sudo apt-get -y install usbmount
 
 # Zip
@@ -43,19 +73,19 @@ sudo apt-get -y install bc
 # Cifs
 sudo apt-get -y install cifs-utils
 
+# create networkmount directories
 sudo mkdir /media/net0
 sudo mkdir /media/net1
 sudo mkdir /media/net2
 sudo mkdir /media/net3
 sudo mkdir /media/net4
 
+# set netmount dir permissions
 sudo chmod 777 /media/net0
 sudo chmod 777 /media/net1
 sudo chmod 777 /media/net2
 sudo chmod 777 /media/net3
 sudo chmod 777 /media/net4
-
-############Section: Fixes############
 
 # PHP File Upload Fix 24.08.2017
 PHPVersion=$(php -v|grep --only-matching --perl-regexp "5\.\\d+\.\\d+");
@@ -83,22 +113,24 @@ sudo apt-get -y install shairport-sync --force-yes
 sudo systemctl stop shairport-sync
 sudo systemctl disable shairport-sync
 
-#process info files
+# process info files
 sudo touch /opt/innotune/settings/p_shairplay
 sudo touch /opt/innotune/settings/p_squeeze
 sudo touch /opt/innotune/settings/p_spotify
 sudo chmod 777 /opt/innotune/settings/p_*
 
-#process log file
+# process log file
 sudo touch /var/www/checkprocesses.log
 sudo chmod 777 /var/www/checkprocesses.log
 
 sudo mkdir /var/www/InnoControl/log
 sudo chmod 777 /var/www/InnoControl/log
 
+# install alsa equalizer
 sudo apt-get install -y libasound2-dev
 sudo apt-get install -y libasound2-plugin-equal
 
+# add config file for open audio channel
 if [[ ! -d "/opt/innotune/settings/settings_player/oac" ]]; then
   sudo mkdir /opt/innotune/settings/settings_player/oac
   for (( c=1; c < 10; c++ ))
@@ -111,24 +143,25 @@ if [[ ! -d "/opt/innotune/settings/settings_player/oac" ]]; then
   sudo chmod -R 777 /opt/innotune/settings/settings_player/oac
 fi
 
-#add script to cron if it isn't already added
+# add script to cron if it isn't already added
 is_added=$(crontab -l | grep checkprocesses.sh | wc -l)
 if [[ $is_added -eq 0 ]]; then
     crontab -l | { cat; echo "* * * * * /var/www/checkprocesses.sh"; } | crontab -
 fi
 
-#add script to cron if it isn't already added
+# add script to cron if it isn't already added
 is_added=$(crontab -l | grep checkcputemp.sh | wc -l)
 if [[ $is_added -eq 0 ]]; then
     crontab -l | { cat; echo "*/15 * * * * /var/www/checkcputemp.sh"; } | crontab -
 fi
 
-#add script to cron if it isn't already added
+# add script to cron if it isn't already added
 is_added=$(crontab -l | grep archivelogs.sh | wc -l)
 if [[ $is_added -eq 0 ]]; then
     crontab -l | { cat; echo "45 3 * * * /var/www/archivelogs.sh"; } | crontab -
 fi
 
+# add script to cron if it isn't already added
 is_added=$(crontab -l | grep filesizechecker.sh | wc -l)
 if [[ $is_added -eq 0 ]]; then
     crontab -l | { cat; echo "30 */1 * * * /var/www/filesizechecker.sh"; } | crontab -
@@ -136,12 +169,12 @@ fi
 
 echo "70% - adding new updates" > /opt/innotune/settings/updatestatus.txt
 
-#Imagestream 4 Loxone
-#used php extensions
+# Imagestream 4 Loxone
+# used php extensions
 sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" php5.6-gd
 sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" php5.6-curl
 
-#php.ini file with enabled curl-extension
+# php.ini file with enabled curl-extension
 sudo cp /opt/innotune/update/cache/InnoTune/php.ini /etc/php/5.6/cgi/php.ini
 
 # Add Crontabs
@@ -180,6 +213,7 @@ fi
 cp /opt/innotune/update/cache/InnoTune/wpa_supplicant.conf /opt/innotune/settings/test_wpa.conf
 sudo chmod 777 /opt/innotune/settings/test_wpa.conf
 
+# add and give permission to conf files
 sudo mkdir /opt/itunesshare
 sudo chmod 777 /opt/itunesshare
 sudo touch /opt/ituneslogin
@@ -192,9 +226,10 @@ sudo chmod 777 /var/www/InnoControl/log/validate.log
 sudo touch /var/www/InnoControl/log/reinstall_lms.log
 sudo chmod 777 /var/www/InnoControl/log/reinstall_lms.log
 
-#update voice
+# update voice rss key
 printf %s "a269cdea933c4994a8ce81916d748ef8" > /opt/innotune/settings/voiceoutput/voicersskey.txt
 
+# install tcp dump
 sudo apt-get install -y tcpdump
 
 echo "80% - adding new updates" > /opt/innotune/settings/updatestatus.txt
@@ -203,6 +238,7 @@ echo "80% - adding new updates" > /opt/innotune/settings/updatestatus.txt
 cp /opt/innotune/update/cache/InnoTune/knxdefaultradios.txt /opt/innotune/settings/knxdefaultradios.txt
 sudo chmod 777 /opt/innotune/settings/knxdefaultradios.txt
 
+# knx radio user settings
 sudo touch /opt/innotune/settings/knxradios.txt
 sudo chmod 777 /opt/innotune/settings/knxradios.txt
 

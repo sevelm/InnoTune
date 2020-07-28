@@ -1,4 +1,34 @@
 #!/bin/bash
+
+################################################################################
+################################################################################
+##                                                                            ##
+##                                 update.sh                                  ##
+##                                                                            ##
+## Directory:   /var/www/beta/                                                ##
+## Created  :   22.06.2018                                                    ##
+## Edited   :   27.07.2020                                                    ##
+## Company  :   InnoTune elektrotechnik Severin Elmecker                      ##
+## Email    :   office@innotune.at                                            ##
+## Website  :   https://innotune.at/                                          ##
+## Git      :   https://github.com/sevelm/InnoTune/                           ##
+## Authors  :   Alexander Elmecker                                            ##
+##                                                                            ##
+################################################################################
+##                                                                            ##
+##                                Description                                 ##
+##                                                                            ##
+## This script installs beta software over the current main software.         ##
+## The beta files are localted in the ./data/ directory.                      ##
+##                                                                            ##
+## This scripts is not used anymore                                           ##
+##                                                                            ##
+##                                 References                                 ##
+## /var/www/update/sudoscript.sh                                              ##
+##                                                                            ##
+################################################################################
+################################################################################
+
 cd /var/www/beta/data
 cp create_udevrule.sh /var/www/create_udevrule.sh
 cp create_asound.sh /var/www/create_asound.sh
