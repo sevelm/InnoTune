@@ -132,15 +132,15 @@ sudo apt-get install -y libasound2-plugin-equal
 
 # add config file for open audio channel
 if [[ ! -d "/opt/innotune/settings/settings_player/oac" ]]; then
-  sudo mkdir /opt/innotune/settings/settings_player/oac
-  for (( c=1; c < 10; c++ ))
-  do
-    path="/opt/innotune/settings/settings_player/oac/oac0$c.txt"
+    sudo mkdir /opt/innotune/settings/settings_player/oac
+    for (( c=1; c < 10; c++ ))
+    do
+        path="/opt/innotune/settings/settings_player/oac/oac0$c.txt"
+        echo "1" > $path
+    done
+    path="/opt/innotune/settings/settings_player/oac/oac10.txt"
     echo "1" > $path
-  done
-  path="/opt/innotune/settings/settings_player/oac/oac10.txt"
-  echo "1" > $path
-  sudo chmod -R 777 /opt/innotune/settings/settings_player/oac
+    sudo chmod -R 777 /opt/innotune/settings/settings_player/oac
 fi
 
 # add script to cron if it isn't already added
@@ -184,7 +184,7 @@ grep -q -F "3 3 * * * sudo shutdown -r now" /var/spool/cron/crontabs/root || ech
 # install additional packages for raspberry_pi
 rasp=$(cat /etc/os-release | grep Raspbian | wc -l)
 if [ $rasp -ge 1 ]; then
-  sudo apt-get install -y libportaudio2
+    sudo apt-get install -y libportaudio2
 fi
 
 # fix unmet dependencies/broken packages
@@ -201,13 +201,13 @@ sudo update-rc.d -f dhcpcd remove
 
 # add wlan files
 if [[ ! -f /opt/innotune/settings/wlan.txt ]]; then
-  echo "0" > /opt/innotune/settings/wlan.txt
-  sudo chmod 777 /opt/innotune/settings/wlan.txt
+    echo "0" > /opt/innotune/settings/wlan.txt
+    sudo chmod 777 /opt/innotune/settings/wlan.txt
 fi
 
 if [[ ! -f /opt/innotune/settings/wpa_supplicant.conf ]]; then
-  cp /opt/innotune/update/cache/InnoTune/wpa_supplicant.conf /opt/innotune/settings/wpa_supplicant.conf
-  sudo chmod 777 /opt/innotune/settings/wpa_supplicant.conf
+    cp /opt/innotune/update/cache/InnoTune/wpa_supplicant.conf /opt/innotune/settings/wpa_supplicant.conf
+    sudo chmod 777 /opt/innotune/settings/wpa_supplicant.conf
 fi
 
 cp /opt/innotune/update/cache/InnoTune/wpa_supplicant.conf /opt/innotune/settings/test_wpa.conf
