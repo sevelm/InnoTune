@@ -1,10 +1,34 @@
 #!/bin/bash
 
-##########################################################
-# Config
+################################################################################
+################################################################################
+##                                                                            ##
+##                             set_network.sh                                 ##
+##                                                                            ##
+## Directory:   /var/www/                                                     ##
+## Created  :   24.08.2017 (date of initial git commit)                       ##
+## Edited   :   27.07.2020                                                    ##
+## Company  :   InnoTune elektrotechnik Severin Elmecker                      ##
+## Email    :   office@innotune.at                                            ##
+## Website  :   https://innotune.at/                                          ##
+## Git      :   https://github.com/sevelm/InnoTune/                           ##
+## Authors  :   Severin Elmecker                                              ##
+##              Alexander Elmecker                                            ##
+##              Julian Hoerbst                                                ##
+##                                                                            ##
+################################################################################
+##                                                                            ##
+##                                Description                                 ##
+##                                                                            ##
+## This script generates the network interface configuration from the         ##
+## inntoune network settings.                                                 ##
+##                                                                            ##
+##                                 References                                 ##
+## /var/www/sudoscript.sh                                                     ##
+##                                                                            ##
+################################################################################
+################################################################################
 
-
-##########################################################
 DHCP=$(cat /opt/innotune/settings/network.txt | head -n1 | tail -n1)
 NEW_IP=$(cat /opt/innotune/settings/network.txt | head -n2 | tail -n1)
 NEW_SUBNET=$(cat /opt/innotune/settings/network.txt | head -n3 | tail -n1)

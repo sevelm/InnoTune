@@ -1,8 +1,38 @@
 #!/bin/bash
 
-##########################################################
-# Config
-##########################################################
+################################################################################
+################################################################################
+##                                                                            ##
+##                              set_linein.sh                                 ##
+##                                                                            ##
+## Directory:   /var/www/                                                     ##
+## Created  :   24.08.2017 (date of initial git commit)                       ##
+## Edited   :   27.07.2020                                                    ##
+## Company  :   InnoTune elektrotechnik Severin Elmecker                      ##
+## Email    :   office@innotune.at                                            ##
+## Website  :   https://innotune.at/                                          ##
+## Git      :   https://github.com/sevelm/InnoTune/                           ##
+## Authors  :   Severin Elmecker                                              ##
+##              Alexander Elmecker                                            ##
+##              Julian Hoerbst                                                ##
+##                                                                            ##
+################################################################################
+##                                                                            ##
+##                                Description                                 ##
+##                                                                            ##
+## This script is specially for executing scripts with sudo permission from   ##
+## the php/web context. This acts like a interface between php and bash.      ##
+##                                                                            ##
+##                                 Parameter                                  ##
+## $1 action                                                                  ##                                                                  ##
+## $2-$X optional params, depending on action                                 ##                                                               ##
+##                                                                            ##
+##                                 References                                 ##
+## Mostly excecuted by php files like the helper.php                          ##
+## /var/www/set_player.sh                                                     ##
+##                                                                            ##
+################################################################################
+################################################################################
 
 case "$1" in
      store_settings) cd /opt/innotune/settings/
