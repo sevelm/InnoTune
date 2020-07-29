@@ -18,7 +18,7 @@
 ##                                                                            ##
 ##                                Description                                 ##
 ##                                                                            ##
-## This script tries to establish a connection to the lms cmd interface, if  ##
+## This script tries to establish a connection to the lms cmd interface, if   ##
 ## it connects, it sends the credentials to the server.                       ##
 ## Retries if the credentials couldn't be validated.                          ##
 ##                                                                            ##
