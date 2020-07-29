@@ -1,25 +1,37 @@
-/*
- *  fanreg.c
+/*******************************************************************************
+ *                                  INFO
  *
- *  this program sets the GPIO pin value for the fan if the cpu
- *  temperature exceeds 70 celcius.
+ * Filename :    fanreg.c
+ * Directory:    /var/www/src/gpio/
+ * Created  :    14.05.2019
+ * Edited   :    29.07.2020
+ * Company  :    InnoTune elektrotechnik Severin Elmecker
+ * Email    :    office@innotune.at
+ * Website  :    https://innotune.at/
+ * Git      :    https://github.com/sevelm/InnoTune/
+ * Authors  :    Alexander Elmecker
+ *
+ *                              DESCRIPTION
+ *
+ *  This program sets the GPIO pin value for the fan if the cpu temperature
+ *  exceeds 70 celcius.
+ *
+ *                                 NOTES
  *
  *  compile with: gcc -o fanreg fanreg.c -lwiringPi -lpthread
  *
- *
- *
- *  this program is based on blink.c:
+ *  This program is based on blink.c:
  *	Standard "blink" program in wiringPi. Blinks an LED connected
  *	to the first GPIO pin.
  *
  * Copyright (c) 2012-2013 Gordon Henderson. <projects@drogon.net>
- ***********************************************************************
- * This file is part of wiringPi:
+ *******************************************************************************
+ * This file (blink.c) is part of wiringPi:
  *	https://projects.drogon.net/raspberry-pi/wiringpi/
  *
  *    wiringPi is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU Lesser General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
+ *    it under the terms of the GNU Lesser General Public License as published
+ *    by the Free Software Foundation, either version 3 of the License, or
  *    (at your option) any later version.
  *
  *    wiringPi is distributed in the hope that it will be useful,
@@ -29,8 +41,7 @@
  *
  *    You should have received a copy of the GNU Lesser General Public License
  *    along with wiringPi.  If not, see <http://www.gnu.org/licenses/>.
- ***********************************************************************
- */
+ ******************************************************************************/
 
 #include <stdio.h>
 #include <wiringPi.h>
@@ -49,6 +60,10 @@
 #define MODE_RELAIS 0
 #define MODE_PWM 1
 
+/*
+Writes the high/low value to the ping accordingly if the temperature exceeds or
+falls unter a certain limit.
+*/
 int setOutputFan(int temp, int currentState) {
     if (temp >= TEMP_ON) {
         digitalWrite(FAN_PIN, HIGH);
@@ -61,6 +76,9 @@ int setOutputFan(int temp, int currentState) {
     }
 }
 
+/*
+Writes the pwm value to the pin accordingly to the current cpu temperature.
+*/
 int setPwmFan(int temp, int currentState) {
     int state = 0;
     if (temp >= 55000) {
@@ -83,12 +101,19 @@ int setPwmFan(int temp, int currentState) {
     return state;
 }
 
+/*
+Runs the wiring pi setup and sets the ping to output with value low.
+*/
 void setup() {
     wiringPiSetup();
     pinMode(FAN_PIN, OUTPUT);
     digitalWrite(FAN_PIN, LOW);
 }
 
+/*
+Main runs the setup and a endlees loop reading the cpu temperature and setting
+the gpio pins.
+*/
 int main (void) {
     printf("Tinkerboard fan regulation\n");
 
