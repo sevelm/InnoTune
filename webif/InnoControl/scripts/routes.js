@@ -1,6 +1,22 @@
-/**
- * Created by Julian on 31.08.2016.
- */
+/*******************************************************************************
+ *                                  INFO
+ *
+ * Filename :    routes.js
+ * Directory:    /var/www/InnoControl/scripts/
+ * Created  :    24.07.2017 (initial git commit)
+ * Edited   :    29.07.2020
+ * Company  :    InnoTune elektrotechnik Severin Elmecker
+ * Email    :    office@innotune.at
+ * Website  :    https://innotune.at/
+ * Git      :    https://github.com/sevelm/InnoTune/
+ * Authors  :    Alexander Elmecker
+ *               Julian Hoerbst
+ *
+ *                              DESCRIPTION
+ *
+ *  This script provides the angular routing functions.
+ *
+ ******************************************************************************/
 
 app.config(function ($routeProvider) {
     $routeProvider

@@ -1,4 +1,26 @@
 <?php
+/*******************************************************************************
+ *                                  INFO
+ *
+ * Filename :    download.php
+ * Directory:    /var/www/InnoControl/api/
+ * Created  :    24.07.2017 (initial git commit)
+ * Edited   :    29.07.2020
+ * Company  :    InnoTune elektrotechnik Severin Elmecker
+ * Email    :    office@innotune.at
+ * Website  :    https://innotune.at/
+ * Git      :    https://github.com/sevelm/InnoTune/
+ * Authors  :    Alexander Elmecker
+ *               Julian Hoerbst
+ *
+ *                              DESCRIPTION
+ *
+ *  This script is used to download a certain file.
+ *
+ *                              URL-PARAMETER
+ *  file: name of the requested file
+ *
+ ******************************************************************************/
 /**
  * Created by PhpStorm.
  * User: Julian

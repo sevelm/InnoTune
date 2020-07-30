@@ -1,26 +1,35 @@
 <?php
-/*
-                                    MPD-Vol
-    ----------------------------------------------------------------------------
-
-    Interface to Play, Stop, Repeat or Set MPD Values
-
-    ----------------------------------------------------------------------------
-
-    Parameterlist:
-
-    Playlist ID:        id
-    Playlist Title:     title
-    Background Volume:  vb
-    Zone Volume:        vx      (x = 01-10) Standard or Left Channel
-    Left/Right Channel: lrx     (x = 01-10) Indicates that Channels are split
-    Zone Volume Right:  vrx     (x = 01-10) Right Channel
-    Play:               play
-    Stop:               stop
-    Repeat:             repeat
-    Debug:              debug (shows infos, warnings and errors)
-    ----------------------------------------------------------------------------
-*/
+/*******************************************************************************
+ *                                  INFO
+ *
+ * Filename :    mpdvol.php
+ * Directory:    /var/www/InnoControl/api/
+ * Created  :    28.05.2017
+ * Edited   :    29.07.2020
+ * Company  :    InnoTune elektrotechnik Severin Elmecker
+ * Email    :    office@innotune.at
+ * Website  :    https://innotune.at/
+ * Git      :    https://github.com/sevelm/InnoTune/
+ * Authors  :    Alexander Elmecker
+ *
+ *                              DESCRIPTION
+ *
+ *  This script either sets the current mpd playback to repeat, stops it or
+ *  sets new volumes for all outputs and plays the new playlist id over mpd.
+ *
+ *                              URL-PARAMETER
+ *  id      : mpd playlist id
+ *  title   : mpd playlist title
+ *  vb      : background volume
+ *  vx      : amp or left channel volume (x = 01-10)
+ *  lrx     : indicator for splitted channels
+ *  vrx     : volume right channel (x = 01-10)
+ *  play    : mpd play
+ *  stop    : mpd stop
+ *  repeat  : mpd repeat current playlist until stopped
+ *  debug   : shows infos, warnings and errors
+ *
+ ******************************************************************************/
 
 $mt = microtime(true);
 $DEBUG_STRING = "";

@@ -1,10 +1,29 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Julian
- * Date: 20.09.2016
- * Time: 20:57
- */
+/*******************************************************************************
+ *                                  INFO
+ *
+ * Filename :    upload.php
+ * Directory:    /var/www/InnoControl/scripts/
+ * Created  :    24.07.2017 (initial git commit)
+ * Edited   :    29.07.2020
+ * Company  :    InnoTune elektrotechnik Severin Elmecker
+ * Email    :    office@innotune.at
+ * Website  :    https://innotune.at/
+ * Git      :    https://github.com/sevelm/InnoTune/
+ * Authors  :    Alexander Elmecker
+ *               Julian Hoerbst
+ *
+ *                              DESCRIPTION
+ *
+ *  This script is used for file uploading.
+ *
+ *                              URL-PARAMETER
+ *  settings_upload: innotune settings upload
+ *  music_upload   : mpd music file upload
+ *  certs_upload   : vpn certificate upload
+ *
+ ******************************************************************************/
+ 
 if (isset($_POST['settings_upload'])) {
     $uploaddir = '/var/www/upload_download/';
     $uploadfile = $uploaddir . basename($_FILES['userfile']['name']);

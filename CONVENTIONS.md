@@ -81,7 +81,7 @@ done
 
 ## 3. C-Files
 ### 3.1 Header
-Following header needs to be inserted at the beginning of the script:
+Following header needs to be inserted at the beginning of the program-code:
 
 ```
 /*******************************************************************************
@@ -121,10 +121,73 @@ Code can exceed 80 chars per line.
 An intent equals 4 whitespace characters.
 
 ## 4. PHP-Files
-To be done.
+### 4.1 Header
+Following header needs to be inserted at after the first opening `<?php`
+of the script:
+
+```
+/*******************************************************************************
+ *                                  INFO
+ *
+ * Filename :    file.php
+ * Directory:    /
+ * Created  :    14.05.2019
+ * Edited   :    29.07.2020
+ * Company  :    InnoTune elektrotechnik Severin Elmecker
+ * Email    :    office@innotune.at
+ * Website  :    https://innotune.at/
+ * Git      :    https://github.com/sevelm/InnoTune/
+ * Authors  :    1. Author Name
+ *               2. Author Name
+ *
+ *                              DESCRIPTION
+ *
+ *  Script description goes here.
+ *
+ ******************************************************************************/
+```
+
+### 4.2 Comments
+Add inline comments where appropriate.
+
+### 4.3 Code
+Code can exceed 80 chars per line.
+
+An intent equals 4 whitespace characters.
 
 ## 5. HTML-Files
 HTML Files do not need any headers or comments.
 
 ## 6. JavaScript-Files
-To be done.
+### 6.1 Header
+Following header needs to be inserted at the beginning of the script:
+
+```
+/*******************************************************************************
+ *                                  INFO
+ *
+ * Filename :    file.js
+ * Directory:    /
+ * Created  :    14.05.2019
+ * Edited   :    29.07.2020
+ * Company  :    InnoTune elektrotechnik Severin Elmecker
+ * Email    :    office@innotune.at
+ * Website  :    https://innotune.at/
+ * Git      :    https://github.com/sevelm/InnoTune/
+ * Authors  :    1. Author Name
+ *               2. Author Name
+ *
+ *                              DESCRIPTION
+ *
+ *  Script description goes here.
+ *
+ ******************************************************************************/
+```
+
+### 6.2 Comments
+Add inline comments where appropriate.
+
+### 6.3 Code
+Code can exceed 80 chars per line.
+
+An intent equals 4 whitespace characters.
