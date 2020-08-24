@@ -1,24 +1,37 @@
-/*
- *  fanreg.c
+/*******************************************************************************
+ *                                  INFO
  *
- *  this program reads the GPIO pin coding values.
+ * Filename :    readCoding.c
+ * Directory:    /var/www/src/gpio/
+ * Created  :    14.05.2019
+ * Edited   :    29.07.2020
+ * Company  :    InnoTune elektrotechnik Severin Elmecker
+ * Email    :    office@innotune.at
+ * Website  :    https://innotune.at/
+ * Git      :    https://github.com/sevelm/InnoTune/
+ * Authors  :    Alexander Elmecker
+ *
+ *                              DESCRIPTION
+ *
+ *  This program reads the GPIO pin coding values and persists the coding
+ *  value in a file.
+ *
+ *                                 NOTES
  *
  *  compile with: gcc -o readCoding readCoding.c -lwiringPi -lpthread
- *
- *
  *
  *  this program is based on blink.c:
  *	Standard "blink" program in wiringPi. Blinks an LED connected
  *	to the first GPIO pin.
  *
  * Copyright (c) 2012-2013 Gordon Henderson. <projects@drogon.net>
- ***********************************************************************
+ *******************************************************************************
  * This file is part of wiringPi:
  *	https://projects.drogon.net/raspberry-pi/wiringpi/
  *
  *    wiringPi is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU Lesser General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
+ *    it under the terms of the GNU Lesser General Public License as published
+ *    by the Free Software Foundation, either version 3 of the License, or
  *    (at your option) any later version.
  *
  *    wiringPi is distributed in the hope that it will be useful,
@@ -28,8 +41,7 @@
  *
  *    You should have received a copy of the GNU Lesser General Public License
  *    along with wiringPi.  If not, see <http://www.gnu.org/licenses/>.
- ***********************************************************************
- */
+ ******************************************************************************/
 
 #include <stdio.h>
 #include <wiringPi.h>
@@ -44,6 +56,10 @@
 //15 min delay
 #define DELAY_MS 900000
 
+/*
+Initializes the wiring pi library.
+Sets the coding pins to input and the pull up control to 'pull down'.
+*/
 void setup(void) {
     wiringPiSetup();
 
@@ -57,6 +73,9 @@ void setup(void) {
     pullUpDnControl(DI3_PIN, PUD_DOWN);
 }
 
+/*
+Persists the integer value in the coding file
+*/
 void writeCodingToFile(int code) {
     FILE *codingFile = fopen("/opt/innotune/settings/gpio/coding", "w");
 
@@ -68,6 +87,10 @@ void writeCodingToFile(int code) {
     }
 }
 
+/*
+Reads the state of the three gpio input pins and converts it to a decimal
+number.
+*/
 int readCodeFromGPIO() {
     int di1Code = digitalRead(DI1_PIN);
     int di2Code = digitalRead(DI2_PIN);
@@ -77,6 +100,10 @@ int readCodeFromGPIO() {
     return code;
 }
 
+/*
+Runs the setup and a endless loop where the coding is read from the gpio and
+persisted in a file.
+*/
 int main (void) {
     printf("Tinkerboard read codings\n");
     setup();

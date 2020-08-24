@@ -1,9 +1,37 @@
 #!/bin/bash
+
+################################################################################
+################################################################################
+##                                                                            ##
+##                                update002.sh                                ##
+##                                                                            ##
+## Directory:   /var/www/update/                                              ##
+## Created  :   21.03.2019                                                    ##
+## Edited   :   28.07.2020                                                    ##
+## Company  :   InnoTune elektrotechnik Severin Elmecker                      ##
+## Email    :   office@innotune.at                                            ##
+## Website  :   https://innotune.at/                                          ##
+## Git      :   https://github.com/sevelm/InnoTune/                           ##
+## Authors  :   Alexander Elmecker                                            ##
+##                                                                            ##
+################################################################################
+##                                                                            ##
+##                                Description                                 ##
+##                                                                            ##
+## This is the second update script containing package installation/removal,  ##
+## file creating/copying, permission settings, etc.                           ##
+##                                                                            ##
+##                                 References                                 ##
+## /var/www/update/full.sh                                                    ##
+## /var/www/update/latest.sh                                                  ##
+## /opt/innotune/update/cache/InnoTune/update.sh                              ##
+##                                                                            ##
+################################################################################
+################################################################################
+
 echo "running update002"
 
-# add commands here
-
-#installs wiringPi for tinkerboard
+# installs wiringPi for tinkerboard
 cd /root/
 git clone http://github.com/TinkerBoard/gpio_lib_c --depth 1 GPIO_API_for_C
 cd GPIO_API_for_C/
@@ -11,7 +39,7 @@ sudo chmod +x build
 
 sudo ./build
 
-#make dirs and files for gpio
+# make dirs and files for gpio
 sudo mkdir /opt/innotune/settings/gpio
 sudo mkdir /opt/innotune/settings/gpio/mute
 
@@ -31,7 +59,7 @@ killall fanreg
 killall mutecard
 killall readCoding
 
-#copy gpio files to the right place
+# copy gpio files to the right place
 sudo cp /var/www/src/gpio/fanreg /var/www/src/fanreg
 sudo cp /var/www/src/gpio/mutecard /var/www/src/mutecard
 sudo cp /var/www/src/gpio/readCoding /var/www/src/readCoding
@@ -68,11 +96,11 @@ sudo rm -R /var/log.hdd/journal
 sudo rm -R /var/log.hdd/*.gz
 rm -R /root/build/
 
-#would save about 0.5 GB
-#sudo apt-get remove -y chromium-browser
-#sudo apt-get remove -y thunderbird
-#sudo apt-get remove -y libreoffice-core
-#sudo apt-get remove -y libreoffice-common
+# would save about 0.5 GB
+# sudo apt-get remove -y chromium-browser
+# sudo apt-get remove -y thunderbird
+# sudo apt-get remove -y libreoffice-core
+# sudo apt-get remove -y libreoffice-common
 
 sudo cp /opt/innotune/update/cache/InnoTune/importantUpdate.txt /opt/innotune/settings/importantUpdate.txt
 chmod 777 /opt/innotune/settings/importantUpdate.txt
@@ -96,7 +124,8 @@ cp /opt/innotune/update/cache/InnoTune/custom_shutdown.service /etc/systemd/syst
 chmod 777 /etc/systemd/system/custom_shutdown.service
 systemctl enable custom_shutdown.service
 
-#sudo apt-get -y install vpnc
+# install strongswan and add all config files etc.
+# sudo apt-get -y install vpnc
 sudo echo "0" > /opt/innotune/settings/vpn.txt
 chmod 777 /opt/innotune/settings/vpn.txt
 
@@ -112,6 +141,7 @@ rm /opt/ca.crt
 rm /opt/innotune.crt
 rm /opt/innotune.key
 
+# install exfat support and configure usbmount to support this fs
 sudo apt-get install -y exfat-fuse exfat-utils
 
 cp /opt/innotune/update/cache/InnoTune/usbmount.conf /etc/usbmount/usbmount.conf
@@ -124,4 +154,4 @@ systemctl enable usbmount@.service
 # set new update count and reference to newer update file
 sudo echo "2" > /opt/innotune/settings/update_cnt.txt
 echo "100% - finished update" > /opt/innotune/settings/updatestatus.txt
-#/var/www/update/update003.sh
+# /var/www/update/update003.sh

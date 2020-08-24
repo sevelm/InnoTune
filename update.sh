@@ -1,4 +1,35 @@
 #!/bin/bash
+
+################################################################################
+################################################################################
+##                                                                            ##
+##                                 update.sh                                  ##
+##                                                                            ##
+## Directory:   /opt/innotune/update/cache/InnoTune/                          ##
+## Created  :   24.08.2017 (date of initial git commit)                       ##
+## Edited   :   28.07.2020                                                    ##
+## Company  :   InnoTune elektrotechnik Severin Elmecker                      ##
+## Email    :   office@innotune.at                                            ##
+## Website  :   https://innotune.at/                                          ##
+## Git      :   https://github.com/sevelm/InnoTune/                           ##
+## Authors  :   Alexander Elmecker                                            ##
+##              Severin Elmecker                                              ##
+##              Julian Hoerbst                                                ##
+##                                                                            ##
+################################################################################
+##                                                                            ##
+##                                Description                                 ##
+##                                                                            ##
+## This script runs after the new software was downloaded. First it runs the  ##
+## main (generic) update with the following update00X files depending on      ##
+## which updates are already installed.                                       ##
+##                                                                            ##
+##                                 References                                 ##
+## /var/www/update.sh                                                         ##
+##                                                                            ##
+################################################################################
+################################################################################
+
 echo "running latest update"
 
 # generic commands for every update

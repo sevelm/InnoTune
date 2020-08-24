@@ -1,4 +1,36 @@
 #!/bin/bash
+
+################################################################################
+################################################################################
+##                                                                            ##
+##                             knxlistener.sh                                 ##
+##                                                                            ##
+## Directory:   /var/www/                                                     ##
+## Created  :   20.02.2019                                                    ##
+## Edited   :   29.07.2020                                                    ##
+## Company  :   InnoTune elektrotechnik Severin Elmecker                      ##
+## Email    :   office@innotune.at                                            ##
+## Website  :   https://innotune.at/                                          ##
+## Git      :   https://github.com/sevelm/InnoTune/                           ##
+## Authors  :   Alexander Elmecker                                            ##
+##                                                                            ##
+################################################################################
+##                                                                            ##
+##                                Description                                 ##
+##                                                                            ##
+## This script listens on the knxd interface and checks incoming knx group    ##
+## addresses against a address list to filter requests meant for dispatching  ##
+## audio commands.                                                            ##
+## If a request was received the incoming data will be prepared and sent to   ##
+## the lms cmd interface.                                                     ##
+##                                                                            ##
+##                                 References                                 ##
+## /var/www/knxrun.sh                                                         ##
+##                                                                            ##
+################################################################################
+################################################################################
+
+# function listens for sigterm event to log script termination
 function sigterm_listener()
 {
     sd=$(date)
@@ -6,6 +38,7 @@ function sigterm_listener()
     exit
 }
 
+# function listens for sigint event to log script execution stopped
 function sigint_listener()
 {
     sd=$(date)
@@ -13,12 +46,14 @@ function sigint_listener()
     exit
 }
 
+# add traps for signals
 trap sigterm_listener TERM
 trap sigint_listener INT
 
 echo "-----------------------------------" >> /var/log/knxlistener
 sd=$(date)
 echo "[$sd] started knxlistener" >> /var/log/knxlistener
+# endless loop gets data feed through a pipe
 while read line ; do
     sd=$(date)
     start=$(($(date +%s%N)/1000000))
@@ -43,13 +78,13 @@ while read line ; do
                         mode=$(printf "${macdata[0]} mode ?\nexit\n" | nc localhost 9090 | cut -d ' ' -f 3)
                         echo "[$sd] mode: $mode" >> /var/log/knxlistener
 
-                        #format amp id
+                        # format amp id
                         amp="${data[5]}"
                         if [ "${data[5]}" -lt "10" ]; then
                             amp="0${data[5]}"
                         fi
 
-                        #format vol for stereo/splitted output
+                        # format vol for stereo/splitted output
                         if [ "${data[6]}" -eq "0" ]; then
                             vol="30"
                         elif [ "${data[6]}" -eq "1" ]; then
@@ -92,7 +127,7 @@ while read line ; do
                         IFS='|' read -ra radiodata <<< "$radioquery"
                         echo "[$sd] cr: $cr, ${radiodata[1]}" >> /var/log/knxlistener
 
-                        #encode text for curl command
+                        # encode text for curl command
                         txt=$(echo "${radiodata[2]}" | sed -e 's/:/%3A/g' \
                                                            -e 's/ /%20/g' \
                                                            -e 's/\&/%26/g' \
@@ -162,13 +197,13 @@ while read line ; do
                 mode=$(printf "${data[3]} mode ?\nexit\n" | nc localhost 9090 | cut -d ' ' -f 3)
                 echo "[$sd] mode: $mode, with hex: $hexval, dec: $dec" >> /var/log/knxlistener
                 if [ "$dec" -eq "1" ]; then
-                    #format amp id
+                    # format amp id
                     amp="${data[4]}"
                     if [ "${data[4]}" -lt "10" ]; then
                         amp="0${data[4]}"
                     fi
 
-                    #format vol for stereo/splitted output
+                    # format vol for stereo/splitted output
                     if [ "${data[5]}" -eq "0" ]; then
                         vol="30"
                     elif [ "${data[5]}" -eq "1" ]; then
@@ -214,7 +249,7 @@ while read line ; do
                     echo "[$sd] cr: $cr, ${radiodata[1]}" >> /var/log/knxlistener
 
                     if [[ $playing == "1" ]]; then
-                        #encode text for curl command
+                        # encode text for curl command
                         txt=$(echo "${radiodata[2]}" | sed -e 's/:/%3A/g' \
                                                            -e 's/ /%20/g' \
                                                            -e 's/\&/%26/g' \

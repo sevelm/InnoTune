@@ -1,4 +1,39 @@
 ﻿<?php
+/*******************************************************************************
+ *                                  INFO
+ *
+ * Filename :    tts.php
+ * Directory:    /var/www/InnoControl/api/
+ * Created  :    24.07.2017 (initial git commit)
+ * Edited   :    29.07.2020
+ * Company  :    InnoTune elektrotechnik Severin Elmecker
+ * Email    :    office@innotune.at
+ * Website  :    https://innotune.at/
+ * Git      :    https://github.com/sevelm/InnoTune/
+ * Authors  :    Severin Elmecker
+ *               Alexander Elmecker
+ *               Julian Hoerbst
+ *
+ *                              DESCRIPTION
+ *
+ *  This script prepares the output volumes for tts, prepares the text and
+ *  sends it to the voicerss api to receive the audio file and plays it
+ *  with the mpd.
+ *
+ *                              URL-PARAMETER
+ *  noqueue : starts playing tts immediatly, not waiting for others to finish
+ *  vol_back: background volume
+ *  vol_all : volume for all amps (that aren't specified)
+ *  vol_0X  : volume for a certain amp (X = amp number)
+ *  mac_0X  : mac address of a certain zone
+ *  gain    : gain for voicerss
+ *  lang    : language for voicerss (de_de, en_en, etc.)
+ *  speed   : voice speed for voicerss
+ *  time    : indicator to create a text with the current time
+ *  text    : text to play
+ *
+ ******************************************************************************/
+
 $mt = microtime(true);
 if (isset($_GET["noqueue"])) {
     $current = file_get_contents("/opt/innotune/settings/voiceoutput/current_tts.txt");
@@ -25,7 +60,7 @@ for ($i = 1; $i < 10; $i++) {
         }
         $val = ceil((intval($zonemastervol[1])) * ($squeezevol) / 60);
         if ($val < 0) {
-          $val = 0;
+            $val = 0;
         } else if ($val > 60) {
             $val = 60;
         }
@@ -39,15 +74,18 @@ for ($i = 1; $i < 10; $i++) {
         } else {
             $squeezevol = intval(exec("echo $(printf \"00:00:00:00:00:0$i mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
         }
+
         if ($squeezevol <= 90 && $squeezevol > 0) {
             $squeezevol = $squeezevol + 10;
         }
+
         $vall = ceil(intval($zonemastervol[1]) * ($squeezevol / 60));
         if ($vall < 50) {
-          $vall = 50;
+            $vall = 50;
         } else if ($vall > 80) {
             $vall = 80;
         }
+
         $valr = explode("/", $_GET["vol_0$i"])[1];
         $_GET["vol_0$i"] = "$vall/$valr";
     } else if (strpos($_GET["vol_0$i"], "/squeeze") !== false) {
@@ -58,15 +96,18 @@ for ($i = 1; $i < 10; $i++) {
         } else {
             $squeezevol = intval(exec("echo $(printf \"00:00:00:00:00:0$i mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
         }
+
         if ($squeezevol <= 90 && $squeezevol > 0) {
             $squeezevol = $squeezevol + 10;
         }
+
         $valr = ceil(intval($zonemastervol[1]) * ($squeezevol / 60));
         if ($valr < 50) {
           $valr = 50;
         } else if ($valr > 80) {
             $valr = 80;
         }
+
         $vall = explode("/", $_GET["vol_0$i"])[0];
         $_GET["vol_0$i"] = "$vall/$valr";
     }
@@ -79,18 +120,21 @@ if ($_GET["vol_10"] == "squeeze") {
     } else {
         $squeezevol = intval(exec("echo $(printf \"00:00:00:00:00:10 mixer volume ?\nexit\n\" | nc localhost 9090 | cut -d ' ' -f 4)"));
     }
+
     if ($squeezevol <= 90 && $squeezevol > 0) {
         $squeezevol = $squeezevol + 10;
     }
+
     $val = ceil(intval($zonemastervol[1]) * ($squeezevol / 60));
     if ($val < 50) {
-      $val = 50;
+        $val = 50;
     } else if ($val > 80) {
         $val = 80;
     }
     $_GET["vol_10"] = $val;
 }
-// Variablen definieren
+
+// declare variables
 $VOL_BACK = trim($_GET["vol_back"]);
 $VOL_ALL = trim($_GET["vol_all"]);
 $VOL_01 = trim($_GET["vol_01"]);
@@ -137,16 +181,16 @@ if ($VOL_ALL != "") {
     }
 }
 
-// Volume einlesen
-$datei = "/opt/innotune/settings/voiceoutput/voiceoutputvol.txt"; // Name der Datei
-$array_vol = file($datei); // Datei in ein Array einlesen
-$array_vol = array_map('trim', $array_vol); //Array Trimmen
+// read volumes from file into an array
+$datei = "/opt/innotune/settings/voiceoutput/voiceoutputvol.txt";
+$array_vol = file($datei);
+$array_vol = array_map('trim', $array_vol);
 
-// Zeile 1   >> Vol. Hintergrund              $array_vol[0]
-// Zeile 2   >> Vol. Ausgabe 01               $array_vol[1]
-// usw.
+// row 1   >> vol background              $array_vol[0]
+// row 2   >> vol output 01               $array_vol[1]
+// etc.
 
-$array = file("/opt/innotune/settings/voiceoutput/voiceoutputvol.txt"); // Datei in ein Array einlesen
+$array = file("/opt/innotune/settings/voiceoutput/voiceoutputvol.txt");
 if ($VOL_BACK != "" && $VOL_BACK != $array_vol[0]) {
     array_splice($array, 0, 1, "$VOL_BACK" . "\n");
     echo "Derzeit Hintergrundlautstärke: <b>" . $array_vol[0] . "</b><br>";
@@ -205,12 +249,13 @@ if ($VOL_10 != "" && $VOL_10 != $array_vol[10]) {
 $string = implode("", $array);
 file_put_contents("/opt/innotune/settings/voiceoutput/voiceoutputvol.txt", $string);
 
+//read rss key
+$datei = "/opt/innotune/settings/voiceoutput/voicersskey.txt";
+$array_config = file($datei);
 
-$datei = "/opt/innotune/settings/voiceoutput/voicersskey.txt"; // Name der Datei
-$array_config = file($datei); // Datei in ein Array einlesen
-
+//rss api settings
 $key = $array_config[0];
-$q = "44khz_16bit_stereo"; // Andere Einstellungen siehe VoiceRSS Doku
+$q = "44khz_16bit_stereo";
 $c = "mp3";
 
 $gain = ($_GET["gain"]);
@@ -221,7 +266,7 @@ if ($gain == "") {
 }
 
 if ($lang == "") {
-    $lang = "de-de"; // Andere Einstellungen siehe VoiceRSS Doku (en-us / en-gb)
+    $lang = "de-de";
 }
 
 $speed = strval(($_GET["speed"]));
@@ -229,15 +274,14 @@ if ($speed == "" || strpos($speed, '-') === false) {
     $speed = "0";
 }
 
-// Prüfen ob noch ein Prozess läuft
+// check if process is running
 $pids = shell_exec("ps aux | grep -i 'mpg321' | grep -v grep");
 
 if (empty($pids)) {
-
-    // Uhrzeit ausgeben
+    //play current time
     $TIME = ($_GET["time"]);
 
-    // Text anpassen
+    //prepare text
     $words = rawurldecode($_GET['text']);
     if ($TIME != "") {
         $Stunde = date("H");
@@ -253,67 +297,68 @@ if (empty($pids)) {
     }
     echo "<br>Text to Speech Input: <b>" . $words . "</b><br>";
 
-    //Umlaute konvertieren
+    //convert special chars
     $umlaute = Array("/ä/", "/ö/", "/ü/", "/Ä/", "/Ö/", "/Ü/", "/ß/");
     $replace = Array("ae", "oe", "ue", "Ae", "Oe", "Ue", "ss");
     $words_neu = preg_replace($umlaute, $replace, $words);
 
-    // Parameter VoiceRSS
+    //set rss parameters
     $encodedwords = urlencode($words);
-    $inlay = "key=$key&hl=$lang&src=$encodedwords&f=$q&r=$speed&c=$c"; // Variablen Key, Sprache, Text und Qualität definieren
+    $inlay = "key=$key&hl=$lang&src=$encodedwords&f=$q&r=$speed&c=$c";
     echo "Parameter VoiceRSS: <b>" . $inlay . "</b><br>";
 
-    // Speicherort der MP3 Datei
+    // location of mp3 file
     $file = "/media/Soundfiles/tts/" . strtoupper($lang) . str_replace(" ", "_", $words_neu) . $speed . ".mp3";
     $file = str_replace("ä", "ae", $file);
 
     $error = false;
-    // Prüfen ob die MP3 Datei bereits vorhanden ist
+    // check if mp3 already exists
     if (!file_exists($file)) {
-        $mp3 = file_get_contents('http://api.voicerss.org/?' . $inlay); // HTTPS ist auch möglich
+        $mp3 = file_get_contents('http://api.voicerss.org/?' . $inlay);
         if (strlen($mp3) < 100) {
-          echo "suspicious string length: " . strlen($mp3) . "<br>";
-          echo $mp3 . "<br>";
-          $error = true;
-          file_put_contents("/media/Soundfiles/tts/error.txt",
-            "Timestamp: " . date("H:i:s d.m.Y") . "\nMessage: " . $mp3 . "\nParameter: " . $inlay);
+            echo "suspicious string length: " . strlen($mp3) . "<br>";
+            echo $mp3 . "<br>";
+            $error = true;
+            file_put_contents("/media/Soundfiles/tts/error.txt",
+                "Timestamp: " . date("H:i:s d.m.Y") . "\nMessage: " . $mp3 . "\nParameter: " . $inlay);
         } else {
-          file_put_contents($file, $mp3);
+            file_put_contents($file, $mp3);
         }
     } else {
-      if (filesize($file) < 100) {
-        echo "suspicious filesize: " . filesize($file) . " Bytes <br>";
-        $mp3 = file_get_contents('http://api.voicerss.org/?' . $inlay); // HTTPS ist auch möglich
-        if (strlen($mp3) < 100) {
-          echo "suspicious string length: " . strlen($mp3) . "<br>";
-          echo $mp3 . "<br>";
-          $error = true;
-          file_put_contents("/media/Soundfiles/tts/error.txt",
-            "Timestamp: " . date("H:i:s d.m.Y") . "\nMessage: " . $mp3 . "\nParameter: " . $inlay);
-        } else {
-          file_put_contents($file, $mp3);
+        if (filesize($file) < 100) {
+            echo "suspicious filesize: " . filesize($file) . " Bytes <br>";
+            $mp3 = file_get_contents('http://api.voicerss.org/?' . $inlay);
+            if (strlen($mp3) < 100) {
+                echo "suspicious string length: " . strlen($mp3) . "<br>";
+                echo $mp3 . "<br>";
+                $error = true;
+                file_put_contents("/media/Soundfiles/tts/error.txt",
+                    "Timestamp: " . date("H:i:s d.m.Y") . "\nMessage: " . $mp3 . "\nParameter: " . $inlay);
+            } else {
+                file_put_contents($file, $mp3);
+            }
         }
-      }
     }
 
     if (!$error) {
-      echo "Script Aufruf: /var/www/src/ttsvolplay " . strtoupper($lang) . str_replace(" ", "_", $words_neu) . $speed;
-      echo "<br>Speicherort: " . $file;
+        echo "Script Aufruf: /var/www/src/ttsvolplay " . strtoupper($lang) . str_replace(" ", "_", $words_neu) . $speed;
+        echo "<br>Speicherort: " . $file;
 
-      //Update MPD Library
-      exec("mpc update");
+        //update mpd library
+        exec("mpc update");
 
-      //Execute ttsvolplay
-      // Check ob der TTS-Request zur Warteschlange hinzugefügt werden soll
-      if (isset($_GET["noqueue"])) {
-          shell_exec("sudo /var/www/sudoscript.sh ttsvolplay " . strtoupper($lang) . str_replace(" ", "_", $words_neu) . $speed . " > /dev/null 2>/dev/null &");
-      } else {
-          shell_exec("sudo /var/www/sudoscript.sh ttsvolplay " . strtoupper($lang) . str_replace(" ", "_", $words_neu) . $speed);
-      }
+        //execute ttsvolplay
+        // check if request should be added to queue
+        if (isset($_GET["noqueue"])) {
+            shell_exec("sudo /var/www/sudoscript.sh ttsvolplay " . strtoupper($lang) . str_replace(" ", "_", $words_neu) . $speed . " > /dev/null 2>/dev/null &");
+        } else {
+            shell_exec("sudo /var/www/sudoscript.sh ttsvolplay " . strtoupper($lang) . str_replace(" ", "_", $words_neu) . $speed);
+        }
     }
 } else {
     echo "Fehler!";
 }
+
 $mt = microtime(true) - $mt;
 echo "<br><br>execution time: $mt s"
 ?>

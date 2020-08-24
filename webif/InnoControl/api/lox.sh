@@ -1,6 +1,37 @@
 #!/bin/bash
 
-##vars
+################################################################################
+################################################################################
+##                                                                            ##
+##                                   lox.sh                                   ##
+##                                                                            ##
+## Directory:   /var/www/InnoControl/api/                                     ##
+## Created  :   01.03.2018                                                    ##
+## Edited   :   27.07.2020                                                    ##
+## Company  :   InnoTune elektrotechnik Severin Elmecker                      ##
+## Email    :   office@innotune.at                                            ##
+## Website  :   https://innotune.at/                                          ##
+## Git      :   https://github.com/sevelm/InnoTune/                           ##
+## Authors  :   Alexander Elmecker                                            ##
+##                                                                            ##
+################################################################################
+##                                                                            ##
+##                                Description                                 ##
+##                                                                            ##
+## This script reads the metadata of the currently playing title of a lms     ##
+## player and returns the values separated by a semicolon.                    ##
+##                                                                            ##
+##                                                                            ##
+##                                Parameter                                   ##
+## $1 mac address of lms player                                               ##
+##                                                                            ##
+##                                References                                  ##
+## /var/www/InnoControl/api/lox.php                                           ##
+##                                                                            ##
+################################################################################
+################################################################################
+
+# vars
 port=9090
 server=localhost
 
@@ -9,9 +40,9 @@ mode=$(printf "$1 mode ?\nexit\n" | nc $server $port | cut -d ' ' -f 3)
 title=$(printf "$1 title ?\nexit\n" | nc $server $port | cut -d ' ' -f 3)
 album=$(printf "$1 album ?\nexit\n" | nc $server $port | cut -d ' ' -f 3)
 artist=$(printf "$1 artist ?\nexit\n" | nc $server $port | cut -d ' ' -f 3)
-#currtitle=$(printf "$1 current_title ?\nexit\n" | nc $server $port | cut -d ' ' -f 3)
+# currtitle=$(printf "$1 current_title ?\nexit\n" | nc $server $port | cut -d ' ' -f 3)
 
-#encoded chars: :   & ' | ! ? , / Ä Ö Ü ä ö ü [ ] ... ß
+# encoded chars: :   & ' | ! ? , / Ä Ö Ü ä ö ü [ ] ... ß
 echo "$title;$connected;$artist;$mode" | sed -e 's/%3A/:/g' \
                                    -e 's/%20/ /g' \
                                    -e 's/%26/\&/g' \

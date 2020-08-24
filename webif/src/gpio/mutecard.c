@@ -1,13 +1,25 @@
-/*
- * mutecard.c
+/*******************************************************************************
+ *                                  INFO
  *
- * Test programm to mute a soundcard
+ * Filename :    mutecard.c
+ * Directory:    /var/www/src/gpio/
+ * Created  :    14.05.2019
+ * Edited   :    29.07.2020
+ * Company  :    InnoTune elektrotechnik Severin Elmecker
+ * Email    :    office@innotune.at
+ * Website  :    https://innotune.at/
+ * Git      :    https://github.com/sevelm/InnoTune/
+ * Authors  :    Alexander Elmecker
  *
- * compile with: gcc -o mutecard mutecard.c -lwiringPi -lpthread
+ *                              DESCRIPTION
  *
- * Parameter: GPIO Pin Number
+ *  Test programm to mute a soundcard.
  *
-*/
+ *                                 NOTES
+ *
+ *  compile with: gcc -o mutecard mutecard.c -lwiringPi -lpthread
+ *
+ ******************************************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,6 +28,13 @@
 
 #define DELAY_MS 5000
 
+/*
+Parses the pin number and sets the right state path.
+Has a endless loop that sets the pin to LOW.
+
+PARAMETER
+0:  GPIO Pin Number
+*/
 int main(int argc, char *argv[]) {
     printf("Tinkerboard Mute Card\n");
 

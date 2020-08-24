@@ -1,6 +1,24 @@
-/**
- * Created by Julian on 31.08.2016.
- */
+/*******************************************************************************
+ *                                  INFO
+ *
+ * Filename :    controller.js
+ * Directory:    /var/www/InnoControl/scripts/
+ * Created  :    24.07.2017 (initial git commit)
+ * Edited   :    29.07.2020
+ * Company  :    InnoTune elektrotechnik Severin Elmecker
+ * Email    :    office@innotune.at
+ * Website  :    https://innotune.at/
+ * Git      :    https://github.com/sevelm/InnoTune/
+ * Authors  :    Alexander Elmecker
+ *               Julian Hoerbst
+ *
+ *                              DESCRIPTION
+ *
+ *  This script contains the angular controller and is the main js script for
+ *  the InnoControl webinterface.
+ *  This contains all data variables and functions.
+ *
+ ******************************************************************************/
 
 var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, $mdToast, $interval, $location) {
     $scope.ipPattern = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;

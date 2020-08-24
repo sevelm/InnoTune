@@ -1,10 +1,24 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Julian
- * Date: 03.09.2016
- * Time: 13:45
- */
+/*******************************************************************************
+ *                                  INFO
+ *
+ * Filename :    reboot.php
+ * Directory:    /var/www/InnoControl/scripts/
+ * Created  :    24.07.2017 (initial git commit)
+ * Edited   :    29.07.2020
+ * Company  :    InnoTune elektrotechnik Severin Elmecker
+ * Email    :    office@innotune.at
+ * Website  :    https://innotune.at/
+ * Git      :    https://github.com/sevelm/InnoTune/
+ * Authors  :    Alexander Elmecker
+ *               Julian Hoerbst
+ *
+ *                              DESCRIPTION
+ *
+ *  This script shows an loading animation after the reboot was send and pings
+ *  the webserver until it is reachable and redirects to the index.
+ *
+ ******************************************************************************/
 ?>
 <!DOCTYPE html>
 <html>
