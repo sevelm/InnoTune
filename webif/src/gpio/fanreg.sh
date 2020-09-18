@@ -32,6 +32,9 @@
 options=$(cat /opt/innotune/settings/gpio/fan_options)
 IFS=';' read -ra data <<< "$options"
 
+pkill -f tempSensor.py
+python3 /var/www/src/gpio/tempSensor.py 2>&1 /dev/null &
+
 if [[ "${data[0]}" -eq 0 ]]; then
     /var/www/src/fanreg 2>&1 /dev/null &
 else

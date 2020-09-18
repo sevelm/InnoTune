@@ -1,0 +1,5 @@
+hci_uart
+rfcomm
+hidp
+8723bs
+i2c-dev

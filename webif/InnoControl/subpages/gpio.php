@@ -11,15 +11,33 @@
         <h2 class="mdl-card__title-text">Lüfterregelung</h2>
     </div>
     <div class="mdl-card__supporting-text mdl-grid" ng-if="systemCoding > 0">
-        <div class="mdl-cell--12-col">
-            <p>Modus: {{fanOptions.type}}</p>
+        <div class="mdl-cell--3-col">
+            <div class="mdl-cell--12-col">
+                <p>Modus: {{fanOptions.type}}</p>
+            </div>
+            <div class="mdl-cell--12-col">
+                <p>Status: {{fanOptions.state}}</p>
+            </div>
+            <div class="mdl-cell--12-col" ng-if="tempSensor.online == 1">
+                <p>Sensor: erkannt</p>
+            </div>
+            <div class="mdl-cell--12-col" ng-if="tempSensor.online == 0">
+                <p>Sensor: nicht erkannt/verbaut</p>
+            </div>
         </div>
-        <div class="mdl-cell--12-col">
-            <p>Status: {{fanOptions.state}}</p>
+
+        <div class="mdl-cell--9-col">
+            <div class="mdl-cell--12-col">
+                <p>CPU-Temperatur: {{sysinfo.cputemp}} °C</p>
+            </div>
+            <div class="mdl-cell--12-col" ng-if="tempSensor.online == 1">
+                <p>Innen-Temperatur: {{tempSensor.temperature}} °C</p>
+            </div>
+            <div class="mdl-cell--12-col" ng-if="tempSensor.online == 1">
+                <p>Luftfeuchtigkeit: {{tempSensor.humidity}} %</p>
+            </div>
         </div>
-        <div class="mdl-cell--12-col">
-            <p>Temperatur: {{sysinfo.cputemp}} °C</p>
-        </div>
+
         <div class="mdl-cell--3-col" style="margin: auto 0">
             Manueller Betrieb:
         </div>

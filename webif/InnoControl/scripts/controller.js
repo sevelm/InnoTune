@@ -100,6 +100,11 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
         manualOperation: 0,
         newStateValue: -1
     };
+    $scope.tempSensor = {
+        online: 0,
+        temperature: -1,
+        humidity: -1
+    }
     $scope.lmswastate = false;
     $scope.mount_info = "";
     $scope.fdisk_info = "";
@@ -274,8 +279,35 @@ var ctrl = app.controller("InnoController", function ($scope, $http, $mdDialog, 
                       $scope.systemType = 'Konnte nicht ausgelesen werden.';
                   }
                   $scope.readFanOptions();
+                  $scope.readTemperatureSensor();
               });
     };
+
+    $scope.readTemperatureSensor = function() {
+        $http.get('api/helper.php?getSensorData')
+              .success(function (csv) {
+                  if (csv !== '') {
+                      var data = csv.split(';');
+                      if (data.length == 3) {
+                          $scope.tempSensor.online = parseInt(data[0]);
+                          $scope.tempSensor.temperature = parseInt(data[1]);
+                          $scope.tempSensor.humidity = parseInt(data[2]);
+                      } else {
+                          $scope.tempSensor = {
+                              online: 0,
+                              temperature: -1,
+                              humidity: -1
+                          }
+                      }
+                  } else {
+                      $scope.tempSensor = {
+                          online: 0,
+                          temperature: -1,
+                          humidity: -1
+                      }
+                  }
+              });
+    }
 
     $scope.readFanOptions = function() {
         $http.get('api/helper.php?readFanOptions')

@@ -151,6 +151,23 @@ cp /opt/innotune/update/cache/InnoTune/usbmount.service /etc/systemd/system/usbm
 systemctl daemon-reload
 systemctl enable usbmount@.service
 
+# install dependencies for i2c and python3 sensor lib
+sudo apt-get install -y i2c-tools python3-pip python3-dev
+sudo pip3 install --upgrade pip
+sudo pip3 install setuptools --upgrade
+sudo pip3 install smbus
+sudo pip3 install wheel
+sudo pip3 install spidev
+sudo pip3 install sensor
+
+tb=$(uname -r)
+if [[ "$tb" == "4.4.135-rockchip" ]]; then
+    # enable i2c autoload
+    cp /opt/innotune/update/cache/InnoTune/modules /etc/modules
+    # enable i2c gpio bus in device tree
+    cp /opt/innotune/update/cache/InnoTune/device-tree.dtb /boot/dtb/rk3288-miniarm.dtb
+fi
+
 # set new update count and reference to newer update file
 sudo echo "2" > /opt/innotune/settings/update_cnt.txt
 echo "100% - finished update" > /opt/innotune/settings/updatestatus.txt

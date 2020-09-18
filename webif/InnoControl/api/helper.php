@@ -993,6 +993,14 @@ if (isset($_GET['setFanState'])) {
     shell_exec("sudo /var/www/sudoscript.sh fanstate $state");
 }
 
+if (isset($_GET['getSensorData'])) {
+    $online = file_get_contents("/opt/innotune/settings/gpio/sensor_online");
+    $temp = file_get_contents("/opt/innotune/settings/gpio/sensor_temp");
+    $hum = file_get_contents("/opt/innotune/settings/gpio/sensor_hum");
+
+    echo "$online;$temp;$hum";
+}
+
 //get card mute state
 if (isset($_GET['getMuteState'])) {
     $id = $_GET['id'];

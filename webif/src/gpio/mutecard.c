@@ -99,7 +99,7 @@ int main(int argc, char *argv[]) {
 
             printf("Coding: %d\n", coding);
 
-            //only access mute logic if coding > 2 (= InnoRack V2)
+            //only access mute logic if coding >= 2 (= InnoRack V2)
             if (coding > 1) {
                 digitalWrite(pin, LOW);
                 FILE *stateFile = fopen(path, "w");
