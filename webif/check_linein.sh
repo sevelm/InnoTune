@@ -19,7 +19,7 @@
 ##                                Description                                 ##
 ##                                                                            ##
 ## This script iterates over all 10 amps and checks if a zone is playing      ##
-## longer than 3 hours. If playtime exceeds the limit the line-in will be     ##
+## longer than 2 hours. If playtime exceeds the limit the line-in will be     ##
 ## restarted with the set_linein.sh script.                                   ##
 ##                                                                            ##
 ## A cronjob excecutes this script every 30 minutes.                          ##
@@ -37,6 +37,7 @@
 ################################################################################
 check() {
     # init vars
+    datetime=$(date '+%d-%m-%Y %H:%M:%S')
     card_out="$1"
     USB_DEV=$(cat /opt/innotune/settings/settings_player/dev$card_out.txt | head -n1  | tail -n1)
     zone2=""
@@ -73,9 +74,9 @@ check() {
     # check line-in process runtime
     if [ "$PID1" != "0" ]; then
         runtime=$(ps -o etimes= -p "$PID1")
-        echo "$i: runtime: $runtime"
-        # running longer than 3 hours
-        if [ "$runtime" -ge "10800" ]; then
+        echo "$datetime card $i/P1: runtime: $runtime, out: $card_out in: $card_in" >> /var/www/checkprocesses.log
+        # running longer than 2 hours
+        if [ "$runtime" -ge "7200" ]; then
             # restart line-in
             /var/www/set_linein.sh "$card_out" "$card_in" "$zone2" "$modus"
         fi
@@ -84,9 +85,9 @@ check() {
     if [ "$PID2" != "0" ]; then
         if [ "$zone2" == "2" ]; then
             runtime=$(ps -o etimes= -p "$PID2")
-            echo "$i: runtime: $runtime"
-            # running longer than 3 hours
-            if [ "$runtime" -ge "10800" ]; then
+            echo "$datetime card $i/P2: runtime: $runtime, out: $card_out in: $card_in" >> /var/www/checkprocesses.log
+            # running longer than 2 hours
+            if [ "$runtime" -ge "7200" ]; then
                 # restart line-in
                 /var/www/set_linein.sh "$card_out" "$card_in2" "$zone2" "$modus2"
             fi

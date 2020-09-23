@@ -47,6 +47,9 @@ zone2=$3
 # card mode
 modus=$4
 
+datetime=$(date '+%d-%m-%Y %H:%M:%S')
+echo "$datetime out: $card_out in: $card_in playback: $zone2 mode: $modus" >> /var/www/checkprocesses.log
+
 # if card out is splitted, filter card number and mode
 if [[ $card_out == *"li"* || $card_out == *"re"* ]]; then
 	echo "It's there!"
@@ -77,6 +80,7 @@ fi
 # stop line-in if active
 if [ "$PID1" != "0" ] || [ "$PID2" != "0" ]; then
     kill $PID1 $PID2
+	echo "$datetime killed processes P1: $PID1 P2: $PID2" >> /var/www/checkprocesses.log
     echo -e "0\n""0\n" > /opt/innotune/settings/status_line-in/line-in$modus$card_out.txt
 
     if [ "$modus" = "li" ]; then
@@ -98,10 +102,12 @@ if [[ $card_in ]]; then
         if [ "$modus" = "li" ]; then
             amixer -c sndc$card_out set MuteIfLineInli_$card_out 1%
             newPID1=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineInli$card_out > /dev/null 2>&1 & echo $!)
+			echo "$datetime startet dsnoop$card_in - LineInli$card_out" >> /var/www/checkprocesses.log
             echo -e "$newPID1\n""$newPID2\n""$card_in\n" > /opt/innotune/settings/status_line-in/line-inli$card_out.txt
         elif [ "$modus" == "re" ]; then
             amixer -c sndc$card_out set MuteIfLineInre_$card_out 1%
             newPID1=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineInre$card_out > /dev/null 2>&1 & echo $!)
+			echo "$datetime startet dsnoop$card_in - LineInre$card_out" >> /var/www/checkprocesses.log
             echo -e "$newPID1\n""$newPID2\n""$card_in\n" > /opt/innotune/settings/status_line-in/line-inre$card_out.txt
         else
             amixer -c sndc$card_out set MuteIfLineInli_$card_out 1%
@@ -109,6 +115,8 @@ if [[ $card_in ]]; then
 
             newPID1=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineInli$card_out > /dev/null 2>&1 & echo $!)
             newPID2=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineInre$card_out > /dev/null 2>&1 & echo $!)
+			echo "$datetime startet dsnoop$card_in - LineInli$card_out" >> /var/www/checkprocesses.log
+			echo "$datetime startet dsnoop$card_in - LineInre$card_out" >> /var/www/checkprocesses.log
             echo -e "$newPID1\n""$newPID2\n""$card_in\n" > /opt/innotune/settings/status_line-in/line-in$card_out.txt
         fi
     else
@@ -117,6 +125,7 @@ if [[ $card_in ]]; then
         amixer -c sndc$card_out set MuteIfLineInre_$card_out 1%
 
         newPID1=$(arecord -f S16_LE -c2 -r44100 -d 0 -D plug:dsnoop$card_in | aplay -B 1 -D LineIn$card_out  > /dev/null 2>&1 & echo $!)
+		echo "$datetime startet dsnoop$card_in - LineIn$card_out" >> /var/www/checkprocesses.log
         echo -e "$newPID1\n""$newPID2\n""$card_in\n" > /opt/innotune/settings/status_line-in/line-in$card_out.txt
     fi
 fi
