@@ -100,6 +100,24 @@ if ($pos1 == 1) {
                         <b>{{sysinfo.cputemp}}°C</b>
                     </span>
                 </li>
+                <li class="mdl-list__item" ng-if="tempSensor.online == 1">
+                  <span class="mdl-list__item-primary-content">
+                      <i class="material-icons mdl-list__item-icon"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                         version="1.1" baseProfile="full" width="32"
+                                                                         height="32" viewBox="0 0 32.00 32.00"
+                                                                         enable-background="new 0 0 32.00 32.00"
+                                                                         xml:space="preserve" style="vertical-align: unset">
+                          <path d="M0 0h24v24H0z" fill="none"/>
+                          <path fill="#757575" fill-opacity="0" stroke-linejoin="round"
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                      </svg></i>
+
+                      Innen-Temperatur:&nbsp;
+                      <div class="mdl-layout-spacer mdl-cell--hide-desktop mdl-cell--hide-tablet"></div>
+                      <b>{{tempSensor.temperature}}°C</b>
+                  </span>
+                </li>
                 <li class="mdl-list__item">
                     <span class="mdl-list__item-primary-content">
                         <i class="material-icons mdl-list__item-icon"><svg xmlns="http://www.w3.org/2000/svg"

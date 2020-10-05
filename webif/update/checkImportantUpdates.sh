@@ -24,7 +24,7 @@
 ##                                                                            ##
 ## A cronjob excecutes this script every 4 hours at minute 0.                 ##
 ## Cronjob Entry:                                                             ##
-## 0 */4 * * * sudo /var/www/shutdown_hook.sh                                 ##
+## 30 3 * * * sudo /var/www/update/checkImportantUpdates.sh                   ##
 ##                                                                            ##
 ################################################################################
 ################################################################################
