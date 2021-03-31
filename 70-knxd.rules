@@ -60,5 +60,7 @@ ATTR{idVendor}=="147b", ATTR{idProduct}=="5120",OWNER="knxd",MODE="0600"
 ATTR{idVendor}=="16d0", ATTR{idProduct}=="0491",OWNER="knxd",MODE="0600"
 #ESYLUX (KNX test device)
 ATTR{idVendor}=="28c2", ATTR{idProduct}=="000c",OWNER="knxd",MODE="0600"
+#GIRA 201400 KNX USB-Datenschnittstelle
+ATTR{idVendor}=="135e", ATTR{idProduct}=="0322",OWNER="knxd",MODE="0600"
 
 LABEL="knxd_end"
