@@ -65,12 +65,12 @@ if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
             cp /opt/server.prefs /var/lib/squeezeboxserver/prefs/server.prefs
             sync
         fi
-        /etc/init.d/logitechmediaserver restart
+        /etc/init.d/logitechmediaserver restart & sudo systemctl enable logitechmediaserver.service
         IPLMS="-s $(ip route show | grep 'src' | grep 'eth0' | awk '{print $9}')"
         START_PORT=10000
         /var/www/msb_set_credentials.sh > /dev/null 2>&1 &
     else
-        /etc/init.d/logitechmediaserver stop & update-rc.d logitechmediaserver remove
+        /etc/init.d/logitechmediaserver stop & update-rc.d logitechmediaserver remove & sudo systemctl disable logitechmediaserver.service & sudo systemctl stop logitechmediaserver.service
         START_PORT=11000
     fi
 
