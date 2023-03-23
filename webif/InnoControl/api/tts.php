@@ -61,8 +61,8 @@ for ($i = 1; $i < 10; $i++) {
         $val = ceil((intval($zonemastervol[1])) * ($squeezevol) / 60);
         if ($val < 0) {
             $val = 0;
-        } else if ($val > 60) {
-            $val = 60;
+        } else if ($val > 80) {
+            $val = 80;
         }
 
         $_GET["vol_0$i"] = $val;
@@ -80,8 +80,8 @@ for ($i = 1; $i < 10; $i++) {
         }
 
         $vall = ceil(intval($zonemastervol[1]) * ($squeezevol / 60));
-        if ($vall < 50) {
-            $vall = 50;
+        if ($vall < 0) {
+            $vall = 0;
         } else if ($vall > 80) {
             $vall = 80;
         }
@@ -102,8 +102,8 @@ for ($i = 1; $i < 10; $i++) {
         }
 
         $valr = ceil(intval($zonemastervol[1]) * ($squeezevol / 60));
-        if ($valr < 50) {
-          $valr = 50;
+        if ($valr < 0) {
+          $valr = 0;
         } else if ($valr > 80) {
             $valr = 80;
         }
@@ -126,8 +126,8 @@ if ($_GET["vol_10"] == "squeeze") {
     }
 
     $val = ceil(intval($zonemastervol[1]) * ($squeezevol / 60));
-    if ($val < 50) {
-        $val = 50;
+    if ($val < 0) {
+        $val = 0;
     } else if ($val > 80) {
         $val = 80;
     }
@@ -189,6 +189,11 @@ $array_vol = array_map('trim', $array_vol);
 // row 1   >> vol background              $array_vol[0]
 // row 2   >> vol output 01               $array_vol[1]
 // etc.
+
+ echo "<b> ReadValues:  </b><br>";
+ echo " MasterVol: <b>" . $zonemastervol[1] . "</b><br>";
+ echo " LastSqueezeVol: <b>" . $squeezevol . "</b> SetVol: <b>" . $val . "</b><br>";
+ echo "</b><br>";
 
 $array = file("/opt/innotune/settings/voiceoutput/voiceoutputvol.txt");
 if ($VOL_BACK != "" && $VOL_BACK != $array_vol[0]) {
