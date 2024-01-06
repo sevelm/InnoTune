@@ -31,7 +31,12 @@
 validate=$(cat /opt/innotune/settings/validate.txt | head -n1 | tail -n1)
 if [ $validate == "1" ]; then
     > /var/www/InnoControl/log/validate.log
-    declare -a packages=("php5.6-gd" "php5.6-curl" "libasound2-plugin-equal"
+
+#Edit Elmecker 06.01.2024
+#    declare -a packages=("php5.6-gd" "php5.6-curl" "libasound2-plugin-equal"
+#                       "libasound2-dev" "shairport-sync" "usbmount" "zip"
+#                       "mpc" "bc" "cifs-utils")
+    declare -a packages=("libasound2-plugin-equal"
                        "libasound2-dev" "shairport-sync" "usbmount" "zip"
                        "mpc" "bc" "cifs-utils")
 
