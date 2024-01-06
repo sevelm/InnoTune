@@ -76,4 +76,7 @@ sudo rm -r /usr/share/squeezeboxserver/HTML/InnoPlayMobile
 # LMS Wizard fix (completes form automatically, if wizard pops up)
 sudo cp /opt/innotune/update/cache/InnoTune/wizard.html /usr/share/squeezeboxserver/HTML/EN/settings/server/wizard.html
 
+# Add Crontabs
+grep -q -F "*/5 * * * * /var/www/check_xplhub.sh" /var/spool/cron/crontabs/root || echo "*/5 * * * * /var/www/check_xplhub.sh" >> /var/spool/cron/crontabs/root
+
 echo "35% - cloned innoplay mobile" > /opt/innotune/settings/updatestatus.txt
