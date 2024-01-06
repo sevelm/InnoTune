@@ -248,8 +248,12 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+  /////////////////////////////////
     mpd_run_clear(conn);
-    mpd_run_add(conn, PATHTTS);
+    	char mpc_command[256]; // Eine ausreichend große Zeichenfolge für den Befehl
+	snprintf(mpc_command, sizeof(mpc_command), "mpc add \"%s\"", PATHTTS);
+     system(mpc_command); // Hinzufügen des Tracks zur Wiedergabeliste
+    //mpd_run_add(conn, PATHTTS);
     mpd_run_play(conn);
 
     int COUNTER02 = 1;
