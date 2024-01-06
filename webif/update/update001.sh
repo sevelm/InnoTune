@@ -180,6 +180,7 @@ sudo cp /opt/innotune/update/cache/InnoTune/php.ini /etc/php/5.6/cgi/php.ini
 # Add Crontabs
 grep -q -F "*/15 * * * * /var/www/playercheck.sh" /var/spool/cron/crontabs/root || echo "*/15 * * * * /var/www/playercheck.sh" >> /var/spool/cron/crontabs/root
 grep -q -F "3 3 * * * sudo shutdown -r now" /var/spool/cron/crontabs/root || echo "3 3 * * * sudo shutdown -r now" >> /var/spool/cron/crontabs/root
+grep -q -F "*/5 * * * * /var/www/check_xplhub.sh" /var/spool/cron/crontabs/root || echo "*/5 * * * * /var/www/check_xplhub.sh" >> /var/spool/cron/crontabs/root
 
 # install additional packages for raspberry_pi
 rasp=$(cat /etc/os-release | grep Raspbian | wc -l)
