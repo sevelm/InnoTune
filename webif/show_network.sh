@@ -44,13 +44,13 @@ fi
 # if wifi active show wifi address
 if [[ $WLAN -eq 1 ]]; then
     IP=$(ip route show | grep 'src' | grep 'wlan0' | awk '{print $9}' | tail -n1)
-    SUBNET=$( ifconfig wlan0 | grep "Bcast:" | tr -s ' ' | cut -d: -f4)
+    SUBNET=$( ifconfig eth0 | grep "Bcast:" | tr -s ' ' | cut -d: -f4 | grep -v '^$' || ifconfig eth0 | awk '/netmask/{print $4}')
 else
     IP=$(ip route show | grep 'src' | grep 'eth0' | awk '{print $9}' | tail -n1)
     if [ $IP = "172.30.250.250" ]; then
         IP=$(ip route show | grep 'src' | grep 'eth0' | awk '{print $9}' | head -n1)
     fi
-    SUBNET=$( ifconfig eth0 | grep "Bcast:" | tr -s ' ' | cut -d: -f4)
+    SUBNET=$( ifconfig eth0 | grep "Bcast:" | tr -s ' ' | cut -d: -f4 | grep -v '^$' || ifconfig eth0 | awk '/netmask/{print $4}')
 fi
 
 # else show default ip
@@ -61,7 +61,7 @@ if [ $GATE = "wlan0" ]; then
     if [ $IP = "172.30.250.250" ]; then
         IP=$(ip route show | grep 'src' | grep 'eth0' | awk '{print $9}' | head -n1)
     fi
-    SUBNET=$( ifconfig eth0 | grep "Bcast:" | tr -s ' ' | cut -d: -f4)
+    SUBNET=$( ifconfig eth0 | grep "Bcast:" | tr -s ' ' | cut -d: -f4 | grep -v '^$' || ifconfig eth0 | awk '/netmask/{print $4}')
     WFAILED="true"
     echo "0" > /opt/innotune/settings/wlan.txt
 elif [ $GATE = "tun0" ]; then
@@ -70,13 +70,13 @@ elif [ $GATE = "tun0" ]; then
     if [ $IP = "172.30.250.250" ]; then
         IP=$(ip route show | grep 'src' | grep 'eth0' | awk '{print $9}' | head -n1)
     fi
-    SUBNET=$( ifconfig eth0 | grep "Bcast:" | tr -s ' ' | cut -d: -f4)
+    SUBNET=$( ifconfig eth0 | grep "Bcast:" | tr -s ' ' | cut -d: -f4 | grep -v '^$' || ifconfig eth0 | awk '/netmask/{print $4}')
 fi
 
 MAC=$(ip addr show eth0 | grep 'link/ether' | tr -s ' ' | cut -d ' ' -f3)
 MACWLAN=$(ip addr show wlan0 | grep 'link/ether' | tr -s ' ' | cut -d ' ' -f3)
-DNS1=$(cat /etc/resolv.conf | grep "nameserver" | cut -d ' ' -f2 | head -n1 | tail -n1)
-DNS2=$(cat /etc/resolv.conf | grep "nameserver" | cut -d ' ' -f2 | head -n2 | tail -n1)
+DNS1=$(cat /etc/resolv.conf | grep "^nameserver" | cut -d ' ' -f2 | head -n1 | tail -n1)
+DNS2=$(cat /etc/resolv.conf | grep "^nameserver" | cut -d ' ' -f2 | head -n2 | tail -n1)
 SSID=$(cat /opt/innotune/settings/wpa_supplicant.conf | grep 'ssid="' | cut -d '"' -f2)
 PSK=$(cat /opt/innotune/settings/wpa_supplicant.conf | grep 'psk="' | cut -d '"' -f2)
 
