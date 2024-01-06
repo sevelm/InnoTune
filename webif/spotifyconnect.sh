@@ -36,7 +36,7 @@
 a=$2
 if [ "$PLAYER_EVENT" = "start" ]; then
     a=1
-elif [ "$PLAYER_EVENT" = "stop" ] || [ "$PLAYER_EVENT" = "pause" ]; then
+elif [ "$PLAYER_EVENT" = "stop" ] || [ "$PLAYER_EVENT" = "pause" ] || [ "$PLAYER_EVENT" = "paused" ] || [ "$PLAYER_EVENT" = "stopped" || [ "$PLAYER_EVENT" = "session_disconnected" ]; then
     a=0
 fi
 echo $a > /opt/innotune/settings/status_shairplay/status_shairplay$3$1.txt
