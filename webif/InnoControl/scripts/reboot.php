@@ -55,10 +55,10 @@
 <script>
     function reboot() {
         if (getParameterByName("dhcp") == "dhcp") {
-            document.getElementById("text").innerHTML = "Der Server wurde auf DHCP umgestellt, benutze den InnoTuneScanner um dein InnoTune System im Netzwerk zu finden! \n\n";
+            document.getElementById("text").innerHTML = "Der Server wurde auf DHCP umgestellt, benutze IP-Scanner um dein InnoTune System im Netzwerk zu finden! \n\n";
             var node = document.createElement("a");
-            node.setAttribute('href',"http://www.innotune.at/web_2016/wp-content/uploads/www.innotune.at-innotunescanner.zip");
-            node.innerHTML = "InnoTuneScanner";
+            node.setAttribute('href',"https://www.advanced-ip-scanner.com/de/");
+            node.innerHTML = "IP-Scanner";
             document.getElementById("text").appendChild(node);
             document.getElementById("spinner").style.visibility = "hidden";
 
