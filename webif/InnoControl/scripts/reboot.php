@@ -58,7 +58,7 @@
             document.getElementById("text").innerHTML = "Der Server wurde auf DHCP umgestellt, benutze IP-Scanner um dein InnoTune System im Netzwerk zu finden! \n\n";
             var node = document.createElement("a");
             node.setAttribute('href',"https://www.advanced-ip-scanner.com/de/");
-            node.innerHTML = "IP-Scanner";
+            node.innerHTML = "Empfehlung";
             document.getElementById("text").appendChild(node);
             document.getElementById("spinner").style.visibility = "hidden";
 
