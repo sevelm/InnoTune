@@ -42,8 +42,8 @@ case "$1" in
                                                                                                 ## damit die USB-Rules dennoch übernommen werden und in /etc kopiert
                        ##-x mapping.txt mapping_current.txt update_cnt.txt updatestatus.txt 80-usb-audio-id.rules 90-usb-audio-log-remove.rules
                        sudo chmod -R 777 /opt/innotune/settings
-		             cp /opt/innotune/settings/80-usb-audio-id.rules /etc/udev/rules.d/80-usb-audio-id.rules
-			        cp /opt/innotune/settings/90-usb-audio-log-remove.rules /etc/udev/rules.d/90-usb-audio-log-remove.rules;;
+		       cp /opt/innotune/settings/80-usb-audio-id.rules /etc/udev/rules.d/80-usb-audio-id.rules
+		       cp /opt/innotune/settings/90-usb-audio-log-remove.rules /etc/udev/rules.d/90-usb-audio-log-remove.rules;;
      update) /var/www/update.sh;;
      fullupdate) /var/www/update/full.sh;;
      latestupdate) /var/www/update/latest.sh;;
