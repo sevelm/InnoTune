@@ -43,7 +43,7 @@ case "$1" in
                        ##-x mapping.txt mapping_current.txt update_cnt.txt updatestatus.txt 80-usb-audio-id.rules 90-usb-audio-log-remove.rules
                        sudo chmod -R 777 /opt/innotune/settings
                        /var/www/create_udevrule.sh
-                       reboot;;
+                       /var/www/create_asound.sh;;
      update) /var/www/update.sh;;
      fullupdate) /var/www/update/full.sh;;
      latestupdate) /var/www/update/latest.sh;;
