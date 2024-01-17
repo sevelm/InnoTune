@@ -76,7 +76,7 @@ fi
 MAC=$(ip addr show eth0 | grep 'link/ether' | tr -s ' ' | cut -d ' ' -f3)
 MACWLAN=$(ip addr show wlan0 | grep 'link/ether' | tr -s ' ' | cut -d ' ' -f3)
 DNS1=$((systemd-resolve --status 2>/dev/null || echo "DNS Servers: $(cat /etc/resolv.conf | grep "^nameserver" | cut -d ' ' -f2 | head -n1)") | grep "DNS Servers" | awk '{print $3}')
-DNS2=$(cat /etc/resolv.conf | grep "^nameserver" | cut -d ' ' -f2 | head -n2 | tail -n1)
+DNS2=$(grep "dns-nameservers" /etc/network/interfaces | awk '{for (i=2; i<=NF; i++) if ($i ~ /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/) last=$i; } END {print last}')
 SSID=$(cat /opt/innotune/settings/wpa_supplicant.conf | grep 'ssid="' | cut -d '"' -f2)
 PSK=$(cat /opt/innotune/settings/wpa_supplicant.conf | grep 'psk="' | cut -d '"' -f2)
 
