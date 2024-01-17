@@ -30,7 +30,7 @@ if (isset($_POST['settings_upload'])) {
 
     if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
         exec("sudo /var/www/sudoscript.sh restore_settings");
-        $CONTROL_INPUT="erfolgreich";
+        $CONTROL_INPUT="erfolgreich! Neustart erforderlich!";
     } else {
         $CONTROL_INPUT="fehlgeschlagen!";
     }
