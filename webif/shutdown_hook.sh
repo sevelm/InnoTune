@@ -29,6 +29,17 @@
 ################################################################################
 
 # saving LMS Preferences
-cp /var/lib/squeezeboxserver/prefs/server.prefs /opt/server.prefs
+#cp /var/lib/squeezeboxserver/prefs/server.prefs /opt/server.prefs
 # syncing to filesystem
-sync
+#sync
+
+
+# saving LMS Preferences only if valid
+
+if grep -q "/media" /var/lib/squeezeboxserver/prefs/server.prefs; then
+    cp /var/lib/squeezeboxserver/prefs/server.prefs /opt/server.prefs
+    sync
+    echo "$(date) saved valid server.prefs" >> /var/log/serverprefs.log
+else
+    echo "$(date) skipped invalid server.prefs" >> /var/log/serverprefs.log
+fi
