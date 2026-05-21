@@ -7,7 +7,7 @@
 ##                                                                            ##
 ## Directory:   /var/www/update/                                              ##
 ## Created  :   21.03.2019                                                    ##
-## Edited   :   28.07.2020                                                    ##
+## Edited   :   21.05.2026                                                    ##
 ## Company  :   InnoTune elektrotechnik Severin Elmecker                      ##
 ## Email    :   office@innotune.at                                            ##
 ## Website  :   https://innotune.at/                                          ##
@@ -64,6 +64,15 @@ sudo chmod -R 777 /var/www
 sudo rm /root/librespot-linux-armhf-raspberry_pi.zip
 sudo apt-get -y install build-essential portaudio19-dev
 sudo cp /opt/innotune/update/cache/InnoTune/librespot /root/librespot
+
+# install shairport-sync from repository binary
+if [ -f /usr/bin/shairport-sync ] && [ ! -f /usr/bin/shairport-sync_old ]; then
+    sudo mv /usr/bin/shairport-sync /usr/bin/shairport-sync_old
+fi
+sudo cp /opt/innotune/update/cache/InnoTune/shairport-sync /usr/bin/shairport-sync
+sudo chmod +x /usr/bin/shairport-sync
+sudo systemctl disable shairport-sync 2>/dev/null
+sudo systemctl stop shairport-sync 2>/dev/null
 
 echo "30% - copied files" > /opt/innotune/settings/updatestatus.txt
 
