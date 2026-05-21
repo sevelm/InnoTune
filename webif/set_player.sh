@@ -7,7 +7,7 @@
 ##                                                                            ##
 ## Directory:   /var/www/                                                     ##
 ## Created  :   24.08.2017 (date of initial git commit)                       ##
-## Edited   :   27.07.2020                                                    ##
+## Edited   :   21.05.2026                                                    ##
 ## Company  :   InnoTune elektrotechnik Severin Elmecker                      ##
 ## Email    :   office@innotune.at                                            ##
 ## Website  :   https://innotune.at/                                          ##
@@ -48,6 +48,7 @@ if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
     /var/www/src/playmonitor > /dev/null 2>&1 &
     killall shairport-sync
     killall squeezelite-armv6hf
+    killall squeezeboxserver_safe
     killall squeezeboxserver
     killall mpd
     killall aplay
@@ -131,13 +132,13 @@ if [[ "$1" -ne "1" ]] && [[ "$1" -ne "2" ]] && [[ "$1" -ne "3" ]]; then
 
                 # start spotify
                 if [[ $SP ]]; then
-                    sudo /root/librespot -v --name "$PLAYER" --cache /tmp --bitrate 320 --backend alsa --device airplay$i --onevent "/var/www/spotifyconnect.sh $i 1" >> /var/www/InnoControl/log/spotify$i-$datetime 2>&1 & echo "$i;" >> /opt/innotune/settings/p_spotify
+                    sudo /root/librespot -v --name "$PLAYER" --cache /tmp --bitrate 320 --initial-volume 30 --backend alsa --device airplay$i --onevent "/var/www/spotifyconnect.sh $i 1" >> /var/www/InnoControl/log/spotify$i-$datetime 2>&1 & echo "$i;" >> /opt/innotune/settings/p_spotify
                 fi
                 if [[ $SPli ]]; then
-                    sudo /root/librespot -v --name "$PLAYERli" --cache /tmp --bitrate 320 --backend alsa --device airplayli$i --onevent "/var/www/spotifyconnect.sh $i 1 li" >> /var/www/InnoControl/log/spotifyli$i-$datetime 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_spotify
+                    sudo /root/librespot -v --name "$PLAYERli" --cache /tmp --bitrate 320 --initial-volume 30 --backend alsa --device airplayli$i --onevent "/var/www/spotifyconnect.sh $i 1 li" >> /var/www/InnoControl/log/spotifyli$i-$datetime 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_spotify
                 fi
                 if [[ $SPre ]]; then
-                    sudo /root/librespot -v --name "$PLAYERre" --cache /tmp --bitrate 320 --backend alsa --device airplayre$i --onevent "/var/www/spotifyconnect.sh $i 1 re" >> /var/www/InnoControl/log/spotifyre$i-$datetime 2>&1 & echo "$i;re" >> /opt/innotune/settings/p_spotify
+                    sudo /root/librespot -v --name "$PLAYERre" --cache /tmp --bitrate 320 --initial-volume 30 --backend alsa --device airplayre$i --onevent "/var/www/spotifyconnect.sh $i 1 re" >> /var/www/InnoControl/log/spotifyre$i-$datetime 2>&1 & echo "$i;re" >> /opt/innotune/settings/p_spotify
                 fi
 
                 # reset state files
@@ -244,13 +245,13 @@ else
                 if [[ $1 -eq 3 ]]; then
                     # start spotify
                     if [[ $SP ]]; then
-                        sudo /root/librespot -v --name "$PLAYER" --cache /tmp --bitrate 320 --backend alsa --device airplay$i --onevent "/var/www/spotifyconnect.sh $i 1" >> /var/www/InnoControl/log/spotify$i-$datetime 2>&1 & echo "$i;" >> /opt/innotune/settings/p_spotify
+                        sudo /root/librespot -v --name "$PLAYER" --cache /tmp --bitrate 320 --initial-volume 30 --backend alsa --device airplay$i --onevent "/var/www/spotifyconnect.sh $i 1" >> /var/www/InnoControl/log/spotify$i-$datetime 2>&1 & echo "$i;" >> /opt/innotune/settings/p_spotify
                     fi
                     if [[ $SPli ]]; then
-                        sudo /root/librespot -v --name "$PLAYERli" --cache /tmp --bitrate 320 --backend alsa --device airplayli$i --onevent "/var/www/spotifyconnect.sh $i 1 li" >> /var/www/InnoControl/log/spotifyli$i-$datetime 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_spotify
+                        sudo /root/librespot -v --name "$PLAYERli" --cache /tmp --bitrate 320 --initial-volume 30 --backend alsa --device airplayli$i --onevent "/var/www/spotifyconnect.sh $i 1 li" >> /var/www/InnoControl/log/spotifyli$i-$datetime 2>&1 & echo "$i;li" >> /opt/innotune/settings/p_spotify
                     fi
                     if [[ $SPre ]]; then
-                        sudo /root/librespot -v --name "$PLAYERre" --cache /tmp --bitrate 320 --backend alsa --device airplayre$i --onevent "/var/www/spotifyconnect.sh $i 1 re" >> /var/www/InnoControl/log/spotifyre$i-$datetime 2>&1 & echo "$i;re" >> /opt/innotune/settings/p_spotify
+                        sudo /root/librespot -v --name "$PLAYERre" --cache /tmp --bitrate 320 --initial-volume 30 --backend alsa --device airplayre$i --onevent "/var/www/spotifyconnect.sh $i 1 re" >> /var/www/InnoControl/log/spotifyre$i-$datetime 2>&1 & echo "$i;re" >> /opt/innotune/settings/p_spotify
                     fi
                 fi
                 # reset state files
