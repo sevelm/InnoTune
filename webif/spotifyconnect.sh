@@ -7,7 +7,7 @@
 ##                                                                            ##
 ## Directory:   /var/www/                                                     ##
 ## Created  :   04.09.2017                                                    ##
-## Edited   :   27.07.2020                                                    ##
+## Edited   :   21.05.2026                                                    ##
 ## Company  :   InnoTune elektrotechnik Severin Elmecker                      ##
 ## Email    :   office@innotune.at                                            ##
 ## Website  :   https://innotune.at/                                          ##
@@ -48,4 +48,3 @@ else
 fi
 
 echo $a > /opt/innotune/settings/status_shairplay/status_shairplay$3$1.txt
-
